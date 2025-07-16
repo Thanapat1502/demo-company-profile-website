@@ -1,103 +1,205 @@
-import Image from "next/image";
+"use client";
+
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Switch,
+  Chip,
+  Avatar,
+  Divider,
+} from "@heroui/react";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            Next.js + HeroUI
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+            A modern web application with TypeScript, Tailwind CSS 3.4.5, and
+            full SEO support
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <Chip color="primary" variant="flat">
+              Next.js 15
+            </Chip>
+            <Chip color="secondary" variant="flat">
+              TypeScript
+            </Chip>
+            <Chip color="success" variant="flat">
+              Tailwind CSS 3.4.5
+            </Chip>
+            <Chip color="warning" variant="flat">
+              HeroUI
+            </Chip>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Theme Toggle */}
+        <Card className="mb-8">
+          <CardBody>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Avatar src="https://i.pravatar.cc/150?u=theme" size="sm" />
+                <div>
+                  <p className="font-semibold">Theme Settings</p>
+                  <p className="text-small text-gray-500">
+                    Toggle between light and dark mode
+                  </p>
+                </div>
+              </div>
+              <Switch
+                isSelected={theme === "dark"}
+                onValueChange={(isSelected) =>
+                  setTheme(isSelected ? "dark" : "light")
+                }
+                size="lg"
+                color="primary"
+                thumbIcon={({ isSelected, className }) =>
+                  isSelected ? (
+                    <span className={className}>🌙</span>
+                  ) : (
+                    <span className={className}>☀️</span>
+                  )
+                }>
+                Dark Mode
+              </Switch>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Component Showcase */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Buttons</h3>
+            </CardHeader>
+            <Divider />
+            <CardBody className="space-y-3">
+              <Button color="primary" variant="solid">
+                Primary Button
+              </Button>
+              <Button color="secondary" variant="bordered">
+                Secondary Button
+              </Button>
+              <Button color="success" variant="light">
+                Success Button
+              </Button>
+              <Button color="danger" variant="flat">
+                Danger Button
+              </Button>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Form Elements</h3>
+            </CardHeader>
+            <Divider />
+            <CardBody className="space-y-3">
+              <Input
+                type="email"
+                label="Email"
+                placeholder="Enter your email"
+                variant="bordered"
+              />
+              <Input
+                type="password"
+                label="Password"
+                placeholder="Enter your password"
+                variant="bordered"
+              />
+              <Button color="primary" className="w-full">
+                Sign In
+              </Button>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Features</h3>
+            </CardHeader>
+            <Divider />
+            <CardBody className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Chip size="sm" color="success" variant="dot">
+                  SEO Optimized
+                </Chip>
+              </div>
+              <div className="flex items-center gap-2">
+                <Chip size="sm" color="primary" variant="dot">
+                  TypeScript
+                </Chip>
+              </div>
+              <div className="flex items-center gap-2">
+                <Chip size="sm" color="secondary" variant="dot">
+                  Responsive
+                </Chip>
+              </div>
+              <div className="flex items-center gap-2">
+                <Chip size="sm" color="warning" variant="dot">
+                  Dark Mode
+                </Chip>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+
+        {/* Footer */}
+        <Card>
+          <CardBody>
+            <div className="text-center">
+              <p className="text-gray-600 dark:text-gray-300">
+                Built with ❤️ using Next.js, TypeScript, Tailwind CSS, and
+                HeroUI
+              </p>
+              <div className="flex justify-center gap-4 mt-4">
+                <Button
+                  as="a"
+                  href="https://nextjs.org"
+                  target="_blank"
+                  variant="light"
+                  size="sm">
+                  Next.js Docs
+                </Button>
+                <Button
+                  as="a"
+                  href="https://heroui.com"
+                  target="_blank"
+                  variant="light"
+                  size="sm">
+                  HeroUI Docs
+                </Button>
+                <Button
+                  as="a"
+                  href="https://tailwindcss.com"
+                  target="_blank"
+                  variant="light"
+                  size="sm">
+                  Tailwind CSS
+                </Button>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
     </div>
   );
 }
