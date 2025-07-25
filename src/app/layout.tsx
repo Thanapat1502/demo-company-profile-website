@@ -15,30 +15,39 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Next.js + HeroUI App",
-    template: "%s | Next.js + HeroUI App",
+    default: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
+    template: "%s | Padungsilpa Group",
   },
   description:
-    "A modern web application built with Next.js, TypeScript, Tailwind CSS, and HeroUI",
-  keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "HeroUI"],
-  authors: [{ name: "Your Name" }],
-  creator: "Your Name",
-  metadataBase: new URL("https://your-domain.com"),
+    "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 20 ปี",
+  keywords: [
+    "Gas Station",
+    "Construction",
+    "Engineering",
+    "Thailand",
+    "Padungsilpa",
+    "สถานีบริการน้ำมัน",
+    "ก่อสร้าง",
+    "วิศวกรรม",
+  ],
+  authors: [{ name: "Padungsilpa Group" }],
+  creator: "Padungsilpa Group",
+  metadataBase: new URL("https://www.padungsilpa.group"),
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://your-domain.com",
-    title: "Next.js + HeroUI App",
+    locale: "th_TH",
+    url: "https://www.padungsilpa.group",
+    title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
-      "A modern web application built with Next.js, TypeScript, Tailwind CSS, and HeroUI",
-    siteName: "Next.js + HeroUI App",
+      "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering.",
+    siteName: "Padungsilpa Group",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Next.js + HeroUI App",
+    title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
-      "A modern web application built with Next.js, TypeScript, Tailwind CSS, and HeroUI",
-    creator: "@yourusername",
+      "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering.",
+    creator: "@padungsilpagroup",
   },
   robots: {
     index: true,

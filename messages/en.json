@@ -1,0 +1,450 @@
+{
+  "navigation": {
+    "home": "Home",
+    "company": "Company Profile",
+    "services": "Products & Services",
+    "references": "References",
+    "news": "News & Events",
+    "contact": "Contact Us"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us",
+    "getQuote": "Get Quote",
+    "callNow": "Call Now",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "hero": {
+      "title": "Leading Gas Station Construction & Engineering Services",
+      "subtitle": "PADUNGSILPA GROUP",
+      "description": "With over 20 years of experience, we provide comprehensive gas station construction, engineering, and maintenance services across Thailand."
+    },
+    "stats": {
+      "experience": "Years Experience",
+      "projects": "Projects Completed",
+      "clients": "Happy Clients",
+      "support": "Support Service"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "We provide comprehensive solutions for gas station construction and engineering projects",
+      "gasStation": {
+        "title": "Gas Station Construction",
+        "description": "Complete gas station construction services from design to completion"
+      },
+      "engineering": {
+        "title": "Engineering Services",
+        "description": "Professional engineering consulting and project management"
+      },
+      "maintenance": {
+        "title": "Maintenance Services",
+        "description": "Ongoing maintenance and support for gas station operations"
+      }
+    },
+    "about": {
+      "title": "About Padungsilpa Group",
+      "description": "Established with a vision to become the leading gas station construction and engineering company in Thailand, Padungsilpa Group has been serving clients with excellence for over two decades.",
+      "features": {
+        "team": "Professional Engineering Team",
+        "quality": "Quality Construction Standards",
+        "support": "24/7 Customer Support",
+        "coverage": "Nationwide Service Coverage"
+      },
+      "certification": "Certified Quality"
+    },
+    "cta": {
+      "title": "Ready to Start Your Project?",
+      "description": "Contact us today for a free consultation and quote for your gas station construction project."
+    }
+  },
+  "footer": {
+    "company": {
+      "description": "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering."
+    },
+    "quickLinks": "Quick Links",
+    "services": "Our Services",
+    "contact": "Contact Info",
+    "workingHours": {
+      "weekdays": "Mon - Fri: 8:00 AM - 6:00 PM",
+      "saturday": "Sat: 8:00 AM - 12:00 PM"
+    },
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "company": {
+    "hero": {
+      "title": "About Padungsilpa Group",
+      "subtitle": "Excellence in Construction & Engineering",
+      "description": "Discover our journey of over two decades in delivering exceptional gas station construction and engineering solutions across Thailand.",
+      "ourProjects": "Our Projects"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "To provide exceptional gas station construction and engineering services that exceed client expectations while maintaining the highest standards of safety, quality, and environmental responsibility."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To be the leading gas station construction and engineering company in Southeast Asia, recognized for innovation, sustainability, and excellence in every project we undertake."
+    },
+    "values": {
+      "title": "Our Core Values",
+      "description": "The principles that guide our work and define our company culture",
+      "excellence": {
+        "title": "Excellence",
+        "description": "We strive for perfection in every aspect of our work, from initial design to project completion."
+      },
+      "teamwork": {
+        "title": "Teamwork",
+        "description": "We believe in the power of collaboration and work together to achieve outstanding results."
+      },
+      "integrity": {
+        "title": "Integrity",
+        "description": "We conduct business with honesty, transparency, and ethical practices in all our dealings."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We embrace new technologies and methods to deliver cutting-edge solutions to our clients."
+      }
+    },
+    "history": {
+      "title": "Our Journey",
+      "description": "From humble beginnings to becoming a leader in gas station construction, our journey has been marked by continuous growth, innovation, and commitment to excellence."
+    },
+    "milestones": {
+      "founded": "Company founded with a vision to revolutionize gas station construction",
+      "expansion": "Expanded operations across Thailand with multiple successful projects",
+      "certification": "Achieved ISO 9001 certification for quality management systems",
+      "technology": "Implemented advanced construction technologies and sustainable practices",
+      "sustainability": "Launched green construction initiative and renewable energy solutions",
+      "present": "Continuing to lead the industry with innovative solutions and exceptional service"
+    },
+    "certifications": {
+      "title": "Certifications & Standards",
+      "description": "Our commitment to quality and safety is reflected in our internationally recognized certifications",
+      "iso9001": "Quality Management System certification ensuring consistent service delivery",
+      "iso14001": "Environmental Management System for sustainable construction practices",
+      "ohsas": "Occupational Health and Safety management for worker protection"
+    },
+    "experience": "Years of Excellence",
+    "viewProjects": "View Our Projects"
+  },
+  "services": {
+    "hero": {
+      "title": "Products & Services",
+      "subtitle": "Comprehensive Gas Station Solutions",
+      "description": "From initial design to ongoing maintenance, we provide complete gas station construction and engineering services tailored to your specific needs.",
+      "viewProjects": "View Our Projects"
+    },
+    "main": {
+      "title": "Our Core Services",
+      "description": "We specialize in delivering end-to-end solutions for gas station construction and engineering projects"
+    },
+    "gasStation": {
+      "title": "Gas Station Construction",
+      "description": "Complete turnkey gas station construction services from site preparation to grand opening. We handle every aspect of your project with precision and expertise.",
+      "features": {
+        "design": "Architectural design and engineering",
+        "construction": "Complete construction management",
+        "installation": "Equipment and system installation",
+        "compliance": "Regulatory compliance and permits"
+      }
+    },
+    "engineering": {
+      "title": "Engineering Consulting",
+      "description": "Professional engineering services providing technical expertise, regulatory guidance, and project management support for complex gas station projects.",
+      "features": {
+        "consulting": "Technical consulting and feasibility studies",
+        "design": "Detailed engineering design and specifications",
+        "management": "Project management and coordination",
+        "supervision": "Construction supervision and quality control"
+      }
+    },
+    "maintenance": {
+      "title": "Maintenance & Support",
+      "description": "Comprehensive maintenance services to keep your gas station operating safely and efficiently with minimal downtime and maximum profitability.",
+      "features": {
+        "inspection": "Regular safety inspections and audits",
+        "preventive": "Preventive maintenance programs",
+        "emergency": "24/7 emergency repair services",
+        "upgrade": "Equipment upgrades and modernization"
+      }
+    },
+    "additional": {
+      "title": "Additional Services",
+      "description": "Specialized services to enhance your gas station operations and ensure optimal performance",
+      "equipment": {
+        "title": "Equipment Supply",
+        "description": "High-quality fuel dispensers, tanks, and station equipment from leading manufacturers"
+      },
+      "safety": {
+        "title": "Safety Systems",
+        "description": "Advanced safety and monitoring systems to protect your investment and ensure compliance"
+      },
+      "automation": {
+        "title": "Automation Solutions",
+        "description": "Modern automation and control systems for efficient station management and operations"
+      }
+    },
+    "process": {
+      "title": "Our Process",
+      "description": "A proven methodology that ensures successful project delivery from concept to completion",
+      "consultation": {
+        "title": "Consultation",
+        "description": "Initial consultation to understand your requirements and develop project scope"
+      },
+      "design": {
+        "title": "Design & Planning",
+        "description": "Detailed design development, engineering, and comprehensive project planning"
+      },
+      "construction": {
+        "title": "Construction",
+        "description": "Professional construction management with quality control and safety oversight"
+      },
+      "delivery": {
+        "title": "Delivery & Support",
+        "description": "Project handover, training, and ongoing support to ensure successful operations"
+      }
+    },
+    "learnMore": "Learn More",
+    "cta": {
+      "title": "Ready to Start Your Gas Station Project?",
+      "description": "Contact our team of experts today to discuss your gas station construction or engineering needs. We're here to help bring your vision to life."
+    }
+  },
+  "references": {
+    "hero": {
+      "title": "Project References",
+      "subtitle": "Proven Track Record of Excellence",
+      "description": "Explore our portfolio of successful gas station construction and engineering projects across Thailand, showcasing our commitment to quality and innovation.",
+      "viewServices": "View Our Services"
+    },
+    "stats": {
+      "completed": "Projects Completed",
+      "clients": "Satisfied Clients",
+      "provinces": "Provinces Served",
+      "satisfaction": "Client Satisfaction"
+    },
+    "featured": {
+      "title": "Featured Projects",
+      "description": "Highlighting some of our most successful and innovative gas station construction projects"
+    },
+    "categories": {
+      "gasStation": "Gas Station Construction",
+      "renovation": "Station Renovation",
+      "consulting": "Engineering Consulting"
+    },
+    "projects": {
+      "ptt": {
+        "title": "PTT Gas Station - Sukhumvit",
+        "description": "Complete construction of a modern gas station featuring 8 fuel dispensers, convenience store, car wash facility, and solar panel installation for sustainable energy.",
+        "features": {
+          "dispensers": "8 modern fuel dispensers",
+          "store": "Full-service convenience store",
+          "carwash": "Automated car wash facility",
+          "solar": "Solar panel energy system"
+        }
+      },
+      "shell": {
+        "title": "Shell Station - Pattaya",
+        "description": "New eco-friendly gas station construction with modern design featuring sustainable technologies including solar panels and rainwater harvesting systems.",
+        "features": {
+          "eco": "Eco-friendly design and materials",
+          "modern": "Contemporary architectural design",
+          "rainwater": "Rainwater harvesting system",
+          "led": "LED lighting throughout"
+        }
+      },
+      "bangchak": {
+        "title": "Bangchak Station - Chiangmai",
+        "description": "Complete renovation and modernization of existing gas station including new pump systems, safety upgrades, and improved customer facilities.",
+        "features": {
+          "upgrade": "Complete system upgrades",
+          "safety": "Enhanced safety systems",
+          "efficiency": "Improved operational efficiency",
+          "compliance": "Full regulatory compliance"
+        }
+      }
+    },
+    "keyFeatures": "Key Features",
+    "viewDetails": "View Details",
+    "types": {
+      "title": "Project Types",
+      "description": "We specialize in various types of gas station projects to meet diverse client needs",
+      "newConstruction": {
+        "title": "New Construction",
+        "description": "Complete turnkey gas station construction from ground up with modern facilities and equipment"
+      },
+      "renovation": {
+        "title": "Renovation & Upgrade",
+        "description": "Modernization and upgrade of existing gas stations to improve efficiency and compliance"
+      },
+      "consulting": {
+        "title": "Engineering Consulting",
+        "description": "Professional consulting services for technical design, planning, and project management"
+      }
+    },
+    "cta": {
+      "title": "Start Your Next Project With Us",
+      "description": "Join our growing list of satisfied clients and experience the difference that professional expertise makes.",
+      "startProject": "Start Your Project"
+    }
+  },
+  "news": {
+    "hero": {
+      "title": "News & Events",
+      "subtitle": "Stay Updated with Our Latest Developments",
+      "description": "Discover the latest news, project updates, industry insights, and company announcements from Padungsilpa Group.",
+      "subscribe": "Subscribe to Updates"
+    },
+    "featured": {
+      "sectionTitle": "Featured News",
+      "label": "Featured",
+      "title": "Padungsilpa Group Wins Major Gas Station Project",
+      "excerpt": "We are proud to announce that Padungsilpa Group has been awarded a major gas station construction project worth 50 million baht, demonstrating our continued leadership in the industry.",
+      "content": "We are excited to share that Padungsilpa Group has been selected as the primary contractor for a major gas station construction project. This project represents our commitment to excellence and innovation in the industry."
+    },
+    "categories": {
+      "all": "All News",
+      "company": "Company News",
+      "safety": "Safety",
+      "sustainability": "Sustainability",
+      "technology": "Technology",
+      "business": "Business",
+      "partnership": "Partnerships",
+      "training": "Training"
+    },
+    "search": {
+      "placeholder": "Search news and events..."
+    },
+    "latest": {
+      "title": "Latest News & Updates",
+      "description": "Stay informed about our latest projects, achievements, and industry developments"
+    },
+    "articles": {
+      "safety": {
+        "title": "New Safety Standards Implementation",
+        "excerpt": "Padungsilpa Group implements new international safety standards across all construction projects to ensure worker and public safety."
+      },
+      "green": {
+        "title": "Green Technology Initiative",
+        "excerpt": "Our commitment to environmental sustainability through the adoption of green construction technologies and renewable energy solutions."
+      },
+      "expansion": {
+        "title": "Regional Expansion Announcement",
+        "excerpt": "Padungsilpa Group announces expansion into new regions to better serve clients across Southeast Asia."
+      },
+      "technology": {
+        "title": "Smart Station Technology Integration",
+        "excerpt": "Introduction of cutting-edge smart technology solutions for modern gas station operations and management."
+      },
+      "partnership": {
+        "title": "Strategic Partnership with Leading Suppliers",
+        "excerpt": "New partnerships with international equipment suppliers to enhance our service offerings and project capabilities."
+      },
+      "training": {
+        "title": "Advanced Employee Training Program",
+        "excerpt": "Launch of comprehensive training program to enhance employee skills and maintain our high standards of service excellence."
+      }
+    },
+    "loadMore": "Load More Articles",
+    "newsletter": {
+      "title": "Subscribe to Our Newsletter",
+      "description": "Get the latest updates on our projects, industry insights, and company news delivered directly to your inbox.",
+      "emailPlaceholder": "Enter your email address",
+      "subscribe": "Subscribe",
+      "privacy": "We respect your privacy and will never share your email address."
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Let's Build Your Vision Together",
+      "description": "Ready to start your gas station project? Get in touch with our expert team for consultation, quotes, and professional guidance.",
+      "getQuote": "Get Free Quote",
+      "callNow": "Call Now"
+    },
+    "methods": {
+      "title": "Get in Touch",
+      "description": "Choose the most convenient way to reach us and start your project consultation",
+      "phone": {
+        "title": "Call Us",
+        "description": "Speak directly with our experts for immediate assistance and consultation"
+      },
+      "email": {
+        "title": "Email Us",
+        "description": "Send us your detailed requirements and we'll respond within 24 hours"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with our support team for quick answers to your questions",
+        "value": "Start Chat"
+      }
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "description": "Fill out the form below and our team will get back to you as soon as possible.",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "company": "Company Name",
+      "companyPlaceholder": "Enter your company name",
+      "inquiryType": "Inquiry Type",
+      "inquiryTypePlaceholder": "Select inquiry type",
+      "inquiryTypes": {
+        "general": "General Information",
+        "quote": "Request Quote",
+        "support": "Technical Support",
+        "partnership": "Partnership Opportunity",
+        "career": "Career Inquiry"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your project requirements...",
+      "submit": "Send Message"
+    },
+    "offices": {
+      "title": "Our Offices",
+      "headquarters": {
+        "name": "Headquarters - Bangkok",
+        "address": "123 Business District, Bangkok 10110, Thailand",
+        "hours": "Monday - Friday: 8:00 AM - 6:00 PM\nSaturday: 8:00 AM - 12:00 PM"
+      },
+      "regional": {
+        "name": "Regional Office - Eastern Region",
+        "address": "456 Industrial Zone, Chonburi 20000, Thailand",
+        "hours": "Monday - Friday: 8:00 AM - 5:00 PM\nSaturday: 8:00 AM - 12:00 PM"
+      }
+    },
+    "map": {
+      "placeholder": "Interactive map will be displayed here"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Quick answers to common questions about our services and processes",
+      "questions": {
+        "services": {
+          "question": "What services do you offer?",
+          "answer": "We provide complete gas station construction, engineering consulting, maintenance services, and equipment supply."
+        },
+        "timeline": {
+          "question": "How long does a typical project take?",
+          "answer": "Project timelines vary based on scope and complexity, typically ranging from 3-12 months for complete construction."
+        },
+        "consultation": {
+          "question": "Do you offer free consultations?",
+          "answer": "Yes, we provide free initial consultations to discuss your project requirements and provide preliminary guidance."
+        }
+      }
+    }
+  }
+}
