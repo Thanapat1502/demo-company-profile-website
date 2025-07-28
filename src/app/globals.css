@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-blue: #112Ef4;
+  --primary-blue-dark: #0f29d4;
+  --primary-blue-light: #1a3ff5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,5 +20,1177 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-noto-sans-thai), var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Minimal Design System - Construction Company */
+@layer components {
+  /* Minimal Buttons - No rounded corners, Primary blue colors */
+  .btn-minimal-primary {
+    background-color: var(--primary-blue) !important;
+    @apply text-white px-8 py-4 font-bold tracking-wider uppercase text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-minimal-primary:hover {
+    background-color: var(--primary-blue-dark);
+  }
+
+  .btn-minimal-primary:focus {
+    ring-color: var(--primary-blue);
+  }
+
+  .btn-minimal-secondary {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    @apply border-2 px-8 py-4 font-bold tracking-wider uppercase text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-minimal-secondary:hover {
+    background-color: var(--primary-blue);
+    @apply text-white;
+  }
+
+  .btn-minimal-secondary:focus {
+    ring-color: var(--primary-blue);
+  }
+
+  .btn-minimal-white {
+    color: var(--primary-blue);
+    @apply bg-white px-8 py-4 font-bold tracking-wider uppercase text-sm transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 shadow-lg hover:shadow-xl;
+  }
+
+  /* Minimal Cards - Sharp edges, Primary blue accents */
+  .card-minimal {
+    @apply bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-1;
+  }
+
+  .card-minimal-dark {
+    background-color: var(--primary-blue);
+    @apply border border-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-1;
+  }
+
+  /* Section containers */
+  .section-minimal {
+    @apply py-20 lg:py-24;
+  }
+
+  .section-minimal-large {
+    @apply py-24 lg:py-32;
+  }
+
+  /* Typography for construction feel - Strong and Bold with primary blue */
+  .heading-construction {
+    color: var(--primary-blue);
+    @apply font-black tracking-tight leading-none;
+  }
+
+  .heading-construction-white {
+    @apply font-black tracking-tight text-white leading-none;
+  }
+
+  .text-construction {
+    @apply text-gray-600 leading-relaxed font-medium;
+  }
+
+  .text-construction-white {
+    @apply text-gray-300 leading-relaxed font-medium;
+  }
+
+  /* Parallax container */
+  .parallax-container {
+    @apply relative overflow-hidden;
+  }
+
+  .parallax-element {
+    @apply transition-transform duration-75 ease-out;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Video loading animation */
+@keyframes fadeInVideo {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.video-fade-in {
+  animation: fadeInVideo 1.5s ease-out forwards;
+}
+
+/* Text mask animations */
+@keyframes textMaskFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+.text-mask-fade-out {
+  animation: textMaskFadeOut 1s ease-out forwards;
+}
+
+/* Video text mask styles */
+.video-text-mask {
+  /* Ensure text is bold enough to show image clearly */
+  font-weight: 900 !important;
+  /* Smooth transitions */
+  transition: all 0.5s ease;
+  /* Better text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Ensure background attachment works */
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  /* Better text mask visibility */
+  text-shadow: 0 0 1px rgba(0,0,0,0.1);
+}
+
+/* Text mask container */
+.text-mask-container {
+  /* Create a stacking context */
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback for browsers that don't support background-clip: text */
+@supports not (-webkit-background-clip: text) {
+  .video-text-mask {
+    color: var(--primary-blue) !important;
+    background: none !important;
+  }
+}
+
+/* Enhanced text mask effect */
+@keyframes textMaskReveal {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+}
+
+.text-mask-fade-out {
+  animation: textMaskReveal 1s ease-out forwards;
+}
+
+/* Image carousel smooth transitions */
+@keyframes imageCarouselFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.carousel-image-enter {
+  animation: imageCarouselFade 1.5s ease-out forwards;
+}
+
+/* Services section enhancements */
+.services-card-hover {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.services-card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Smooth carousel transitions */
+.carousel-container {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced button hover effects */
+.service-learn-more {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-learn-more::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-blue);
+  transition: width 0.3s ease;
+}
+
+.service-learn-more:hover::before {
+  width: 100%;
+}
+
+/* New stunning services section styles */
+.services-fullscreen {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+}
+
+.services-product-nav {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.services-product-nav:hover {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* Enhanced image transitions */
+.services-bg-image {
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth color transitions for accent elements */
+.accent-transition {
+  transition: background-color 0.5s ease, border-color 0.5s ease;
+}
+
+/* Enhanced button hover effects */
+.services-control-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.services-control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Progress indicator animations */
+@keyframes pulse-accent {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.progress-active {
+  animation: pulse-accent 2s infinite;
+}
+
+/* Enhanced product navigation animations */
+.services-product-nav {
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.services-product-nav:hover {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Elegant slide-in animation for active product content */
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scale animation for navigation cards */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.95) translateX(0);
+  }
+  100% {
+    transform: scale(1.02) translateX(8px);
+  }
+}
+
+/* Enhanced backdrop blur for better text visibility */
+.enhanced-blur {
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth color transition for accent elements */
+.accent-smooth {
+  transition: background-color 0.7s ease, border-color 0.7s ease, color 0.7s ease;
+}
+
+/* Enhanced background image transitions */
+.services-bg-transition {
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth gradient overlay transitions */
+.gradient-overlay-smooth {
+  transition: background 1s ease-in-out;
+}
+
+/* Enhanced layout switching animations */
+@keyframes switchLayout {
+  0% {
+    opacity: 0.8;
+    transform: translateX(-10px);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.layout-switch {
+  animation: switchLayout 0.7s ease-out;
+}
+
+/* Elegant texture background for services section */
+.services-elegant-texture {
+  position: relative;
+}
+
+.services-elegant-texture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.services-elegant-texture::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.01) 50%, transparent 100%),
+    linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.01) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Loading overlay */
+.video-loading-overlay {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  transition: opacity 0.8s ease-out;
+}
+
+/* Parallax sections */
+.parallax-bg {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .parallax-element {
+    transform: none !important;
+  }
+
+  .video-fade-in {
+    animation-duration: 1s;
+  }
+
+  .heading-construction,
+  .heading-construction-white {
+    line-height: 1.1;
+  }
+}
+
+/* Enhanced integrated product display */
+.product-overlay-content {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Smooth product navigation animations */
+.product-nav-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-nav-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-nav-card.active {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile responsive enhancements */
+@media (max-width: 768px) {
+  .product-overlay-content {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+}
+
+/* Enhanced gradient overlays */
+.gradient-overlay-integrated {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 30%,
+    rgba(0, 0, 0, 0.3) 60%,
+    transparent 100%
+  );
+}
+
+/* Line clamp utilities */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Enhanced product grid animations */
+.product-grid-item {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-grid-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.product-grid-item.active {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile carousel enhancements */
+.mobile-carousel {
+  scroll-snap-type: x mandatory;
+}
+
+.mobile-carousel-item {
+  scroll-snap-align: start;
+}
+
+/* Enhanced learn more link animations */
+.learn-more-slide-up {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .learn-more-slide-up {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Elegant backdrop blur effects */
+.learn-more-backdrop {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.learn-more-backdrop:hover {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* Smooth icon animations */
+.learn-more-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .learn-more-icon {
+  transform: translateX(4px);
+}
+
+/* Enhanced product card hover states */
+.product-card-elegant {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card-elegant::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.8s ease;
+  z-index: 1;
+}
+
+.product-card-elegant:hover::before {
+  left: 100%;
+}
+
+/* Enhanced content movement animations */
+.content-slide-up {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .content-slide-up {
+  transform: translateY(-48px);
+}
+
+/* Staggered animation delays for text elements */
+.text-animate-1 {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-animate-2 {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+/* Enhanced learn more button with better backdrop */
+.learn-more-enhanced {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.learn-more-enhanced:hover {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Parallax scrolling effects */
+.hero-parallax-text {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.services-parallax-section {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  position: relative;
+  z-index: 10;
+}
+
+/* Smooth parallax performance optimization */
+.parallax-optimized {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Enhanced section layering - Hero behind navbar */
+.hero-section {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  min-height: 100vh;
+  margin-top: 0;
+  top: 0;
+}
+
+.services-section-overlap {
+  position: relative;
+  z-index: 10;
+  margin-top: 0; /* No initial overlap - only when scrolling */
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Parallax container optimization */
+.parallax-container {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Hero text parallax - moves upward when scrolling down */
+.hero-parallax-text {
+  will-change: transform;
+  transition: none; /* Remove transition for smoother parallax */
+}
+
+/* Services section parallax - moves upward faster to create overlap */
+.services-parallax-section {
+  will-change: transform;
+  transition: none; /* Remove transition for smoother parallax */
+  background: white; /* Ensure solid background for overlap */
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+/* Ensure proper stacking context */
+.hero-section {
+  position: relative;
+  z-index: 1;
+}
+
+.services-section-overlap {
+  position: relative;
+  z-index: 10;
+}
+
+/* Smooth scrolling performance */
+* {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Elegant fade-in animation for hero text */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Enhanced fade-in with subtle scale */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Modern Navbar Animations */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced Navbar backdrop blur effects */
+.navbar-blur {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Navbar transparency states */
+.navbar-transparent {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-solid {
+  background: rgba(255, 255, 255, 1);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced backdrop blur for better browser support */
+@supports (backdrop-filter: blur(20px)) {
+  .backdrop-blur-enhanced {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(20px)) {
+  .backdrop-blur-enhanced {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Ensure navbar always stays at top */
+.navbar-fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+}
+
+/* Prevent navbar from being affected by transforms */
+.navbar-container {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Ensure proper stacking context */
+body {
+  position: relative;
+}
+
+/* Navbar overlay positioning - absolute to match section position */
+.navbar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  width: 100%;
+}
+
+/* Transparent navbar when at top */
+.navbar-transparent {
+  background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+/* Solid navbar when scrolled */
+.navbar-solid {
+  background: rgba(255, 255, 255, 1) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure main content starts from top */
+main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* First section container - overlaps behind sticky navbar */
+.first-section-container {
+  position: relative;
+  margin-top: -80px; /* Negative margin to pull content up behind navbar */
+  z-index: 1;
+}
+
+/* First section of every page starts from top */
+.first-section-container > section:first-child,
+.first-section-container > div:first-child {
+  position: relative;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 1;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Hero section overlay positioning */
+.hero-overlay {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+
+/* Sticky navbar positioning */
+.navbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+}
+
+/* Enhanced sticky navbar */
+.navbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  -webkit-position: sticky; /* Safari support */
+}
+
+/* Ensure smooth sticky behavior */
+.navbar-sticky-container {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  will-change: transform;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Elegant hover effects for nav items */
+.nav-item-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-item-hover:hover::before {
+  left: 100%;
+}
+
+/* Mobile menu hamburger animation */
+.hamburger-line {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Enhanced button hover effects */
+.btn-elegant {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-elegant::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-elegant:hover::before {
+  left: 100%;
+}
+
+/* Modern Navbar Enhancements */
+@keyframes navItemFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Elegant logo animations */
+.logo-hover-effect {
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-hover-effect:hover {
+  transform: scale(1.1) rotate(3deg);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+/* Navigation link glow effects */
+.nav-link-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.8s ease;
+}
+
+.nav-link-glow:hover::before {
+  left: 100%;
+}
+
+/* Button shimmer effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 1s ease;
+}
+
+.btn-shimmer:hover::after {
+  left: 100%;
+}
+
+/* Enhanced mobile hamburger */
+.hamburger-modern {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hamburger-modern:hover {
+  transform: scale(1.1);
+}
+
+/* Smooth icon rotations */
+.icon-rotate {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-rotate:hover {
+  transform: rotate(12deg) scale(1.1);
+}
+
+/* Minimal Professional Mobile Menu Animations - Top to Bottom */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDownFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Mobile menu backdrop blur enhancement */
+.mobile-menu-backdrop {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Mobile menu item hover effects */
+.mobile-menu-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  transition: left 0.8s ease;
+}
+
+.mobile-menu-item:hover::before {
+  left: 100%;
+}
+
+/* Enhanced mobile button effects */
+.mobile-btn-elegant {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-btn-elegant::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 1s ease;
+}
+
+.mobile-btn-elegant:hover::after {
+  left: 100%;
+}
+
+/* Professional Mobile Menu Styling */
+.mobile-menu-panel {
+  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -20px 0 50px -10px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom scrollbar for mobile menu */
+.mobile-menu-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-menu-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mobile-menu-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobile-menu-scroll::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 2px;
+}
+
+.mobile-menu-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+/* Mobile menu item hover effects */
+.mobile-menu-item-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-menu-item-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+  transition: left 0.6s ease;
+}
+
+.mobile-menu-item-hover:hover::before {
+  left: 100%;
+}
+
+/* Professional button styling */
+.mobile-btn-professional {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-btn-professional:hover {
+  transform: translateY(-1px);
+}
+
+/* Elegant divider */
+.mobile-menu-divider {
+  background: linear-gradient(90deg, transparent, rgba(156, 163, 175, 0.3), transparent);
 }

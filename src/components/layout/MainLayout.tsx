@@ -11,10 +11,12 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children, className = "" }: MainLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <MainNavbar />
-      <main className={`flex-1 ${className}`}>
-        {children}
+    <div className="min-h-screen relative">
+      <main className={`relative ${className}`}>
+        <MainNavbar />
+        <div className="first-section-container">
+          {children}
+        </div>
       </main>
       <Footer />
     </div>

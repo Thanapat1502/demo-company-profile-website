@@ -1,38 +1,40 @@
 "use client";
 
-import Section from "@/components/ui/Section";
+import ParallaxSection from "@/components/ui/ParallaxSection";
+import { StatCard } from "@/components/ui/MinimalCard";
 
 export default function StatsSection() {
-  const stats = [
-    { number: "300+", label: "ก่อสร้างสถานีบริการน้ำมัน (สถานีบริการน้ำมัน)" },
-    {
-      number: "20,000+",
-      label: "ผลิตถังน้ำมันใต้ดินผนัง2ชั้น PERMATANK® (ใบ)",
-    },
-    {
-      number: "300+",
-      label: "จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น (สถานีบริการน้ำมัน)",
-    },
-    {
-      number: "50+",
-      label: "จำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน (ATG)",
-    },
-  ];
-
   return (
-    <Section background="white" padding="lg">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-        {stats.map((stat, index) => (
-          <div key={index} className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
-              {stat.number}
-            </div>
-            <div className="text-gray-600 dark:text-gray-400 font-medium">
-              {stat.label}
-            </div>
-          </div>
-        ))}
+    <ParallaxSection background="gray" padding="xl" speed={0.1}>
+      <div className="text-center mb-16">
+        <h2 className="text-4xl lg:text-5xl heading-construction mb-6">
+          ความสำเร็จในตัวเลข
+        </h2>
+        <div className="w-24 h-1 mx-auto" style={{ backgroundColor: 'var(--primary-blue)' }}></div>
       </div>
-    </Section>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <StatCard
+          number="500+"
+          label="โครงการที่สำเร็จ"
+          sublabel="สถานีบริการน้ำมัน"
+        />
+        <StatCard
+          number="20+"
+          label="ปีประสบการณ์"
+          sublabel="ในอุตสาหกรรม"
+        />
+        <StatCard
+          number="200+"
+          label="ทีมงานมืออาชีพ"
+          sublabel="วิศวกรและช่างเทคนิค"
+        />
+        <StatCard
+          number="100%"
+          label="ความพึงพอใจ"
+          sublabel="จากลูกค้า"
+        />
+      </div>
+    </ParallaxSection>
   );
 }
