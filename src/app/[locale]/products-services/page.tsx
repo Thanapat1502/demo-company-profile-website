@@ -416,7 +416,7 @@ export default function ProductsServicesPage() {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <div className="flex items-center mb-6">
                 <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mr-6">
                   <Cog size={32} className="text-indigo-600" />
@@ -457,7 +457,7 @@ export default function ProductsServicesPage() {
                   ติดต่อสอบถาม
                 </MinimalButton>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

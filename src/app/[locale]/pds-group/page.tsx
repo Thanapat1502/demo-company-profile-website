@@ -18,6 +18,8 @@ import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import MinimalButton from "@/components/ui/MinimalButton";
+import HeroSection from "@/components/ui/HeroSection";
+import Section from "@/components/ui/Section";
 
 export default function CompanyProfilePage() {
   const t = useTranslations();
@@ -124,7 +126,7 @@ export default function CompanyProfilePage() {
             />
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Company Values */}
       <section className="py-16 bg-white">
