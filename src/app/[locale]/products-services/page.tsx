@@ -1,17 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Building2,
-  Wrench,
-  Users,
-  Cog,
-  Shield,
-  Zap,
-  ArrowRight,
-  CheckCircle,
-  Fuel,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Building2, Wrench, Cog, ArrowRight, Fuel } from "lucide-react";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
@@ -21,6 +11,13 @@ import MinimalButton from "@/components/ui/MinimalButton";
 export default function ProductsServicesPage() {
   const locale = useLocale();
   const [showAllProducts, setShowAllProducts] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const allProducts = [
     {
@@ -99,12 +96,7 @@ export default function ProductsServicesPage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-          "/images/hero-sections/hero-banner-3.jpg",
-          "/images/hero-sections/hero-banner-4.jpg",
-        ]}
+        images={["/images/hero-sections/hero-banner-3.jpg"]}
         title={`ผลิตภัณฑ์และบริการ`}
         subtitle="บริการครบวงจร"
         description={`ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน`}
@@ -169,14 +161,19 @@ export default function ProductsServicesPage() {
               </div>
             </div>
 
-            <div>
-              <Image
-                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="งานก่อสร้างสถานีบริการน้ำมัน"
-                width={600}
-                height={400}
-                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
-              />
+            <div className="relative">
+              <div
+                className="relative h-96 rounded-3xl overflow-hidden shadow-2xl"
+                style={{
+                  transform: `translateY(${scrollY * 0.1}px)`,
+                }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="งานก่อสร้างสถานีบริการน้ำมัน"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -186,14 +183,16 @@ export default function ProductsServicesPage() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Image
-                src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="PERMATANK และถังน้ำมันแบบต่าง ๆ"
-                width={600}
-                height={400}
-                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
-              />
+            <div className="relative">
+              <div className="relative h-96 rounded-3xl overflow-hidden shadow-2xl">
+                <iframe
+                  src="https://www.youtube.com/embed/HTzu3zmGk80"
+                  title="PERMATANK และถังน้ำมันแบบต่าง ๆ"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
 
             <div>
@@ -314,14 +313,19 @@ export default function ProductsServicesPage() {
               </div>
             </div>
 
-            <div>
-              <Image
-                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น"
-                width={600}
-                height={400}
-                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
-              />
+            <div className="relative">
+              <div
+                className="relative h-96 rounded-3xl overflow-hidden shadow-2xl"
+                style={{
+                  transform: `translateY(${scrollY * -0.1}px)`,
+                }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -331,14 +335,16 @@ export default function ProductsServicesPage() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Image
-                src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน"
-                width={600}
-                height={400}
-                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
-              />
+            <div className="relative">
+              <div className="relative h-96 rounded-3xl overflow-hidden shadow-2xl">
+                <iframe
+                  src="https://www.youtube.com/embed/udq5UVLwpds"
+                  title="ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน"
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
 
             <div>
@@ -375,6 +381,71 @@ export default function ProductsServicesPage() {
                   สามารถใช้ได้กับสถานีบริการน้ำมันภายในองค์กร
                   สถานีบริการน้ำมันทั่วไป และคลังน้ำมันที่มีถังสูงถึง{" "}
                   <strong className="text-orange-600">21 เมตร</strong>
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <MinimalButton
+                  href={`/${locale}/contact-us`}
+                  variant="primary"
+                  icon={<ArrowRight className="w-5 h-5" />}>
+                  ติดต่อสอบถาม
+                </MinimalButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service 5: บริการต่าง ๆ เกี่ยวกับถังน้ำมัน */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div
+                className="relative h-96 rounded-3xl overflow-hidden shadow-2xl"
+                style={{
+                  transform: `translateY(${scrollY * 0.15}px)`,
+                }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="บริการต่าง ๆ เกี่ยวกับถังน้ำมัน"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mr-6">
+                  <Cog size={32} className="text-indigo-600" />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  บริการต่าง ๆ เกี่ยวกับถังน้ำมัน
+                </h2>
+              </div>
+
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <div className="bg-indigo-50 p-6 rounded-2xl border-l-4 border-indigo-600">
+                  <p className="font-semibold text-indigo-900 text-xl mb-4">
+                    บริษัท ผดุงศิลป์วิศวการ จำกัด
+                  </p>
+                  <ol className="space-y-2 text-indigo-800">
+                    <li>1. งานตรวจสอบการติดตั้งถัง PERMATANK</li>
+                    <li>2. งานติดตั้งระบบท่อ NUPI-UPP-KPS</li>
+                    <li>3. งานติดตั้ง TANK SUMP</li>
+                    <li>4. งานติดตั้ง NANO ATG & ProGauge</li>
+                    <li>5. งาน 3D SCAN</li>
+                  </ol>
+                </div>
+
+                <p>
+                  กลุ่มบริษัท ผดุงศิลป์
+                  จะรักษาไว้ซึ่งพนักงานชั้นเยี่ยมในระดับปฏิบัติการ และบริหาร
+                  โดยที่ทุกคนมีเป้าหมายเดียวกันในการนำเสนอลูกค้าด้วยผลงานก่อสร้าง,
+                  สินค้า และบริการ ซึ่งไม่เพียงแต่ดีที่สุดเท่านั้น
+                  ยังรวมไปถึงบุคลากรที่มีความรู้ ความสามารถเป็นเยี่ยม
                 </p>
               </div>
 

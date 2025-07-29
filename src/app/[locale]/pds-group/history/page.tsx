@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { History, Calendar, Award, Building, ArrowRight, Users2, Target } from "lucide-react";
+import {
+  History,
+  Calendar,
+  Award,
+  Building,
+  ArrowRight,
+  Users2,
+  Target,
+} from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -44,38 +52,50 @@ export default function CompanyHistoryPage() {
     {
       year: "2517",
       title: "ก่อตั้งบริษัท",
-      description: "ก่อตั้งบริษัท ผดุงศิลป์ จำกัด โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้างและวิศวกรรม",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "ก่อตั้งบริษัท ผดุงศิลป์ จำกัด โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้างและวิศวกรรม",
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       year: "2530",
       title: "ขยายธุรกิจ",
-      description: "เริ่มให้บริการด้านการก่อสร้างสถานีบริการน้ำมันและพัฒนาเทคโนโลยีถังน้ำมันใต้ดิน",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "เริ่มให้บริการด้านการก่อสร้างสถานีบริการน้ำมันและพัฒนาเทคโนโลยีถังน้ำมันใต้ดิน",
+      image:
+        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       year: "2540",
       title: "นำเข้าเทคโนโลยี PERMATANK®",
-      description: "เป็นผู้นำเข้าและติดตั้งระบบถังน้ำมันใต้ดิน PERMATANK® ที่ได้มาตรฐานสากลเป็นรายแรกในประเทศไทย",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "เป็นผู้นำเข้าและติดตั้งระบบถังน้ำมันใต้ดิน PERMATANK® ที่ได้มาตรฐานสากลเป็นรายแรกในประเทศไทย",
+      image:
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       year: "2550",
       title: "ได้รับการรับรองมาตรฐาน",
-      description: "ได้รับการรับรองมาตรฐาน ISO 9001:2000 และเป็นผู้ให้บริการที่ได้รับความไว้วางใจจากบริษัทน้ำมันชั้นนำ",
-      image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "ได้รับการรับรองมาตรฐาน ISO 9001:2000 และเป็นผู้ให้บริการที่ได้รับความไว้วางใจจากบริษัทน้ำมันชั้นนำ",
+      image:
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       year: "2560",
       title: "ขยายการให้บริการ",
-      description: "ขยายการให้บริการครอบคลุมทั่วประเทศไทย และเริ่มให้บริการระบบ ATG (Automatic Tank Gauging)",
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "ขยายการให้บริการครอบคลุมทั่วประเทศไทย และเริ่มให้บริการระบบ ATG (Automatic Tank Gauging)",
+      image:
+        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       year: "2567",
       title: "ปัจจุบัน",
-      description: "เป็นผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน ด้วยประสบการณ์กว่า 50 ปี",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      description:
+        "เป็นผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน ด้วยประสบการณ์กว่า 50 ปี",
+      image:
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
   ];
 
@@ -83,21 +103,15 @@ export default function CompanyHistoryPage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-          "/images/hero-sections/hero-banner-3.jpg",
-        ]}
-        title={`ประวัติความเป็นมา\nกลุ่มบริษัทผดุงศิลป์`}
+        images={["/images/hero-sections/hero-banner-1.jpg"]}
+        title={`ประวัติความเป็นมา`}
         subtitle="เส้นทางแห่งความสำเร็จ"
         description={`มากกว่า 50 ปีแห่งประสบการณ์\nในอุตสาหกรรมการก่อสร้างสถานีบริการน้ำมัน`}
-        autoSlideDelay={6000}
-      >
+        autoSlideDelay={6000}>
         <MinimalButton
           href={`/${locale}/contact-us`}
           variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}
-        >
+          icon={<ArrowRight className="w-5 h-5" />}>
           ติดต่อเรา
         </MinimalButton>
       </ImageCarouselHero>
@@ -114,8 +128,7 @@ export default function CompanyHistoryPage() {
                   page.id === "history"
                     ? "bg-blue-600 text-white shadow-lg"
                     : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                }`}
-              >
+                }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium">{page.title}</span>
               </Link>
@@ -143,8 +156,7 @@ export default function CompanyHistoryPage() {
                   key={index}
                   className={`grid lg:grid-cols-2 gap-12 items-center ${
                     index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
-                  }`}
-                >
+                  }`}>
                   <div className={index % 2 === 1 ? "lg:col-start-2" : ""}>
                     <div className="flex items-center mb-6">
                       <div className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl mr-6">
@@ -190,15 +202,13 @@ export default function CompanyHistoryPage() {
             <MinimalButton
               href={`/${locale}/contact-us`}
               variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}
-            >
+              icon={<ArrowRight className="w-5 h-5" />}>
               ติดต่อเรา
             </MinimalButton>
             <MinimalButton
               href={`/${locale}/reference`}
               variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600"
-            >
+              className="border-white text-white hover:bg-white hover:text-blue-600">
               ดูผลงานของเรา
             </MinimalButton>
           </div>

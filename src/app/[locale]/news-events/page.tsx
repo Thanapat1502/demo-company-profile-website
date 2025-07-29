@@ -6,7 +6,6 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function NewsEventsPage() {
   const locale = useLocale();
@@ -294,94 +293,6 @@ export default function NewsEventsPage() {
               เลื่อนลงเพื่อดูเพิ่มเติม
             </span>
             <ArrowRight className="w-5 h-5 rotate-90" />
-          </div>
-        </div>
-      </section>
-
-      {/* Featured News */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              ข่าวเด่น
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-              ข่าวสารและความเคลื่อนไหวสำคัญของบริษัท
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-12">
-            {featuredNews.map((news, index) => (
-              <Link
-                key={news.id}
-                href={`/${locale}/news-events/${news.slug}`}
-                className="group block"
-                style={{
-                  animationDelay: `${index * 200}ms`,
-                  animation: "slideInLeft 0.8s ease-out forwards",
-                }}>
-                <article className="relative bg-white/80 backdrop-blur-sm border border-gray-100/60 hover:border-gray-200/80 transition-all duration-700 ease-out hover:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-3 overflow-hidden group-hover:bg-white/95">
-                  {/* Luxury gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-                  {/* Minimal category indicator */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
-
-                  <div className="relative p-8">
-                    {/* Elegant date and category */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-4 text-xs text-gray-500 font-light tracking-wider uppercase">
-                        <span>{news.date}</span>
-                        <div className="w-px h-4 bg-gray-300"></div>
-                        <span>{news.category}</span>
-                      </div>
-                      <div className="w-8 h-8 bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-500">
-                        {String(index + 1).padStart(2, "0")}
-                      </div>
-                    </div>
-
-                    {/* Minimal image container */}
-                    <div className="relative h-48 mb-8 overflow-hidden bg-gray-50">
-                      <Image
-                        src={news.image}
-                        alt={news.title}
-                        fill
-                        className="object-cover transition-all duration-1000 ease-out group-hover:scale-105 group-hover:brightness-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    </div>
-
-                    {/* Typography with luxury spacing */}
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-light text-gray-900 leading-tight tracking-wide line-clamp-2 group-hover:text-gray-800 transition-colors duration-500">
-                        {news.title}
-                      </h3>
-
-                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 font-light">
-                        {news.description}
-                      </p>
-
-                      {/* Elegant read time indicator */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 group-hover:border-gray-200 transition-colors duration-500">
-                        <div className="flex items-center text-xs text-gray-500 font-light">
-                          <Clock size={14} className="mr-2" />
-                          {news.readTime}
-                        </div>
-
-                        {/* Minimal read more */}
-                        <div className="flex items-center text-blue-600 text-sm font-light opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200">
-                          <span className="mr-3 tracking-wide">อ่านต่อ</span>
-                          <div className="w-6 h-px bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-300"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Subtle hover border effect */}
-                  <div className="absolute inset-0 border border-transparent group-hover:border-blue-100/50 transition-all duration-700 pointer-events-none"></div>
-                </article>
-              </Link>
-            ))}
           </div>
         </div>
       </section>

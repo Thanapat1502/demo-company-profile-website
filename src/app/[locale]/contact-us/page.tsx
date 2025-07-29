@@ -95,15 +95,12 @@ export default function ContactUsPage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-3.jpg",
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-        ]}
+        images={["/images/hero-sections/hero-banner-1.jpg"]}
         title={`ติดต่อเรา`}
         subtitle="พร้อมให้คำปรึกษา"
         description={`ติดต่อเราเพื่อรับคำปรึกษาและข้อเสนอ\nที่ดีที่สุดสำหรับโครงการของคุณ`}
-        autoSlideDelay={6000}>
+        autoSlideDelay={6000}
+        disableEntryAnimation={true}>
         <MinimalButton
           href="#contact-form"
           variant="white"

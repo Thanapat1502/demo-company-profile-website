@@ -1,7 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { History, Calendar, Award, Building, ArrowRight, Users2, Target, Mail, Phone, Linkedin } from "lucide-react";
+import {
+  History,
+  Calendar,
+  Award,
+  Building,
+  ArrowRight,
+  Users2,
+  Target,
+  Mail,
+  Phone,
+  Linkedin,
+} from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -48,7 +59,8 @@ export default function ExecutiveTeamPage() {
       experience: "35+ ปี",
       education: "วิศวกรรมศาสตรบัณฑิต สาขาโยธา จุฬาลงกรณ์มหาวิทยาลัย",
       expertise: ["การบริหารจัดการองค์กร", "วิศวกรรมโยธา", "การพัฒนาธุรกิจ"],
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
       name: "นางสาวสุดา เจริญศิลป์",
@@ -57,7 +69,8 @@ export default function ExecutiveTeamPage() {
       experience: "25+ ปี",
       education: "บริหารธุรกิจมหาบัณฑิต มหาวิทยาลัยธรรมศาสตร์",
       expertise: ["การบริหารการเงิน", "การตลาด", "การพัฒนาทรัพยากรมนุษย์"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
       name: "นายวิชัย เทคโนโลยี",
@@ -66,34 +79,41 @@ export default function ExecutiveTeamPage() {
       experience: "20+ ปี",
       education: "วิศวกรรมศาสตรมหาบัณฑิต สาขาเครื่องกล มหาวิทยาลัยเกษตรศาสตร์",
       expertise: ["ระบบ PERMATANK®", "ระบบ ATG", "วิศวกรรมปิโตรเลียม"],
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
       name: "นายประสิทธิ์ ก่อสร้าง",
       position: "ผู้อำนวยการฝ่ายโครงการ",
       department: "การก่อสร้าง",
       experience: "18+ ปี",
-      education: "วิศวกรรมศาสตรบัณฑิต สาขาโยธา มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
+      education:
+        "วิศวกรรมศาสตรบัณฑิต สาขาโยธา มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
       expertise: ["การจัดการโครงการ", "การก่อสร้างสถานีบริการ", "ควบคุมคุณภาพ"],
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
       name: "นางสาวอรุณี คุณภาพ",
       position: "ผู้อำนวยการฝ่ายควบคุมคุณภาพ",
       department: "ควบคุมคุณภาพ",
       experience: "15+ ปี",
-      education: "วิศวกรรมศาสตรบัณฑิต สาขาอุตสาหการ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
+      education:
+        "วิศวกรรมศาสตรบัณฑิต สาขาอุตสาหการ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
       expertise: ["ระบบมาตรฐาน ISO", "ควบคุมคุณภาพ", "ความปลอดภัย"],
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
       name: "นายสมศักดิ์ บริการ",
       position: "ผู้อำนวยการฝ่ายบริการหลังการขาย",
       department: "บริการลูกค้า",
       experience: "12+ ปี",
-      education: "วิศวกรรมศาสตรบัณฑิต สาขาเครื่องกล มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
+      education:
+        "วิศวกรรมศาสตรบัณฑิต สาขาเครื่องกล มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
       expertise: ["บำรุงรักษาระบบ", "บริการลูกค้า", "การฝึกอบรม"],
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      image:
+        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
   ];
 
@@ -101,21 +121,15 @@ export default function ExecutiveTeamPage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-3.jpg",
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-        ]}
-        title={`ทีมผู้บริหาร\nกลุ่มบริษัทผดุงศิลป์`}
+        images={["/images/hero-sections/hero-banner-3.jpg"]}
+        title={`ทีมผู้บริหาร`}
         subtitle="ผู้นำที่มีประสบการณ์"
         description={`ทีมผู้บริหารมืออาชีพ\nที่มีความเชี่ยวชาญในแต่ละสาขา`}
-        autoSlideDelay={6000}
-      >
+        autoSlideDelay={6000}>
         <MinimalButton
           href={`/${locale}/contact-us`}
           variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}
-        >
+          icon={<ArrowRight className="w-5 h-5" />}>
           ติดต่อเรา
         </MinimalButton>
       </ImageCarouselHero>
@@ -132,8 +146,7 @@ export default function ExecutiveTeamPage() {
                   page.id === "team"
                     ? "bg-blue-600 text-white shadow-lg"
                     : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                }`}
-              >
+                }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium">{page.title}</span>
               </Link>
@@ -158,8 +171,7 @@ export default function ExecutiveTeamPage() {
             {executives.map((executive, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-              >
+                className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                 <div className="relative h-80">
                   <Image
                     src={executive.image}
@@ -169,31 +181,44 @@ export default function ExecutiveTeamPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <h3 className="text-2xl font-bold mb-2">{executive.name}</h3>
-                    <p className="text-blue-200 text-lg">{executive.position}</p>
+                    <h3 className="text-2xl font-bold mb-2">
+                      {executive.name}
+                    </h3>
+                    <p className="text-blue-200 text-lg">
+                      {executive.position}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="p-8">
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-base text-gray-600">ประสบการณ์</span>
-                      <span className="text-base font-semibold text-blue-600">{executive.experience}</span>
+                      <span className="text-base text-gray-600">
+                        ประสบการณ์
+                      </span>
+                      <span className="text-base font-semibold text-blue-600">
+                        {executive.experience}
+                      </span>
                     </div>
                     <div className="mb-4">
-                      <span className="text-base text-gray-600 block mb-2">การศึกษา</span>
-                      <p className="text-base text-gray-900">{executive.education}</p>
+                      <span className="text-base text-gray-600 block mb-2">
+                        การศึกษา
+                      </span>
+                      <p className="text-base text-gray-900">
+                        {executive.education}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-3">ความเชี่ยวชาญ</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      ความเชี่ยวชาญ
+                    </h4>
                     <div className="flex flex-wrap gap-2">
                       {executive.expertise.map((skill, skillIndex) => (
                         <span
                           key={skillIndex}
-                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                        >
+                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
                           {skill}
                         </span>
                       ))}
@@ -219,15 +244,13 @@ export default function ExecutiveTeamPage() {
             <MinimalButton
               href={`/${locale}/contact-us`}
               variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}
-            >
+              icon={<ArrowRight className="w-5 h-5" />}>
               ติดต่อเรา
             </MinimalButton>
             <MinimalButton
               href={`/${locale}/reference`}
               variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600"
-            >
+              className="border-white text-white hover:bg-white hover:text-blue-600">
               ดูผลงานของเรา
             </MinimalButton>
           </div>

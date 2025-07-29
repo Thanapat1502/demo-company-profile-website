@@ -1,7 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calendar, User, Clock, Tag, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
+import {
+  Calendar,
+  User,
+  Clock,
+  Tag,
+  ArrowLeft,
+  Share2,
+  Facebook,
+  Twitter,
+  Linkedin,
+} from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,7 +37,7 @@ export default function NewsDetailPage() {
   const locale = useLocale();
   const params = useParams();
   const slug = params.slug as string;
-  
+
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [relatedArticles, setRelatedArticles] = useState<NewsArticle[]>([]);
 
@@ -35,7 +45,8 @@ export default function NewsDetailPage() {
   const mockArticles: Record<string, NewsArticle> = {
     "padungsilpa-wins-major-project": {
       title: "ผดุงศิลป์กรุ๊ป คว้าโครงการก่อสร้างสถานีบริการน้ำมันใหญ่",
-      excerpt: "บริษัทได้รับเลือกให้เป็นผู้รับเหมาหลักในโครงการก่อสร้างสถานีบริการน้ำมันขนาดใหญ่ มูลค่ากว่า 500 ล้านบาท ในพื้นที่ภาคตะวันออก",
+      excerpt:
+        "บริษัทได้รับเลือกให้เป็นผู้รับเหมาหลักในโครงการก่อสร้างสถานีบริการน้ำมันขนาดใหญ่ มูลค่ากว่า 500 ล้านบาท ในพื้นที่ภาคตะวันออก",
       content: `
         <p>กลุ่มบริษัท ผดุงศิลป์ ประกาศความสำเร็จในการคว้าโครงการก่อสร้างสถานีบริการน้ำมันขนาดใหญ่ มูลค่ากว่า 500 ล้านบาท ในพื้นที่ภาคตะวันออก ซึ่งถือเป็นโครงการที่ใหญ่ที่สุดในรอบ 5 ปีของบริษัท</p>
         
@@ -57,17 +68,19 @@ export default function NewsDetailPage() {
         
         <p>นายสมชาย ผดุงศิลป์ ประธานกรรมการบริหาร กล่าวว่า "เราภูมิใจที่ได้รับความไว้วางใจในโครงการสำคัญนี้ และมั่นใจว่าจะส่งมอบงานที่มีคุณภาพสูงสุดตามมาตรฐานสากล"</p>
       `,
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      image:
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       category: "ข่าวบริษัท",
       date: "2567-01-15",
       author: "ทีมข่าวสาร",
       slug: "padungsilpa-wins-major-project",
       readTime: "3 นาที",
-      tags: ["โครงการใหม่", "สถานีบริการ", "ภาคตะวันออก", "PERMATANK"]
+      tags: ["โครงการใหม่", "สถานีบริการ", "ภาคตะวันออก", "PERMATANK"],
     },
     "new-permatank-launch": {
       title: "เปิดตัวถังน้ำมัน PERMATANK® รุ่นใหม่",
-      excerpt: "นวัตกรรมถังน้ำมันใต้ดินผนัง 2 ชั้น ที่ปลอดภัยและทนทานยิ่งขึ้น พร้อมระบบตรวจจับการรั่วไหลล่าสุด และเทคโนโลยี IoT",
+      excerpt:
+        "นวัตกรรมถังน้ำมันใต้ดินผนัง 2 ชั้น ที่ปลอดภัยและทนทานยิ่งขึ้น พร้อมระบบตรวจจับการรั่วไหลล่าสุด และเทคโนโลยี IoT",
       content: `
         <p>กลุ่มบริษัท ผดุงศิลป์ เปิดตัวถังน้ำมัน PERMATANK® รุ่นใหม่ล่าสุด ที่มาพร้อมกับเทคโนโลยีที่ทันสมัยและระบบความปลอดภัยที่เหนือกว่า</p>
         
@@ -90,24 +103,25 @@ export default function NewsDetailPage() {
         
         <p>ผลิตภัณฑ์นี้จะเริ่มจำหน่ายในเดือนมีนาคม 2567 และคาดว่าจะได้รับความสนใจจากลูกค้าในอุตสาหกรรมน้ำมันและพลังงานเป็นอย่างมาก</p>
       `,
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       category: "ผลิตภัณฑ์",
       date: "2567-01-10",
       author: "ทีมวิศวกรรม",
       slug: "new-permatank-launch",
       readTime: "5 นาที",
-      tags: ["PERMATANK", "นวัตกรรม", "เทคโนโลยี", "IoT"]
-    }
+      tags: ["PERMATANK", "นวัตกรรม", "เทคโนโลยี", "IoT"],
+    },
   };
 
   useEffect(() => {
     const foundArticle = mockArticles[slug];
     if (foundArticle) {
       setArticle(foundArticle);
-      
+
       // Get related articles (excluding current article)
       const related = Object.values(mockArticles)
-        .filter(a => a.slug !== slug)
+        .filter((a) => a.slug !== slug)
         .slice(0, 3);
       setRelatedArticles(related);
     }
@@ -122,18 +136,20 @@ export default function NewsDetailPage() {
     });
   };
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
 
   if (!article) {
     return (
       <MainLayout>
         <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">ไม่พบข่าวสารที่ต้องการ</h1>
-          <p className="text-xl text-gray-600 mb-8">ข่าวสารที่คุณกำลังมองหาอาจถูกลบหรือย้ายไปแล้ว</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            ไม่พบข่าวสารที่ต้องการ
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            ข่าวสารที่คุณกำลังมองหาอาจถูกลบหรือย้ายไปแล้ว
+          </p>
           <Link href={`/${locale}/news-events`}>
-            <MinimalButton variant="primary">
-              กลับไปหน้าข่าวสาร
-            </MinimalButton>
+            <MinimalButton variant="primary">กลับไปหน้าข่าวสาร</MinimalButton>
           </Link>
         </div>
       </MainLayout>
@@ -142,28 +158,27 @@ export default function NewsDetailPage() {
 
   return (
     <MainLayout>
-      {/* Header */}
-      <section className="py-8 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <Link 
+      {/* Header - Added top margin for navbar */}
+      <section className="pt-24 pb-8 bg-gray-50">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <Link
             href={`/${locale}/news-events`}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
-          >
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
             <ArrowLeft size={20} className="mr-2" />
             กลับไปหน้าข่าวสาร
           </Link>
-          
+
           <div className="mb-6">
             <span className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full">
               {article.category}
             </span>
           </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
             {article.title}
           </h1>
-          
-          <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8">
+
+          <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
             <div className="flex items-center">
               <User size={18} className="mr-2" />
               {article.author}
@@ -177,7 +192,7 @@ export default function NewsDetailPage() {
               {article.readTime}
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <span className="text-gray-600">แชร์:</span>
             <div className="flex gap-2">
@@ -216,11 +231,11 @@ export default function NewsDetailPage() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div 
+            <div
               className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.content }}
             />
-            
+
             {/* Tags */}
             <div className="mt-12 pt-8 border-t border-gray-200">
               <div className="flex items-center gap-4 flex-wrap">
@@ -228,8 +243,7 @@ export default function NewsDetailPage() {
                 {article.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
-                  >
+                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
                     {tag}
                   </span>
                 ))}
@@ -244,16 +258,15 @@ export default function NewsDetailPage() {
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-              ข่าวสารที่เกี่ยวข้อง
+              ข่าวเด่น
             </h2>
-            
+
             <div className="grid md:grid-cols-3 gap-8">
               {relatedArticles.map((relatedArticle, index) => (
                 <Link
                   key={index}
                   href={`/${locale}/news-events/${relatedArticle.slug}`}
-                  className="group block"
-                >
+                  className="group block">
                   <div className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                     <div className="relative h-48">
                       <Image
@@ -268,16 +281,16 @@ export default function NewsDetailPage() {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
                         {relatedArticle.title}
                       </h3>
-                      
+
                       <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
                         {relatedArticle.excerpt}
                       </p>
-                      
+
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <div className="flex items-center">
                           <Calendar size={12} className="mr-1" />

@@ -1,7 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { History, Calendar, Award, Building, ArrowRight, Users2, Target, Eye, Heart, Shield, Leaf, Lightbulb } from "lucide-react";
+import {
+  History,
+  Calendar,
+  Award,
+  Building,
+  ArrowRight,
+  Users2,
+  Target,
+  Eye,
+  Heart,
+  Shield,
+  Leaf,
+  Lightbulb,
+} from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -44,38 +57,44 @@ export default function MissionCommitmentPage() {
     {
       icon: Shield,
       title: "ความปลอดภัย",
-      description: "มุ่งมั่นในการรักษามาตรฐานความปลอดภัยสูงสุดในทุกโครงการ เพื่อปกป้องพนักงาน ลูกค้า และชุมชน",
-      color: "bg-red-100 text-red-600"
+      description:
+        "มุ่งมั่นในการรักษามาตรฐานความปลอดภัยสูงสุดในทุกโครงการ เพื่อปกป้องพนักงาน ลูกค้า และชุมชน",
+      color: "bg-red-100 text-red-600",
     },
     {
       icon: Leaf,
       title: "ความยั่งยืน",
-      description: "ดำเนินธุรกิจอย่างรับผิดชอบต่อสิ่งแวดล้อม และสนับสนุนการพัฒนาที่ยั่งยืน",
-      color: "bg-green-100 text-green-600"
+      description:
+        "ดำเนินธุรกิจอย่างรับผิดชอบต่อสิ่งแวดล้อม และสนับสนุนการพัฒนาที่ยั่งยืน",
+      color: "bg-green-100 text-green-600",
     },
     {
       icon: Heart,
       title: "ความซื่อสัตย์",
-      description: "ยึดมั่นในความโปร่งใส ความจริงใจ และการดำเนินธุรกิจด้วยจริยธรรม",
-      color: "bg-pink-100 text-pink-600"
+      description:
+        "ยึดมั่นในความโปร่งใส ความจริงใจ และการดำเนินธุรกิจด้วยจริยธรรม",
+      color: "bg-pink-100 text-pink-600",
     },
     {
       icon: Lightbulb,
       title: "นวัตกรรม",
-      description: "พัฒนาเทคโนโลยีและนวัตกรรมใหม่ๆ เพื่อตอบสนองความต้องการของลูกค้าอย่างต่อเนื่อง",
-      color: "bg-yellow-100 text-yellow-600"
+      description:
+        "พัฒนาเทคโนโลยีและนวัตกรรมใหม่ๆ เพื่อตอบสนองความต้องการของลูกค้าอย่างต่อเนื่อง",
+      color: "bg-yellow-100 text-yellow-600",
     },
     {
       icon: Users2,
       title: "การทำงานเป็นทีม",
-      description: "ส่งเสริมการทำงานร่วมกันอย่างมีประสิทธิภาพ และการพัฒนาศักยภาพของทีมงาน",
-      color: "bg-purple-100 text-purple-600"
+      description:
+        "ส่งเสริมการทำงานร่วมกันอย่างมีประสิทธิภาพ และการพัฒนาศักยภาพของทีมงาน",
+      color: "bg-purple-100 text-purple-600",
     },
     {
       icon: Award,
       title: "ความเป็นเลิศ",
-      description: "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน และการให้บริการที่เหนือความคาดหมาย",
-      color: "bg-blue-100 text-blue-600"
+      description:
+        "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน และการให้บริการที่เหนือความคาดหมาย",
+      color: "bg-blue-100 text-blue-600",
     },
   ];
 
@@ -83,21 +102,15 @@ export default function MissionCommitmentPage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-4.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-          "/images/hero-sections/hero-banner-1.jpg",
-        ]}
-        title={`วิสัยทัศน์และพันธกิจ\nกลุ่มบริษัทผดุงศิลป์`}
+        images={["/images/hero-sections/hero-banner-4.jpg"]}
+        title={`วิสัยทัศน์และพันธกิจ`}
         subtitle="หลักการและค่านิยม"
         description={`มุ่งมั่นสู่ความเป็นเลิศ\nด้วยความรับผิดชอบต่อสังคม`}
-        autoSlideDelay={6000}
-      >
+        autoSlideDelay={6000}>
         <MinimalButton
           href={`/${locale}/contact-us`}
           variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}
-        >
+          icon={<ArrowRight className="w-5 h-5" />}>
           ติดต่อเรา
         </MinimalButton>
       </ImageCarouselHero>
@@ -114,8 +127,7 @@ export default function MissionCommitmentPage() {
                   page.id === "mission"
                     ? "bg-blue-600 text-white shadow-lg"
                     : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                }`}
-              >
+                }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium">{page.title}</span>
               </Link>
@@ -142,8 +154,9 @@ export default function MissionCommitmentPage() {
                 </div>
               </div>
               <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
-                เป็นผู้นำในการให้บริการด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่มีคุณภาพสูง 
-                ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ และการบริการที่เหนือความคาดหมาย 
+                เป็นผู้นำในการให้บริการด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่มีคุณภาพสูง
+                ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ
+                และการบริการที่เหนือความคาดหมาย
                 เพื่อสร้างความพึงพอใจสูงสุดให้กับลูกค้าและผู้มีส่วนได้ส่วนเสีย
               </p>
               <Image
@@ -169,9 +182,9 @@ export default function MissionCommitmentPage() {
                 </div>
               </div>
               <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
-                เป็นบริษัทชั้นนำในภูมิภาคเอเชียตะวันออกเฉียงใต้ 
-                ด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันและพลังงาน 
-                ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน 
+                เป็นบริษัทชั้นนำในภูมิภาคเอเชียตะวันออกเฉียงใต้
+                ด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันและพลังงาน
+                ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน
                 พร้อมขยายธุรกิจสู่เทคโนโลยีพลังงานสะอาดในอนาคต
               </p>
               <Image
@@ -202,9 +215,9 @@ export default function MissionCommitmentPage() {
             {commitments.map((commitment, index) => (
               <div
                 key={index}
-                className="text-center p-8 bg-gray-50 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
-              >
-                <div className={`w-20 h-20 ${commitment.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                className="text-center p-8 bg-gray-50 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div
+                  className={`w-20 h-20 ${commitment.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                   <commitment.icon size={40} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -232,15 +245,13 @@ export default function MissionCommitmentPage() {
             <MinimalButton
               href={`/${locale}/contact-us`}
               variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}
-            >
+              icon={<ArrowRight className="w-5 h-5" />}>
               ติดต่อเรา
             </MinimalButton>
             <MinimalButton
               href={`/${locale}/reference`}
               variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600"
-            >
+              className="border-white text-white hover:bg-white hover:text-blue-600">
               ดูผลงานของเรา
             </MinimalButton>
           </div>

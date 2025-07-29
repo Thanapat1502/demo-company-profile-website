@@ -159,16 +159,10 @@ export default function ReferencePage() {
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-2.jpg",
-          "/images/hero-sections/hero-banner-3.jpg",
-          "/images/hero-sections/hero-banner-4.jpg",
-        ]}
+        images={["/images/hero-sections/hero-banner-1.jpg"]}
         title={`ผลงานของเรา`}
         subtitle="มากกว่า 150 โครงการ"
-        description={`ผลงานการก่อสร้างสถานีบริการน้ำมัน\nที่ได้รับความไว้วางใจจากลูกค้าทั่วประเทศ`}
-        autoSlideDelay={6000}>
+        description={`ผลงานการก่อสร้างสถานีบริการน้ำมัน\nที่ได้รับความไว้วางใจจากลูกค้าทั่วประเทศ`}>
         <MinimalButton
           href={`/${locale}/contact-us`}
           variant="white"
