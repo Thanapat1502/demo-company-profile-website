@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Card,
   CardBody,
-  CardHeader,
   Button,
   Table,
   TableHeader,
@@ -68,14 +67,16 @@ export default function NewsEventsAdminPage() {
     {
       id: "1",
       title: "ผดุงศิลป์กรุ๊ป คว้าโครงการก่อสร้างสถานีบริการน้ำมันใหญ่",
-      excerpt: "บริษัทได้รับเลือกให้เป็นผู้รับเหมาหลักในโครงการก่อสร้างสถานีบริการน้ำมันขนาดใหญ่",
+      excerpt:
+        "บริษัทได้รับเลือกให้เป็นผู้รับเหมาหลักในโครงการก่อสร้างสถานีบริการน้ำมันขนาดใหญ่",
       content: "เนื้อหาข่าวแบบเต็ม...",
       category: "ข่าวบริษัท",
       status: "published",
       featured: true,
       publishDate: "2024-01-15",
       author: "Admin",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image:
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     },
     {
       id: "2",
@@ -107,12 +108,12 @@ export default function NewsEventsAdminPage() {
   };
 
   const handleDelete = (id: string) => {
-    setNewsEvents(prev => prev.filter(news => news.id !== id));
+    setNewsEvents((prev) => prev.filter((news) => news.id !== id));
   };
 
   const handleToggleFeatured = (id: string) => {
-    setNewsEvents(prev => 
-      prev.map(news => 
+    setNewsEvents((prev) =>
+      prev.map((news) =>
         news.id === id ? { ...news, featured: !news.featured } : news
       )
     );
@@ -124,18 +125,23 @@ export default function NewsEventsAdminPage() {
     setSelectedNews(null);
   };
 
-  const filteredNews = newsEvents.filter(news => {
-    const matchesSearch = news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         news.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || news.status === statusFilter;
+  const filteredNews = newsEvents.filter((news) => {
+    const matchesSearch =
+      news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      news.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || news.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "published": return "success";
-      case "draft": return "warning";
-      default: return "default";
+      case "published":
+        return "success";
+      case "draft":
+        return "warning";
+      default:
+        return "default";
     }
   };
 
@@ -157,8 +163,7 @@ export default function NewsEventsAdminPage() {
           onPress={() => {
             setSelectedNews(null);
             onOpen();
-          }}
-        >
+          }}>
           เพิ่มข่าวใหม่
         </Button>
       </div>
@@ -179,8 +184,7 @@ export default function NewsEventsAdminPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="max-w-xs"
-              startContent={<Filter size={20} />}
-            >
+              startContent={<Filter size={20} />}>
               <SelectItem key="all">ทั้งหมด</SelectItem>
               <SelectItem key="published">เผยแพร่แล้ว</SelectItem>
               <SelectItem key="draft">ร่าง</SelectItem>
@@ -222,8 +226,7 @@ export default function NewsEventsAdminPage() {
                   <Chip
                     size="sm"
                     color={getStatusColor(news.status)}
-                    variant="flat"
-                  >
+                    variant="flat">
                     {news.status === "published" ? "เผยแพร่แล้ว" : "ร่าง"}
                   </Chip>
                 </TableCell>
@@ -233,9 +236,11 @@ export default function NewsEventsAdminPage() {
                     size="sm"
                     variant="light"
                     color={news.featured ? "warning" : "default"}
-                    onPress={() => handleToggleFeatured(news.id)}
-                  >
-                    <Star size={16} fill={news.featured ? "currentColor" : "none"} />
+                    onPress={() => handleToggleFeatured(news.id)}>
+                    <Star
+                      size={16}
+                      fill={news.featured ? "currentColor" : "none"}
+                    />
                   </Button>
                 </TableCell>
                 <TableCell>
@@ -252,25 +257,20 @@ export default function NewsEventsAdminPage() {
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem
-                        key="view"
-                        startContent={<Eye size={16} />}
-                      >
+                      <DropdownItem key="view" startContent={<Eye size={16} />}>
                         ดูรายละเอียด
                       </DropdownItem>
                       <DropdownItem
                         key="edit"
                         startContent={<Edit size={16} />}
-                        onPress={() => handleEdit(news)}
-                      >
+                        onPress={() => handleEdit(news)}>
                         แก้ไข
                       </DropdownItem>
                       <DropdownItem
                         key="delete"
                         color="danger"
                         startContent={<Trash2 size={16} />}
-                        onPress={() => handleDelete(news.id)}
-                      >
+                        onPress={() => handleDelete(news.id)}>
                         ลบ
                       </DropdownItem>
                     </DropdownMenu>
@@ -303,8 +303,7 @@ export default function NewsEventsAdminPage() {
               <Select
                 label="หมวดหมู่"
                 placeholder="เลือกหมวดหมู่"
-                selectedKeys={selectedNews ? [selectedNews.category] : []}
-              >
+                selectedKeys={selectedNews ? [selectedNews.category] : []}>
                 <SelectItem key="ข่าวบริษัท">ข่าวบริษัท</SelectItem>
                 <SelectItem key="ผลิตภัณฑ์">ผลิตภัณฑ์</SelectItem>
                 <SelectItem key="ความปลอดภัย">ความปลอดภัย</SelectItem>
@@ -314,14 +313,11 @@ export default function NewsEventsAdminPage() {
                 <Select
                   label="สถานะ"
                   placeholder="เลือกสถานะ"
-                  selectedKeys={selectedNews ? [selectedNews.status] : []}
-                >
+                  selectedKeys={selectedNews ? [selectedNews.status] : []}>
                   <SelectItem key="draft">ร่าง</SelectItem>
                   <SelectItem key="published">เผยแพร่</SelectItem>
                 </Select>
-                <Switch
-                  isSelected={selectedNews?.featured || false}
-                >
+                <Switch isSelected={selectedNews?.featured || false}>
                   ข่าวเด่น
                 </Switch>
               </div>

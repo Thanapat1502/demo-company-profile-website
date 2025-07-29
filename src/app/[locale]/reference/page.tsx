@@ -1,19 +1,9 @@
 "use client";
 
-import {
-  MapPin,
-  Calendar,
-  DollarSign,
-  Building2,
-  Users,
-  Award,
-  ArrowRight,
-  ExternalLink,
-  Star,
-  CheckCircle,
-} from "lucide-react";
+import { Building2, Users, Award, ArrowRight } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import MinimalButton from "@/components/ui/MinimalButton";
@@ -24,6 +14,7 @@ export default function ReferencePage() {
 
   const featuredProjects = [
     {
+      slug: "ptt-station-bangkok",
       title: "สถานีบริการน้ำมัน PTT สาขาใหม่",
       client: "PTT Public Company Limited",
       location: "กรุงเทพมหานคร",
@@ -42,6 +33,7 @@ export default function ReferencePage() {
       ],
     },
     {
+      slug: "shell-v-power-pattaya",
       title: "สถานีบริการน้ำมัน Shell V-Power",
       client: "Shell Thailand",
       location: "พัทยา ชลบุรี",
@@ -60,6 +52,7 @@ export default function ReferencePage() {
       ],
     },
     {
+      slug: "bangchak-renovation-chiangmai",
       title: "ปรับปรุงสถานีบริการ Bangchak",
       client: "Bangchak Corporation",
       location: "เชียงใหม่",
@@ -78,6 +71,7 @@ export default function ReferencePage() {
       ],
     },
     {
+      slug: "esso-express-nakhon-ratchasima",
       title: "สถานีบริการ Esso Express",
       client: "Esso Thailand",
       location: "นครราชสีมา",
@@ -171,7 +165,7 @@ export default function ReferencePage() {
           "/images/hero-sections/hero-banner-3.jpg",
           "/images/hero-sections/hero-banner-4.jpg",
         ]}
-        title={`ผลงานของเรา\nโครงการที่ภาคภูมิใจ`}
+        title={`ผลงานของเรา`}
         subtitle="มากกว่า 150 โครงการ"
         description={`ผลงานการก่อสร้างสถานีบริการน้ำมัน\nที่ได้รับความไว้วางใจจากลูกค้าทั่วประเทศ`}
         autoSlideDelay={6000}>
@@ -212,85 +206,97 @@ export default function ReferencePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              โครงการเด่น
+              โครงการที่เราภาคภูมิใจ
             </h2>
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
               ผลงานที่เราภาคภูมิใจและได้รับการยอมรับจากลูกค้า
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-12">
             {featuredProjects.map((project, index) => (
-              <div
+              <Link
                 key={index}
-                className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-                <div className="relative h-64">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute top-6 left-6">
-                    <span className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full">
-                      {project.category}
-                    </span>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                  </div>
-                </div>
+                href={`/${locale}/reference/${project.slug}`}
+                className="group cursor-pointer block">
+                <article className="group cursor-pointer">
+                  {/* Minimal image container */}
+                  <div className="relative h-80 mb-8 overflow-hidden bg-gray-100">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                <div className="p-8">
-                  <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-                    <div className="flex items-center text-gray-600">
-                      <Building2 size={16} className="mr-2 text-blue-600" />
-                      {project.client}
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <MapPin size={16} className="mr-2 text-blue-600" />
-                      {project.location}
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Calendar size={16} className="mr-2 text-blue-600" />
-                      {project.completionDate}
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <DollarSign size={16} className="mr-2 text-blue-600" />฿
-                      {parseInt(project.projectValue).toLocaleString()}
+                    {/* Simple category label */}
+                    <div className="absolute top-6 left-6">
+                      <span className="text-xs font-medium text-white bg-black/60 backdrop-blur-sm px-3 py-1.5 tracking-wider uppercase">
+                        {project.category}
+                      </span>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {project.description}
-                  </p>
+                  {/* Clean content layout */}
+                  <div className="space-y-6">
+                    {/* Project title */}
+                    <h3 className="text-2xl font-light text-gray-900 leading-tight group-hover:text-blue-600 transition-colors duration-300">
+                      {project.title}
+                    </h3>
 
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-3">
-                      จุดเด่นของโครงการ:
-                    </h4>
-                    <div className="grid grid-cols-1 gap-2">
-                      {project.features.map((feature, featureIndex) => (
-                        <div
-                          key={featureIndex}
-                          className="flex items-center text-sm text-gray-600">
-                          <CheckCircle
-                            size={16}
-                            className="mr-3 text-green-600"
-                          />
-                          {feature}
-                        </div>
-                      ))}
+                    {/* Minimal project info */}
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-gray-600">
+                      <div className="flex items-center">
+                        <span className="w-16 text-gray-400 font-light">
+                          ลูกค้า
+                        </span>
+                        <span className="font-medium">{project.client}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="w-16 text-gray-400 font-light">
+                          สถานที่
+                        </span>
+                        <span className="font-medium">{project.location}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="w-16 text-gray-400 font-light">
+                          เปิดให้บริการ
+                        </span>
+                        <span className="font-medium">
+                          {project.completionDate}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Project description */}
+                    <p className="text-gray-600 leading-relaxed font-light">
+                      {project.description}
+                    </p>
+
+                    {/* Minimal features list */}
+                    <div className="space-y-2">
+                      {project.features
+                        .slice(0, 3)
+                        .map((feature, featureIndex) => (
+                          <div
+                            key={featureIndex}
+                            className="flex items-start text-sm text-gray-600">
+                            <span className="w-1 h-1 bg-blue-600 rounded-full mt-2.5 mr-3 flex-shrink-0"></span>
+                            <span className="font-light">{feature}</span>
+                          </div>
+                        ))}
+                    </div>
+
+                    {/* Minimal view more */}
+                    <div className="pt-4 border-t border-gray-100">
+                      <div className="flex items-center text-blue-600 text-sm font-light opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <span className="mr-2">ดูรายละเอียด</span>
+                        <div className="w-4 h-px bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 delay-100"></div>
+                      </div>
                     </div>
                   </div>
-
-                  <button className="flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors">
-                    <ExternalLink size={16} className="mr-2" />
-                    ดูรายละเอียด
-                  </button>
-                </div>
-              </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

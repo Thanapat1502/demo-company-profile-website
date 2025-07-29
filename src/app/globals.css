@@ -690,7 +690,6 @@ html {
 
 /* Parallax container optimization */
 .parallax-container {
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -717,12 +716,6 @@ html {
 .services-section-overlap {
   position: relative;
   z-index: 10;
-}
-
-/* Smooth scrolling performance */
-* {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 /* Elegant fade-in animation for hero text */
@@ -812,11 +805,6 @@ html {
   will-change: transform;
 }
 
-/* Ensure proper stacking context */
-body {
-  position: relative;
-}
-
 /* Navbar overlay positioning - absolute to match section position */
 .navbar-overlay {
   position: absolute;
@@ -851,10 +839,10 @@ main {
   padding-top: 0 !important;
 }
 
-/* First section container - overlaps behind sticky navbar */
+/* First section container - overlaps behind fixed navbar */
 .first-section-container {
   position: relative;
-  margin-top: -80px; /* Negative margin to pull content up behind navbar */
+  margin-top: 0; /* No margin needed for fixed navbar */
   z-index: 1;
 }
 

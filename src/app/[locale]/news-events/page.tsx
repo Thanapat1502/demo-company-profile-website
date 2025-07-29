@@ -1,19 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar, User, ArrowRight, Search, Clock, Tag } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function NewsEventsPage() {
-  const t = useTranslations();
   const locale = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const featuredNews = [
     {
@@ -186,30 +191,112 @@ export default function NewsEventsPage() {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <ImageCarouselHero
-        images={[
-          "/images/hero-sections/hero-banner-2.jpg",
-          "/images/hero-sections/hero-banner-1.jpg",
-          "/images/hero-sections/hero-banner-3.jpg",
-        ]}
-        title={`ข่าวสารและกิจกรรม\nกลุ่มบริษัทผดุงศิลป์`}
-        subtitle="อัพเดทข่าวสารล่าสุด"
-        description={`ติดตามข่าวสาร นวัตกรรม และกิจกรรม\nของบริษัทได้ที่นี่`}
-        autoSlideDelay={6000}>
-        <MinimalButton
-          href="#newsletter"
-          variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}>
-          สมัครรับข่าวสาร
-        </MinimalButton>
-        <MinimalButton
-          href={`/${locale}/contact-us`}
-          variant="secondary"
-          className="border-white text-white hover:bg-white hover:text-gray-900">
-          ติดต่อเรา
-        </MinimalButton>
-      </ImageCarouselHero>
+      {/* Parallax Highlight News Hero */}
+      <section className="relative h-screen overflow-hidden">
+        {/* Parallax Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('${featuredNews[0].image}')`,
+            transform: `translateY(${scrollY * 0.5}px)`,
+          }}>
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-6 w-full">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Highlight News */}
+              <div className="text-white">
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 bg-blue-600/80 backdrop-blur-sm text-white text-sm font-medium rounded-full">
+                    {featuredNews[0].category}
+                  </span>
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 leading-tight">
+                  ข่าวสารและกิจกรรม
+                </h1>
+
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                  <div className="flex items-center text-sm text-gray-300 mb-4">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span>{featuredNews[0].date}</span>
+                    <Clock className="w-4 h-4 ml-4 mr-2" />
+                    <span>{featuredNews[0].readTime}</span>
+                  </div>
+
+                  <h2 className="text-2xl md:text-3xl font-light text-white mb-4 leading-tight">
+                    {featuredNews[0].title}
+                  </h2>
+
+                  <p className="text-gray-300 leading-relaxed mb-6 font-light">
+                    {featuredNews[0].description}
+                  </p>
+
+                  <Link
+                    href={`/${locale}/news-events/${featuredNews[0].slug}`}
+                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition-all duration-300 hover:scale-105">
+                    <span>อ่านต่อ</span>
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right: Latest News Grid */}
+              <div className="space-y-6">
+                <h3 className="text-2xl font-light text-white mb-6">
+                  ข่าวล่าสุด
+                </h3>
+
+                <div className="space-y-4">
+                  {featuredNews.slice(1, 4).map((news) => (
+                    <Link
+                      key={news.id}
+                      href={`/${locale}/news-events/${news.slug}`}
+                      className="group block bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                      <div className="flex items-start space-x-4">
+                        <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                          <Image
+                            src={news.image}
+                            alt={news.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center text-xs text-gray-400 mb-2">
+                            <span className="bg-blue-600/20 px-2 py-1 rounded text-blue-300">
+                              {news.category}
+                            </span>
+                            <span className="ml-3">{news.date}</span>
+                          </div>
+
+                          <h4 className="text-white font-medium leading-tight group-hover:text-blue-300 transition-colors duration-200 line-clamp-2">
+                            {news.title}
+                          </h4>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+          <div className="flex flex-col items-center">
+            <span className="text-sm font-light mb-2">
+              เลื่อนลงเพื่อดูเพิ่มเติม
+            </span>
+            <ArrowRight className="w-5 h-5 rotate-90" />
+          </div>
+        </div>
+      </section>
 
       {/* Featured News */}
       <section className="py-16 bg-white">

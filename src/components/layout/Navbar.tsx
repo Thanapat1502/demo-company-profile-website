@@ -62,17 +62,17 @@ export default function MainNavbar() {
   };
 
   return (
-    <div className="sticky top-0 z-50 w-full">
+    <div className="fixed top-0 left-0 right-0 z-50 w-full">
       <Navbar
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-        className={`transition-all duration-500 ${
+        className={`transition-all duration-700 ease-out ${
           isAtTop
-            ? "bg-transparent"
-            : "bg-white shadow-md border-b border-gray-200"
+            ? "bg-transparent py-6"
+            : "bg-white shadow-md border-b border-gray-200 py-3"
         }`}
         maxWidth="xl"
-        height="80px"
+        height={isAtTop ? "100px" : "80px"}
         isBlurred={false}
         style={{
           backgroundColor: isAtTop ? "transparent" : "rgba(255, 255, 255, 1)",
@@ -128,8 +128,8 @@ export default function MainNavbar() {
               </div>
               <div className="flex flex-col">
                 <span
-                  className={`text-xl font-black tracking-tight transition-all duration-700 ease-out group-hover:tracking-wide ${
-                    isAtTop ? "text-white" : ""
+                  className={`font-black tracking-tight transition-all duration-700 ease-out group-hover:tracking-wide ${
+                    isAtTop ? "text-2xl text-white" : "text-xl"
                   }`}
                   style={{ color: isAtTop ? "white" : "var(--primary-blue)" }}>
                   PADUNGSILPA
@@ -146,15 +146,19 @@ export default function MainNavbar() {
         </NavbarContent>
 
         {/* Desktop Navigation - Modern Design */}
-        <NavbarContent className="hidden sm:flex gap-2" justify="center">
+        <NavbarContent
+          className={`hidden sm:flex transition-all duration-700 ease-out ${
+            isAtTop ? "gap-4" : "gap-2"
+          }`}
+          justify="center">
           {navigationItems.map((item, index) => (
             <NavbarItem key={item.href}>
               <Link
                 href={`/${locale}${item.href}`}
-                className={`relative font-medium transition-all duration-700 ease-out px-4 py-2 rounded-full group hover:scale-105 ${
+                className={`relative font-medium transition-all duration-700 ease-out rounded-full group hover:scale-105 ${
                   isAtTop
-                    ? "text-white/90 hover:text-white hover:bg-white/10"
-                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                    ? "text-white/90 hover:text-white hover:bg-white/10 px-6 py-3 text-lg"
+                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-4 py-2 text-base"
                 }`}
                 style={{
                   animationDelay: `${index * 100}ms`,
@@ -210,13 +214,20 @@ export default function MainNavbar() {
             <Button
               as={Link}
               href={`/${locale}/contact-us`}
-              className={`font-semibold px-8 py-3 transition-all duration-700 ease-out hover:scale-105 hover:shadow-xl relative group overflow-hidden ${
+              className={`font-semibold transition-all duration-700 ease-out hover:scale-105 hover:shadow-xl relative group overflow-hidden ${
                 isAtTop
-                  ? "bg-white/20 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm"
-                  : "btn-minimal-primary hover:shadow-xl"
+                  ? "bg-white/20 hover:bg-blue-600 text-white border border-white/30 hover:border-blue-600 backdrop-blur-sm px-8 py-3 text-lg"
+                  : "bg-blue-600 hover:bg-blue-700 text-white border border-blue-600 hover:border-blue-700 px-6 py-2 text-base"
               }`}>
-              <span className="relative z-10">{t("common.contactUs")}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <span className="relative z-10 text-white">
+                {t("common.contactUs")}
+              </span>
+              <div
+                className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                  isAtTop
+                    ? "bg-gradient-to-r from-blue-600/80 to-blue-700/80"
+                    : "bg-gradient-to-r from-blue-700/80 to-blue-800/80"
+                }`}></div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
             </Button>
           </NavbarItem>
