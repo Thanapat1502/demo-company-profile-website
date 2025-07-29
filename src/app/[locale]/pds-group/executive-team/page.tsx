@@ -155,6 +155,103 @@ export default function ExecutiveTeamPage() {
         </div>
       </section>
 
+      {/* Message from Management Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                สาส์นจากผู้บริหาร
+              </h2>
+              <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+            </div>
+
+            {/* Managing Director Card */}
+            <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+              <div className="relative">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-200 rounded-full opacity-20 -translate-y-16 translate-x-16"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full opacity-20 translate-y-12 -translate-x-12"></div>
+
+                  <div className="relative z-10">
+                    <div className="w-32 h-32 mx-auto mb-6 relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl rotate-6"></div>
+                      <div className="relative bg-white rounded-2xl p-1 shadow-lg">
+                        <Image
+                          src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                          alt="คุณสุภรา สินสมุทรผดุง"
+                          width={120}
+                          height={120}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="text-center">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        คุณสุภรา สินสมุทรผดุง
+                      </h3>
+                      <p className="text-blue-600 font-semibold text-lg mb-4">
+                        กรรมการผู้จัดการ
+                      </p>
+                      <div className="flex justify-center space-x-4">
+                        <div className="w-12 h-0.5 bg-blue-600"></div>
+                        <div className="w-6 h-0.5 bg-blue-400"></div>
+                        <div className="w-3 h-0.5 bg-blue-300"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-lg">
+                    <span className="text-2xl font-bold text-blue-600">
+                      เรียน
+                    </span>{" "}
+                    ท่านลูกค้าและผู้มีส่วนได้ส่วนเสียทุกท่าน
+                  </p>
+
+                  <p className="text-gray-700 leading-relaxed">
+                    ในนามของกลุ่มบริษัท ผดุงศิลป์ฯ
+                    ข้าพเจ้าขอแสดงความขอบคุณทุกท่านที่ได้ให้ความไว้วางใจและสนับสนุนบริษัทของเราเสมอมา
+                    พวกเรามุ่งมั่นรักษาพนักงานระดับปฏิบัติการและบริหารที่มีความเป็นเลิศ
+                    โดยทุกคนมีเป้าหมายเดียวกันในการนำเสนองานก่อสร้าง สินค้า
+                    และบริการที่ดีที่สุด
+                    รวมถึงบุคลากรที่มีความรู้ความสามารถเป็นเยี่ยม
+                  </p>
+
+                  <p className="text-gray-700 leading-relaxed">
+                    ช่างเทคนิคและผู้จัดการโครงการของเราได้รับการฝึกฝนและรับรองอย่างดี
+                    และมีประสบการณ์ในอุตสาหกรรมน้ำมันและพลังงานอื่นๆ
+                    เป็นอย่างมาก
+                    ซึ่งเป็นการรับรองว่าผลงานและบริการของเราจะมีคุณภาพและตอบสนองต่อความต้องการของอุตสาหกรรมได้อย่างฉับไว
+                  </p>
+
+                  <p className="text-gray-700 leading-relaxed">
+                    กลุ่มบริษัทในเครือ ผดุงศิลป์ฯ พร้อมเผชิญกับอุปสรรคต่างๆ
+                    ในอนาคต
+                    ด้วยความมุ่งมั่นที่จะนำเสนอผลงานและบริการที่มีคุณภาพดีและโดดเด่น
+                    สมกับที่ทุกท่านได้ให้ความไว้วางใจเรา
+                  </p>
+
+                  <p className="text-gray-700 leading-relaxed">
+                    ขอขอบพระคุณอีกครั้งสำหรับการสนับสนุนและความไว้วางใจที่มีให้กับกลุ่มบริษัท
+                    ผดุงศิลป์ฯ
+                    พวกเราจะยังคงมุ่งมั่นพัฒนาต่อไปเพื่อสร้างสรรค์คุณค่าและตอบสนองต่อความต้องการของทุกท่านอย่างดีที่สุด
+                  </p>
+
+                  <p className="text-blue-600 font-semibold text-lg mt-8">
+                    ขอแสดงความนับถือ
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Executive Team Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -167,63 +264,28 @@ export default function ExecutiveTeamPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {executives.map((executive, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-                <div className="relative h-80">
-                  <Image
-                    src={executive.image}
-                    alt={executive.name}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <h3 className="text-2xl font-bold mb-2">
-                      {executive.name}
-                    </h3>
-                    <p className="text-blue-200 text-lg">
-                      {executive.position}
-                    </p>
+              <div key={index} className="group text-center">
+                {/* Profile Image */}
+                <div className="relative mb-6">
+                  <div className="w-32 h-32 mx-auto rounded-full overflow-hidden bg-gray-100 group-hover:shadow-lg transition-shadow duration-300">
+                    <Image
+                      src={executive.image}
+                      alt={executive.name}
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
-                <div className="p-8">
-                  <div className="mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-base text-gray-600">
-                        ประสบการณ์
-                      </span>
-                      <span className="text-base font-semibold text-blue-600">
-                        {executive.experience}
-                      </span>
-                    </div>
-                    <div className="mb-4">
-                      <span className="text-base text-gray-600 block mb-2">
-                        การศึกษา
-                      </span>
-                      <p className="text-base text-gray-900">
-                        {executive.education}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                      ความเชี่ยวชาญ
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {executive.expertise.map((skill, skillIndex) => (
-                        <span
-                          key={skillIndex}
-                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                {/* Name and Position */}
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {executive.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">{executive.position}</p>
                 </div>
               </div>
             ))}

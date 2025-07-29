@@ -69,7 +69,7 @@ export default function MainNavbar() {
         className={`transition-all duration-700 ease-out ${
           isAtTop
             ? "bg-transparent py-6"
-            : "bg-white shadow-md border-b border-gray-200 py-3"
+            : "bg-white shadow-md border-b border-gray-200"
         }`}
         maxWidth="xl"
         height={isAtTop ? "100px" : "80px"}

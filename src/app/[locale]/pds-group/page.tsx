@@ -97,10 +97,10 @@ export default function CompanyProfilePage() {
       <Section background="white" padding="xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               เกี่ยวกับเรา
             </h2>
-            <div className="space-y-4 text-gray-600 dark:text-gray-300">
+            <div className="space-y-4 text-gray-600 ">
               <p>
                 กลุ่มบริษัท ผดุงศิลป์ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2543
                 โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้าง วิศวกรรม
@@ -123,6 +123,8 @@ export default function CompanyProfilePage() {
               src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               alt="Padungsilpa Group Office"
               className="w-full h-96 object-cover rounded-lg"
+              width={600}
+              height={400}
             />
           </div>
         </div>
