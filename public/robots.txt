@@ -2,7 +2,30 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://your-domain.com
+Host: https://www.padungsilpa.group
 
-# Sitemaps
-Sitemap: https://your-domain.com/sitemap.xml
+# Sitemap
+Sitemap: https://www.padungsilpa.group/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Allow important pages
+Allow: /th
+Allow: /en
+Allow: /th/products-services
+Allow: /en/products-services
+Allow: /th/contact-us
+Allow: /en/contact-us
+Allow: /th/pds-group
+Allow: /en/pds-group
+Allow: /th/news-events
+Allow: /en/news-events
+Allow: /th/reference
+Allow: /en/reference
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

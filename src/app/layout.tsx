@@ -27,33 +27,59 @@ export const metadata: Metadata = {
   description:
     "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
   keywords: [
-    "Gas Station",
-    "Construction",
-    "Engineering",
-    "Thailand",
-    "Padungsilpa",
+    "Gas Station Construction",
+    "Petroleum Engineering",
+    "Fuel Station Design",
+    "Thailand Construction",
+    "Padungsilpa Group",
+    "Oil Station Services",
+    "Industrial Construction",
+    "Engineering Consulting",
     "สถานีบริการน้ำมัน",
-    "ก่อสร้าง",
-    "วิศวกรรม",
+    "ก่อสร้างสถานีน้ำมัน",
+    "วิศวกรรมปิโตรเลียม",
+    "ผดุงศิลป์กรุ๊ป",
+    "บริการก่อสร้าง",
+    "วิศวกรรมอุตสาหกรรม",
   ],
   authors: [{ name: "Padungsilpa Group" }],
   creator: "Padungsilpa Group",
+  publisher: "Padungsilpa Group",
   metadataBase: new URL("https://www.padungsilpa.group"),
+  alternates: {
+    canonical: "https://www.padungsilpa.group",
+    languages: {
+      "th": "https://www.padungsilpa.group/th",
+      "en": "https://www.padungsilpa.group/en",
+    },
+  },
   openGraph: {
     type: "website",
     locale: "th_TH",
+    alternateLocale: ["en_US"],
     url: "https://www.padungsilpa.group",
     title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
-      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
+      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
     siteName: "Padungsilpa Group",
+    images: [
+      {
+        url: "/images/seo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Padungsilpa Group - Leading Gas Station Construction & Engineering Services",
+        type: "image/jpeg",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@padungsilpagroup",
+    creator: "@padungsilpagroup",
     title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
       "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
-    creator: "@padungsilpagroup",
+    images: ["/images/seo.jpg"],
   },
   robots: {
     index: true,
@@ -66,6 +92,8 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  category: "Business",
+  classification: "Construction & Engineering Services",
 };
 
 export default function RootLayout({
