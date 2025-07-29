@@ -13,9 +13,9 @@ export default function StructuredData({ type = "Organization" }: StructuredData
     "name": locale === 'th' ? "กลุ่มบริษัท ผดุงศิลป์" : "Padungsilpa Group",
     "alternateName": "PDS Group",
     "url": "https://www.padungsilpa.group",
-    "logo": "https://www.padungsilpa.group/images/pds-logo.png",
-    "image": "https://www.padungsilpa.group/images/seo.jpg",
-    "description": locale === 'th' 
+    "logo": "https://padungsilpa.techtoptierapp.com/images/pds-logo.png",
+    "image": "https://padungsilpa.techtoptierapp.com/images/seo.jpg",
+    "description": locale === 'th'
       ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม"
       : "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering",
     "foundingDate": "2003",
@@ -57,7 +57,7 @@ export default function StructuredData({ type = "Organization" }: StructuredData
     "@type": "WebSite",
     "name": locale === 'th' ? "กลุ่มบริษัท ผดุงศิลป์" : "Padungsilpa Group",
     "url": "https://www.padungsilpa.group",
-    "description": locale === 'th' 
+    "description": locale === 'th'
       ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี"
       : "Leading comprehensive gas station business services with over 50 years of experience",
     "inLanguage": [
@@ -67,7 +67,7 @@ export default function StructuredData({ type = "Organization" }: StructuredData
         "alternateName": "th"
       },
       {
-        "@type": "Language", 
+        "@type": "Language",
         "name": "English",
         "alternateName": "en"
       }
@@ -86,7 +86,7 @@ export default function StructuredData({ type = "Organization" }: StructuredData
     "@context": "https://schema.org",
     "@type": "Service",
     "name": locale === 'th' ? "บริการก่อสร้างสถานีบริการน้ำมัน" : "Gas Station Construction Services",
-    "description": locale === 'th' 
+    "description": locale === 'th'
       ? "บริการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันครบวงจร ตั้งแต่ออกแบบ ก่อสร้าง จนถึงบำรุงรักษา"
       : "Comprehensive gas station construction and engineering services from design to maintenance",
     "provider": {
