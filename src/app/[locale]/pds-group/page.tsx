@@ -1,45 +1,54 @@
 "use client";
 
-import { Button, Card, CardBody, Image } from "@heroui/react";
-import { Users, Award, Target, Eye, Heart, ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useState } from "react";
+import {
+  Users,
+  Award,
+  Target,
+  Eye,
+  Heart,
+  ArrowRight,
+  Building,
+  History,
+  Users2,
+} from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
+import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import HeroSection from "@/components/ui/HeroSection";
-import Section from "@/components/ui/Section";
+import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function CompanyProfilePage() {
   const t = useTranslations();
+  const locale = useLocale();
+  const [activeTab, setActiveTab] = useState("overview");
 
-  const values = [
+  const subPages = [
     {
+      id: "overview",
+      title: "ภาพรวมบริษัท",
+      icon: Building,
+      href: `/pds-group`,
+    },
+    {
+      id: "history",
+      title: "ประวัติความเป็นมา",
+      icon: History,
+      href: `/pds-group/history`,
+    },
+    {
+      id: "team",
+      title: "ทีมผู้บริหาร",
+      icon: Users2,
+      href: `/pds-group/executive-team`,
+    },
+    {
+      id: "mission",
+      title: "วิสัยทัศน์และพันธกิจ",
       icon: Target,
-      title: t("company.values.excellence.title"),
-      description: t("company.values.excellence.description"),
+      href: `/pds-group/mission-commitment`,
     },
-    {
-      icon: Users,
-      title: t("company.values.teamwork.title"),
-      description: t("company.values.teamwork.description"),
-    },
-    {
-      icon: Heart,
-      title: t("company.values.integrity.title"),
-      description: t("company.values.integrity.description"),
-    },
-    {
-      icon: Award,
-      title: t("company.values.innovation.title"),
-      description: t("company.values.innovation.description"),
-    },
-  ];
-
-  const milestones = [
-    { year: "2000", event: t("company.milestones.founded") },
-    { year: "2005", event: t("company.milestones.expansion") },
-    { year: "2010", event: t("company.milestones.certification") },
-    { year: "2015", event: t("company.milestones.technology") },
-    { year: "2020", event: t("company.milestones.sustainability") },
-    { year: "2024", event: t("company.milestones.present") },
   ];
 
   return (
@@ -61,34 +70,26 @@ export default function CompanyProfilePage() {
         height="lg"
       />
 
-      {/* Mission & Vision */}
-      <Section background="white" padding="xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <div className="flex items-center mb-6">
-              <Target size={32} className="text-blue-600 mr-4" />
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                {t("company.mission.title")}
-              </h2>
-            </div>
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              {t("company.mission.description")}
-            </p>
-          </div>
-
-          <div>
-            <div className="flex items-center mb-6">
-              <Eye size={32} className="text-blue-600 mr-4" />
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                {t("company.vision.title")}
-              </h2>
-            </div>
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              {t("company.vision.description")}
-            </p>
+      {/* Sub Navigation */}
+      <section className="py-16 bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap justify-center gap-4">
+            {subPages.map((page) => (
+              <Link
+                key={page.id}
+                href={`/${locale}${page.href}`}
+                className={`flex items-center px-8 py-4 rounded-2xl transition-all duration-300 ${
+                  page.id === "overview"
+                    ? "bg-blue-600 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                }`}>
+                <page.icon className="w-5 h-5 mr-3" />
+                <span className="text-lg font-medium">{page.title}</span>
+              </Link>
+            ))}
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Company Overview */}
       <Section background="white" padding="xl">
@@ -123,137 +124,84 @@ export default function CompanyProfilePage() {
             />
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Company Values */}
-      <Section background="gray" padding="xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("company.values.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t("company.values.description")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {values.map((value, index) => (
-            <Card
-              key={index}
-              className="text-center p-6 hover:shadow-lg transition-shadow">
-              <CardBody>
-                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <value.icon
-                    size={32}
-                    className="text-blue-600 dark:text-blue-400"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  {value.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {value.description}
-                </p>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Company History */}
-      <Section background="white" padding="xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              {t("company.history.title")}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+              ค่านิยมองค์กร
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-              {t("company.history.description")}
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              หลักการและค่านิยมที่เรายึดถือในการดำเนินธุรกิจ
             </p>
-
-            <div className="space-y-6">
-              {milestones.map((milestone, index) => (
-                <div key={index} className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                    {milestone.year}
-                  </div>
-                  <div className="flex-1 pt-3">
-                    <p className="text-gray-700 dark:text-gray-300">
-                      {milestone.event}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className="relative">
-            <Image
-              src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80"
-              alt="Company building"
-              className="rounded-lg shadow-lg"
-            />
-            <div className="absolute -bottom-6 -right-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">20+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {t("company.experience")}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Certifications & Awards */}
-      <Section background="gradient" padding="xl">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t("company.certifications.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
-            {t("company.certifications.description")}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                name: "ISO 9001:2015",
-                description: t("company.certifications.iso9001"),
+                icon: Target,
+                title: "ความเป็นเลิศ",
+                description: "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน",
               },
               {
-                name: "ISO 14001:2015",
-                description: t("company.certifications.iso14001"),
+                icon: Users,
+                title: "การทำงานเป็นทีม",
+                description: "ร่วมมือกันเพื่อบรรลุเป้าหมายร่วมกัน",
               },
               {
-                name: "OHSAS 18001",
-                description: t("company.certifications.ohsas"),
+                icon: Heart,
+                title: "ความซื่อสัตย์",
+                description: "ดำเนินธุรกิจด้วยความโปร่งใสและจริงใจ",
               },
-            ].map((cert, index) => (
-              <Card key={index} className="p-6">
-                <CardBody className="text-center">
-                  <Award size={48} className="text-blue-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {cert.name}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {cert.description}
-                  </p>
-                </CardBody>
-              </Card>
+              {
+                icon: Award,
+                title: "นวัตกรรม",
+                description: "พัฒนาเทคโนโลยีและนวัตกรรมอย่างต่อเนื่อง",
+              },
+            ].map((value, index) => (
+              <div
+                key={index}
+                className="text-center p-8 bg-gray-50 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <value.icon size={40} className="text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {value.title}
+                </h3>
+                <p className="text-base text-gray-600">{value.description}</p>
+              </div>
             ))}
           </div>
-
-          <Button
-            color="primary"
-            size="lg"
-            endContent={<ArrowRight size={20} />}
-            as="a"
-            href="/reference">
-            {t("company.viewProjects")}
-          </Button>
         </div>
-      </Section>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            พร้อมที่จะร่วมงานกับเรา?
+          </h2>
+          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            ติดต่อเราวันนี้เพื่อปรึกษาโครงการของคุณ
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <MinimalButton
+              href={`/${locale}/contact-us`}
+              variant="white"
+              icon={<ArrowRight className="w-5 h-5" />}>
+              ติดต่อเรา
+            </MinimalButton>
+            <MinimalButton
+              href={`/${locale}/reference`}
+              variant="secondary"
+              className="border-white text-white hover:bg-white hover:text-blue-600">
+              ดูผลงานของเรา
+            </MinimalButton>
+          </div>
+        </div>
+      </section>
     </MainLayout>
   );
 }

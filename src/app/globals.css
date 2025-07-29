@@ -5,22 +5,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary-blue: #112Ef4;
+  --primary-blue: #112ef4;
   --primary-blue-dark: #0f29d4;
   --primary-blue-light: #1a3ff5;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-noto-sans-thai), var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-noto-sans-thai), var(--font-geist-sans), system-ui,
+    sans-serif;
 }
 
 /* Minimal Design System - Construction Company */
@@ -162,7 +156,7 @@ html {
   background-position: center !important;
   background-repeat: no-repeat !important;
   /* Better text mask visibility */
-  text-shadow: 0 0 1px rgba(0,0,0,0.1);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Text mask container */
@@ -238,7 +232,7 @@ html {
 }
 
 .service-learn-more::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -289,7 +283,8 @@ html {
 
 /* Progress indicator animations */
 @keyframes pulse-accent {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -367,7 +362,8 @@ html {
 
 /* Smooth color transition for accent elements */
 .accent-smooth {
-  transition: background-color 0.7s ease, border-color 0.7s ease, color 0.7s ease;
+  transition: background-color 0.7s ease, border-color 0.7s ease,
+    color 0.7s ease;
 }
 
 /* Enhanced background image transitions */
@@ -406,30 +402,50 @@ html {
 }
 
 .services-elegant-texture::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image:
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.02) 0%, transparent 50%);
+  background-image: radial-gradient(
+      circle at 20% 80%,
+      rgba(120, 119, 198, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 119, 48, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(120, 119, 198, 0.02) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 1;
 }
 
 .services-elegant-texture::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.01) 50%, transparent 100%),
-    linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.01) 50%, transparent 100%);
+  background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.01) 50%,
+      transparent 100%
+    ),
+    linear-gradient(
+      0deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.01) 50%,
+      transparent 100%
+    );
   pointer-events: none;
   z-index: 1;
 }
@@ -575,13 +591,18 @@ html {
 }
 
 .product-card-elegant::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.8s ease;
   z-index: 1;
 }
@@ -893,13 +914,18 @@ main {
 }
 
 .nav-item-hover::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -921,13 +947,18 @@ main {
 }
 
 .btn-elegant::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -964,13 +995,18 @@ main {
 }
 
 .nav-link-glow::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.8s ease;
 }
 
@@ -985,13 +1021,18 @@ main {
 }
 
 .btn-shimmer::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 1s ease;
 }
 
@@ -1094,13 +1135,18 @@ main {
 }
 
 .mobile-menu-item::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.1),
+    transparent
+  );
   transition: left 0.8s ease;
 }
 
@@ -1116,13 +1162,18 @@ main {
 }
 
 .mobile-btn-elegant::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 1s ease;
 }
 
@@ -1132,7 +1183,8 @@ main {
 
 /* Professional Mobile Menu Styling */
 .mobile-menu-panel {
-  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1), -20px 0 50px -10px rgba(0, 0, 0, 0.04);
+  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1),
+    -20px 0 50px -10px rgba(0, 0, 0, 0.04);
 }
 
 /* Custom scrollbar for mobile menu */
@@ -1165,13 +1217,18 @@ main {
 }
 
 .mobile-menu-item-hover::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.05),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -1192,7 +1249,46 @@ main {
 
 /* Elegant divider */
 .mobile-menu-divider {
-  background: linear-gradient(90deg, transparent, rgba(156, 163, 175, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(156, 163, 175, 0.3),
+    transparent
+  );
+}
+
+/* Luxury animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Luxury Hero Animations */

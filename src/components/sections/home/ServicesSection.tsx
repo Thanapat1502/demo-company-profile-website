@@ -19,56 +19,62 @@ export default function ServicesSection() {
       id: 1,
       title: "PERMATANK และถังน้ำมันแบบต่างๆ",
       shortTitle: "PERMATANK",
-      description: "ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของ บริษัท ผดุงศิลป์วิศวการ จำกัด ผลิตตามมาตรฐานของ UL และ STEEL TANK INSTITUTE Technology ถังมีความแข็งแรง ทนทาน มีคุณภาพ มีอายุใช้งานยาวนานถึงกว่า 30 ปี",
+      description:
+        "ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของ บริษัท ผดุงศิลป์วิศวการ จำกัด ผลิตตามมาตรฐานของ UL และ STEEL TANK INSTITUTE Technology ถังมีความแข็งแรง ทนทาน มีคุณภาพ มีอายุใช้งานยาวนานถึงกว่า 30 ปี",
       image: "/images/services/pds-product-2.webp",
       color: "from-emerald-600 to-emerald-800",
-      accent: "#059669"
+      accent: "#059669",
     },
     {
       id: 2,
       title: "งานก่อสร้างสถานีบริการน้ำมัน",
       shortTitle: "ก่อสร้างสถานี",
-      description: "บริษัท ผดุงศิลป์โยธาการ จำกัด (PCW) เป็นบริษัทฯก่อสร้างชั้นนำที่เชี่ยวชาญและมากด้วยประสบการณ์ในงานก่อสร้างสถานีบริการน้ำมัน และก๊าซ ตลอดจนงานอื่นๆที่เกี่ยวข้อง เนื่องจากมีผลงานเป็นที่เชื่อถือ และได้รับความไว้วางใจ จากบริษัทน้ำมันชั้นนำ",
+      description:
+        "บริษัท ผดุงศิลป์โยธาการ จำกัด (PCW) เป็นบริษัทฯก่อสร้างชั้นนำที่เชี่ยวชาญและมากด้วยประสบการณ์ในงานก่อสร้างสถานีบริการน้ำมัน และก๊าซ ตลอดจนงานอื่นๆที่เกี่ยวข้อง เนื่องจากมีผลงานเป็นที่เชื่อถือ และได้รับความไว้วางใจ จากบริษัทน้ำมันชั้นนำ",
       image: "/images/services/pds-product-1.webp",
       color: "from-blue-600 to-blue-800",
-      accent: "#1e40af"
+      accent: "#1e40af",
     },
     {
       id: 3,
       title: "จำหน่ายและติดตั้งท่อน้ำมัน",
       shortTitle: "ท่อน้ำมัน 2 ชั้น",
-      description: "บริษัทฯ ยังได้ทำการขายและติดตั้งท่อน้ำมันผนัง 2 ชั้น ที่ได้รับการรับรองจากกรมธุรกิจพลังงาน",
+      description:
+        "บริษัทฯ ยังได้ทำการขายและติดตั้งท่อน้ำมันผนัง 2 ชั้น ที่ได้รับการรับรองจากกรมธุรกิจพลังงาน",
       image: "/images/services/pds-product-3.webp",
       color: "from-purple-600 to-purple-800",
-      accent: "#7c3aed"
+      accent: "#7c3aed",
     },
     {
       id: 4,
       title: "ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
       shortTitle: "ระบบวัดอัตโนมัติ",
-      description: "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) เป็นตัวแทนจำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
+      description:
+        "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) เป็นตัวแทนจำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
       image: "/images/services/pds-product-4.webp",
       color: "from-orange-600 to-orange-800",
-      accent: "#ea580c"
+      accent: "#ea580c",
     },
     {
       id: 5,
       title: "อุปกรณ์เกี่ยวกับถังน้ำมัน",
       shortTitle: "อุปกรณ์ถังน้ำมัน",
-      description: "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) พัฒนาแบบถังน้ำมันใต้ดิน และอุปกรณ์ที่เกี่ยวข้องต่างๆ อย่างต่อเนื่อง",
+      description:
+        "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) พัฒนาแบบถังน้ำมันใต้ดิน และอุปกรณ์ที่เกี่ยวข้องต่างๆ อย่างต่อเนื่อง",
       image: "/images/services/pds-product-5.webp",
       color: "from-red-600 to-red-800",
-      accent: "#dc2626"
+      accent: "#dc2626",
     },
     {
       id: 6,
       title: "ให้บริการต่างๆเกี่ยวกับถังน้ำมัน",
       shortTitle: "บริการถังน้ำมัน",
-      description: "• งานฝังถังน้ำมันใต้ดินผนัง 2 ชั้น PERMATANK®\n• งานติดตั้งท่อน้ำมัน 2 ชั้น ยี่ห้อ NUPI ในสถานีบริการน้ำมัน\n• งานตรวจเช็คระบบท่อ และการรั่วซึมของท่อจ่ายน้ำมัน",
+      description:
+        "• งานฝังถังน้ำมันใต้ดินผนัง 2 ชั้น PERMATANK®\n• งานติดตั้งท่อน้ำมัน 2 ชั้น ยี่ห้อ NUPI ในสถานีบริการน้ำมัน\n• งานตรวจเช็คระบบท่อ และการรั่วซึมของท่อจ่ายน้ำมัน",
       image: "/images/services/pds-product-6.webp",
       color: "from-teal-600 to-teal-800",
-      accent: "#0d9488"
-    }
+      accent: "#0d9488",
+    },
   ];
 
   // Auto-play functionality
@@ -95,22 +101,22 @@ export default function ServicesSection() {
       className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap"
       style={{
         transform: `translateY(${-scrollY * 0.3}px)`,
-      }}
-    >
+      }}>
       {/* Elegant texture background */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-white to-gray-50"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, ${products[activeIndex].accent}08 0%, transparent 50%),
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, ${products[activeIndex].accent}08 0%, transparent 50%),
                            radial-gradient(circle at 75% 75%, ${products[activeIndex].accent}05 0%, transparent 50%)`,
-          transition: 'background-image 1s ease-in-out'
-        }}></div>
+            transition: "background-image 1s ease-in-out",
+          }}></div>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex items-center py-16">
+      <div className="relative z-10 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-
           {/* Header */}
           {/* Ultra Minimal Luxury Header */}
           <div className="text-center mb-4 relative">
@@ -142,7 +148,6 @@ export default function ServicesSection() {
 
           {/* Main Content Area */}
           <div className="space-y-12">
-
             {/* Featured Products Grid - Desktop / Carousel - Mobile */}
             <div className="space-y-6">
               {/* Desktop Grid - Hidden on Mobile */}
@@ -151,8 +156,7 @@ export default function ServicesSection() {
                   <div
                     key={product.id}
                     className={`relative aspect-square overflow-hidden bg-gray-100 shadow-lg transition-all duration-500 cursor-pointer group`}
-                    onClick={() => handleProductClick(index)}
-                  >
+                    onClick={() => handleProductClick(index)}>
                     {/* Product Image */}
                     <Image
                       src={product.image}
@@ -191,8 +195,6 @@ export default function ServicesSection() {
                         </div>
                       </div>
                     </div>
-
-
                   </div>
                 ))}
               </div>
@@ -204,13 +206,13 @@ export default function ServicesSection() {
                   <div className="overflow-hidden">
                     <div
                       className="flex transition-transform duration-500 ease-in-out"
-                      style={{ transform: `translateX(-${activeIndex * 100} %)` }}
-                    >
-                      {products.map((product, index) => (
+                      style={{
+                        transform: `translateX(-${activeIndex * 100} %)`,
+                      }}>
+                      {products.map((product) => (
                         <div
                           key={product.id}
-                          className="w-full flex-shrink-0 relative h-[500px] bg-gray-100"
-                        >
+                          className="w-full flex-shrink-0 relative h-[500px] bg-gray-100">
                           {/* Product Image */}
                           <Image
                             src={product.image}
@@ -225,7 +227,6 @@ export default function ServicesSection() {
                           {/* Product content overlay */}
                           <div className="absolute inset-0 flex flex-col justify-end p-6">
                             <div className="space-y-4">
-
                               {/* Product Title */}
                               <h3 className="text-2xl font-black text-white leading-tight">
                                 {product.title}
@@ -240,10 +241,13 @@ export default function ServicesSection() {
                               <div className="pt-2">
                                 <button
                                   className="luxury-hero-btn luxury-hero-btn-primary group"
-                                  onClick={() => router.push(`/${locale}/products-services`)}
-                                >
+                                  onClick={() =>
+                                    router.push(`/${locale}/products-services`)
+                                  }>
                                   <span className="relative z-10 flex items-center justify-center gap-3">
-                                    <span className="font-semibold tracking-wide">{t("common.learnMore")}</span>
+                                    <span className="font-semibold tracking-wide">
+                                      {t("common.learnMore")}
+                                    </span>
                                     <ExternalLink className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
                                   </span>
                                   <div className="luxury-btn-shimmer"></div>
@@ -263,12 +267,16 @@ export default function ServicesSection() {
                       <button
                         key={index}
                         onClick={() => handleProductClick(index)}
-                        className={`w - 3 h - 3 rounded - full transition - all duration - 300 ${index === activeIndex
-                          ? 'scale-125'
-                          : 'hover:scale-110'
-                          }`}
+                        className={`w - 3 h - 3 rounded - full transition - all duration - 300 ${
+                          index === activeIndex
+                            ? "scale-125"
+                            : "hover:scale-110"
+                        }`}
                         style={{
-                          backgroundColor: index === activeIndex ? products[activeIndex].accent : 'rgba(0,0,0,0.3)'
+                          backgroundColor:
+                            index === activeIndex
+                              ? products[activeIndex].accent
+                              : "rgba(0,0,0,0.3)",
                         }}
                       />
                     ))}
@@ -291,10 +299,11 @@ export default function ServicesSection() {
               <div className="luxury-hero-btn-container">
                 <button
                   className="luxury-hero-btn luxury-hero-btn-primary group overflow-hidden"
-                  onClick={() => router.push(`/${locale}/products-services`)}
-                >
+                  onClick={() => router.push(`/${locale}/products-services`)}>
                   <span className="relative z-10 flex items-center justify-center gap-3">
-                    <span className="font-semibold tracking-wide">{t("home.services.viewAll")}</span>
+                    <span className="font-semibold tracking-wide">
+                      {t("home.services.viewAll")}
+                    </span>
                     <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
                   </span>
                   <div className="luxury-btn-shimmer"></div>
@@ -306,10 +315,11 @@ export default function ServicesSection() {
 
                 <button
                   className="luxury-hero-btn luxury-hero-btn-primary group overflow-hidden"
-                  onClick={() => router.push(`/${locale}/contact-us`)}
-                >
+                  onClick={() => router.push(`/${locale}/contact-us`)}>
                   <span className="relative z-10 flex items-center justify-center gap-3">
-                    <span className="font-semibold tracking-wide">{t("common.contactUs")}</span>
+                    <span className="font-semibold tracking-wide">
+                      {t("common.contactUs")}
+                    </span>
                     <div className="w-2 h-2 rounded-full bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
                   </span>
                   <div className="luxury-btn-shimmer"></div>
@@ -321,10 +331,8 @@ export default function ServicesSection() {
               </div>
             </div>
           </div>
-
-
         </div>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 }

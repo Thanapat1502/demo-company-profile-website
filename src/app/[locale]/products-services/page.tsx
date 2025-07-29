@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, Image } from "@heroui/react";
+import { useState } from "react";
 import {
   Building2,
   Wrench,
@@ -10,71 +10,124 @@ import {
   Zap,
   ArrowRight,
   CheckCircle,
-  Phone,
-  Mail,
   Fuel,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import HeroSection from "@/components/ui/HeroSection";
-import Section from "@/components/ui/Section";
+import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function ProductsServicesPage() {
-  const t = useTranslations();
+  const locale = useLocale();
+  const [showAllProducts, setShowAllProducts] = useState(false);
+
+  const allProducts = [
+    {
+      name: "ถังน้ำมันใต้ดิน PERMATANK®",
+      description:
+        "ถังน้ำมันใต้ดินผนัง 2 ชั้น ทนทาน ปลอดภัย ได้มาตรฐานสากล UL 58 และ UL 1746 ออกแบบเพื่อความปลอดภัยสูงสุดและอายุการใช้งานยาวนาน",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "ท่อน้ำมันใต้ดินผนัง 2 ชั้น",
+      description:
+        "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์ เหมาะสำหรับการติดตั้งในสถานีบริการน้ำมันทุกขนาด",
+      image:
+        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "ระบบวัดน้ำมันอัตโนมัติ (ATG)",
+      description:
+        "ระบบตรวจวัดระดับน้ำมันและการรั่วไหลแบบอัตโนมัติ เชื่อมต่อระบบคอมพิวเตอร์และ IoT สำหรับการจัดการที่มีประสิทธิภาพและทันสมัย",
+      image:
+        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "หัวจ่ายน้ำมันอัตโนมัติ",
+      description:
+        "หัวจ่ายน้ำมันที่ทันสมัย ปลอดภัย และมีประสิทธิภาพสูง พร้อมระบบควบคุมอัตโนมัติ ออกแบบเพื่อการใช้งานที่สะดวกและประหยัดพลังงาน",
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "ระบบป้องกันการล้นถัง",
+      description:
+        "ระบบป้องกันการล้นถังน้ำมันที่ทันสมัย ช่วยป้องกันอุบัติเหตุและการสูญเสีย พร้อมระบบแจ้งเตือนอัตโนมัติและการติดตั้งที่ง่ายดาย",
+      image:
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      name: "ระบบดับเพลิงอัตโนมัติ",
+      description:
+        "ระบบดับเพลิงที่ทันสมัยและมีประสิทธิภาพสูง เพื่อความปลอดภัยสูงสุด ตรวจจับและดับเพลิงได้อย่างรวดเร็วและมีประสิทธิภาพ",
+      image:
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    },
+  ];
+
+  // Show only first 6 products initially, all when expanded
+  const displayedProducts = showAllProducts
+    ? allProducts
+    : allProducts.slice(0, 6);
 
   const mainServices = [
     {
       icon: Building2,
       title: "ก่อสร้างสถานีบริการน้ำมัน",
       description:
-        "บริการก่อสร้างสถานีบริการน้ำมันครบวงจร ตั้งแต่การออกแบบ ก่อสร้าง จนถึงการส่งมอบ",
+        "บริการก่อสร้างสถานีบริการน้ำมันครบวงจร ตั้งแต่การออกแบบ ก่อสร้าง จนถึงการส่งมอบ พร้อมระบบความปลอดภัยที่ได้มาตรฐานสากล",
       features: [
         "ออกแบบและวางผังสถานีบริการน้ำมัน",
-        "ก่อสร้างอาคารและโครงสร้าง",
-        "ติดตั้งระบบน้ำมันและอุปกรณ์",
+        "ก่อสร้างอาคารและโครงสร้างทั้งหมด",
+        "ติดตั้งระบบน้ำมันและอุปกรณ์ครบชุด",
         "ตรวจสอบมาตรฐานความปลอดภัย",
+        "ทดสอบระบบและส่งมอบงาน",
       ],
       image:
         "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     },
     {
       icon: Fuel,
-      title: "บริการต่าง ๆ เกี่ยวกับถังน้ำมัน",
+      title: "บริการเกี่ยวกับถังน้ำมัน",
       description:
-        "บริการครบวงจรเกี่ยวกับถังน้ำมันใต้ดิน ตั้งแต่การผลิต ติดตั้ง บำรุงรักษา จนถึงการตรวจสอบ",
+        "บริการครบวงจรเกี่ยวกับถังน้ำมันใต้ดิน PERMATANK® ตั้งแต่การผลิต ติดตั้ง บำรุงรักษา จนถึงการตรวจสอบและรื้อถอน",
       features: [
         "ผลิตถังน้ำมันใต้ดินผนัง 2 ชั้น PERMATANK®",
         "ติดตั้งและทดสอบระบบถังน้ำมัน",
         "บำรุงรักษาและซ่อมแซมถังน้ำมัน",
         "ตรวจสอบการรั่วไหลและความปลอดภัย",
         "ทำความสะอาดและล้างถังน้ำมัน",
-        "รื้อถอนถังน้ำมันเก่า",
+        "รื้อถอนถังน้ำมันเก่าอย่างปลอดภัย",
       ],
       image:
         "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     },
     {
       icon: Wrench,
-      title: t("services.engineering.title"),
-      description: t("services.engineering.description"),
+      title: "บริการวิศวกรรม",
+      description:
+        "บริการให้คำปรึกษาและออกแบบระบบวิศวกรรมสำหรับสถานีบริการน้ำมัน ด้วยทีมวิศวกรมืออาชีพ",
       features: [
-        t("services.engineering.features.consulting"),
-        t("services.engineering.features.design"),
-        t("services.engineering.features.management"),
-        t("services.engineering.features.supervision"),
+        "ให้คำปรึกษาด้านวิศวกรรม",
+        "ออกแบบระบบและโครงสร้าง",
+        "จัดการโครงการและควบคุมคุณภาพ",
+        "ควบคุมงานและตรวจสอบ",
       ],
       image:
         "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     },
     {
       icon: Users,
-      title: t("services.maintenance.title"),
-      description: t("services.maintenance.description"),
+      title: "บริการบำรุงรักษา",
+      description:
+        "บริการบำรุงรักษาและซ่อมแซมระบบสถานีบริการน้ำมัน เพื่อให้มั่นใจในการทำงานที่มีประสิทธิภาพ",
       features: [
-        t("services.maintenance.features.inspection"),
-        t("services.maintenance.features.preventive"),
-        t("services.maintenance.features.emergency"),
-        t("services.maintenance.features.upgrade"),
+        "ตรวจสอบและบำรุงรักษาเชิงป้องกัน",
+        "บำรุงรักษาตามแผนและฉุกเฉิน",
+        "ซ่อมแซมและแก้ไขปัญหา",
+        "อัพเกรดและปรับปรุงระบบ",
       ],
       image:
         "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
@@ -84,298 +137,435 @@ export default function ProductsServicesPage() {
   const additionalServices = [
     {
       icon: Cog,
-      title: t("services.additional.equipment.title"),
-      description: t("services.additional.equipment.description"),
+      title: "จำหน่ายอุปกรณ์",
+      description:
+        "จำหน่ายอุปกรณ์และอะไหล่สำหรับสถานีบริการน้ำมัน คุณภาพสูง ราคาเป็นธรรม",
     },
     {
       icon: Shield,
-      title: t("services.additional.safety.title"),
-      description: t("services.additional.safety.description"),
+      title: "ระบบความปลอดภัย",
+      description:
+        "ติดตั้งและบำรุงรักษาระบบความปลอดภัย เพื่อป้องกันอุบัติเหตุและอัคคีภัย",
     },
     {
       icon: Zap,
-      title: t("services.additional.automation.title"),
-      description: t("services.additional.automation.description"),
+      title: "ระบบอัตโนมัติ",
+      description:
+        "ระบบควบคุมอัตโนมัติและ IoT เพื่อการจัดการที่มีประสิทธิภาพและทันสมัย",
     },
   ];
 
   const processSteps = [
     {
       step: "01",
-      title: t("services.process.consultation.title"),
-      description: t("services.process.consultation.description"),
+      title: "ปรึกษาและสำรวจ",
+      description: "ให้คำปรึกษาเบื้องต้น สำรวจพื้นที่ และประเมินความต้องการ",
     },
     {
       step: "02",
-      title: t("services.process.design.title"),
-      description: t("services.process.design.description"),
+      title: "ออกแบบและวางแผน",
+      description: "ออกแบบระบบ จัดทำแบบแปลน และวางแผนการดำเนินงาน",
     },
     {
       step: "03",
-      title: t("services.process.construction.title"),
-      description: t("services.process.construction.description"),
+      title: "ก่อสร้างและติดตั้ง",
+      description: "ดำเนินการก่อสร้าง ติดตั้งอุปกรณ์ และทดสอบระบบ",
     },
     {
       step: "04",
-      title: t("services.process.delivery.title"),
-      description: t("services.process.delivery.description"),
+      title: "ส่งมอบและบริการ",
+      description: "ส่งมอบงานและให้บริการหลังการขาย รวมถึงการฝึกอบรม",
     },
   ];
 
   return (
     <MainLayout>
       {/* Hero Section */}
-      <HeroSection
-        title={t("services.hero.title")}
-        subtitle={t("services.hero.subtitle")}
-        description={t("services.hero.description")}
-        backgroundImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        primaryAction={{
-          label: t("common.getQuote"),
-          href: "/contact-us",
-        }}
-        secondaryAction={{
-          label: t("services.hero.viewProjects"),
-          href: "/reference",
-        }}
-        height="lg"
-      />
+      <ImageCarouselHero
+        images={[
+          "/images/hero-sections/hero-banner-1.jpg",
+          "/images/hero-sections/hero-banner-2.jpg",
+          "/images/hero-sections/hero-banner-3.jpg",
+          "/images/hero-sections/hero-banner-4.jpg",
+        ]}
+        title={`ผลิตภัณฑ์และบริการ`}
+        subtitle="บริการครบวงจร"
+        description={`ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน`}
+        autoSlideDelay={6000}>
+        <MinimalButton
+          href={`/${locale}/contact-us`}
+          variant="white"
+          icon={<ArrowRight className="w-5 h-5" />}>
+          ขอใบเสนอราคา
+        </MinimalButton>
+        <MinimalButton
+          href={`/${locale}/reference`}
+          variant="secondary"
+          className="border-white text-white hover:bg-white hover:text-gray-900">
+          ดูผลงาน
+        </MinimalButton>
+      </ImageCarouselHero>
 
-      {/* Main Services */}
-      <Section background="white" padding="xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("services.main.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t("services.main.description")}
-          </p>
-        </div>
-
-        <div className="space-y-16">
-          {mainServices.map((service, index) => (
-            <div
-              key={index}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
-              }`}>
-              <div className={index % 2 === 1 ? "lg:col-start-2" : ""}>
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
-                    <service.icon
-                      size={24}
-                      className="text-blue-600 dark:text-blue-400"
-                    />
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                    {service.title}
-                  </h3>
+      {/* Service 1: งานก่อสร้างสถานีบริการน้ำมัน */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mr-6">
+                  <Building2 size={32} className="text-blue-600" />
                 </div>
-
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                  {service.description}
-                </p>
-
-                <div className="space-y-3 mb-8">
-                  {service.features.map((feature, featureIndex) => (
-                    <div
-                      key={featureIndex}
-                      className="flex items-center space-x-3">
-                      <CheckCircle
-                        size={20}
-                        className="text-green-500 flex-shrink-0"
-                      />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <Button
-                  color="primary"
-                  variant="solid"
-                  endContent={<ArrowRight size={20} />}
-                  as="a"
-                  href="/contact-us">
-                  {t("services.learnMore")}
-                </Button>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  งานก่อสร้างสถานีบริการน้ำมัน
+                </h2>
               </div>
 
-              <div className={index % 2 === 1 ? "lg:col-start-1" : ""}>
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  className="rounded-lg shadow-lg w-full h-80 object-cover"
-                />
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>
+                  <strong className="text-gray-900">
+                    บริษัท ผดุงศิลป์โยธาการ จำกัด (PCW)
+                  </strong>
+                  เป็นบริษัทฯก่อสร้างชั้นนำที่เชี่ยวชาญและมากด้วยประสบการณ์ในงานก่อสร้างสถานีบริการน้ำมัน
+                  และก๊าซ ตลอดจนงานอื่นๆที่เกี่ยวข้อง
+                  เนื่องจากมีผลงานเป็นที่เชื่อถือ และได้รับความไว้วางใจ
+                  จากบริษัทน้ำมันชั้นนำ
+                </p>
+
+                <div className="bg-blue-50 p-6 rounded-2xl border-l-4 border-blue-600">
+                  <p className="font-semibold text-blue-900 text-xl">
+                    ภายใต้นโยบาย "ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย"
+                  </p>
+                </div>
+
+                <p>
+                  เรามุ่งมั่นพัฒนาการก่อสร้างสถานีบริการน้ำมันให้ได้มาตรฐานสูงสุดทั้งด้านคุณภาพและความปลอดภัย
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <MinimalButton
+                  href={`/${locale}/contact-us`}
+                  variant="primary"
+                  icon={<ArrowRight className="w-5 h-5" />}>
+                  ติดต่อสอบถาม
+                </MinimalButton>
               </div>
             </div>
-          ))}
-        </div>
-      </Section>
 
-      {/* Additional Services */}
-      <Section background="gray" padding="xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("services.additional.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t("services.additional.description")}
-          </p>
+            <div>
+              <Image
+                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="งานก่อสร้างสถานีบริการน้ำมัน"
+                width={600}
+                height={400}
+                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
+              />
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {additionalServices.map((service, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-              <CardBody className="text-center">
-                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <service.icon
-                    size={32}
-                    className="text-blue-600 dark:text-blue-400"
-                  />
+      {/* Service 2: PERMATANK และถังน้ำมันแบบต่าง ๆ */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Image
+                src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="PERMATANK และถังน้ำมันแบบต่าง ๆ"
+                width={600}
+                height={400}
+                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mr-6">
+                  <Fuel size={32} className="text-green-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {service.description}
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  PERMATANK และถังน้ำมันแบบต่าง ๆ
+                </h2>
+              </div>
+
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>
+                  ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของบริษัท ผดุงศิลป์วิศวการ จำกัด
+                  ในชื่อผลิตภัณฑ์
+                  <strong className="text-gray-900">'PERMATANK'</strong>{" "}
+                  ได้รับการผลิตตามมาตรฐาน
+                  <strong className="text-blue-600">
+                    UL 58 & UL 1746
+                  </strong>{" "}
+                  โดยใช้เทคโนโลยีจากสถาบัน Steel Tank Institute Technology, USA
                 </p>
-              </CardBody>
-            </Card>
-          ))}
+
+                <div className="bg-green-50 p-6 rounded-2xl border-l-4 border-green-600">
+                  <p className="font-semibold text-green-900 text-xl">
+                    ภายใต้นโยบาย &ldquo;ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย&rdquo;
+                  </p>
+                </div>
+
+                <p>
+                  เราพัฒนาแบบถังน้ำมันใต้ดินและอุปกรณ์ที่เกี่ยวข้องอย่างต่อเนื่อง
+                  เพื่อประโยชน์สูงสุดของลูกค้า ผู้รับเหมา และผู้ค้าอื่น ๆ
+                  ที่เกี่ยวข้องกับงานสถานีบริการน้ำมัน
+                </p>
+
+                <p>
+                  เพื่อให้มั่นใจว่าลูกค้าได้รับสินค้าที่มีคุณภาพและมีอายุการใช้งานยาวนานกว่า
+                  <strong className="text-green-600">30 ปี</strong>{" "}
+                  ผดุงศิลป์ให้ความสำคัญกับทุกขั้นตอนของกระบวนการผลิตและจัดส่ง
+                  PERMATANK®
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <MinimalButton
+                  href={`/${locale}/contact-us`}
+                  variant="primary"
+                  icon={<ArrowRight className="w-5 h-5" />}>
+                  ติดต่อสอบถาม
+                </MinimalButton>
+              </div>
+            </div>
+          </div>
         </div>
-      </Section>
+      </section>
+
+      {/* Service 3: จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mr-6">
+                  <Wrench size={32} className="text-purple-600" />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น
+                </h2>
+              </div>
+
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>
+                  ด้วยประสบการณ์การติดตั้งท่อน้ำมันแบบผนัง 2 ชั้นมากกว่า{" "}
+                  <strong className="text-purple-600">20 ปี</strong>
+                  บริษัท ผดุงศิลป์วิศวการ จำกัด
+                  เป็นตัวแทนจำหน่ายและติดตั้งท่อน้ำมันยี่ห้อ
+                  <strong className="text-gray-900">
+                    NUPIGECO S.P.A.
+                  </strong>{" "}
+                  รุ่น Smartflex และ Ecoflex ซึ่งผลิตในประเทศอิตาลี
+                </p>
+
+                <p>
+                  ผลิตจากวัสดุ{" "}
+                  <strong className="text-blue-600">
+                    HDPE-100 (High-Density Polyethylene)
+                  </strong>
+                  ที่มีความแข็งแรง ทนทาน ไม่เกิดสนิม
+                  และสามารถดัดโค้งได้ตามแนวการติดตั้ง
+                </p>
+
+                <div className="bg-purple-50 p-6 rounded-2xl border-l-4 border-purple-600">
+                  <p className="font-semibold text-purple-900">
+                    ผ่านมาตรฐาน EN14125 & IP2
+                    และเป็นไปตามกฎกระทรวงพลังงานของสถานีบริการน้ำมันเชื้อเพลิง
+                    พ.ศ. 2552
+                  </p>
+                </div>
+
+                <p>
+                  บริษัทฯ ให้บริการจำหน่ายและติดตั้งท่อน้ำมันผนัง 2
+                  ชั้นแก่สถานีบริการน้ำมันชั้นนำ
+                  และโรงงานอุตสาหกรรมในประเทศไทยมาตั้งแต่ปี 2545
+                  โดยมีทีมงานติดตั้งที่ได้รับการฝึกอบรมจากเจ้าของผลิตภัณฑ์โดยตรง
+                  ด้วยประสบการณ์มากกว่า{" "}
+                  <strong className="text-purple-600">300 โครงการ</strong>
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <MinimalButton
+                  href={`/${locale}/contact-us`}
+                  variant="primary"
+                  icon={<ArrowRight className="w-5 h-5" />}>
+                  ติดต่อสอบถาม
+                </MinimalButton>
+              </div>
+            </div>
+
+            <div>
+              <Image
+                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น"
+                width={600}
+                height={400}
+                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service 4: ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Image
+                src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน"
+                width={600}
+                height={400}
+                className="rounded-3xl shadow-2xl w-full h-96 object-cover"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mr-6">
+                  <Cog size={32} className="text-orange-600" />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน
+                </h2>
+              </div>
+
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>
+                  เป็นตัวแทนจำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน
+                </p>
+
+                <p>
+                  อุปกรณ์วัดน้ำมันใต้ดิน เช่น
+                  เครื่องวัดระดับน้ำมันในถังอัตโนมัติ{" "}
+                  <strong className="text-orange-600">(ATG)</strong>
+                  ช่วยให้คุณสามารถตรวจสอบระดับน้ำมันในถังได้แบบ{" "}
+                  <strong className="text-gray-900">Real-Time</strong>
+                  เหมาะสำหรับสถานีบริการน้ำมันในยุคที่ราคาน้ำมันมีความผันผวน
+                </p>
+
+                <div className="bg-orange-50 p-6 rounded-2xl border-l-4 border-orange-600">
+                  <p className="font-semibold text-orange-900">
+                    ทำให้สามารถคาดการณ์สต๊อกและบริหารต้นทุนได้อย่างมีประสิทธิภาพ
+                  </p>
+                </div>
+
+                <p>
+                  สามารถใช้ได้กับสถานีบริการน้ำมันภายในองค์กร
+                  สถานีบริการน้ำมันทั่วไป และคลังน้ำมันที่มีถังสูงถึง{" "}
+                  <strong className="text-orange-600">21 เมตร</strong>
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <MinimalButton
+                  href={`/${locale}/contact-us`}
+                  variant="primary"
+                  icon={<ArrowRight className="w-5 h-5" />}>
+                  ติดต่อสอบถาม
+                </MinimalButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Our Products */}
-      <Section background="gray" padding="xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            ผลิตภัณฑ์ของเรา
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            ผลิตภัณฑ์คุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน
-          </p>
-        </div>
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              ผลิตภัณฑ์ของเรา
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              ผลิตภัณฑ์คุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              name: "ถังน้ำมันใต้ดิน PERMATANK®",
-              description:
-                "ถังน้ำมันใต้ดินผนัง 2 ชั้น ทนทาน ปลอดภัย ได้มาตรฐานสากล",
-              image:
-                "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              available: true,
-            },
-            {
-              name: "ท่อน้ำมันใต้ดินผนัง 2 ชั้น",
-              description:
-                "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหล",
-              image:
-                "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              available: true,
-            },
-            {
-              name: "ระบบวัดน้ำมันอัตโนมัติ (ATG)",
-              description:
-                "ระบบตรวจวัดระดับน้ำมันและการรั่วไหลแบบอัตโนมัติ เชื่อมต่อระบบคอมพิวเตอร์",
-              image:
-                "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-              available: true,
-            },
-          ].map((product, index) => (
-            <Card
-              key={index}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-              <CardBody className="p-0">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                      {product.name}
-                    </h3>
-                    <div
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        product.available
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                      }`}>
-                      {product.available ? "พร้อมจำหน่าย" : "ไม่พร้อมจำหน่าย"}
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayedProducts.map((product, index) => (
+              <div key={index} className="group cursor-pointer">
+                {/* Simple image container */}
+                <div className="relative h-64 mb-6 overflow-hidden bg-gray-100">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Clean content */}
+                <div className="space-y-3">
+                  <h3 className="text-lg font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     {product.description}
                   </p>
                 </div>
-              </CardBody>
-            </Card>
-          ))}
+              </div>
+            ))}
+          </div>
+
+          {/* View More Button */}
+          {!showAllProducts && allProducts.length > 6 && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setShowAllProducts(true)}
+                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200">
+                <span>ดูผลิตภัณฑ์เพิ่มเติม</span>
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </button>
+            </div>
+          )}
+
+          {/* Show Less Button */}
+          {showAllProducts && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setShowAllProducts(false)}
+                className="inline-flex items-center px-8 py-3 border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200">
+                <span>ดูน้อยลง</span>
+              </button>
+            </div>
+          )}
         </div>
-      </Section>
+      </section>
 
       {/* Process Steps */}
-      <Section background="white" padding="xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("services.process.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t("services.process.description")}
-          </p>
-        </div>
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              ขั้นตอนการดำเนินงาน
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              กระบวนการทำงานที่เป็นระบบและมีประสิทธิภาพ
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {processSteps.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">
-                {step.step}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {processSteps.map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg">
+                  {step.step}
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {step.title}
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
+                  {step.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                {step.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* CTA Section */}
-      <Section background="gradient" padding="xl">
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t("services.cta.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            {t("services.cta.description")}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              color="primary"
-              size="lg"
-              startContent={<Phone size={20} />}
-              as="a"
-              href="tel:+6621234567">
-              {t("common.callNow")}
-            </Button>
-            <Button
-              variant="bordered"
-              size="lg"
-              startContent={<Mail size={20} />}
-              as="a"
-              href="/contact-us">
-              {t("common.getQuote")}
-            </Button>
+            ))}
           </div>
         </div>
-      </Section>
+      </section>
     </MainLayout>
   );
 }
