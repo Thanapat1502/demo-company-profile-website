@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === 'th' ? 'th_TH' : 'en_US',
       images: [
         {
-          url: "/images/seo.jpg",
+          url: "https://padungsilpa.techtoptierapp.com/images/seo.jpg",
           width: 1200,
           height: 630,
           alt: title,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       title,
       description,
-      images: ["/images/seo.jpg"],
+      images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
     },
     alternates: {
       canonical: `https://www.padungsilpa.group/${locale}`,

@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     siteName: "Padungsilpa Group",
     images: [
       {
-        url: "/images/seo.jpg",
+        url: "https://padungsilpa.techtoptierapp.com/images/seo.jpg",
         width: 1200,
         height: 630,
         alt: "Padungsilpa Group - Leading Gas Station Construction & Engineering Services",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
       "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
-    images: ["/images/seo.jpg"],
+    images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
   },
   robots: {
     index: true,
