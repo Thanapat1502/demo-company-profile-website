@@ -1194,3 +1194,397 @@ main {
 .mobile-menu-divider {
   background: linear-gradient(90deg, transparent, rgba(156, 163, 175, 0.3), transparent);
 }
+
+/* Luxury Hero Animations */
+@keyframes luxuryFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes luxuryTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes luxuryWordAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) rotateX(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes luxurySlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes luxuryGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Luxury Animation Classes */
+.luxury-title-animation {
+  animation: luxuryFadeInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both;
+}
+
+.luxury-text-reveal {
+  animation: luxuryTextReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.luxury-word-animation {
+  animation: luxuryWordAnimation 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  transform-origin: center bottom;
+}
+
+.luxury-description-animation {
+  animation: luxuryFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+
+.luxury-buttons-animation {
+  animation: luxuryFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s both;
+}
+
+.luxury-scroll-indicator {
+  animation: luxuryFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.5s both;
+}
+
+.luxury-indicators-animation {
+  animation: luxurySlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.8s both;
+}
+
+.luxury-corner-decoration {
+  animation: luxurySlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2s both;
+}
+
+.luxury-corner-decoration:nth-child(2) {
+  animation-delay: 2.1s;
+}
+
+.luxury-corner-decoration:nth-child(3) {
+  animation-delay: 2.2s;
+}
+
+.luxury-corner-decoration:nth-child(4) {
+  animation-delay: 2.3s;
+}
+
+/* Luxury Image Entrance Animations */
+@keyframes luxuryImageEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(1.2) rotate(1deg);
+    filter: blur(8px) brightness(0.7);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08) rotate(0.5deg);
+    filter: blur(2px) brightness(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05) rotate(0deg);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes luxuryImageZoomEntrance {
+  0% {
+    transform: scale(1.3);
+    filter: blur(4px);
+  }
+  100% {
+    transform: scale(1.1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes luxuryImageSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    filter: blur(6px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(1.02) translateY(-5px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0px);
+    filter: blur(0px);
+  }
+}
+
+/* Luxury Image Animation Classes */
+.luxury-image-entrance {
+  animation: luxuryImageEntrance 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.luxury-image-zoom-entrance {
+  animation: luxuryImageZoomEntrance 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.luxury-image-slide-entrance {
+  animation: luxuryImageSlideIn 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Enhanced Ken Burns effect for first-time images */
+.luxury-image-entrance .luxury-image-zoom-entrance {
+  animation-duration: 10s;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Luxury Hero Buttons */
+.luxury-hero-btn {
+  position: relative;
+  width: 100%;
+  min-width: 200px;
+  padding: 18px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Primary Luxury Button */
+.luxury-hero-btn-primary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  color: #1a1a1a;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.luxury-hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+/* Secondary Luxury Button */
+.luxury-hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.luxury-hero-btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Luxury Button Effects */
+.luxury-btn-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.luxury-hero-btn-primary:hover .luxury-btn-shimmer {
+  left: 100%;
+}
+
+.luxury-btn-glow {
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: -1;
+}
+
+.luxury-hero-btn-primary:hover .luxury-btn-glow {
+  opacity: 1;
+}
+
+.luxury-btn-border {
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: exclude;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  transition: all 0.6s ease;
+}
+
+.luxury-btn-glow-secondary {
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: -1;
+}
+
+.luxury-hero-btn-secondary:hover .luxury-btn-glow-secondary {
+  opacity: 1;
+}
+
+/* Luxury Button Animations */
+@keyframes luxuryButtonPulse {
+  0%, 100% {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow:
+      0 12px 48px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+}
+
+@keyframes luxuryButtonGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+  }
+}
+
+/* Active/Focus States */
+.luxury-hero-btn:active {
+  transform: translateY(0px);
+  transition: transform 0.1s ease;
+}
+
+.luxury-hero-btn:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.3),
+    0 12px 48px rgba(0, 0, 0, 0.18);
+}
+
+/* Enhanced Hover Effects */
+.luxury-hero-btn-primary:hover {
+  animation: luxuryButtonPulse 2s infinite;
+}
+
+.luxury-hero-btn-secondary:hover {
+  animation: luxuryButtonGlow 2s infinite;
+}
+
+/* Luxury Button Container */
+.luxury-hero-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .luxury-hero-btn {
+    min-width: 100%;
+    padding: 20px 24px;
+    font-size: 15px;
+    letter-spacing: 0.75px;
+  }
+
+  .luxury-hero-btn-container {
+    max-width: 100%;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 641px) {
+  .luxury-hero-btn {
+    flex: 1;
+    max-width: 240px;
+    min-height: 64px;
+  }
+
+  .luxury-hero-btn-container {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .luxury-hero-btn {
+    padding: 22px 28px;
+    font-size: 16px;
+  }
+
+  .luxury-hero-btn:hover {
+    transform: none;
+  }
+
+  .luxury-hero-btn:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}

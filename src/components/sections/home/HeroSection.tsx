@@ -1,37 +1,58 @@
 "use client";
 
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import MinimalButton from "@/components/ui/MinimalButton";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function HeroSection() {
+  const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
+
   return (
     <ImageCarouselHero
       images={[
         "/images/hero-sections/hero-banner-2.jpg",
         "/images/hero-sections/hero-banner-3.jpg",
+        "/images/hero-sections/hero-banner-5.jpg",
         "/images/hero-sections/hero-banner-4.jpg",
         "/images/hero-sections/hero-banner-1.jpg",
       ]}
-      title={`กลุ่มบริษัท\nผดุงศิลป์`}
-      subtitle="ก่อตั้งเมื่อปี 2003"
-      description={`ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน\nด้วยประสบการณ์กว่า 20 ปี`}
+      title={t("home.hero.title")}
+      subtitle={t("home.hero.subtitle")}
+      description={t("home.hero.description")}
       autoSlideDelay={6000}
     >
-      <MinimalButton
-        href="/#services"
-        variant="white"
-        icon={<ArrowRight className="w-5 h-5" />}
-      >
-        ดูบริการของเรา
-      </MinimalButton>
-      <MinimalButton
-        href="/contact-us"
-        variant="secondary"
-        className="border-white text-white hover:bg-white hover:text-gray-900"
-      >
-        ติดต่อเรา
-      </MinimalButton>
+      {/* Luxury Hero Buttons */}
+      <div className="luxury-hero-btn-container">
+        <button
+          className="luxury-hero-btn luxury-hero-btn-primary group"
+          onClick={() => {
+            const servicesSection = document.getElementById('services');
+            servicesSection?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          <span className="relative z-10 flex items-center justify-center gap-3">
+            <span className="font-semibold tracking-wide">{t("home.hero.viewServices")}</span>
+            <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+          </span>
+          <div className="luxury-btn-shimmer"></div>
+          <div className="luxury-btn-glow"></div>
+        </button>
+
+        <button
+          className="luxury-hero-btn luxury-hero-btn-secondary group"
+          onClick={() => router.push(`/${locale}/contact-us`)}
+        >
+          <span className="relative z-10 flex items-center justify-center gap-3">
+            <span className="font-semibold tracking-wide">{t("home.hero.contactUs")}</span>
+            <div className="w-2 h-2 rounded-full bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+          </span>
+          <div className="luxury-btn-border"></div>
+          <div className="luxury-btn-glow-secondary"></div>
+        </button>
+      </div>
     </ImageCarouselHero>
   );
 }

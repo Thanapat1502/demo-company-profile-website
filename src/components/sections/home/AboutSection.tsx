@@ -26,7 +26,7 @@ export default function AboutSection() {
 
             <p className="text-lg text-construction leading-relaxed">
               กลุ่มบริษัท ผดุงศิลป์ เป็นผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน
-              ด้วยประสบการณ์กว่า 20 ปี เราได้สร้างความเชื่อมั่นให้กับลูกค้าทั่วประเทศไทย
+              ด้วยประสบการณ์กว่า 50 ปี เราได้สร้างความเชื่อมั่นให้กับลูกค้าทั่วประเทศไทย
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <FeatureCard
               title="ประสบการณ์ยาวนาน"
-              description="มากกว่า 20 ปีในอุตสาหกรรม"
+              description="มากกว่า 50 ปีในอุตสาหกรรม"
             />
             <FeatureCard
               title="บริการครบวงจร"

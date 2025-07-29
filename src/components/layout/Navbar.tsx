@@ -5,7 +5,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   Link,
   Button,
 } from "@heroui/react";
@@ -14,6 +13,7 @@ import { useTheme } from "next-themes";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { Globe, Sun, Moon } from "lucide-react";
+import Image from "next/image";
 
 
 interface NavItem {
@@ -33,7 +33,6 @@ const navigationItems: NavItem[] = [
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuClosing, setIsMenuClosing] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
   const { theme, setTheme } = useTheme();
   const t = useTranslations();
@@ -45,7 +44,6 @@ export default function MainNavbar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
       setIsAtTop(scrollY < 50); // More sensitive for transparency
     };
     window.addEventListener("scroll", handleScroll);
@@ -112,10 +110,17 @@ export default function MainNavbar() {
           </div>
           <NavbarBrand>
             <Link href="/" className="flex items-center space-x-4 group">
-              <div className={`w-12 h-12 flex items-center justify-center transition-all duration-700 ease-out group-hover:scale-110 group-hover:rotate-3 relative overflow-hidden ${isAtTop ? 'shadow-xl shadow-white/20' : 'shadow-lg'
+              <div className={`w-12 h-12 rounded-md bg-white/60 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm flex items-center justify-center transition-all duration-700 ease-out group-hover:scale-110  relative overflow-hidden ${isAtTop ? 'shadow-xl shadow-white/20' : 'shadow-lg'
                 }`}
-                style={{ backgroundColor: 'var(--primary-blue)' }}>
-                <span className="text-white font-black text-lg relative z-10">PDS</span>
+              // style={{ backgroundColor: 'white' }}
+              >
+                <Image
+                  src="/images/pds-logo.png"
+                  alt="PDS Logo"
+                  width={36}
+                  height={36}
+                  className="object-contain relative z-10"
+                />
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
               <div className="flex flex-col">
@@ -126,7 +131,7 @@ export default function MainNavbar() {
                 >
                   PADUNGSILPA
                 </span>
-                <span className={`text-md font-bold tracking-[0.2em] transition-all duration-700 ease-out group-hover:tracking-[0.3em] ${isAtTop ? 'text-white/80' : 'text-gray-500'
+                <span className={`text-md font-bold  transition-all duration-700 ease-out group-hover:tracking-[0.3em] ${isAtTop ? 'text-white/80' : 'text-gray-500'
                   }`}>
                   GROUP
                 </span>
@@ -249,8 +254,14 @@ export default function MainNavbar() {
               {/* Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-white">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 flex items-center justify-center" style={{ backgroundColor: 'var(--primary-blue)' }}>
-                    <span className="text-white font-black text-sm">PDS</span>
+                  <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+                    <Image
+                      src="/images/pds-logo.png"
+                      alt="PDS Logo"
+                      width={24}
+                      height={24}
+                      className="object-contain"
+                    />
                   </div>
                   <span className="text-lg font-bold text-gray-900">PADUNGSILPA</span>
                 </div>

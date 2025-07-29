@@ -20,9 +20,11 @@
   },
   "home": {
     "hero": {
-      "title": "Leading Gas Station Construction & Engineering Services",
-      "subtitle": "PADUNGSILPA GROUP",
-      "description": "With over 20 years of experience, we provide comprehensive gas station construction, engineering, and maintenance services across Thailand."
+      "title": "PADUNGSILPA\nGROUP",
+      "subtitle": "Established in 2003",
+      "description": "Leading Gas Station Construction & Engineering Services\nWith over 50 years of experience",
+      "viewServices": "Services",
+      "contactUs": "Contact Us"
     },
     "stats": {
       "experience": "Years Experience",
@@ -31,8 +33,13 @@
       "support": "Support Service"
     },
     "services": {
-      "title": "Our Services",
-      "description": "We provide comprehensive solutions for gas station construction and engineering projects",
+      "title": "Products & Services",
+      "description": "For over 50 years, Padungsilpa Group has been the expert in comprehensive gas station business.",
+      "viewAll": "Services",
+      "cta": {
+        "title": "Interested in Our Products & Services?",
+        "description": "Contact us for consultation and free quotation, or view more details of all our products and services"
+      },
       "gasStation": {
         "title": "Gas Station Construction",
         "description": "Complete gas station construction services from design to completion"
@@ -64,7 +71,7 @@
   },
   "footer": {
     "company": {
-      "description": "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering."
+      "description": "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering."
     },
     "quickLinks": "Quick Links",
     "services": "Our Services",
@@ -416,7 +423,7 @@
       "title": "Our Offices",
       "headquarters": {
         "name": "Headquarters - Bangkok",
-        "address": "123 Business District, Bangkok 10110, Thailand",
+        "address": "11/1 Chaengwatta 14 Rd, Thungsonghong, Laksi Bangkok 10210, Thailand",
         "hours": "Monday - Friday: 8:00 AM - 6:00 PM\nSaturday: 8:00 AM - 12:00 PM"
       },
       "regional": {

@@ -51,7 +51,7 @@ export default function SettingsAdminPage() {
   const router = useRouter();
   const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onClose: onPasswordModalClose } = useDisclosure();
   const { isOpen: isLogoutModalOpen, onOpen: onLogoutModalOpen, onClose: onLogoutModalClose } = useDisclosure();
-  
+
   const [activeTab, setActiveTab] = useState("business");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -67,8 +67,8 @@ export default function SettingsAdminPage() {
     email: "info@padungsilpa.group",
     website: "https://www.padungsilpa.group",
     fax: "02-123-4568",
-    description: "ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน ด้วยประสบการณ์กว่า 20 ปี",
-    descriptionEn: "Leading provider of gas station construction and engineering services with over 20 years of experience",
+    description: "ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน ด้วยประสบการณ์กว่า 50 ปี",
+    descriptionEn: "Leading provider of gas station construction and engineering services with over 50 years of experience",
   });
 
   const handleSaveBusinessInfo = () => {
@@ -82,7 +82,7 @@ export default function SettingsAdminPage() {
       alert("รหัสผ่านใหม่ไม่ตรงกัน");
       return;
     }
-    
+
     // Implement password change logic here
     console.log("Changing password");
     onPasswordModalClose();

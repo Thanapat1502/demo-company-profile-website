@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | Padungsilpa Group",
   },
   description:
-    "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 20 ปี",
+    "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
   keywords: [
     "Gas Station",
     "Construction",
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
     url: "https://www.padungsilpa.group",
     title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
-      "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering.",
+      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
     siteName: "Padungsilpa Group",
   },
   twitter: {
     card: "summary_large_image",
     title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
     description:
-      "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering.",
+      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
     creator: "@padungsilpagroup",
   },
   robots: {

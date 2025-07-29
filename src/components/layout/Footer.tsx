@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, Button, Divider } from "@heroui/react";
+import { Link } from "@heroui/react";
 import {
   MapPin,
   Phone,
@@ -11,11 +11,12 @@ import {
   Youtube,
   Clock,
   Globe,
-  ArrowUp
+  ArrowUp,
+  ExternalLink
 } from "lucide-react";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import Image from "next/image";
 
 interface FooterLink {
   label: string;
@@ -40,75 +41,90 @@ const services: FooterLink[] = [
 export default function Footer() {
   const [currentLang, setCurrentLang] = useState<'en' | 'th'>('th');
   const t = useTranslations();
+  const locale = useLocale();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      {/* Main Footer Content */}
+    <footer className="pt-4 relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+      {/* Subtle Luxury Background Effects */}
+      <div className="absolute inset-0 opacity-3">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-transparent to-blue-800/5"></div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      {/* Ultra Compact Main Footer Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 items-start">
           {/* Company Info */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
+            {/* Compact Luxury Logo */}
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">PDS</span>
+              <div className="relative">
+                <div className="w-12 h-12 rounded bg-white/100 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm flex items-center justify-center relative overflow-hidden group">
+                  <Image
+                    src="/images/pds-logo.png"
+                    alt="PDS Logo"
+                    width={32}
+                    height={32}
+                    className="object-contain relative z-10"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-white">
+                <span className="text-xl font-black text-white tracking-wide">
                   PADUNGSILPA
                 </span>
-                <span className="text-sm text-gray-400 font-medium tracking-wider">
+                <span className="text-md  font-semibold uppercase">
                   GROUP
                 </span>
               </div>
             </div>
 
-            <p className="text-gray-300 mb-8 leading-relaxed">
-              {currentLang === 'en'
-                ? "Leading comprehensive gas station business services with over 20 years of experience in construction and engineering."
-                : "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 20 ปี ในงานก่อสร้างและวิศวกรรม"
-              }
+            <p className="text-gray-300 mb-6 leading-relaxed text-md max-w-xs">
+              {t("footer.company.description")}
             </p>
 
-            {/* Social Media */}
-            <div className="flex space-x-4">
+            {/* Compact Social Media */}
+            <div className="flex space-x-2">
               {[
-                { icon: Facebook, color: "hover:text-blue-400", href: "#" },
-                { icon: Instagram, color: "hover:text-pink-400", href: "#" },
-                { icon: Linkedin, color: "hover:text-blue-600", href: "#" },
-                { icon: Youtube, color: "hover:text-red-500", href: "#" },
+                { icon: Facebook, color: "hover:bg-blue-600/20 hover:text-blue-400", href: "#" },
+                { icon: Instagram, color: "hover:bg-pink-600/20 hover:text-pink-400", href: "#" },
+                { icon: Linkedin, color: "hover:bg-blue-700/20 hover:text-blue-500", href: "#" },
+                { icon: Youtube, color: "hover:bg-red-600/20 hover:text-red-400", href: "#" },
               ].map((social, index) => (
-                <Button
+                <button
                   key={index}
-                  isIconOnly
-                  variant="light"
-                  className={`text-gray-400 ${social.color} hover:bg-gray-800 transition-colors duration-200`}
-                  as={Link}
-                  href={social.href}
+                  className={`relative w-10 h-10 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}
                 >
-                  <social.icon size={20} />
-                </Button>
+                  <social.icon size={16} className="relative z-10 mx-auto" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+                </button>
               ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">
-              {currentLang === 'en' ? 'Quick Links' : 'ลิงก์ด่วน'}
-            </h3>
-            <ul className="space-y-3">
+            <div className="relative mb-5">
+              <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
+                {t("footer.quickLinks")}
+              </h3>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+            </div>
+            <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                    href={`/${locale}${link.href}`}
+                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md"
                   >
-                    {currentLang === 'en' ? link.label : link.labelTh}
+                    <span className="relative z-10">{currentLang === 'en' ? link.label : link.labelTh}</span>
+                    <ExternalLink size={12} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
               ))}
@@ -117,17 +133,22 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">
-              {currentLang === 'en' ? 'Our Services' : 'บริการของเรา'}
-            </h3>
-            <ul className="space-y-3">
+            <div className="relative mb-5">
+              <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
+                {t("footer.services")}
+              </h3>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+            </div>
+            <ul className="space-y-2">
               {services.map((service) => (
                 <li key={service.href}>
                   <Link
-                    href={service.href}
-                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                    href={`/${locale}${service.href}`}
+                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md"
                   >
-                    {currentLang === 'en' ? service.label : service.labelTh}
+                    <span className="relative z-10">{currentLang === 'en' ? service.label : service.labelTh}</span>
+                    <ExternalLink size={12} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
               ))}
@@ -135,48 +156,55 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">
-              {currentLang === 'en' ? 'Contact Info' : 'ข้อมูลติดต่อ'}
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <MapPin size={20} className="text-blue-400 mt-1 flex-shrink-0" />
-                <div className="text-gray-300">
-                  <p className="text-sm">
-                    {currentLang === 'en'
-                      ? "123 Business District, Bangkok 10110, Thailand"
-                      : "123 เขตธุรกิจ กรุงเทพมหานคร 10110 ประเทศไทย"
-                    }
+          <div className="lg:col-span-2">
+            <div className="relative mb-5">
+              <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
+                {t("footer.contact")}
+              </h3>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+            </div>
+
+            <div className="space-y-3">
+              {/* Contact Details - Stacked vertically */}
+              <div className="group flex items-start space-x-3  border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
+                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
+                  <MapPin size={14} className="text-blue-400" />
+                </div>
+                <div className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
+                  <p className="text-md leading-relaxed">
+                    {t("contact.offices.headquarters.address")}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-3">
-                <Phone size={20} className="text-blue-400 flex-shrink-0" />
-                <span className="text-gray-300">+66 2 123 4567</span>
+              <div className="group flex items-center space-x-3 border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
+                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
+                  <Phone size={14} className="text-blue-400" />
+                </div>
+                <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md">+66 2 573 3533</span>
               </div>
 
-              <div className="flex items-center space-x-3">
-                <Mail size={20} className="text-blue-400 flex-shrink-0" />
-                <span className="text-gray-300">info@padungsilpa.group</span>
+              <div className="group flex items-center space-x-3 border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
+                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
+                  <Mail size={14} className="text-blue-400" />
+                </div>
+                <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md">sales@padungsilpa.com</span>
               </div>
 
-              <div className="flex items-start space-x-3">
-                <Clock size={20} className="text-blue-400 mt-1 flex-shrink-0" />
-                <div className="text-gray-300">
-                  <p className="text-sm">
-                    {currentLang === 'en'
-                      ? "Mon - Fri: 8:00 AM - 6:00 PM"
-                      : "จันทร์ - ศุกร์: 08:00 - 18:00 น."
-                    }
-                  </p>
-                  <p className="text-sm">
-                    {currentLang === 'en'
-                      ? "Sat: 8:00 AM - 12:00 PM"
-                      : "เสาร์: 08:00 - 12:00 น."
-                    }
-                  </p>
+              {/* Working Hours */}
+              <div className="group  border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center group-hover:bg-blue-600/30 transition-colors duration-300">
+                    <Clock size={14} className="text-blue-400" />
+                  </div>
+                  <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md"> <div className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 space-y-1">
+                    <p className="text-md">
+                      {t("footer.workingHours.weekdays")}
+                    </p>
+                    <p className="text-md">
+                      {t("footer.workingHours.saturday")}
+                    </p>
+                  </div></span>
                 </div>
               </div>
             </div>
@@ -184,41 +212,53 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gray-800"></div>
+      {/* Luxury Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-600/50 to-transparent h-px"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent h-px blur-sm"></div>
+      </div>
 
       {/* Bottom Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-gray-400 text-sm">
-            © 2024 Padungsilpa Group. {currentLang === 'en' ? 'All rights reserved.' : 'สงวนลิขสิทธิ์'}
+          <div className="text-gray-400 text-md font-medium">
+            © 2025 Padungsilpa Group. {t("footer.rights")}
           </div>
 
-          <div className="flex items-center space-x-6 text-sm">
-            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-200">
-              {currentLang === 'en' ? 'Privacy Policy' : 'นโยบายความเป็นส่วนตัว'}
-            </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">
-              {currentLang === 'en' ? 'Terms of Service' : 'เงื่อนไขการใช้งาน'}
-            </Link>
-            <Button
-              isIconOnly
-              variant="light"
-              size="sm"
-              onPress={() => setCurrentLang(currentLang === 'en' ? 'th' : 'en')}
-              className="text-gray-400 hover:text-white transition-colors duration-200"
+          <div className="flex items-center space-x-6 text-md">
+            <Link
+              href={`/${locale}/privacy`}
+              className="group text-gray-400 hover:text-white transition-all duration-300 relative"
             >
-              <Globe size={16} />
-            </Button>
+              <span className="relative z-10">{t("footer.privacy")}</span>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+            </Link>
+            <Link
+              href={`/${locale}/terms`}
+              className="group text-gray-400 hover:text-white transition-all duration-300 relative"
+            >
+              <span className="relative z-10">{t("footer.terms")}</span>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+            </Link>
+            <button
+              onClick={() => setCurrentLang(currentLang === 'en' ? 'th' : 'en')}
+              className="group w-8 h-8 rounded-full border border-gray-600/50 text-gray-400 hover:text-white hover:border-gray-400/50 transition-all duration-300 hover:scale-110 hover:shadow-lg overflow-hidden relative"
+            >
+              <Globe size={14} className="relative z-10 mx-auto" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Scroll to Top Button */}
+      {/* Compact Luxury Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        className="fixed bottom-6 right-6 z-50 group w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 hover:scale-110 hover:-translate-y-1 overflow-hidden"
       >
-        <ArrowUp size={20} />
+        <ArrowUp size={18} className="relative z-10 mx-auto transition-transform duration-300 group-hover:-translate-y-0.5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       </button>
     </footer>
   );

@@ -55,7 +55,7 @@ export default function ContactUsPage() {
     {
       name: t("contact.offices.headquarters.name"),
       address: t("contact.offices.headquarters.address"),
-      phone: "+66 2 123 4567",
+      phone: "+66 2 573 3533",
       email: "bangkok@padungsilpa.group",
       hours: t("contact.offices.headquarters.hours"),
     },

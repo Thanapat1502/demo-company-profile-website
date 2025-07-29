@@ -1,14 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import MinimalButton from "@/components/ui/MinimalButton";
 import { ArrowRight, ExternalLink } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function ServicesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const t = useTranslations();
+  const locale = useLocale();
+  const router = useRouter();
 
   const products = [
     {
@@ -67,16 +71,6 @@ export default function ServicesSection() {
     }
   ];
 
-  // Handle scroll for parallax effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   // Auto-play functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -98,7 +92,7 @@ export default function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-parallax-section parallax-optimized services-section-overlap"
+      className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap"
       style={{
         transform: `translateY(${-scrollY * 0.3}px)`,
       }}
@@ -118,22 +112,32 @@ export default function ServicesSection() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-4 mb-4">
-              <div className="w-20 h-px bg-gray-300"></div>
-              <span className="text-[var(--primary-blue)] uppercase text-2xl lg:text-5xl font-semibold">
-                สินค้าและบริการ
-              </span>
-              <div className="w-20 h-px bg-gray-300"></div>
+          {/* Ultra Minimal Luxury Header */}
+          <div className="text-center mb-4 relative">
+            {/* Subtle Background Effects */}
+            <div className="absolute inset-0 -top-8 -bottom-8 opacity-30">
+              <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-[var(--primary-blue)]/5 rounded-full blur-3xl"></div>
+              <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-blue-800/5 rounded-full blur-2xl"></div>
             </div>
 
-            {/* <h2 className="text-5xl lg:text-5xl font-black text-[var(--primary-blue)] mb-8 leading-tight">
-              สินค้าและบริการ
-            </h2> */}
+            {/* Clean Typography Focus */}
+            <div className="relative z-10">
+              {/* Luxury Title with Gradient */}
+              <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
+                {t("home.services.title")}
+              </h2>
 
-            <p className="text-md md:text-2xl text-gray-700 leading-relaxed max-w-4xl mx-auto font-normal">
-              ตลอดระยะเวลากว่า 50 ปี กลุ่มบริษัทผดุงศิลป์ คือผู้เชี่ยวชาญในธุรกิจสถานีบริการน้ำมันครบวงจร ปัจจุบันเรามีสินค้าและบริการที่ตอบสนองความต้องการของกลุ่มลูกค้า ดังต่อไปนี้
-            </p>
+              {/* Enhanced Elegant Line with Glow */}
+              <div className="relative flex items-center justify-center mb-4">
+                <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+                <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+              </div>
+
+              {/* Refined Description with Subtle Shadow */}
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed font-normal max-w-2xl mx-auto tracking-wide drop-shadow-sm">
+                {t("home.services.description")}
+              </p>
+            </div>
           </div>
 
           {/* Main Content Area */}
@@ -163,25 +167,25 @@ export default function ServicesSection() {
                     {/* Product content overlay */}
                     <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-6">
                       {/* Content container that moves up on hover to make room for learn more link */}
-                      <div className="transform transition-transform duration-500 ease-out group-hover:-translate-y-12">
-                        <div className="space-y-3">
+                      <div className="transform transition-transform duration-500 ease-out group-hover:-translate-y-0 md:group-hover:-translate-y-12 ">
+                        <div className="md:space-y-3">
                           {/* Product Title - Moves up on hover */}
-                          <h3 className="text-xl lg:text-xl font-black text-white line-clamp-1 leading-tight transform transition-all duration-500 ease-out">
+                          <h3 className="text-xl lg:text-xl font-black text-white line-clamp-2 md:line-clamp-1 leading-tight transform transition-all duration-500 ease-out">
                             {product.title}
                           </h3>
 
                           {/* Product Description - Moves up on hover */}
-                          <p className="text-white/80 text-md leading-relaxed line-clamp-2 transform transition-all duration-500 ease-out">
+                          <p className="text-white/80 text-sm md:text-lg leading-relaxed line-clamp-2 transform transition-all duration-500 ease-out">
                             {product.description}
                           </p>
                         </div>
                       </div>
 
                       {/* Learn More Link - Slides up from bottom */}
-                      <div className="absolute bottom-6 left-6 right-6 overflow-hidden">
+                      <div className="hidden md:block absolute bottom-6 left-6 right-6 overflow-hidden">
                         <div className="transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out delay-150">
                           <span className="inline-flex items-center gap-2 text-white/90 text-md font-medium group-hover:text-white transition-colors duration-300 bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hover:bg-black/30 hover:border-white/30">
-                            เรียนรู้เพิ่มเติม
+                            {t("common.learnMore")}
                             <ExternalLink className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
                           </span>
                         </div>
@@ -234,14 +238,17 @@ export default function ServicesSection() {
 
                               {/* Action Button */}
                               <div className="pt-2">
-                                <MinimalButton
-                                  href="/products-services"
-                                  variant="white"
-                                  icon={<ExternalLink className="w-5 h-5" />}
-                                  className="px-6 py-3"
+                                <button
+                                  className="luxury-hero-btn luxury-hero-btn-primary group"
+                                  onClick={() => router.push(`/${locale}/products-services`)}
                                 >
-                                  เรียนรู้เพิ่มเติม
-                                </MinimalButton>
+                                  <span className="relative z-10 flex items-center justify-center gap-3">
+                                    <span className="font-semibold tracking-wide">{t("common.learnMore")}</span>
+                                    <ExternalLink className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
+                                  </span>
+                                  <div className="luxury-btn-shimmer"></div>
+                                  <div className="luxury-btn-glow"></div>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -274,30 +281,43 @@ export default function ServicesSection() {
             <div className="text-center space-y-6 pt-8">
               <div>
                 <h4 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  สนใจสินค้าและบริการของเรา?
+                  {t("home.services.cta.title")}
                 </h4>
-                <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                  ติดต่อเราเพื่อขอคำปรึกษาและรับใบเสนอราคาฟรี หรือดูรายละเอียดเพิ่มเติมของสินค้าและบริการทั้งหมด
+                <p className="text-gray-600 text-lg mx-auto">
+                  {t("home.services.cta.description")}
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <MinimalButton
-                  href="/products-services"
-                  variant="primary"
-                  icon={<ArrowRight className="w-5 h-5" />}
-                  className="px-8 py-4 text-lg"
+              <div className="luxury-hero-btn-container">
+                <button
+                  className="luxury-hero-btn luxury-hero-btn-primary group overflow-hidden"
+                  onClick={() => router.push(`/${locale}/products-services`)}
                 >
-                  ดูสินค้าและบริการทั้งหมด
-                </MinimalButton>
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    <span className="font-semibold tracking-wide">{t("home.services.viewAll")}</span>
+                    <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+                  </span>
+                  <div className="luxury-btn-shimmer"></div>
+                  <div className="luxury-btn-glow"></div>
+                  {/* NavBar-style hover animation */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                </button>
 
-                <MinimalButton
-                  href="/contact"
-                  variant="secondary"
-                  className="px-8 py-4 text-lg border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900"
+                <button
+                  className="luxury-hero-btn luxury-hero-btn-primary group overflow-hidden"
+                  onClick={() => router.push(`/${locale}/contact-us`)}
                 >
-                  ติดต่อเรา
-                </MinimalButton>
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    <span className="font-semibold tracking-wide">{t("common.contactUs")}</span>
+                    <div className="w-2 h-2 rounded-full bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+                  </span>
+                  <div className="luxury-btn-shimmer"></div>
+                  <div className="luxury-btn-glow"></div>
+                  {/* NavBar-style hover animation */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                </button>
               </div>
             </div>
           </div>
