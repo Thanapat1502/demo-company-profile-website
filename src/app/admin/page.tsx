@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import {
-  Home,
   Image,
   Settings,
   Users,
@@ -11,19 +10,7 @@ import {
   Type,
   Menu,
   X,
-  Plus,
-  Edit,
-  Trash2,
-  Save,
-  Upload,
-  Eye,
-  EyeOff,
-  Search,
-  Filter,
-  Download,
   Globe,
-  ToggleLeft,
-  ToggleRight,
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
 import { ProductManager } from "./(component)/productManager";
@@ -538,7 +525,7 @@ const AdminDashboard = () => {
       case "services":
         return <ServiceManager />;
       case "products":
-        return <ProductManager />;
+        return <ProductManager activeLanguage={currentLanguage} />;
       case "news":
         return <NewsManager />;
       case "text":

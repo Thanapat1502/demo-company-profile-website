@@ -8,6 +8,7 @@ export const LanguageToggle = ({ value, onChange, size = "default" }) => {
         isLarge ? "text-sm" : "text-xs"
       }`}>
       <button
+        type="button"
         className={`px-3 py-1 rounded-md font-medium transition-colors ${
           value === "th"
             ? "bg-blue-600 text-white shadow-sm"
@@ -17,6 +18,7 @@ export const LanguageToggle = ({ value, onChange, size = "default" }) => {
         ไทย
       </button>
       <button
+        type="button"
         className={`px-3 py-1 rounded-md font-medium transition-colors ${
           value === "en"
             ? "bg-blue-600 text-white shadow-sm"
