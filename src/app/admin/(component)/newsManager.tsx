@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Plus, Upload, Type } from "lucide-react";
 import { LanguageToggle } from "./languageToggle";
+import React18QuillEditor from "@/components/admin/React18QuillEditor";
 
 export const NewsManager = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("th");
@@ -60,9 +61,9 @@ export const NewsManager = () => {
               </label>
               <div className="border border-gray-300 rounded-md min-h-96 bg-gray-50 flex items-center justify-center">
                 <div className="text-center text-gray-500">
-                  <Type size={32} className="mx-auto mb-2" />
-                  <p>Rich text editor would be here</p>
-                  <p className="text-sm">(React18QuillEditor)</p>
+                  {/* <Type size={32} className="mx-auto mb-2" /> */}
+                  <React18QuillEditor />
+                  {/* <p className="text-sm">(React18QuillEditor)</p> */}
                 </div>
               </div>
             </div>

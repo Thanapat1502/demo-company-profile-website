@@ -18,6 +18,9 @@ import { ServiceManager } from "./(component)/serviceManager";
 import { ContentManager } from "./(component)/contentManager";
 import { TextManager } from "./(component)/textManager";
 import { LanguageToggle } from "./(component)/languageToggle";
+import { PartnerManager } from "./(component)/partner";
+import { ExecutiveManager } from "./(component)/executive";
+import { ContactManager } from "./(component)/contact";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
@@ -29,6 +32,7 @@ const AdminDashboard = () => {
     { id: "services", label: "Service Manager", icon: Settings },
     { id: "products", label: "Product Manager", icon: Package },
     { id: "executives", label: "Executive Manager", icon: Users },
+    { id: "partners", label: "Partner Manager", icon: Globe },
     { id: "news", label: "News/Event Manager", icon: Newspaper },
     { id: "contact", label: "Contact Manager", icon: Phone },
     { id: "text", label: "Text Manager", icon: Type },
@@ -530,6 +534,12 @@ const AdminDashboard = () => {
         return <NewsManager />;
       case "text":
         return <TextManager />;
+      case "executives":
+        return <ExecutiveManager />;
+      case "contact":
+        return <ContactManager />;
+      case "partners":
+        return <PartnerManager />;
       default:
         return <ContentManager />;
     }
@@ -626,7 +636,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-auto">{renderSection()}</main>
+        <main className="flex-1 p-6 mt-6 overflow-auto">{renderSection()}</main>
       </div>
     </div>
   );
