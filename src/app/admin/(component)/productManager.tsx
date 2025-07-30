@@ -1,46 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Plus, Eye, EyeOff, X, Upload, Edit, Trash2 } from "lucide-react";
-import { BilingualInput } from "./languageToggle";
 
-type Product = {
-  id: number;
-  name: { th: string; en: string };
-  description: { th: string; en: string };
-  image: string | null;
-  available: boolean;
-};
+import {
+  useProductStore,
+  uploadProductImage,
+  Product as StoreProduct,
+} from "@/store/zustand/productStore";
 
 type FormValues = {
-  name: { th: string; en: string };
-  description: { th: string; en: string };
-  image: string | null;
-  available: boolean;
+  name_th: string;
+  name_en: string;
+  description_th: string;
+  description_en: string;
+  image_url: string;
+  status: "available" | "unavailable";
 };
-
 export const ProductManager = (props: { activeLanguage: string }) => {
   const { activeLanguage } = props;
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      name: { th: "ผลิตภัณฑ์ A", en: "Product A" },
-      description: { th: "รายละเอียดผลิตภัณฑ์ A", en: "Product A description" },
-      image: null,
-      available: true,
-    },
-    {
-      id: 2,
-      name: { th: "ผลิตภัณฑ์ B", en: "Product B" },
-      description: { th: "รายละเอียดผลิตภัณฑ์ B", en: "Product B description" },
-      image: null,
-      available: false,
-    },
-  ]);
+  const {
+    products,
+    fetchProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    error: productError,
+    clearError: clearProductError,
+  } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: "" | "add" | "edit" | "delete";
-    selectedProduct: Product | null;
+    selectedProduct: StoreProduct | null;
   }>({
     isOpen: false,
     type: "",
@@ -57,38 +52,42 @@ export const ProductManager = (props: { activeLanguage: string }) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: { th: "", en: "" },
-      description: { th: "", en: "" },
-      image: null,
-      available: true,
+      name_th: "",
+      name_en: "",
+      description_th: "",
+      description_en: "",
+      image_url: "",
+      status: "available",
     },
   });
 
-  // Watch image and available for UI
-  const image = watch("image");
-  const available = watch("available");
+  const image_url = watch("image_url");
 
   const openAddModal = () => {
     reset({
-      name: { th: "", en: "" },
-      description: { th: "", en: "" },
-      image: null,
-      available: true,
+      name_th: "",
+      name_en: "",
+      description_th: "",
+      description_en: "",
+      image_url: "",
+      status: "available",
     });
     setModalState({ isOpen: true, type: "add", selectedProduct: null });
   };
 
-  const openEditModal = (product: Product) => {
+  const openEditModal = (product: StoreProduct) => {
     reset({
-      name: product.name,
-      description: product.description,
-      image: product.image,
-      available: product.available,
+      name_th: product.name_th,
+      name_en: product.name_en,
+      description_th: product.description_th || "",
+      description_en: product.description_en || "",
+      image_url: product.image_url,
+      status: product.status,
     });
     setModalState({ isOpen: true, type: "edit", selectedProduct: product });
   };
 
-  const openDeleteModal = (product: Product) => {
+  const openDeleteModal = (product: StoreProduct) => {
     setModalState({ isOpen: true, type: "delete", selectedProduct: product });
   };
 
@@ -97,53 +96,44 @@ export const ProductManager = (props: { activeLanguage: string }) => {
     reset();
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setValue("image", ev.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      const url = await uploadProductImage(file);
+      if (url) setValue("image_url", url);
     }
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     if (modalState.type === "add") {
-      const newProduct: Product = {
-        id: Date.now(),
+      await addProduct({
         ...data,
-      };
-      setProducts((prev) => [...prev, newProduct]);
+        id: crypto.randomUUID(),
+      });
     } else if (modalState.type === "edit" && modalState.selectedProduct) {
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === modalState.selectedProduct!.id
-            ? { ...modalState.selectedProduct!, ...data }
-            : p
-        )
-      );
+      await updateProduct(modalState.selectedProduct.id, {
+        ...data,
+        id: modalState.selectedProduct.id,
+      });
     }
     closeModal();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (modalState.selectedProduct) {
-      setProducts((prev) =>
-        prev.filter((p) => p.id !== modalState.selectedProduct!.id)
-      );
+      await deleteProduct(modalState.selectedProduct.id);
     }
     closeModal();
   };
 
-  const toggleAvailability = (productId: number) => {
-    setProducts((prev) =>
-      prev.map((product) =>
-        product.id === productId
-          ? { ...product, available: !product.available }
-          : product
-      )
-    );
+  const toggleAvailability = async (productId: string) => {
+    const product = products?.find((p) => p.id === productId);
+    if (product) {
+      await updateProduct(productId, {
+        ...product,
+        status: product.status === "available" ? "unavailable" : "available",
+      });
+    }
   };
 
   // Modal Component
@@ -170,7 +160,7 @@ export const ProductManager = (props: { activeLanguage: string }) => {
             {modalState.type === "delete" ? (
               <div className="space-y-4">
                 <p className="text-gray-600">
-                  {`Are you sure you want to delete "${modalState.selectedProduct?.name.th}"? This action cannot be undone.`}
+                  {`Are you sure you want to delete "${modalState.selectedProduct?.name_th}"? This action cannot be undone.`}
                 </p>
                 <div className="flex justify-end gap-3">
                   <button
@@ -193,16 +183,16 @@ export const ProductManager = (props: { activeLanguage: string }) => {
                     Product Image
                   </label>
                   <div className="space-y-3">
-                    {image ? (
+                    {image_url ? (
                       <div className="relative">
                         <img
-                          src={image}
+                          src={image_url}
                           alt="Product preview"
                           className="w-full h-48 object-cover rounded-lg border"
                         />
                         <button
                           type="button"
-                          onClick={() => setValue("image", null)}
+                          onClick={() => setValue("image_url", "")}
                           className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
                           <X size={16} />
                         </button>
@@ -234,36 +224,64 @@ export const ProductManager = (props: { activeLanguage: string }) => {
                 </div>
 
                 {/* Product Name */}
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field }) => (
-                    <BilingualInput
-                      label="Product Name"
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={{ th: "ชื่อผลิตภัณฑ์", en: "Product name" }}
-                    />
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="name_th"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="ชื่อผลิตภัณฑ์ (TH)"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="name_en"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Product name (EN)"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </div>
 
                 {/* Description */}
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field }) => (
-                    <BilingualInput
-                      label="Description"
-                      type="textarea"
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={{
-                        th: "รายละเอียดผลิตภัณฑ์",
-                        en: "Product description",
-                      }}
-                    />
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="description_th"
+                    control={control}
+                    render={({ field }) => (
+                      <textarea
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        rows={3}
+                        placeholder="รายละเอียดผลิตภัณฑ์ (TH)"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="description_en"
+                    control={control}
+                    render={({ field }) => (
+                      <textarea
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        rows={3}
+                        placeholder="Product description (EN)"
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </div>
 
                 {/* Availability Toggle */}
                 <div className="flex items-center justify-between">
@@ -271,18 +289,28 @@ export const ProductManager = (props: { activeLanguage: string }) => {
                     Product Availability
                   </label>
                   <Controller
-                    name="available"
+                    name="status"
                     control={control}
                     render={({ field }) => (
                       <button
                         type="button"
-                        onClick={() => field.onChange(!field.value)}
+                        onClick={() =>
+                          field.onChange(
+                            field.value === "available"
+                              ? "unavailable"
+                              : "available"
+                          )
+                        }
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          field.value ? "bg-blue-600" : "bg-gray-200"
+                          field.value === "available"
+                            ? "bg-blue-600"
+                            : "bg-gray-200"
                         }`}>
                         <span
                           className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            field.value ? "translate-x-6" : "translate-x-1"
+                            field.value === "available"
+                              ? "translate-x-6"
+                              : "translate-x-1"
                           }`}
                         />
                       </button>
@@ -324,16 +352,27 @@ export const ProductManager = (props: { activeLanguage: string }) => {
         </button>
       </div>
 
+      {productError && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded flex items-center justify-between">
+          <span>{productError}</span>
+          <button
+            onClick={clearProductError}
+            className="ml-2 text-xs underline">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
+        {products?.map((product) => (
           <div
             key={product.id}
             className="bg-white rounded-lg shadow-sm border overflow-hidden">
             <div className="aspect-video bg-gray-100 flex items-center justify-center overflow-hidden">
-              {product.image ? (
+              {product.image_url ? (
                 <img
-                  src={product.image}
-                  alt={product.name.en}
+                  src={product.image_url}
+                  alt={product.name_en}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -346,13 +385,13 @@ export const ProductManager = (props: { activeLanguage: string }) => {
                 <div className="flex items-center justify-between">
                   <h3 className="font-medium text-gray-900 truncate">
                     {activeLanguage === "th"
-                      ? product.name.th
-                      : product.name.en}
+                      ? product.name_th
+                      : product.name_en}
                   </h3>
                   <button
                     onClick={() => toggleAvailability(product.id)}
                     className="flex items-center gap-1">
-                    {product.available ? (
+                    {product.status === "available" ? (
                       <Eye className="text-green-600" size={16} />
                     ) : (
                       <EyeOff className="text-gray-400" size={16} />
@@ -362,18 +401,20 @@ export const ProductManager = (props: { activeLanguage: string }) => {
 
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {activeLanguage === "th"
-                    ? product.description.th
-                    : product.description.en}
+                    ? product.description_th
+                    : product.description_en}
                 </p>
 
                 <div className="flex items-center justify-between">
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
-                      product.available
+                      product.status === "available"
                         ? "bg-green-100 text-green-800"
                         : "bg-gray-100 text-gray-800"
                     }`}>
-                    {product.available ? "Available" : "Unavailable"}
+                    {product.status === "available"
+                      ? "Available"
+                      : "Unavailable"}
                   </span>
                 </div>
               </div>
