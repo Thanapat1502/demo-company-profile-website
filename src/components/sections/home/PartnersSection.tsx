@@ -55,9 +55,7 @@ export default function PartnersSection() {
           </span>
           <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             ความไว้วางใจจาก
-            <span className="text-blue-600 block">
-              ผู้นำด้านพลังงาน
-            </span>
+            <span className="text-blue-600 block">ผู้นำด้านพลังงาน</span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
             เราภูมิใจที่ได้รับความไว้วางใจจากบริษัทน้ำมันชั้นนำของประเทศ
@@ -69,8 +67,7 @@ export default function PartnersSection() {
           {partners.map((partner) => (
             <div
               key={partner.id}
-              className="bg-gray-50 p-8 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 group"
-            >
+              className="bg-gray-50 p-8 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 group">
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="w-20 h-20 relative flex items-center justify-center">
                   <div className="w-full h-full bg-white rounded-lg shadow-sm flex items-center justify-center p-2">
@@ -78,14 +75,6 @@ export default function PartnersSection() {
                       {partner.name}
                     </span>
                   </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {partner.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {partner.description}
-                  </p>
                 </div>
               </div>
             </div>

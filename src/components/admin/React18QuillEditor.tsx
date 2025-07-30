@@ -244,9 +244,9 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
   if (!isClient) {
     return (
       <div
-        className="border border-gray-600 rounded-lg p-4 min-h-[400px] bg-gray-900"
+        className="border border-gray-300 rounded-md p-4 min-h-[400px] bg-white"
         style={{ height: `${height}px` }}>
-        <div className="text-gray-400">กำลังโหลดเครื่องมือแก้ไข...</div>
+        <div className="text-gray-500">กำลังโหลดเครื่องมือแก้ไข...</div>
       </div>
     );
   }
@@ -264,23 +264,22 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
           font-size: 16px;
           line-height: 1.6;
-          background-color: #1a1a1a !important;
-          color: #e5e5e5 !important;
+          background-color: #ffffff !important;
+          color: #374151 !important;
+          border: none;
         }
         .ql-toolbar {
-          border-top: 1px solid #404040;
-          border-left: 1px solid #404040;
-          border-right: 1px solid #404040;
-          border-radius: 8px 8px 0 0;
+          border: 1px solid #d1d5db;
+          border-bottom: none;
+          border-radius: 6px 6px 0 0;
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif;
-          background-color: #2a2a2a !important;
+          background-color: #f9fafb !important;
         }
         .ql-container {
-          border-bottom: 1px solid #404040;
-          border-left: 1px solid #404040;
-          border-right: 1px solid #404040;
-          border-radius: 0 0 8px 8px;
-          background-color: #1a1a1a !important;
+          border: 1px solid #d1d5db;
+          border-top: none;
+          border-radius: 0 0 6px 6px;
+          background-color: #ffffff !important;
         }
         .ql-editor img {
           max-width: 100%;
@@ -324,20 +323,20 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
         }
         /* Toolbar buttons styling */
         .ql-snow .ql-toolbar button {
-          color: #e5e5e5 !important;
+          color: #374151 !important;
         }
         .ql-snow .ql-toolbar button:hover {
-          background-color: #404040 !important;
+          background-color: #e5e7eb !important;
         }
         .ql-snow .ql-toolbar button.ql-active {
           background-color: #3b82f6 !important;
           color: white !important;
         }
         .ql-snow .ql-stroke {
-          stroke: #e5e5e5 !important;
+          stroke: #374151 !important;
         }
         .ql-snow .ql-fill {
-          fill: #e5e5e5 !important;
+          fill: #374151 !important;
         }
         .ql-snow .ql-toolbar button.ql-video {
           width: 28px;
@@ -350,46 +349,48 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
         }
         .ql-editor.ql-blank::before {
           content: attr(data-placeholder);
-          color: #666 !important;
+          color: #9ca3af !important;
           font-style: italic;
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
         }
         .ql-snow .ql-tooltip {
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
-          background-color: #2a2a2a !important;
-          border: 1px solid #404040 !important;
-          color: #e5e5e5 !important;
+          background-color: #ffffff !important;
+          border: 1px solid #d1d5db !important;
+          color: #374151 !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .ql-snow .ql-tooltip input {
-          background-color: #1a1a1a !important;
-          color: #e5e5e5 !important;
-          border: 1px solid #404040 !important;
+          background-color: #ffffff !important;
+          color: #374151 !important;
+          border: 1px solid #d1d5db !important;
         }
         .ql-snow .ql-picker-label {
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
-          color: #e5e5e5 !important;
+          color: #374151 !important;
         }
         .ql-snow .ql-picker-options {
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
-          background-color: #2a2a2a !important;
-          border: 1px solid #404040 !important;
+          background-color: #ffffff !important;
+          border: 1px solid #d1d5db !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .ql-snow .ql-picker-item {
-          color: #e5e5e5 !important;
+          color: #374151 !important;
         }
         .ql-snow .ql-picker-item:hover {
-          background-color: #404040 !important;
+          background-color: #f3f4f6 !important;
         }
         /* Dropdown styling */
         .ql-snow .ql-picker.ql-expanded .ql-picker-label {
           border-color: #3b82f6 !important;
         }
         .ql-snow .ql-picker.ql-expanded .ql-picker-options {
-          border-color: #404040 !important;
+          border-color: #d1d5db !important;
         }
         /* Color picker styling */
         .ql-snow .ql-color-picker .ql-picker-options {
-          background-color: #2a2a2a !important;
+          background-color: #ffffff !important;
         }
         .ql-editor h1,
         .ql-editor h2,
@@ -398,7 +399,7 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
         .ql-editor h5,
         .ql-editor h6 {
           font-family: "Noto Sans Thai", Helvetica, Arial, sans-serif !important;
-          color: #f5f5f5 !important;
+          color: #111827 !important;
         }
         .ql-editor p,
         .ql-editor div,
@@ -430,8 +431,8 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
       <div
         ref={editorRef}
         style={{
-          backgroundColor: "#1a1a1a",
-          borderRadius: "8px",
+          backgroundColor: "#ffffff",
+          borderRadius: "6px",
           fontFamily: "Noto Sans Thai, sans-serif",
         }}
       />
