@@ -2,22 +2,20 @@
 
 import { useState, useEffect } from "react";
 import {
-  Calendar,
-  User,
-  Clock,
-  Tag,
   ArrowLeft,
+  Calendar,
+  Clock,
+  User,
   Share2,
-  Facebook,
-  Twitter,
-  Linkedin,
+  Bookmark,
 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import MainLayout from "@/components/layout/MainLayout";
 import MinimalButton from "@/components/ui/MinimalButton";
+import { Badge } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 
 interface NewsArticle {
   title: string;
@@ -33,11 +31,9 @@ interface NewsArticle {
 }
 
 export default function NewsDetailPage() {
-  const t = useTranslations();
   const locale = useLocale();
   const params = useParams();
   const slug = params.slug as string;
-
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [relatedArticles, setRelatedArticles] = useState<NewsArticle[]>([]);
 
@@ -112,17 +108,40 @@ export default function NewsDetailPage() {
       readTime: "5 นาที",
       tags: ["PERMATANK", "นวัตกรรม", "เทคโนโลยี", "IoT"],
     },
+    "sustainability-initiative": {
+      title: "ผดุงศิลป์ริเริ่มโครงการความยั่งยืนเพื่อสิ่งแวดล้อม",
+      excerpt:
+        "บริษัทเปิดตัวโครงการใหม่เพื่อลดผลกระทบต่อสิ่งแวดล้อม พร้อมเป้าหมายลดการปล่อยคาร์บอน 50% ภายในปี 2570",
+      content: `
+        <p>กลุ่มบริษัท ผดุงศิลป์ ประกาศเปิดตัวโครงการความยั่งยืนเพื่อสิ่งแวดล้อมอย่างเป็นทางการ โดยมีเป้าหมายลดการปล่อยคาร์บอน 50% ภายในปี 2570</p>
+        
+        <h2>แผนงานหลัก</h2>
+        <ul>
+          <li>การใช้พลังงานทดแทนในกระบวนการผลิต</li>
+          <li>การพัฒนาวัสดุก่อสร้างที่เป็นมิตรต่อสิ่งแวดล้อม</li>
+          <li>การจัดการของเสียอย่างมีประสิทธิภาพ</li>
+          <li>การปลูกป่าเพื่อชดเชยคาร์บอน</li>
+        </ul>
+      `,
+      image:
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      category: "ความยั่งยืน",
+      date: "2567-01-05",
+      author: "ทีมพัฒนาอย่างยั่งยืน",
+      slug: "sustainability-initiative",
+      readTime: "4 นาที",
+      tags: ["ความยั่งยืน", "สิ่งแวดล้อม", "คาร์บอน", "พลังงานทดแทน"],
+    },
   };
 
   useEffect(() => {
     const foundArticle = mockArticles[slug];
     if (foundArticle) {
       setArticle(foundArticle);
-
       // Get related articles (excluding current article)
       const related = Object.values(mockArticles)
         .filter((a) => a.slug !== slug)
-        .slice(0, 3);
+        .slice(0, 2);
       setRelatedArticles(related);
     }
   }, [slug]);
@@ -136,179 +155,225 @@ export default function NewsDetailPage() {
     });
   };
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-
   if (!article) {
     return (
-      <MainLayout>
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <h1 className="text-3xl font-bold text-slate-900 mb-4">
             ไม่พบข่าวสารที่ต้องการ
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-slate-600 mb-8">
             ข่าวสารที่คุณกำลังมองหาอาจถูกลบหรือย้ายไปแล้ว
           </p>
           <Link href={`/${locale}/news-events`}>
-            <MinimalButton variant="primary">กลับไปหน้าข่าวสาร</MinimalButton>
+            <MinimalButton className="bg-orange-600 hover:bg-blue-800">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              กลับไปหน้าข่าวสาร
+            </MinimalButton>
           </Link>
         </div>
-      </MainLayout>
+      </div>
     );
   }
 
   return (
-    <MainLayout>
-      {/* Header - Added top margin for navbar */}
-      <section className="pt-24 pb-8 bg-gray-50">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <Link
-            href={`/${locale}/news-events`}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
-            <ArrowLeft size={20} className="mr-2" />
-            กลับไปหน้าข่าวสาร
-          </Link>
-
-          <div className="mb-6">
-            <span className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full">
-              {article.category}
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-            {article.title}
-          </h1>
-
-          <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
-            <div className="flex items-center">
-              <User size={18} className="mr-2" />
-              {article.author}
-            </div>
-            <div className="flex items-center">
-              <Calendar size={18} className="mr-2" />
-              {formatDate(article.date)}
-            </div>
-            <div className="flex items-center">
-              <Clock size={18} className="mr-2" />
-              {article.readTime}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">แชร์:</span>
-            <div className="flex gap-2">
-              <button className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
-                <Facebook size={18} />
-              </button>
-              <button className="p-2 bg-sky-500 text-white rounded-full hover:bg-sky-600 transition-colors">
-                <Twitter size={18} />
-              </button>
-              <button className="p-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 transition-colors">
-                <Linkedin size={18} />
-              </button>
-              <button className="p-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors">
-                <Share2 size={18} />
-              </button>
+    <div className="min-h-screen bg-white">
+      {/* Navigation Bar */}
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link
+              href={`/${locale}/news-events`}
+              className="flex items-center text-slate-600 hover:text-slate-900 transition-colors">
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              <span className="font-medium">ข่าวสาร</span>
+            </Link>
+            <div className="flex items-center space-x-4">
+              <MinimalButton size="sm">
+                <Share2 className="w-4 h-4" />
+              </MinimalButton>
+              <MinimalButton size="sm">
+                <Bookmark className="w-4 h-4" />
+              </MinimalButton>
             </div>
           </div>
         </div>
-      </section>
+      </nav>
 
-      {/* Featured Image */}
-      <section className="py-8">
-        <div className="container mx-auto px-4">
-          <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden">
-            <Image
-              src={article.image}
-              alt={article.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+      {/* Hero Section */}
+      <section className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40 z-10" />
+        <div className="relative h-[60vh] min-h-[500px]">
+          <Image
+            src={article.image || "/placeholder.svg"}
+            alt={article.title}
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
-      </section>
-
-      {/* Article Content */}
-      <section className="py-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div
-              className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
-
-            {/* Tags */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <div className="flex items-center gap-4 flex-wrap">
-                <Tag size={20} className="text-gray-500" />
-                {article.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
-                    {tag}
-                  </span>
-                ))}
+        <div className="absolute inset-0 z-20 flex items-end">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 w-full">
+            <div className="max-w-4xl">
+              <Badge className="mb-6 bg-orange-600 text-white hover:bg-blue-800 text-sm font-medium">
+                {article.category}
+              </Badge>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                {article.title}
+              </h1>
+              <div className="flex items-center space-x-6 text-slate-200">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(article.date)}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{article.readTime}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <User className="w-4 h-4" />
+                  <span>{article.author}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Related Articles */}
-      {relatedArticles.length > 0 && (
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-              ข่าวเด่น
-            </h2>
+      {/* Main Content */}
+      <section className="py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12">
+            {/* Article Content */}
+            <div className="lg:col-span-8">
+              <div className="max-w-none">
+                {/* Excerpt */}
+                <div className="mb-12">
+                  <p className="text-xl text-slate-600 leading-relaxed font-light">
+                    {article.excerpt}
+                  </p>
+                </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {relatedArticles.map((relatedArticle, index) => (
-                <Link
-                  key={index}
-                  href={`/${locale}/news-events/${relatedArticle.slug}`}
-                  className="group block">
-                  <div className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-                    <div className="relative h-48">
-                      <Image
-                        src={relatedArticle.image}
-                        alt={relatedArticle.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
-                          {relatedArticle.category}
-                        </span>
-                      </div>
-                    </div>
+                {/* Content */}
+                <div
+                  className="prose prose-lg prose-slate max-w-none"
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "1.8",
+                  }}
+                  dangerouslySetInnerHTML={{ __html: article.content }}
+                />
 
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        {relatedArticle.title}
-                      </h3>
-
-                      <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
-                        {relatedArticle.excerpt}
-                      </p>
-
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <div className="flex items-center">
-                          <Calendar size={12} className="mr-1" />
-                          {formatDate(relatedArticle.date)}
-                        </div>
-                        <div className="flex items-center">
-                          <Clock size={12} className="mr-1" />
-                          {relatedArticle.readTime}
-                        </div>
-                      </div>
-                    </div>
+                {/* Tags */}
+                <div className="mt-16 pt-8 border-t border-slate-200">
+                  <h3 className="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wide">
+                    แท็ก
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {article.tags.map((tag, index) => (
+                      <Badge
+                        key={index}
+                        className="px-4 py-2 text-sm border-slate-300 text-slate-700 hover:bg-slate-50">
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
-                </Link>
-              ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-4">
+              <div className="sticky top-24 space-y-8">
+                {/* Related Articles */}
+                {relatedArticles.length > 0 && (
+                  <Card className="border-slate-200">
+                    <CardBody className="p-6">
+                      <h3 className="text-lg font-semibold text-slate-900 mb-6">
+                        ข่าวเด่น
+                      </h3>
+                      <div className="space-y-6">
+                        {relatedArticles.map((relatedArticle, index) => (
+                          <Link
+                            key={index}
+                            href={`/${locale}/news-events/${relatedArticle.slug}`}
+                            className="group block">
+                            <article className="space-y-3">
+                              <div className="relative h-32 bg-slate-100 rounded-lg overflow-hidden">
+                                <Image
+                                  src={
+                                    relatedArticle.image || "/placeholder.svg"
+                                  }
+                                  alt={relatedArticle.title}
+                                  fill
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div>
+                                <Badge className="mb-2 text-xs bg-slate-100 text-slate-700">
+                                  {relatedArticle.category}
+                                </Badge>
+                                <h4 className="font-semibold text-slate-900 group-hover:text-blue-800 transition-colors line-clamp-2 mb-2">
+                                  {relatedArticle.title}
+                                </h4>
+                                <div className="flex items-center text-xs text-slate-500 space-x-2">
+                                  <span>{formatDate(relatedArticle.date)}</span>
+                                  <span>•</span>
+                                  <span>{relatedArticle.readTime}</span>
+                                </div>
+                              </div>
+                            </article>
+                          </Link>
+                        ))}
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
+
+                {/* Company Info Card */}
+                <Card className="border-slate-200 bg-gradient-to-br from-orange-50 to-orange-100/50">
+                  <CardBody className="p-6">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                      เกี่ยวกับผดุงศิลป์กรุ๊ป
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                      ผู้นำด้านการก่อสร้างและผลิตภัณฑ์ถังน้ำมันใต้ดิน PERMATANK®
+                      ที่มีประสบการณ์กว่า 30 ปี
+                    </p>
+                    <MinimalButton
+                      size="sm"
+                      className="w-full border-orange-200 text-white bg-transparent">
+                      เรียนรู้เพิ่มเติม
+                    </MinimalButton>
+                  </CardBody>
+                </Card>
+              </div>
             </div>
           </div>
-        </section>
-      )}
-    </MainLayout>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            ติดตามข่าวสารล่าสุด
+          </h2>
+          <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
+            รับข้อมูลข่าวสารและอัปเดตโครงการใหม่ๆ จากผดุงศิลป์กรุ๊ป
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="อีเมลของคุณ"
+              className="flex-1 px-4 py-3 rounded-lg border border-slate-600 bg-slate-800 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <MinimalButton className="hover:bg-blue-800 px-8">
+              สมัครรับข่าวสาร
+            </MinimalButton>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
