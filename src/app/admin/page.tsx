@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Globe,
+  LogOut,
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
 import { ProductManager } from "./(component)/productManager";
@@ -21,11 +22,22 @@ import { LanguageToggle } from "./(component)/languageToggle";
 import { PartnerManager } from "./(component)/partner";
 import { ExecutiveManager } from "./(component)/executive";
 import { ContactManager } from "./(component)/contact";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState("th");
+  const { signOut, user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   const menuItems = [
     { id: "content", label: "Content Manager", icon: Image },
@@ -631,6 +643,16 @@ const AdminDashboard = () => {
               <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm">
                 View Website
               </button>
+              <div className="w-px h-6 bg-gray-300" />
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">{user?.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm transition-colors">
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </header>
@@ -642,4 +664,10 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default function ProtectedAdminDashboard() {
+  return (
+    <ProtectedRoute>
+      <AdminDashboard />
+    </ProtectedRoute>
+  );
+}

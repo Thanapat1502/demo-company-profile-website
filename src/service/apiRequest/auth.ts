@@ -1,4 +1,4 @@
-// import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase-client";
 import type { User, Session } from "@supabase/supabase-js";
 
 export interface AuthResponse {
@@ -22,31 +22,24 @@ export interface SignUpCredentials {
 export const authService = {
   // Sign in with email and password
   async signIn({ email, password }: SignInCredentials): Promise<AuthResponse> {
-    // Temporarily disabled for development
-    return {
-      user: null,
-      session: null,
-      error: new Error("Authentication service not configured"),
-    };
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    // try {
-    //   const { data, error } = await supabase.auth.signInWithPassword({
-    //     email,
-    //     password,
-    //   });
-
-    //   return {
-    //     user: data.user,
-    //     session: data.session,
-    //     error: error as Error | null,
-    //   };
-    // } catch (error) {
-    //   return {
-    //     user: null,
-    //     session: null,
-    //     error: error as Error,
-    //   };
-    // }
+      return {
+        user: data.user,
+        session: data.session,
+        error: error as Error | null,
+      };
+    } catch (error) {
+      return {
+        user: null,
+        session: null,
+        error: error as Error,
+      };
+    }
   },
 
   // Sign up with email and password
@@ -56,17 +49,40 @@ export const authService = {
     firstName,
     lastName,
   }: SignUpCredentials): Promise<AuthResponse> {
-    // Temporarily disabled for development
-    return {
-      user: null,
-      session: null,
-      error: new Error("Authentication service not configured"),
-    };
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      return {
+        user: data.user,
+        session: data.session,
+        error: error as Error | null,
+      };
+    } catch (error) {
+      return {
+        user: null,
+        session: null,
+        error: error as Error,
+      };
+    }
   },
 
   // Sign out
   async signOut(): Promise<{ error: Error | null }> {
-    return { error: null };
+    try {
+      const { error } = await supabase.auth.signOut();
+      return { error: error as Error | null };
+    } catch (error) {
+      return { error: error as Error };
+    }
   },
 
   // Get current session
@@ -74,34 +90,62 @@ export const authService = {
     session: Session | null;
     error: Error | null;
   }> {
-    return {
-      session: null,
-      error: null,
-    };
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      return {
+        session: data.session,
+        error: error as Error | null,
+      };
+    } catch (error) {
+      return {
+        session: null,
+        error: error as Error,
+      };
+    }
   },
 
   // Get current user
   async getUser(): Promise<{ user: User | null; error: Error | null }> {
-    return {
-      user: null,
-      error: null,
-    };
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      return {
+        user: data.user,
+        error: error as Error | null,
+      };
+    } catch (error) {
+      return {
+        user: null,
+        error: error as Error,
+      };
+    }
   },
 
   // Reset password
   async resetPassword(email: string): Promise<{ error: Error | null }> {
-    return { error: null };
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      return { error: error as Error | null };
+    } catch (error) {
+      return { error: error as Error };
+    }
   },
 
   // Update password
   async updatePassword(password: string): Promise<{ error: Error | null }> {
-    return { error: null };
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      return { error: error as Error | null };
+    } catch (error) {
+      return { error: error as Error };
+    }
   },
 
   // Listen to auth state changes
   onAuthStateChange(
     callback: (event: string, session: Session | null) => void
   ) {
-    return { data: { subscription: { unsubscribe: () => {} } } };
+    return supabase.auth.onAuthStateChange((event, session) => {
+      callback(event, session);
+    });
   },
 };

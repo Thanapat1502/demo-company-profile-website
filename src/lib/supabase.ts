@@ -14,6 +14,13 @@ export const supabase = (() => {
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true,
+        storage:
+          typeof window !== "undefined" ? window.localStorage : undefined,
+      },
+      global: {
+        headers: {
+          "X-Client-Info": "supabase-js-web",
+        },
       },
     });
   }

@@ -26,7 +26,9 @@ export const useProductStore = create<State>((set, get) => ({
   fetchProducts: async () => {
     try {
       set({ error: null });
-      const res = await fetch("/api/products");
+      const res = await fetch("/api/products", {
+        credentials: "include", // Include cookies for authentication
+      });
       if (!res.ok) {
         const data = await res.json();
         set({ error: data.error || "Failed to fetch products", products: [] });
@@ -44,6 +46,7 @@ export const useProductStore = create<State>((set, get) => ({
       const res = await fetch("/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // Include cookies for authentication
         body: JSON.stringify(product),
       });
       if (!res.ok) {
@@ -53,6 +56,7 @@ export const useProductStore = create<State>((set, get) => ({
       }
       await get().fetchProducts();
     } catch (err: any) {
+      console.log("error:", err);
       set({ error: err?.message || "Unknown error" });
     }
   },
@@ -62,6 +66,7 @@ export const useProductStore = create<State>((set, get) => ({
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // Include cookies for authentication
         body: JSON.stringify(updatedProduct),
       });
       if (!res.ok) {
@@ -79,6 +84,7 @@ export const useProductStore = create<State>((set, get) => ({
       set({ error: null });
       const res = await fetch(`/api/products/${id}`, {
         method: "DELETE",
+        credentials: "include", // Include cookies for authentication
       });
       if (!res.ok) {
         const data = await res.json();
@@ -97,9 +103,10 @@ export const useProductStore = create<State>((set, get) => ({
 export async function uploadProductImage(file: File): Promise<string | null> {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("bucket", "images/products_store");
-  const res = await fetch("/api/upload-image", {
+  formData.append("bucket", "images/public/products_store");
+  const res = await fetch("/api/image-upload", {
     method: "POST",
+    credentials: "include", // Include cookies for authentication
     body: formData,
   });
   if (!res.ok) return null;
