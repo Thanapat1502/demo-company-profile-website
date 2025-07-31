@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus,
   Edit,
   Trash2,
   X,
-  Upload,
   Phone,
   Mail,
   MapPin,
@@ -15,54 +14,48 @@ import {
   Music,
 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import { BilingualInput } from "./languageToggle";
+import { useContactStore } from "@/store/zustand/contactStore";
 
 type Company = {
-  id: number;
-  name: { th: string; en: string };
-  address: { th: string; en: string };
-  phone: string;
+  id: string;
+  name_th: string;
+  name_en: string;
+  address_th: string;
+  address_en: string;
+  tel: string;
   email: string;
-  businessHours: { th: string; en: string };
+  business_hour_th?: string;
+  business_hour_en?: string;
 };
 
 type CompanyFormValues = {
-  name: { th: string; en: string };
-  address: { th: string; en: string };
-  phone: string;
+  name_th: string;
+  name_en: string;
+  address_th: string;
+  address_en: string;
+  tel: string;
   email: string;
-  businessHours: { th: string; en: string };
+  business_hour_th?: string;
+  business_hour_en?: string;
 };
 
-// Contact Manager Component
 export const ContactManager = () => {
   const [activeTab, setActiveTab] = useState("primary");
-  const [primaryContact, setPrimaryContact] = useState({
-    phone: "+66 2 123 4567",
-    email: "info@company.com",
-    facebook: "https://facebook.com/company",
-    line: "@company",
-    tiktok: "@company",
-    businessHours: {
-      th: "จันทร์-ศุกร์ 9:00-18:00",
-      en: "Mon-Fri 9:00-18:00",
-    },
-    googleMaps: "https://maps.google.com/...",
-  });
+  const {
+    contactInfo,
+    companies,
+    fetchContactInfo,
+    fetchCompanies,
+    updateContactInfo,
+    addCompany,
+    updateCompany,
+    deleteCompany,
+  } = useContactStore();
 
-  const [companies, setCompanies] = useState<Company[]>([
-    {
-      id: 1,
-      name: { th: "บริษัท A", en: "Company A" },
-      address: { th: "ที่อยู่ A", en: "Address A" },
-      phone: "+66 2 111 1111",
-      email: "companyA@email.com",
-      businessHours: {
-        th: "จันทร์-ศุกร์ 8:00-17:00",
-        en: "Mon-Fri 8:00-17:00",
-      },
-    },
-  ]);
+  useEffect(() => {
+    fetchContactInfo();
+    fetchCompanies();
+  }, [fetchContactInfo, fetchCompanies]);
 
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -74,233 +67,170 @@ export const ContactManager = () => {
     selectedCompany: null,
   });
 
-  // React Hook Form for company modal
+  // Form control for company modal
   const { control, handleSubmit, reset, setValue } = useForm<CompanyFormValues>(
     {
       defaultValues: {
-        name: { th: "", en: "" },
-        address: { th: "", en: "" },
-        phone: "",
+        name_th: "",
+        name_en: "",
+        address_th: "",
+        address_en: "",
+        tel: "",
         email: "",
-        businessHours: { th: "", en: "" },
+        business_hour_th: "",
+        business_hour_en: "",
       },
     }
   );
 
-  const openCompanyModal = (
-    type: "" | "add" | "edit" | "delete",
-    company: Company | null = null
-  ) => {
-    if (company) {
-      reset({
-        name: company.name,
-        address: company.address,
-        phone: company.phone,
-        email: company.email,
-        businessHours: company.businessHours,
-      });
-    } else {
-      reset({
-        name: { th: "", en: "" },
-        address: { th: "", en: "" },
-        phone: "",
-        email: "",
-        businessHours: { th: "", en: "" },
-      });
+  // React Hook Form for primary contact
+  type ContactFormValues = {
+    tel: string;
+    email: string;
+    facebook: string;
+    line: string;
+    tiktok: string;
+    google_map_url: string;
+    business_hour_th: string;
+    business_hour_en: string;
+  };
+
+  const {
+    control: contactControl,
+    handleSubmit: handleContactSubmit,
+    setValue: setContactValue,
+  } = useForm<ContactFormValues>({
+    defaultValues: {
+      tel: "",
+      email: "",
+      facebook: "",
+      line: "",
+      tiktok: "",
+      google_map_url: "",
+      business_hour_th: "",
+      business_hour_en: "",
+    },
+  });
+
+  // Populate form when contactInfo is loaded
+  useEffect(() => {
+    if (contactInfo) {
+      setContactValue("tel", contactInfo.tel || "");
+      setContactValue("email", contactInfo.email || "");
+      setContactValue("facebook", contactInfo.facebook || "");
+      setContactValue("line", contactInfo.line || "");
+      setContactValue("tiktok", contactInfo.tiktok || "");
+      setContactValue("google_map_url", contactInfo.google_map_url || "");
+      setContactValue("business_hour_th", contactInfo.business_hour_th || "");
+      setContactValue("business_hour_en", contactInfo.business_hour_en || "");
     }
-    setModalState({ isOpen: true, type, selectedCompany: company });
+  }, [contactInfo, setContactValue]);
+
+  // Sync form with contactInfo
+  useEffect(() => {
+    if (contactInfo) {
+      setContactValue("tel", contactInfo.tel || "");
+      setContactValue("email", contactInfo.email || "");
+      setContactValue("facebook", contactInfo.facebook || "");
+      setContactValue("line", contactInfo.line || "");
+      setContactValue("tiktok", contactInfo.tiktok || "");
+      setContactValue("google_map_url", contactInfo.google_map_url || "");
+      setContactValue("business_hour_th", contactInfo.business_hour_th || "");
+      setContactValue("business_hour_en", contactInfo.business_hour_en || "");
+    }
+  }, [contactInfo, setContactValue]);
+
+  // Modal functions
+  const openCompanyModal = (
+    type: "add" | "edit" | "delete",
+    company?: Company
+  ) => {
+    setModalState({
+      isOpen: true,
+      type,
+      selectedCompany: company || null,
+    });
+
+    if (type === "edit" && company) {
+      setValue("name_th", company.name_th);
+      setValue("name_en", company.name_en);
+      setValue("address_th", company.address_th);
+      setValue("address_en", company.address_en);
+      setValue("tel", company.tel);
+      setValue("email", company.email);
+      setValue("business_hour_th", company.business_hour_th || "");
+      setValue("business_hour_en", company.business_hour_en || "");
+    } else if (type === "add") {
+      reset();
+    }
   };
 
   const closeCompanyModal = () => {
-    setModalState({ isOpen: false, type: "", selectedCompany: null });
+    setModalState({
+      isOpen: false,
+      type: "",
+      selectedCompany: null,
+    });
     reset();
   };
 
-  const onCompanySubmit = (data: CompanyFormValues) => {
-    if (modalState.type === "add") {
-      const newCompany: Company = {
-        id: Date.now(),
-        ...data,
-      };
-      setCompanies((prev) => [...prev, newCompany]);
-    } else if (modalState.type === "edit" && modalState.selectedCompany) {
-      setCompanies((prev) =>
-        prev.map((c) =>
-          c.id === modalState.selectedCompany!.id
-            ? { ...modalState.selectedCompany!, ...data }
-            : c
-        )
-      );
+  const onSubmitCompany = async (data: CompanyFormValues) => {
+    try {
+      if (modalState.type === "add") {
+        // For add, we don't need to include id as it will be generated by the server
+        const companyData = { ...data }; // Temporary id, will be replaced by server
+        addCompany(companyData);
+        //alert("Company added successfully!");
+      } else if (modalState.type === "edit" && modalState.selectedCompany) {
+        // For edit, we include the existing id
+        const companyData = { ...data, id: modalState.selectedCompany.id };
+        updateCompany(modalState.selectedCompany.id, companyData);
+        //alert("Company updated successfully!");
+      }
+      closeCompanyModal();
+      // Refresh the companies list
+      setTimeout(() => fetchCompanies(), 100);
+    } catch (error) {
+      console.error("Error saving company:", error);
+      alert("Failed to save company. Please try again.");
     }
-    closeCompanyModal();
   };
 
-  const handleCompanyDelete = () => {
+  const handleDeleteCompany = async () => {
     if (modalState.selectedCompany) {
-      setCompanies((prev) =>
-        prev.filter((c) => c.id !== modalState.selectedCompany!.id)
-      );
+      try {
+        deleteCompany(modalState.selectedCompany.id);
+        alert("Company deleted successfully!");
+        closeCompanyModal();
+        // Refresh the companies list
+        setTimeout(() => fetchCompanies(), 100);
+      } catch (error) {
+        console.error("Error deleting company:", error);
+        alert("Failed to delete company. Please try again.");
+      }
     }
-    closeCompanyModal();
   };
 
-  // Modal Component
-  const CompanyModal = () => {
-    if (!modalState.isOpen) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">
-              {modalState.type === "add" && "Add Partner Company"}
-              {modalState.type === "edit" && "Edit Partner Company"}
-              {modalState.type === "delete" && "Delete Partner Company"}
-            </h3>
-            <button
-              onClick={closeCompanyModal}
-              className="text-gray-400 hover:text-gray-600">
-              <X size={24} />
-            </button>
-          </div>
-
-          <div className="p-6">
-            {modalState.type === "delete" ? (
-              <div className="space-y-4">
-                <p className="text-gray-600">
-                  Are you sure you want to delete "
-                  {modalState.selectedCompany?.name.en}"? This action cannot be
-                  undone.
-                </p>
-                <div className="flex justify-end gap-3">
-                  <button
-                    onClick={closeCompanyModal}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleCompanyDelete}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit(onCompanySubmit)}
-                className="space-y-6">
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field }) => (
-                    <BilingualInput
-                      label="Company Name"
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={{ th: "ชื่อบริษัท", en: "Company name" }}
-                      required
-                    />
-                  )}
-                />
-
-                <Controller
-                  name="address"
-                  control={control}
-                  render={({ field }) => (
-                    <BilingualInput
-                      label="Address"
-                      type="textarea"
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={{
-                        th: "ที่อยู่บริษัท",
-                        en: "Company address",
-                      }}
-                    />
-                  )}
-                />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Controller
-                    name="phone"
-                    control={control}
-                    render={({ field }) => (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="+66 2 xxx xxxx"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </div>
-                    )}
-                  />
-
-                  <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="company@email.com"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </div>
-                    )}
-                  />
-                </div>
-
-                <Controller
-                  name="businessHours"
-                  control={control}
-                  render={({ field }) => (
-                    <BilingualInput
-                      label="Business Hours"
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={{ th: "เวลาทำการ", en: "Business hours" }}
-                    />
-                  )}
-                />
-
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                  <button
-                    type="button"
-                    onClick={closeCompanyModal}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    {modalState.type === "add" ? "Add Company" : "Save Changes"}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+  const onSubmitContact = async (data: ContactFormValues) => {
+    console.log(data);
+    console.log("SUbmit contact I");
+    try {
+      console.log("SUbmit contact II");
+      await updateContactInfo({
+        ...contactInfo,
+        ...data,
+      });
+      alert("Primary contact information updated successfully!");
+    } catch (error) {
+      console.error("Error updating contact info:", error);
+      alert("Failed to update contact information. Please try again.");
+    }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Contact Manager</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
-          Save Changes
-        </button>
       </div>
 
       {/* Tab Navigation */}
@@ -330,134 +260,180 @@ export const ContactManager = () => {
 
         <div className="p-6">
           {activeTab === "primary" ? (
-            <div className="space-y-6">
+            <form
+              className="space-y-6"
+              onSubmit={handleContactSubmit(onSubmitContact)}>
               <h3 className="text-lg font-semibold text-gray-900">
                 Primary Contact Information
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Phone className="inline w-4 h-4 mr-1" />
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.phone}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          phone: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Mail className="inline w-4 h-4 mr-1" />
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.email}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          email: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Facebook className="inline w-4 h-4 mr-1" />
-                      Facebook
-                    </label>
-                    <input
-                      type="url"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.facebook}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          facebook: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                  <Controller
+                    name="tel"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Phone className="inline w-4 h-4 mr-1" />
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Phone number"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="email"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Mail className="inline w-4 h-4 mr-1" />
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Email"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="facebook"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Facebook className="inline w-4 h-4 mr-1" />
+                          Facebook
+                        </label>
+                        <input
+                          type="url"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Facebook"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="business_hour_th"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {`เวลาทำการ (ไทย)`}
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Business Hours"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
                 </div>
-
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <MessageCircle className="inline w-4 h-4 mr-1" />
-                      Line ID
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.line}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          line: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                  <Controller
+                    name="line"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <MessageCircle className="inline w-4 h-4 mr-1" />
+                          Line ID
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Line ID"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="tiktok"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Music className="inline w-4 h-4 mr-1" />
+                          TikTok
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="TikTok"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="google_map_url"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Globe className="inline w-4 h-4 mr-1" />
+                          Google Maps URL
+                        </label>
+                        <input
+                          type="url"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Google Maps URL"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Music className="inline w-4 h-4 mr-1" />
-                      TikTok
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.tiktok}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          tiktok: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Globe className="inline w-4 h-4 mr-1" />
-                      Google Maps URL
-                    </label>
-                    <input
-                      type="url"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      value={primaryContact.googleMaps}
-                      onChange={(e) =>
-                        setPrimaryContact({
-                          ...primaryContact,
-                          googleMaps: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                  <Controller
+                    name="business_hour_en"
+                    control={contactControl}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {`Business Hours (EN)`}
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Business Hours"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
 
-              <BilingualInput
-                label="Business Hours"
-                value={primaryContact.businessHours}
-                onChange={(value) =>
-                  setPrimaryContact({ ...primaryContact, businessHours: value })
-                }
-                placeholder={{ th: "เวลาทำการ", en: "Business hours" }}
-              />
-            </div>
+              {/* Save Changes Button for Primary Contact */}
+              <div className="flex justify-end pt-6 border-t border-gray-200">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
+                  Save Primary Contact
+                </button>
+              </div>
+            </form>
           ) : (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
@@ -473,23 +449,23 @@ export const ContactManager = () => {
               </div>
 
               <div className="grid gap-4">
-                {companies.map((company) => (
+                {(companies || []).map((company) => (
                   <div
                     key={company.id}
                     className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 space-y-2">
                         <h4 className="font-medium text-gray-900">
-                          {company.name.en}
+                          {company.name_en}
                         </h4>
                         <div className="text-sm text-gray-600 space-y-1">
                           <p className="flex items-center gap-2">
                             <MapPin size={14} />
-                            {company.address.en}
+                            {company.address_en}
                           </p>
                           <p className="flex items-center gap-2">
                             <Phone size={14} />
-                            {company.phone}
+                            {company.tel}
                           </p>
                           <p className="flex items-center gap-2">
                             <Mail size={14} />
@@ -497,7 +473,7 @@ export const ContactManager = () => {
                           </p>
                           <p className="flex items-center gap-2">
                             <Clock size={14} />
-                            {company.businessHours.en}
+                            {company.business_hour_en}
                           </p>
                         </div>
                       </div>
@@ -522,7 +498,221 @@ export const ContactManager = () => {
         </div>
       </div>
 
-      <CompanyModal />
+      {/* Company Modal */}
+      {modalState.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {modalState.type === "add" && "Add Company"}
+                {modalState.type === "edit" && "Edit Company"}
+                {modalState.type === "delete" && "Delete Company"}
+              </h3>
+              <button
+                onClick={closeCompanyModal}
+                className="text-gray-400 hover:text-gray-600">
+                <X size={20} />
+              </button>
+            </div>
+
+            {modalState.type === "delete" ? (
+              <div className="space-y-4">
+                <p className="text-gray-600">
+                  Are you sure you want to delete &ldquo;
+                  {modalState.selectedCompany?.name_en}&rdquo;? This action
+                  cannot be undone.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <button
+                    onClick={closeCompanyModal}
+                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteCompany}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit(onSubmitCompany)}
+                className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="name_th"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Company Name (TH)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="ชื่อบริษัท"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="name_en"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Company Name (EN)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Company name"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="address_th"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Address (TH)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="ที่อยู่บริษัท"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="address_en"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Address (EN)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Company address"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="tel"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="+66 2 xxx xxxx"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="company@email.com"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Controller
+                    name="business_hour_th"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Business Hours (TH)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="เวลาทำการ"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Controller
+                    name="business_hour_en"
+                    control={control}
+                    render={({ field }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Business Hours (EN)
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Business hours"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={closeCompanyModal}
+                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    {modalState.type === "add" ? "Add Company" : "Save Changes"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
