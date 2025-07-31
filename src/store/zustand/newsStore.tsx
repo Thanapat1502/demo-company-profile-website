@@ -54,20 +54,15 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
 
   fetchCategories: async () => {
     set({ loading: true, error: null, success: false });
-    console.log("Fetch cat I");
     try {
-      console.log("Fetch cat II");
       const response = await fetch("/api/categories");
       const result = await response.json();
       if (result.error) {
-        console.log("Fetch cat error xIII", result.error);
         set({ error: result.error, loading: false });
       } else {
-        console.log("Fetch cat IV - Categories data:", result.data);
         set({ categories: result.data || [], loading: false, success: true });
       }
     } catch (error) {
-      console.log("Fetch cat xII", error);
       set({ error: `Failed to fetch categories: ${error}`, loading: false });
     }
   },
@@ -84,7 +79,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       method: "POST",
       body: formData,
     });
-    const { data, error } = await res.json();
+    const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
       set({ success: true, loading: false });
@@ -99,7 +94,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       method: "PUT",
       body: formData,
     });
-    const { data, error } = await res.json();
+    const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
       set({ success: true, loading: false });
@@ -112,7 +107,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     const res = await fetch(`/api/news?id=${id}`, {
       method: "DELETE",
     });
-    const { data, error } = await res.json();
+    const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
       set({ success: true, loading: false });
@@ -122,7 +117,6 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
 
   fetchTags: async () => {
     set({ loading: true, error: null, success: false });
-    console.log("Fetch Tags");
     try {
       const response = await fetch("/api/news-tag");
       const result = await response.json();
@@ -131,7 +125,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       } else {
         set({ tags: result.data || [], loading: false, success: true });
       }
-    } catch (error) {
+    } catch {
       set({ error: "Failed to fetch tags", loading: false });
     }
   },
@@ -143,7 +137,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tagData),
     });
-    const { data, error } = await res.json();
+    const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
       set({ success: true, loading: false });
@@ -156,7 +150,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     const res = await fetch(`/api/news-tag?id=${id}`, {
       method: "DELETE",
     });
-    const { data, error } = await res.json();
+    const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
       set({ success: true, loading: false });

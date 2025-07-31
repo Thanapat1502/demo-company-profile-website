@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Save, Eye, X, Tag, Upload } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, Control, FieldErrors } from "react-hook-form";
 import { LanguageToggle } from "./languageToggle";
 import React18QuillEditor from "@/components/admin/React18QuillEditor";
 // Types
@@ -186,15 +186,6 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
     }
   }, [isOpen, reset]);
 
-  // Debug categories
-  useEffect(() => {
-    console.log("NewsEditorModal - Categories received:", categories);
-    console.log("NewsEditorModal - Categories length:", categories.length);
-    if (categories.length > 0) {
-      console.log("NewsEditorModal - First category:", categories[0]);
-    }
-  }, [categories]);
-
   // Populate form when editing
   useEffect(() => {
     if (editingNews && isOpen) {
@@ -330,8 +321,8 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
 
 // Thai Content Page Component
 interface ContentPageProps {
-  control: any;
-  errors: any;
+  control: Control<NewsArticleForm>;
+  errors: FieldErrors<NewsArticleForm>;
   categories: Category[];
   currentTags: string[];
   newTag: string;
@@ -516,10 +507,9 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           <Controller
             name="featuredImage"
             control={control}
-            render={({ field: { onChange, value, ...field } }) => (
+            render={({ field: { onChange } }) => (
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                 <input
-                  {...field}
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
@@ -766,10 +756,9 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
           <Controller
             name="featuredImage"
             control={control}
-            render={({ field: { onChange, value, ...field } }) => (
+            render={({ field: { onChange } }) => (
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                 <input
-                  {...field}
                   type="file"
                   accept="image/*"
                   onChange={(e) => {

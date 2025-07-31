@@ -4,25 +4,20 @@ import { supabase } from "@/lib/supabase";
 // GET - Fetch all tags
 export async function GET() {
   try {
-    console.log("GET /api/tags - Fetching tags");
-
     const { data, error } = await supabase
       .from("news_tag")
       .select("*")
       .order("id", { ascending: true });
 
     if (error) {
-      console.error("Error fetching tags:", error);
       return NextResponse.json(
         { error: "Failed to fetch tags", details: error },
         { status: 500 }
       );
     }
 
-    console.log("Tags fetched successfully:", data?.length);
     return NextResponse.json({ data, error: null });
   } catch (err) {
-    console.error("Catch error in GET tags:", err);
     return NextResponse.json(
       { error: "Internal server error", details: err },
       { status: 500 }
@@ -33,8 +28,6 @@ export async function GET() {
 // POST - Create new tag
 export async function POST(req: Request) {
   try {
-    console.log("POST /api/tags - Creating tag");
-
     const body = await req.json();
     const { tag_th, tag_en } = body;
 
@@ -63,10 +56,8 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Tag created successfully:", data);
     return NextResponse.json({ data, error: null });
   } catch (err) {
-    console.error("Catch error in POST tags:", err);
     return NextResponse.json(
       { error: "Internal server error", details: err },
       { status: 500 }
@@ -77,8 +68,6 @@ export async function POST(req: Request) {
 // PUT - Update tag
 export async function PUT(req: Request) {
   try {
-    console.log("PUT /api/tags - Updating tag");
-
     const body = await req.json();
     const { id, tag_th, tag_en } = body;
 
@@ -113,10 +102,8 @@ export async function PUT(req: Request) {
       );
     }
 
-    console.log("Tag updated successfully:", data);
     return NextResponse.json({ data, error: null });
   } catch (err) {
-    console.error("Catch error in PUT tags:", err);
     return NextResponse.json(
       { error: "Internal server error", details: err },
       { status: 500 }
@@ -127,8 +114,6 @@ export async function PUT(req: Request) {
 // DELETE - Delete tag
 export async function DELETE(req: Request) {
   try {
-    console.log("DELETE /api/tags - Deleting tag");
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
@@ -153,10 +138,8 @@ export async function DELETE(req: Request) {
       );
     }
 
-    console.log("Tag deleted successfully:", data);
     return NextResponse.json({ data, error: null });
   } catch (err) {
-    console.error("Catch error in DELETE tags:", err);
     return NextResponse.json(
       { error: "Internal server error", details: err },
       { status: 500 }

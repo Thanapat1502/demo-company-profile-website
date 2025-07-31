@@ -95,14 +95,6 @@ export const NewsManager = () => {
     fetchTags();
   }, [fetchNews, fetchCategories, fetchTags]);
 
-  // Debug categories
-  useEffect(() => {
-    console.log("NewsManager - Categories updated:", categories);
-    console.log("NewsManager - Categories length:", categories.length);
-    console.log("NewsManager - Loading state:", loading);
-    console.log("NewsManager - Error state:", error);
-  }, [categories, loading, error]);
-
   // Handle success/error messages
   useEffect(() => {
     if (success) {
@@ -290,24 +282,16 @@ export const NewsManager = () => {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              News/Event Manager
-            </h2>
-            {/* Debug info */}
-            <div className="text-xs text-gray-500 mt-1">
-              Categories: {categories.length} | Tags: {tags.length} | Loading:{" "}
-              {loading ? "Yes" : "No"}
-              {error && <span className="text-red-500"> | Error: {error}</span>}
-            </div>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900">
+            News/Event Manager
+          </h2>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowCategoryManager(true)}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2">
             <FolderOpen size={16} />
-            Manage Categories ({categories.length})
+            Manage Categories
           </button>
           <button
             onClick={handleAddNews}
