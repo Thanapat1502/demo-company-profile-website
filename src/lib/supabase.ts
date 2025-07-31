@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 let supabaseInstance: ReturnType<typeof createClient> | null = null;
 
+// Client-side supabase instance
 export const supabase = (() => {
   if (!supabaseInstance) {
     const supabaseUrl =
@@ -9,17 +10,19 @@ export const supabase = (() => {
     const supabaseAnonKey =
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
 
+    // Check if we're on the server side
+    const isServer = typeof window === "undefined";
+
     supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
-        storage:
-          typeof window !== "undefined" ? window.localStorage : undefined,
+        autoRefreshToken: !isServer,
+        persistSession: !isServer,
+        detectSessionInUrl: !isServer,
+        storage: isServer ? undefined : window.localStorage,
       },
       global: {
         headers: {
-          "X-Client-Info": "supabase-js-web",
+          "X-Client-Info": isServer ? "supabase-js-server" : "supabase-js-web",
         },
       },
     });

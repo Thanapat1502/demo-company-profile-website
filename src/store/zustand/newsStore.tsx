@@ -1,0 +1,166 @@
+import { create } from "zustand";
+import { supabase } from "@/lib/supabase-client";
+
+export type News = {
+  id: string;
+  thumbnail: string;
+  title: string;
+  subtitle: string;
+  tag: number[];
+  body_th: any;
+  body_en: any;
+};
+
+export type NewsTag = {
+  id: number;
+  tag_th: string;
+  tag_en: string;
+};
+
+export type Category = {
+  id: string;
+  cat_th: string;
+  cat_en: string;
+  description_th?: string;
+  description_en?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+interface NewsStoreState {
+  news: News[];
+  tags: NewsTag[];
+  loading: boolean;
+  success: boolean;
+  error: string | null;
+  categories: Category[];
+  fetchCategories: () => Promise<void>;
+  fetchNews: () => Promise<void>;
+  addNews: (data: FormData) => Promise<void>;
+  updateNews: (id: string, data: FormData) => Promise<void>;
+  deleteNews: (id: string) => Promise<void>;
+  fetchTags: () => Promise<void>;
+  addTag: (data: { name: string }) => Promise<void>;
+  deleteTag: (id: number) => Promise<void>;
+}
+
+export const useNewsStore = create<NewsStoreState>((set, get) => ({
+  news: [],
+  tags: [],
+  categories: [],
+  loading: false,
+  success: false,
+  error: null,
+
+  fetchCategories: async () => {
+    set({ loading: true, error: null, success: false });
+    console.log("Fetch cat I");
+    try {
+      console.log("Fetch cat II");
+      const response = await fetch("/api/categories");
+      const result = await response.json();
+      if (result.error) {
+        console.log("Fetch cat error xIII", result.error);
+        set({ error: result.error, loading: false });
+      } else {
+        console.log("Fetch cat IV - Categories data:", result.data);
+        set({ categories: result.data || [], loading: false, success: true });
+      }
+    } catch (error) {
+      console.log("Fetch cat xII", error);
+      set({ error: `Failed to fetch categories: ${error}`, loading: false });
+    }
+  },
+  fetchNews: async () => {
+    set({ loading: true, error: null, success: false });
+    const { data, error } = await supabase.from("news").select("*");
+    if (error) set({ error: error.message, loading: false });
+    else set({ news: data || [], loading: false, success: true });
+  },
+
+  addNews: async (formData) => {
+    set({ loading: true, error: null, success: false });
+    const res = await fetch("/api/news", {
+      method: "POST",
+      body: formData,
+    });
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchNews();
+    }
+  },
+
+  updateNews: async (id, formData) => {
+    set({ loading: true, error: null, success: false });
+    formData.append("id", id);
+    const res = await fetch("/api/news", {
+      method: "PUT",
+      body: formData,
+    });
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchNews();
+    }
+  },
+
+  deleteNews: async (id) => {
+    set({ loading: true, error: null, success: false });
+    const res = await fetch(`/api/news?id=${id}`, {
+      method: "DELETE",
+    });
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchNews();
+    }
+  },
+
+  fetchTags: async () => {
+    set({ loading: true, error: null, success: false });
+    console.log("Fetch Tags");
+    try {
+      const response = await fetch("/api/news-tag");
+      const result = await response.json();
+      if (result.error) {
+        set({ error: result.error, loading: false });
+      } else {
+        set({ tags: result.data || [], loading: false, success: true });
+      }
+    } catch (error) {
+      set({ error: "Failed to fetch tags", loading: false });
+    }
+  },
+
+  addTag: async (tagData) => {
+    set({ loading: true, error: null, success: false });
+    const res = await fetch("/api/news-tag", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(tagData),
+    });
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchTags();
+    }
+  },
+
+  deleteTag: async (id) => {
+    set({ loading: true, error: null, success: false });
+    const res = await fetch(`/api/news-tag?id=${id}`, {
+      method: "DELETE",
+    });
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchTags();
+    }
+  },
+}));

@@ -1,8 +1,22 @@
-import React, { useState } from "react";
-import { Plus, Upload, Save, Eye, X, Tag } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Star,
+  Calendar,
+  Clock,
+  FolderOpen,
+  X,
+  Tag,
+} from "lucide-react";
+import { NewsEditorModal } from "./newsEditorModal";
 import { LanguageToggle } from "./languageToggle";
-import React18QuillEditor from "@/components/admin/React18QuillEditor";
+import {
+  useNewsStore,
+  type News,
+  type Category,
+} from "@/store/zustand/newsStore";
 
 // Interface for Quill editor output
 interface QuillContent {
@@ -33,420 +47,552 @@ interface NewsArticleForm {
   publishDate?: Date;
 }
 
+// Interface for category management
+interface CategoryForm {
+  id: string;
+  name: {
+    th: string;
+    en: string;
+  };
+  description?: {
+    th: string;
+    en: string;
+  };
+}
+
 export const NewsManager = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState("th");
-  const [newTag, setNewTag] = useState("");
-
-  // Predefined tags for suggestions
-  const suggestedTags = [
-    "ข่าวสาร",
-    "กิจกรรม",
-    "โครงการ",
-    "ประกาศ",
-    "อัพเดท",
-    "บริษัท",
-    "ผลิตภัณฑ์",
-    "บริการ",
-    "เทคโนโลยี",
-    "นวัตกรรม",
-    "ความปลอดภัย",
-    "สิ่งแวดล้อม",
-    "CSR",
-    "รางวัล",
-    "ความสำเร็จ",
-  ];
-
-  // React Hook Form setup
   const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<NewsArticleForm>({
-    defaultValues: {
-      title: { th: "", en: "" },
-      content: {
-        th: { html: "", text: "", length: 0 },
-        en: { html: "", text: "", length: 0 },
-      },
-      excerpt: { th: "", en: "" },
-      category: "",
-      tags: [],
-      featuredImage: null,
-      isHighlighted: false,
-      status: "draft",
-    },
+    news,
+    loading,
+    error,
+    success,
+    fetchNews,
+    deleteNews,
+    updateNews,
+    addNews,
+    fetchCategories,
+    categories,
+    fetchTags,
+    tags,
+  } = useNewsStore();
+  const [showEditor, setShowEditor] = useState(false);
+  const [editingNews, setEditingNews] = useState<News | null>(null);
+
+  // Category management state
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [newCategoryName, setNewCategoryName] = useState({ th: "", en: "" });
+  const [newCategoryDescription, setNewCategoryDescription] = useState({
+    th: "",
+    en: "",
   });
+  const [categoryLanguage, setCategoryLanguage] = useState("th");
 
-  // Watch tags for real-time updates
-  const currentTags = watch("tags");
+  // Fetch news, categories, and tags on component mount
+  useEffect(() => {
+    fetchNews();
+    fetchCategories();
+    fetchTags();
+  }, [fetchNews, fetchCategories, fetchTags]);
 
-  // Helper function to create QuillContent from HTML
-  const createQuillContent = (html: string): QuillContent => {
-    // Create a temporary div to extract text content
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    const text = tempDiv.textContent || tempDiv.innerText || "";
+  // Debug categories
+  useEffect(() => {
+    console.log("NewsManager - Categories updated:", categories);
+    console.log("NewsManager - Categories length:", categories.length);
+    console.log("NewsManager - Loading state:", loading);
+    console.log("NewsManager - Error state:", error);
+  }, [categories, loading, error]);
 
-    return {
-      html,
-      text,
-      length: text.length,
-    };
+  // Handle success/error messages
+  useEffect(() => {
+    if (success) {
+      alert("Operation completed successfully!");
+    }
+    if (error) {
+      alert(`Error: ${error}`);
+    }
+  }, [success, error]);
+
+  // Helper functions
+  const handleAddNews = () => {
+    setEditingNews(null);
+    setShowEditor(true);
   };
 
-  // Handle form submission
-  const onSubmit = async (data: NewsArticleForm) => {
+  const handleEditNews = (newsItem: News) => {
+    setEditingNews(newsItem);
+    setShowEditor(true);
+  };
+
+  const handleDeleteNews = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this news article?")) {
+      await deleteNews(id);
+    }
+  };
+
+  const handleToggleHighlight = async (newsItem: News) => {
+    // This would need to be implemented based on your news structure
+    // For now, we'll just show an alert
+    alert(`Toggle highlight for: ${newsItem.title}`);
+  };
+
+  const closeEditor = () => {
+    setShowEditor(false);
+    setEditingNews(null);
+  };
+
+  // Category management functions
+  const handleAddCategory = async () => {
+    if (newCategoryName.th.trim() || newCategoryName.en.trim()) {
+      try {
+        const response = await fetch("/api/categories", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cat_th: newCategoryName.th.trim(),
+            cat_en: newCategoryName.en.trim(),
+            description_th: newCategoryDescription.th.trim() || null,
+            description_en: newCategoryDescription.en.trim() || null,
+          }),
+        });
+
+        if (response.ok) {
+          await fetchCategories(); // Refresh categories
+          setNewCategoryName({ th: "", en: "" });
+          setNewCategoryDescription({ th: "", en: "" });
+        }
+      } catch (error) {
+        console.error("Error adding category:", error);
+      }
+    }
+  };
+
+  const handleEditCategory = (category: Category) => {
+    setEditingCategory(category);
+    setNewCategoryName({
+      th: category.cat_th,
+      en: category.cat_en,
+    });
+    setNewCategoryDescription({
+      th: category.description_th || "",
+      en: category.description_en || "",
+    });
+  };
+
+  const handleUpdateCategory = async () => {
+    if (
+      editingCategory &&
+      (newCategoryName.th.trim() || newCategoryName.en.trim())
+    ) {
+      try {
+        const response = await fetch("/api/categories", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: editingCategory.id,
+            cat_th: newCategoryName.th.trim(),
+            cat_en: newCategoryName.en.trim(),
+            description_th: newCategoryDescription.th.trim() || null,
+            description_en: newCategoryDescription.en.trim() || null,
+          }),
+        });
+
+        if (response.ok) {
+          await fetchCategories(); // Refresh categories
+          setEditingCategory(null);
+          setNewCategoryName({ th: "", en: "" });
+          setNewCategoryDescription({ th: "", en: "" });
+        }
+      } catch (error) {
+        console.error("Error updating category:", error);
+      }
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId: string) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      try {
+        const response = await fetch(`/api/categories?id=${categoryId}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          await fetchCategories(); // Refresh categories
+        }
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      }
+    }
+  };
+
+  const closeCategoryManager = () => {
+    setShowCategoryManager(false);
+    setEditingCategory(null);
+    setNewCategoryName({ th: "", en: "" });
+    setNewCategoryDescription({ th: "", en: "" });
+  };
+
+  // Modal submission handler
+  const handleModalSubmit = async (data: NewsArticleForm) => {
     try {
-      console.log("Submitting article:", data);
-      // Here you would typically send the data to your API
-      // await newsEventsService.create(data);
-      alert("Article saved successfully!");
+      // Create FormData for API submission
+      const formData = new FormData();
+
+      // Add bilingual fields
+      formData.append("title_th", data.title.th || "");
+      formData.append("title_en", data.title.en || "");
+      formData.append("excerpt_th", data.excerpt.th || "");
+      formData.append("excerpt_en", data.excerpt.en || "");
+      formData.append("body_th", JSON.stringify(data.content.th));
+      formData.append("body_en", JSON.stringify(data.content.en));
+      formData.append("tag", JSON.stringify(data.tags));
+
+      // Add category and highlight status
+      formData.append("category_id", data.category || "");
+      formData.append("is_highlighted", data.isHighlighted ? "true" : "false");
+
+      // Add featured image if present
+      if (data.featuredImage) {
+        formData.append("thumbnail", data.featuredImage);
+      }
+
+      if (editingNews) {
+        // Update existing news
+        await updateNews(editingNews.id, formData);
+      } else {
+        // Add new news
+        await addNews(formData);
+      }
+
+      closeEditor();
     } catch (error) {
       console.error("Error saving article:", error);
-      alert("Error saving article. Please try again.");
     }
   };
 
-  // Handle draft save
-  const handleSaveDraft = () => {
-    setValue("status", "draft");
-    handleSubmit(onSubmit)();
-  };
-
-  // Handle publish
-  const handlePublish = () => {
-    setValue("status", "published");
-    setValue("publishDate", new Date());
-    handleSubmit(onSubmit)();
-  };
-
-  // Handle image upload
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setValue("featuredImage", file);
-    }
-  };
-
-  // Tags management functions
-  const addTag = () => {
-    if (newTag.trim() && !currentTags.includes(newTag.trim())) {
-      const updatedTags = [...currentTags, newTag.trim()];
-      setValue("tags", updatedTags);
-      setNewTag("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    const updatedTags = currentTags.filter((tag) => tag !== tagToRemove);
-    setValue("tags", updatedTags);
-  };
-
-  const handleTagKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      addTag();
-    }
-  };
-
-  const addSuggestedTag = (tag: string) => {
-    if (!currentTags.includes(tag)) {
-      const updatedTags = [...currentTags, tag];
-      setValue("tags", updatedTags);
-    }
-  };
-
-  // Get available suggested tags (not already added)
-  const availableSuggestedTags = suggestedTags.filter(
-    (tag) => !currentTags.includes(tag)
+  // Loading overlay component
+  const LoadingOverlay = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-8 flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-gray-700">Loading...</p>
+      </div>
+    </div>
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {loading && <LoadingOverlay />}
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold text-gray-900">
-            News/Event Manager
-          </h2>
-          <LanguageToggle
-            value={selectedLanguage}
-            onChange={setSelectedLanguage}
-            size="large"
-          />
-        </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
-          <Plus size={16} />
-          Add Article
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="bg-white rounded-lg shadow-sm border">
-          <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left Column - Article Details */}
-              <div className="lg:col-span-1 space-y-4">
-                {/* Title Input */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Title ({selectedLanguage === "th" ? "ไทย" : "English"})
-                  </label>
-                  <Controller
-                    name={selectedLanguage === "th" ? "title.th" : "title.en"}
-                    control={control}
-                    rules={{ required: "Title is required" }}
-                    render={({ field }) => (
-                      <input
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder={
-                          selectedLanguage === "th"
-                            ? "หัวข้อข่าว"
-                            : "News title"
-                        }
-                      />
-                    )}
-                  />
-                  {errors.title?.[selectedLanguage as "th" | "en"] && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.title[selectedLanguage as "th" | "en"]?.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Excerpt Input */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Excerpt ({selectedLanguage === "th" ? "ไทย" : "English"})
-                  </label>
-                  <Controller
-                    name={
-                      selectedLanguage === "th" ? "excerpt.th" : "excerpt.en"
-                    }
-                    control={control}
-                    render={({ field }) => (
-                      <textarea
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        rows={3}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder={
-                          selectedLanguage === "th"
-                            ? "สรุปเนื้อหาสั้นๆ"
-                            : "Brief summary"
-                        }
-                      />
-                    )}
-                  />
-                </div>
-
-                {/* Category Input */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Category
-                  </label>
-                  <Controller
-                    name="category"
-                    control={control}
-                    rules={{ required: "Category is required" }}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Select category</option>
-                        <option value="news">ข่าวสาร</option>
-                        <option value="events">กิจกรรม</option>
-                        <option value="announcements">ประกาศ</option>
-                        <option value="projects">โครงการ</option>
-                      </select>
-                    )}
-                  />
-                  {errors.category && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.category.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Tags Management */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Tags
-                  </label>
-
-                  {/* Add Tag Input */}
-                  <div className="flex gap-2 mb-3">
-                    <input
-                      type="text"
-                      value={newTag}
-                      onChange={(e) => setNewTag(e.target.value)}
-                      onKeyDown={handleTagKeyDown}
-                      placeholder="Add a tag..."
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={addTag}
-                      disabled={!newTag.trim()}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                      <Tag size={16} />
-                      Add
-                    </button>
-                  </div>
-
-                  {/* Display Current Tags */}
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {currentTags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                        {tag}
-                        <button
-                          type="button"
-                          onClick={() => removeTag(tag)}
-                          className="ml-1 text-blue-600 hover:text-blue-800 focus:outline-none">
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
-                    {currentTags.length === 0 && (
-                      <span className="text-gray-500 text-sm italic">
-                        No tags added yet
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Suggested Tags */}
-                  {availableSuggestedTags.length > 0 && (
-                    <div>
-                      <p className="text-xs text-gray-500 mb-2">
-                        Suggested tags:
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {availableSuggestedTags
-                          .slice(0, 8)
-                          .map((tag, index) => (
-                            <button
-                              key={index}
-                              type="button"
-                              onClick={() => addSuggestedTag(tag)}
-                              className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
-                              + {tag}
-                            </button>
-                          ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Highlight Checkbox */}
-                <div className="flex items-center gap-2">
-                  <Controller
-                    name="isHighlighted"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        type="checkbox"
-                        id="highlight"
-                        className="rounded"
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                        onBlur={field.onBlur}
-                      />
-                    )}
-                  />
-                  <label htmlFor="highlight" className="text-sm text-gray-700">
-                    Highlight this article
-                  </label>
-                </div>
-
-                {/* Featured Image Upload */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Featured Image
-                  </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      id="featured-image"
-                    />
-                    <label htmlFor="featured-image" className="cursor-pointer">
-                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                      <p className="text-sm text-gray-500 mt-1">
-                        Click to upload featured image
-                      </p>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column - Content Editor */}
-              <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Content ({selectedLanguage === "th" ? "ไทย" : "English"})
-                </label>
-                <Controller
-                  name={selectedLanguage === "th" ? "content.th" : "content.en"}
-                  control={control}
-                  rules={{ required: "Content is required" }}
-                  render={({ field }) => {
-                    const currentValue = field.value as QuillContent;
-                    return (
-                      <React18QuillEditor
-                        value={currentValue?.html || ""}
-                        onChange={(html) => {
-                          const quillContent = createQuillContent(html);
-                          field.onChange(quillContent);
-                        }}
-                        placeholder={
-                          selectedLanguage === "th"
-                            ? "เริ่มเขียนเนื้อหาข่าว..."
-                            : "Start writing your article..."
-                        }
-                        height={500}
-                      />
-                    );
-                  }}
-                />
-                {errors.content?.[selectedLanguage as "th" | "en"] && (
-                  <p className="text-red-500 text-sm mt-1">
-                    Content is required
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={handleSaveDraft}
-                disabled={isSubmitting}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 flex items-center gap-2">
-                <Save size={16} />
-                Save as Draft
-              </button>
-              <button
-                type="button"
-                onClick={handlePublish}
-                disabled={isSubmitting}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2">
-                <Eye size={16} />
-                Publish
-              </button>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              News/Event Manager
+            </h2>
+            {/* Debug info */}
+            <div className="text-xs text-gray-500 mt-1">
+              Categories: {categories.length} | Tags: {tags.length} | Loading:{" "}
+              {loading ? "Yes" : "No"}
+              {error && <span className="text-red-500"> | Error: {error}</span>}
             </div>
           </div>
         </div>
-      </form>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowCategoryManager(true)}
+            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2">
+            <FolderOpen size={16} />
+            Manage Categories ({categories.length})
+          </button>
+          <button
+            onClick={handleAddNews}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
+            <Plus size={16} />
+            Add Article
+          </button>
+        </div>
+      </div>
+
+      {/* News List */}
+      <div className="bg-white rounded-lg shadow-sm border">
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Current News Articles
+          </h3>
+
+          {news.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <Calendar size={48} className="mx-auto" />
+              </div>
+              <p className="text-gray-500 mb-4">No news articles found</p>
+              <button
+                onClick={handleAddNews}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 mx-auto">
+                <Plus size={16} />
+                Create Your First Article
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {news.map((newsItem) => (
+                <div
+                  key={newsItem.id}
+                  className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-medium text-gray-900 text-lg">
+                          {newsItem.title}
+                        </h4>
+                        {/* Highlight indicator - you can customize this based on your data structure */}
+                        <button
+                          onClick={() => handleToggleHighlight(newsItem)}
+                          className="text-yellow-500 hover:text-yellow-600"
+                          title="Toggle highlight">
+                          <Star size={16} />
+                        </button>
+                      </div>
+
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        {newsItem.subtitle}
+                      </p>
+
+                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Clock size={12} />
+                          <span>
+                            Created: {new Date().toLocaleDateString()}
+                          </span>
+                        </div>
+                        {newsItem.tag && newsItem.tag.length > 0 && (
+                          <div className="flex items-center gap-1">
+                            <Tag size={12} />
+                            <span>{newsItem.tag.length} tags</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 ml-4">
+                      <button
+                        onClick={() => handleEditNews(newsItem)}
+                        className="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50"
+                        title="Edit article">
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteNews(newsItem.id)}
+                        className="text-red-600 hover:text-red-700 p-2 rounded-md hover:bg-red-50"
+                        title="Delete article">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* News Editor Modal */}
+      <NewsEditorModal
+        suggestedTags={tags}
+        isOpen={showEditor}
+        onClose={closeEditor}
+        editingNews={editingNews}
+        categories={categories}
+        onSubmit={handleModalSubmit}
+        isSubmitting={false}
+      />
+
+      {/* Category Management Modal */}
+      {showCategoryManager && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Manage Categories
+              </h3>
+              <button
+                onClick={closeCategoryManager}
+                className="text-gray-400 hover:text-gray-600">
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Add/Edit Category Form */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-md font-medium text-gray-900">
+                    {editingCategory ? "Edit Category" : "Add New Category"}
+                  </h4>
+                  <LanguageToggle
+                    value={categoryLanguage}
+                    onChange={setCategoryLanguage}
+                    size="small"
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Category Name (
+                      {categoryLanguage === "th" ? "ไทย" : "English"})
+                    </label>
+                    <input
+                      type="text"
+                      value={newCategoryName[categoryLanguage as "th" | "en"]}
+                      onChange={(e) =>
+                        setNewCategoryName((prev) => ({
+                          ...prev,
+                          [categoryLanguage]: e.target.value,
+                        }))
+                      }
+                      placeholder={
+                        categoryLanguage === "th"
+                          ? "ชื่อหมวดหมู่"
+                          : "Category name"
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Description (
+                      {categoryLanguage === "th" ? "ไทย" : "English"}) -
+                      Optional
+                    </label>
+                    <textarea
+                      value={
+                        newCategoryDescription[categoryLanguage as "th" | "en"]
+                      }
+                      onChange={(e) =>
+                        setNewCategoryDescription((prev) => ({
+                          ...prev,
+                          [categoryLanguage]: e.target.value,
+                        }))
+                      }
+                      placeholder={
+                        categoryLanguage === "th"
+                          ? "คำอธิบายหมวดหมู่"
+                          : "Category description"
+                      }
+                      rows={2}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    {editingCategory ? (
+                      <>
+                        <button
+                          onClick={handleUpdateCategory}
+                          disabled={
+                            !(
+                              newCategoryName.th.trim() ||
+                              newCategoryName.en.trim()
+                            )
+                          }
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                          Update Category
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingCategory(null);
+                            setNewCategoryName({ th: "", en: "" });
+                            setNewCategoryDescription({ th: "", en: "" });
+                          }}
+                          className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={handleAddCategory}
+                        disabled={
+                          !(
+                            newCategoryName.th.trim() ||
+                            newCategoryName.en.trim()
+                          )
+                        }
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        <Plus size={16} />
+                        Add Category
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Categories List */}
+              <div>
+                <h4 className="text-md font-medium text-gray-900 mb-4">
+                  Existing Categories
+                </h4>
+
+                <div className="space-y-3">
+                  {categories.map((category) => (
+                    <div
+                      key={category.id}
+                      className="border border-gray-200 rounded-lg p-4 flex items-start justify-between">
+                      <div className="flex-1">
+                        <h5 className="font-medium text-gray-900">
+                          {categoryLanguage === "th"
+                            ? category.cat_th
+                            : category.cat_en}
+                        </h5>
+                        {(category.description_th ||
+                          category.description_en) && (
+                          <p className="text-sm text-gray-600 mt-1">
+                            {categoryLanguage === "th"
+                              ? category.description_th
+                              : category.description_en}
+                          </p>
+                        )}
+                        <div className="text-xs text-gray-500 mt-1 space-y-1">
+                          <p>ID: {category.id}</p>
+                          <p>TH: {category.cat_th || "Not set"}</p>
+                          <p>EN: {category.cat_en || "Not set"}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 ml-4">
+                        <button
+                          onClick={() => handleEditCategory(category)}
+                          className="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50"
+                          title="Edit category">
+                          <Edit size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCategory(category.id)}
+                          className="text-red-600 hover:text-red-700 p-2 rounded-md hover:bg-red-50"
+                          title="Delete category">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {categories.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      No categories found. Add your first category above.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
