@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Plus,
-  Edit,
-  Trash2,
-  Star,
-  Calendar,
-  Clock,
-  FolderOpen,
-  X,
-  Tag,
-} from "lucide-react";
+import { Plus, Calendar, FolderOpen, X, Edit, Trash2 } from "lucide-react";
 import { NewsEditorModal } from "./newsEditorModal";
 import { LanguageToggle } from "./languageToggle";
+import { NewsItem, type NewsItemData } from "./newsItem";
+import {
+  LanguageProvider,
+  LanguageToggleButton,
+  useLanguage,
+} from "./languageContext";
 import {
   useNewsStore,
   type News,
@@ -60,7 +56,9 @@ interface CategoryForm {
   };
 }
 
-export const NewsManager = () => {
+// Main NewsManager component with language context
+const NewsManagerContent = () => {
+  const { currentLanguage } = useLanguage();
   const {
     news,
     loading,
@@ -111,8 +109,16 @@ export const NewsManager = () => {
     setShowEditor(true);
   };
 
-  const handleEditNews = (newsItem: News) => {
-    setEditingNews(newsItem);
+  const handleEditNews = (newsItem: News | NewsItemData) => {
+    // Convert to the format expected by NewsEditorModal
+    const convertedNews: News = {
+      ...newsItem,
+      title: newsItem.title_th || newsItem.title_en || "",
+      subtitle: newsItem.excerpt_th || newsItem.excerpt_en || "",
+      tag: newsItem.tag_id || [],
+    } as News;
+
+    setEditingNews(convertedNews);
     setShowEditor(true);
   };
 
@@ -122,10 +128,17 @@ export const NewsManager = () => {
     }
   };
 
-  const handleToggleHighlight = async (newsItem: News) => {
-    // This would need to be implemented based on your news structure
-    // For now, we'll just show an alert
-    alert(`Toggle highlight for: ${newsItem.title}`);
+  const handleToggleHighlight = async (newsItem: NewsItemData) => {
+    // Create FormData for the update
+    const formData = new FormData();
+    formData.append("id", newsItem.id);
+    formData.append("is_highlighted", (!newsItem.is_highlighted).toString());
+
+    try {
+      await updateNews(newsItem.id, formData);
+    } catch (error) {
+      console.error("Error toggling highlight:", error);
+    }
   };
 
   const closeEditor = () => {
@@ -283,21 +296,24 @@ export const NewsManager = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold text-gray-900">
-            News/Event Manager
+            {currentLanguage === "th"
+              ? "จัดการข่าวสาร/กิจกรรม"
+              : "News/Event Manager"}
           </h2>
         </div>
         <div className="flex gap-3">
+          <LanguageToggleButton size="medium" />
           <button
             onClick={() => setShowCategoryManager(true)}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2">
             <FolderOpen size={16} />
-            Manage Categories
+            {currentLanguage === "th" ? "จัดการหมวดหมู่" : "Manage Categories"}
           </button>
           <button
             onClick={handleAddNews}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Plus size={16} />
-            Add Article
+            {currentLanguage === "th" ? "เพิ่มบทความ" : "Add Article"}
           </button>
         </div>
       </div>
@@ -306,7 +322,9 @@ export const NewsManager = () => {
       <div className="bg-white rounded-lg shadow-sm border">
         <div className="p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Current News Articles
+            {currentLanguage === "th"
+              ? "บทความข่าวสารปัจจุบัน"
+              : "Current News Articles"}
           </h3>
 
           {news.length === 0 ? (
@@ -314,71 +332,33 @@ export const NewsManager = () => {
               <div className="text-gray-400 mb-4">
                 <Calendar size={48} className="mx-auto" />
               </div>
-              <p className="text-gray-500 mb-4">No news articles found</p>
+              <p className="text-gray-500 mb-4">
+                {currentLanguage === "th"
+                  ? "ไม่พบบทความข่าวสาร"
+                  : "No news articles found"}
+              </p>
               <button
                 onClick={handleAddNews}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 mx-auto">
                 <Plus size={16} />
-                Create Your First Article
+                {currentLanguage === "th"
+                  ? "สร้างบทความแรกของคุณ"
+                  : "Create Your First Article"}
               </button>
             </div>
           ) : (
             <div className="grid gap-4">
               {news.map((newsItem) => (
-                <div
+                <NewsItem
                   key={newsItem.id}
-                  className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-medium text-gray-900 text-lg">
-                          {newsItem.title}
-                        </h4>
-                        {/* Highlight indicator - you can customize this based on your data structure */}
-                        <button
-                          onClick={() => handleToggleHighlight(newsItem)}
-                          className="text-yellow-500 hover:text-yellow-600"
-                          title="Toggle highlight">
-                          <Star size={16} />
-                        </button>
-                      </div>
-
-                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                        {newsItem.subtitle}
-                      </p>
-
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Clock size={12} />
-                          <span>
-                            Created: {new Date().toLocaleDateString()}
-                          </span>
-                        </div>
-                        {newsItem.tag && newsItem.tag.length > 0 && (
-                          <div className="flex items-center gap-1">
-                            <Tag size={12} />
-                            <span>{newsItem.tag.length} tags</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2 ml-4">
-                      <button
-                        onClick={() => handleEditNews(newsItem)}
-                        className="text-blue-600 hover:text-blue-700 p-2 rounded-md hover:bg-blue-50"
-                        title="Edit article">
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteNews(newsItem.id)}
-                        className="text-red-600 hover:text-red-700 p-2 rounded-md hover:bg-red-50"
-                        title="Delete article">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  newsItem={newsItem as NewsItemData}
+                  currentLanguage={currentLanguage}
+                  onEdit={handleEditNews}
+                  onDelete={handleDeleteNews}
+                  onToggleHighlight={handleToggleHighlight}
+                  categories={categories}
+                  tags={tags}
+                />
               ))}
             </div>
           )}
@@ -390,7 +370,7 @@ export const NewsManager = () => {
         suggestedTags={tags}
         isOpen={showEditor}
         onClose={closeEditor}
-        editingNews={editingNews}
+        editingNews={editingNews as News | null}
         categories={categories}
         onSubmit={handleModalSubmit}
         isSubmitting={false}
@@ -578,5 +558,14 @@ export const NewsManager = () => {
         </div>
       )}
     </div>
+  );
+};
+
+// Main NewsManager component with language provider
+export const NewsManager = () => {
+  return (
+    <LanguageProvider defaultLanguage="th">
+      <NewsManagerContent />
+    </LanguageProvider>
   );
 };

@@ -1,14 +1,33 @@
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase-client";
 
+// Quill content type
+export interface QuillContent {
+  ops?: Array<{
+    insert?: string | { image?: string };
+    attributes?: Record<string, unknown>;
+  }>;
+}
+
 export type News = {
   id: string;
-  thumbnail: string;
-  title: string;
-  subtitle: string;
-  tag: number[];
-  body_th: any;
-  body_en: any;
+  thumbnail?: string;
+  title_th: string;
+  title_en: string;
+  excerpt_th?: string;
+  excerpt_en?: string;
+  tag_id?: number[];
+  body_th?: QuillContent;
+  body_en?: QuillContent;
+  cat_id?: string;
+  is_highlighted?: boolean;
+  status?: "draft" | "published";
+  created_at?: string;
+  updated_at?: string;
+  // Legacy fields for backward compatibility
+  title?: string;
+  subtitle?: string;
+  tag?: number[];
 };
 
 export type NewsTag = {
@@ -80,8 +99,9 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       body: formData,
     });
     const { error } = await res.json();
-    if (error) set({ error: error.message, loading: false });
-    else {
+    if (error) {
+      set({ error: error.message, loading: false });
+    } else {
       set({ success: true, loading: false });
       get().fetchNews();
     }

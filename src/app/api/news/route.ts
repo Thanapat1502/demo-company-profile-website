@@ -1,47 +1,45 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import { withAuth, createAuthenticatedClient } from "@/lib/auth-middleware";
 
-// Helper to upload images using /api/image-upload
-async function uploadImage(file: File, newsId: string, fileName?: string) {
-  const formData = new FormData();
-  formData.append("file", file);
-  // Store in public/news_store/[newsId]/
-  formData.append("bucket", `news_store/${newsId}`);
-  if (fileName) formData.append("fileName", fileName);
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/image-upload`,
-    {
-      method: "POST",
-      body: formData,
+// Helper to upload images using authenticated Supabase client
+async function uploadImage(file: File, newsId: string): Promise<string> {
+  try {
+    // Create authenticated client to pass RLS
+    const supabaseAuth = await createAuthenticatedClient();
+
+    // Generate a unique filename
+    const fileExt = file.name.split(".").pop();
+    const fileName = `news_${newsId}_${Date.now()}.${fileExt}`;
+    const filePath = `public/news_store/${fileName}`;
+
+    // Upload to Supabase Storage with authenticated client
+    const { error } = await supabaseAuth.storage
+      .from("images")
+      .upload(filePath, file, {
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (error) {
+      console.error("Storage upload error:", error);
+      throw new Error(`Upload failed: ${error.message}`);
     }
-  );
-  const result = await res.json();
-  if (result.url) return result.url;
-  throw new Error(result.error || "Image upload failed");
-}
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-  if (id) {
-    // Get news by id
-    const { data, error } = await supabase
-      .from("news")
-      .select("*")
-      .eq("id", id)
-      .single();
-    return NextResponse.json({ data, error });
-  } else {
-    // Get all news
-    const { data, error } = await supabase.from("news").select("*");
-    return NextResponse.json({ data, error });
+    // Get public URL
+    const { data: publicUrlData } = supabaseAuth.storage
+      .from("images")
+      .getPublicUrl(filePath);
+
+    return publicUrlData.publicUrl;
+  } catch (error) {
+    console.error("Image upload error:", error);
+    throw error;
   }
 }
 
-export async function POST(req: Request) {
-  console.log("POST /api/news - Starting request");
-
+export const POST = withAuth(async (req: NextRequest, supabaseAuth, user) => {
   try {
     const formData = await req.formData();
     const id = uuidv4();
@@ -49,10 +47,11 @@ export async function POST(req: Request) {
     const title_en = formData.get("title_en") as string;
     const excerpt_th = formData.get("excerpt_th") as string;
     const excerpt_en = formData.get("excerpt_en") as string;
-
     // Get category and highlight status
     const category_id = formData.get("category_id") as string;
     const is_highlighted = formData.get("is_highlighted") === "true";
+    const status =
+      formData.get("status") === "published" ? "published" : "draft";
 
     // Parse JSON fields with error handling
     let tag, body_th, body_en;
@@ -70,19 +69,12 @@ export async function POST(req: Request) {
 
     let thumbnailUrl = "";
 
-    // console.log("Parsed data:", { id, title, excerpt, tag, body_th, body_en });
-
     // Handle thumbnail upload
     const thumbnail = formData.get("thumbnail");
-    console.log("Image II");
-
     if (thumbnail && typeof thumbnail === "object") {
-      console.log("Image III");
       try {
-        console.log("Image IV");
         thumbnailUrl = await uploadImage(thumbnail as File, id);
-      } catch (err) {
-        console.log("Image xIV:", err);
+      } catch {
         return NextResponse.json(
           { error: "Thumbnail upload failed" },
           { status: 500 }
@@ -91,14 +83,13 @@ export async function POST(req: Request) {
     }
 
     // Handle images in body editors (extract, upload, replace URLs)
-    // Example: Replace all image srcs in body_th/body_en with uploaded URLs
-    async function processQuillImages(quillBody: any) {
-      console.log("Quill I");
-
+    async function processQuillImages(quillBody: {
+      ops?: Array<{ insert?: { image?: string } }>;
+    }) {
       if (!quillBody || !quillBody.ops) return quillBody;
-      console.log("Quill II");
+
       const ops = await Promise.all(
-        quillBody.ops.map(async (op: any) => {
+        quillBody.ops.map(async (op: { insert?: { image?: string } }) => {
           if (
             op.insert &&
             op.insert.image &&
@@ -122,17 +113,14 @@ export async function POST(req: Request) {
           return op;
         })
       );
-      console.log("Quill III");
       return { ...quillBody, ops };
     }
 
     const processedBodyTh = await processQuillImages(body_th);
     const processedBodyEn = await processQuillImages(body_en);
-    console.log("th data", processedBodyTh);
-    console.log("en data", processedBodyEn);
-    console.log("Attem to add News");
     try {
-      const { data, error } = await supabase
+      // Use authenticated client for database operations
+      const { data, error } = await supabaseAuth
         .from("news")
         .insert([
           {
@@ -142,19 +130,17 @@ export async function POST(req: Request) {
             title_en,
             excerpt_th,
             excerpt_en,
+            tag_id: tag,
             body_th: processedBodyTh,
             body_en: processedBodyEn,
-            tag,
-            category_id: category_id || null,
+            cat_id: category_id || null,
             is_highlighted,
+            status,
           },
         ])
         .select();
-      console.log("=>Success:", data);
-      console.log("=>Error:", error);
       return NextResponse.json({ data, error });
     } catch (err) {
-      console.log("Catch Error:", err);
       return NextResponse.json(
         { error: "Failed to create news article", details: err },
         { status: 500 }
@@ -167,82 +153,121 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});
 
-export async function PUT(req: Request) {
-  const formData = await req.formData();
-  const id = formData.get("id") as string;
-  const title = formData.get("title") as string;
-  const subtitle = formData.get("subtitle") as string;
-  const tag = JSON.parse(formData.get("tag") as string); // number[]
-  const body_th = JSON.parse(formData.get("body_th") as string); // Quill JSON
-  const body_en = JSON.parse(formData.get("body_en") as string); // Quill JSON
-  let thumbnailUrl = formData.get("thumbnailUrl") as string;
+export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+  try {
+    const formData = await req.formData();
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const subtitle = formData.get("subtitle") as string;
+    const tag = JSON.parse(formData.get("tag") as string); // number[]
+    const body_th = JSON.parse(formData.get("body_th") as string); // Quill JSON
+    const body_en = JSON.parse(formData.get("body_en") as string); // Quill JSON
+    let thumbnailUrl = formData.get("thumbnailUrl") as string;
 
-  // Handle thumbnail upload
-  const thumbnail = formData.get("thumbnail");
-  if (thumbnail && typeof thumbnail === "object") {
-    try {
-      thumbnailUrl = await uploadImage(thumbnail as File, id);
-    } catch (err) {
-      return NextResponse.json(
-        { error: "Thumbnail upload failed" },
-        { status: 500 }
-      );
+    // Handle thumbnail upload
+    const thumbnail = formData.get("thumbnail");
+    if (thumbnail && typeof thumbnail === "object") {
+      try {
+        thumbnailUrl = await uploadImage(thumbnail as File, id);
+      } catch {
+        return NextResponse.json(
+          { error: "Thumbnail upload failed" },
+          { status: 500 }
+        );
+      }
     }
-  }
 
-  // Handle images in body editors (extract, upload, replace URLs)
-  async function processQuillImages(quillBody: any) {
-    if (!quillBody || !quillBody.ops) return quillBody;
-    const ops = await Promise.all(
-      quillBody.ops.map(async (op: any) => {
-        if (
-          op.insert &&
-          op.insert.image &&
-          op.insert.image.startsWith("data:")
-        ) {
-          const base64 = op.insert.image;
-          const res = await fetch(base64);
-          const blob = await res.blob();
-          const file = new File([blob], `bodyimg-${Date.now()}.png`, {
-            type: blob.type,
-          });
-          try {
-            const url = await uploadImage(file, id);
-            return { ...op, insert: { image: url } };
-          } catch {
-            return op;
+    // Handle images in body editors (extract, upload, replace URLs)
+    async function processQuillImages(quillBody: {
+      ops?: Array<{ insert?: { image?: string } }>;
+    }) {
+      if (!quillBody || !quillBody.ops) return quillBody;
+      const ops = await Promise.all(
+        quillBody.ops.map(async (op: { insert?: { image?: string } }) => {
+          if (
+            op.insert &&
+            op.insert.image &&
+            op.insert.image.startsWith("data:")
+          ) {
+            const base64 = op.insert.image;
+            const res = await fetch(base64);
+            const blob = await res.blob();
+            const file = new File([blob], `bodyimg-${Date.now()}.png`, {
+              type: blob.type,
+            });
+            try {
+              const url = await uploadImage(file, id);
+              return { ...op, insert: { image: url } };
+            } catch {
+              return op;
+            }
           }
-        }
-        return op;
+          return op;
+        })
+      );
+      return { ...quillBody, ops };
+    }
+
+    const processedBodyTh = await processQuillImages(body_th);
+    const processedBodyEn = await processQuillImages(body_en);
+
+    // Use authenticated client for database operations
+    const { data, error } = await supabaseAuth
+      .from("news")
+      .update({
+        thumbnail: thumbnailUrl,
+        title,
+        subtitle,
+        tag,
+        body_th: processedBodyTh,
+        body_en: processedBodyEn,
       })
+      .eq("id", id)
+      .select();
+    return NextResponse.json({ data, error });
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Failed to update news article", details: err },
+      { status: 500 }
     );
-    return { ...quillBody, ops };
   }
+});
 
-  const processedBodyTh = await processQuillImages(body_th);
-  const processedBodyEn = await processQuillImages(body_en);
+export const DELETE = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  const { data, error } = await supabase
-    .from("news")
-    .update({
-      thumbnail: thumbnailUrl,
-      title,
-      subtitle,
-      tag,
-      body_th: processedBodyTh,
-      body_en: processedBodyEn,
-    })
-    .eq("id", id)
-    .select();
-  return NextResponse.json({ data, error });
-}
+    const { data, error } = await supabaseAuth
+      .from("news")
+      .delete()
+      .eq("id", id);
+    return NextResponse.json({ data, error });
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Failed to delete news article", details: err },
+      { status: 500 }
+    );
+  }
+});
 
-export async function DELETE(req: Request) {
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  const { data, error } = await supabase.from("news").delete().eq("id", id);
-  return NextResponse.json({ data, error });
+  if (id) {
+    // Get news by id
+    const { data, error } = await supabase
+      .from("news")
+      .select("*")
+      .eq("id", id)
+      .single();
+    return NextResponse.json({ data, error });
+  } else {
+    // Get all news
+    const { data, error } = await supabase.from("news").select("*");
+    return NextResponse.json({ data, error });
+  }
 }

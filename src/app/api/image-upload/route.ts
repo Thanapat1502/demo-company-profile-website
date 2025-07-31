@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 // Create authenticated Supabase client
-async function createAuthenticatedClient() {
+export async function createAuthenticatedClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -31,7 +31,9 @@ async function createAuthenticatedClient() {
 }
 
 // Verify user is authenticated
-async function verifyAuth(supabase: ReturnType<typeof createServerClient>) {
+export async function verifyAuth(
+  supabase: ReturnType<typeof createServerClient>
+) {
   const {
     data: { user },
     error,
