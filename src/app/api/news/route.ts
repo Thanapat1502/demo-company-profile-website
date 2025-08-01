@@ -39,7 +39,49 @@ async function uploadImage(file: File, newsId: string): Promise<string> {
   }
 }
 
-export const POST = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+// Helper function to delete image from Supabase storage
+async function deleteImageFromStorage(
+  supabaseAuth: Awaited<ReturnType<typeof createAuthenticatedClient>>,
+  imageUrl: string
+) {
+  if (!imageUrl) return;
+
+  try {
+    // Extract the file path from the URL
+    // URL format: https://[project].supabase.co/storage/v1/object/public/images/public/news_store/filename.jpg
+    const urlParts = imageUrl.split("/");
+    const bucketIndex = urlParts.findIndex((part) => part === "images");
+
+    if (bucketIndex === -1) {
+      console.warn("Could not extract file path from URL:", imageUrl);
+      return;
+    }
+
+    // Get the path after 'images/' bucket
+    const filePath = urlParts.slice(bucketIndex + 1).join("/");
+
+    if (!filePath) {
+      console.warn("Empty file path extracted from URL:", imageUrl);
+      return;
+    }
+
+    console.log("Attempting to delete file:", filePath);
+
+    const { error } = await supabaseAuth.storage
+      .from("images")
+      .remove([filePath]);
+
+    if (error) {
+      console.error("Error deleting image from storage:", error);
+    } else {
+      console.log("Successfully deleted image:", filePath);
+    }
+  } catch (error) {
+    console.error("Error in deleteImageFromStorage:", error);
+  }
+}
+
+export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
   try {
     const formData = await req.formData();
     const id = uuidv4();
@@ -162,7 +204,7 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth, user) => {
   }
 });
 
-export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
   try {
     const formData = await req.formData();
     const id = formData.get("id") as string;
@@ -182,12 +224,28 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
     const body_en = JSON.parse(formData.get("body_en") as string); // Quill JSON
     let thumbnailUrl = formData.get("thumbnailUrl") as string;
 
+    // Get current article to check for existing thumbnail
+    const { data: currentThumbnail } = await supabaseAuth
+      .from("news")
+      .select("thumbnail")
+      .eq("id", id)
+      .single();
+
     // Handle thumbnail upload
     const thumbnail = formData.get("thumbnail");
     if (thumbnail && typeof thumbnail === "object") {
       try {
+        // Delete old thumbnail if it exists and we're uploading a new one
+        if (currentThumbnail?.thumbnail) {
+          await deleteImageFromStorage(
+            supabaseAuth,
+            currentThumbnail.thumbnail
+          );
+        }
+
         thumbnailUrl = await uploadImage(thumbnail as File, id);
-      } catch {
+      } catch (error) {
+        console.error("Thumbnail upload error:", error);
         return NextResponse.json(
           { error: "Thumbnail upload failed" },
           { status: 500 }
@@ -277,18 +335,46 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
   }
 });
 
-export const DELETE = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+export const DELETE = withAuth(async (req: NextRequest, supabaseAuth) => {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
+    // Get the article first to retrieve the thumbnail URL
+    const { data: articleToDelete, error: fetchError } = await supabaseAuth
+      .from("news")
+      .select("thumbnail")
+      .eq("id", id)
+      .single();
+
+    if (fetchError) {
+      console.error("Error fetching article for deletion:", fetchError);
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+    }
+
+    // Delete the article from database
     const { data, error } = await supabaseAuth
       .from("news")
       .delete()
       .eq("id", id);
-    return NextResponse.json({ data, error });
+
+    if (error) {
+      console.error("Error deleting article:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    // Delete the thumbnail image if it exists
+    if (articleToDelete?.thumbnail) {
+      await deleteImageFromStorage(supabaseAuth, articleToDelete.thumbnail);
+    }
+
+    return NextResponse.json({
+      data,
+      message: "News article and associated images deleted successfully",
+    });
   } catch (err) {
+    console.error("Delete operation failed:", err);
     return NextResponse.json(
       { error: "Failed to delete news article", details: err },
       { status: 500 }
