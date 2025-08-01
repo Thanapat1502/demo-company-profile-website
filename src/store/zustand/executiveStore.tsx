@@ -2,35 +2,122 @@ import { create } from "zustand";
 
 export interface ExecutiveType {
   id: string;
-  nameTh: string;
-  nameEn: string;
-  positionTh: string;
-  positionEn: string;
-  image: string;
+  name_th: string;
+  name_en: string;
+  position_th: string;
+  position_en: string;
+  image_url: string;
+  updated_at?: string;
 }
 
 type State = {
-  executiveMembers: ExecutiveType[] | null;
-  fetchExecutiveMembers: () => void;
-  addExecutiveMembers: (member: ExecutiveType) => void;
-  deleteExecutiveMembers: (id: string) => void;
-  updateExecutiveMembers: (id: string, updatedMember: ExecutiveType) => void;
+  executiveMembers: ExecutiveType[];
+  loading: boolean;
+  success: boolean;
+  error: string | null;
+  fetchExecutiveMembers: () => Promise<void>;
+  addExecutiveMember: (data: {
+    name_th: string;
+    name_en: string;
+    position_th: string;
+    position_en: string;
+    image?: File | string;
+  }) => Promise<void>;
+  updateExecutiveMember: (
+    id: string,
+    data: {
+      name_th: string;
+      name_en: string;
+      position_th: string;
+      position_en: string;
+      image?: File | string;
+    }
+  ) => Promise<void>;
+  deleteExecutiveMember: (id: string) => Promise<void>;
 };
 
-export const usePartnerSotre = create<State>((set) => ({
-  executiveMembers: null,
+export const useExecutiveStore = create<State>((set, get) => ({
+  executiveMembers: [],
+  loading: false,
+  success: false,
+  error: null,
+
   fetchExecutiveMembers: async () => {
-    const result = null;
-    //ADD API call here, table "executive"
-    set({ executiveMembers: result });
+    set({ loading: true, error: null, success: false });
+    const res = await fetch("/api/executive");
+    const { data, error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else set({ executiveMembers: data || [], loading: false, success: true });
   },
-  addExecutiveMembers: (member) => {
-    //ADD API call here, table "executive"
+
+  addExecutiveMember: async ({
+    name_th,
+    name_en,
+    position_th,
+    position_en,
+    image,
+  }) => {
+    set({ loading: true, error: null, success: false });
+    const formData = new FormData();
+    formData.append("name_th", name_th);
+    formData.append("name_en", name_en);
+    formData.append("position_th", position_th);
+    formData.append("position_en", position_en);
+    if (image && typeof image !== "string") {
+      formData.append("image", image);
+    } else if (typeof image === "string") {
+      formData.append("image_url", image);
+    }
+    const res = await fetch("/api/executive", {
+      method: "POST",
+      body: formData,
+    });
+    const { error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchExecutiveMembers();
+    }
   },
-  deleteExecutiveMembers: (id) => {
-    //ADD API call here, table "executive"
+
+  updateExecutiveMember: async (
+    id,
+    { name_th, name_en, position_th, position_en, image }
+  ) => {
+    set({ loading: true, error: null, success: false });
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("name_th", name_th);
+    formData.append("name_en", name_en);
+    formData.append("position_th", position_th);
+    formData.append("position_en", position_en);
+    if (image && typeof image !== "string") {
+      formData.append("image", image);
+    } else if (typeof image === "string") {
+      formData.append("image_url", image);
+    }
+    const res = await fetch("/api/executive", {
+      method: "PUT",
+      body: formData,
+    });
+    const { error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchExecutiveMembers();
+    }
   },
-  updateExecutiveMembers: (id, updatedMember) => {
-    //ADD API call here, table "executive"
+
+  deleteExecutiveMember: async (id) => {
+    set({ loading: true, error: null, success: false });
+    const res = await fetch(`/api/executive?id=${id}`, {
+      method: "DELETE",
+    });
+    const { error } = await res.json();
+    if (error) set({ error: error.message, loading: false });
+    else {
+      set({ success: true, loading: false });
+      get().fetchExecutiveMembers();
+    }
   },
 }));
