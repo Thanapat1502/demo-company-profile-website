@@ -119,6 +119,10 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth, user) => {
     const processedBodyTh = await processQuillImages(body_th);
     const processedBodyEn = await processQuillImages(body_en);
     try {
+      // Prepare timestamp fields
+      const now = new Date().toISOString();
+      const publishAt = status === "published" ? now : null;
+
       // Use authenticated client for database operations
       const { data, error } = await supabaseAuth
         .from("news")
@@ -136,6 +140,9 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth, user) => {
             cat_id: category_id || null,
             is_highlighted,
             status,
+            created_at: now,
+            updated_at: now,
+            publish_at: publishAt,
           },
         ])
         .select();
@@ -159,8 +166,17 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
   try {
     const formData = await req.formData();
     const id = formData.get("id") as string;
-    const title = formData.get("title") as string;
-    const subtitle = formData.get("subtitle") as string;
+    const title_th = formData.get("title_th") as string;
+    const title_en = formData.get("title_en") as string;
+    const excerpt_th = formData.get("excerpt_th") as string;
+    const excerpt_en = formData.get("excerpt_en") as string;
+    // Get category and highlight status
+    const category_id = formData.get("category_id") as string;
+    const is_highlighted = formData.get("is_highlighted") === "true";
+    const status =
+      formData.get("status") === "published" ? "published" : "draft";
+
+    // Parse tags and body content
     const tag = JSON.parse(formData.get("tag") as string); // number[]
     const body_th = JSON.parse(formData.get("body_th") as string); // Quill JSON
     const body_en = JSON.parse(formData.get("body_en") as string); // Quill JSON
@@ -213,17 +229,43 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
     const processedBodyTh = await processQuillImages(body_th);
     const processedBodyEn = await processQuillImages(body_en);
 
+    // Get current article to check status change
+    const { data: currentArticle } = await supabaseAuth
+      .from("news")
+      .select("status, publish_at")
+      .eq("id", id)
+      .single();
+
+    // Prepare timestamp fields
+    const now = new Date().toISOString();
+    const updateData: Record<string, unknown> = {
+      thumbnail: thumbnailUrl,
+      title_th,
+      title_en,
+      excerpt_th,
+      excerpt_en,
+      body_th: processedBodyTh,
+      body_en: processedBodyEn,
+      tag_id: tag,
+      cat_id: category_id || null,
+      is_highlighted,
+      status,
+      updated_at: now,
+    };
+
+    // If status is changing from draft to published, set publish_at
+    if (
+      currentArticle &&
+      currentArticle.status === "draft" &&
+      status === "published"
+    ) {
+      updateData.publish_at = now;
+    }
+
     // Use authenticated client for database operations
     const { data, error } = await supabaseAuth
       .from("news")
-      .update({
-        thumbnail: thumbnailUrl,
-        title,
-        subtitle,
-        tag,
-        body_th: processedBodyTh,
-        body_en: processedBodyEn,
-      })
+      .update(updateData)
       .eq("id", id)
       .select();
     return NextResponse.json({ data, error });

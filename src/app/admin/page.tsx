@@ -24,6 +24,7 @@ import { ExecutiveManager } from "./(component)/executive";
 import { ContactManager } from "./(component)/contact";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
+import { ToastProvider } from "@/components/ui/ToastContainer";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
@@ -667,7 +668,9 @@ const AdminDashboard = () => {
 export default function ProtectedAdminDashboard() {
   return (
     <ProtectedRoute>
-      <AdminDashboard />
+      <ToastProvider position="top-right" maxToasts={5}>
+        <AdminDashboard />
+      </ToastProvider>
     </ProtectedRoute>
   );
 }

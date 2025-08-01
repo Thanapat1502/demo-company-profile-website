@@ -48,50 +48,33 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
               // Insert temporary loading text
               quill.insertText(index, "🔄 กำลังอัปโหลดรูปภาพ...", "user");
 
-              // Check upload permission first
-              console.log("Checking upload permission...");
-              const hasPermission = false;
-              await SupabaseStorage.checkUploadPermission();
-              if (!hasPermission) {
-                // Remove loading text
-                quill.deleteText(index, "🔄 กำลังอัปโหลดรูปภาพ...".length);
-                throw new Error(
-                  "คุณไม่มีสิทธิ์ในการอัปโหลดรูปภาพ กรุณาเข้าสู่ระบบด้วยบัญชี admin"
-                );
+              // Upload image using the image-upload API endpoint
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("bucket", "public/news_store");
+
+              const response = await fetch("/api/image-upload", {
+                method: "POST",
+                body: formData,
+              });
+
+              if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Upload failed");
               }
 
-              console.log("Permission granted, uploading file...");
-              // Upload to Supabase Storage
-              const result = await SupabaseStorage.uploadImage(
-                file,
-                "blog-content"
-              );
+              const result = await response.json();
 
               // Remove loading text
               quill.deleteText(index, "🔄 กำลังอัปโหลดรูปภาพ...".length);
 
-              if (!result.success) {
-                let errorMessage = result.error || "เกิดข้อผิดพลาดในการอัปโหลด";
-
-                // Provide more helpful error messages
-                if (result.error?.includes("bucket")) {
-                  errorMessage =
-                    'ไม่พบ Storage Bucket "uploads" กรุณาสร้างใน Supabase Dashboard หรือรันการ migration';
-                } else if (
-                  result.error?.includes("policy") ||
-                  result.error?.includes("permission")
-                ) {
-                  errorMessage =
-                    "ไม่มีสิทธิ์อัปโหลด กรุณาตรวจสอบ RLS Policy ของ Storage หรือสิทธิ์ admin";
-                } else if (result.error?.includes("size")) {
-                  errorMessage = "ขนาดไฟล์เกิน 5MB กรุณาเลือกไฟล์ที่เล็กกว่า";
-                } else if (result.error?.includes("type")) {
-                  errorMessage =
-                    "ประเภทไฟล์ไม่รองรับ กรุณาเลือกไฟล์รูปภาพ (JPG, PNG, GIF, WebP)";
-                }
-
+              if (result.error) {
                 console.error("Upload failed:", result.error);
-                throw new Error(errorMessage);
+                throw new Error(result.error);
+              }
+
+              if (!result.url) {
+                throw new Error("No URL returned from upload");
               }
 
               // Insert image into editor
@@ -106,14 +89,27 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
             } catch (error) {
               console.error("Error uploading image:", error);
 
-              // Show detailed error message
+              // Show user-friendly error message
               const errorMessage =
                 error instanceof Error
                   ? error.message
                   : "Unknown error occurred";
-              alert(
-                `❌ เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ:\n\n${errorMessage}\n\nกรุณาตรวจสอบ:\n1. เข้าสู่ระบบด้วยบัญชี admin\n2. Storage bucket "uploads" ถูกสร้างแล้ว\n3. RLS policies ถูกตั้งค่าแล้ว`
-              );
+
+              let userMessage = "เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ";
+
+              if (errorMessage.includes("Invalid file type")) {
+                userMessage =
+                  "ประเภทไฟล์ไม่รองรับ กรุณาเลือกไฟล์รูปภาพ (JPG, PNG, GIF, WebP)";
+              } else if (errorMessage.includes("File size too large")) {
+                userMessage = "ขนาดไฟล์เกิน 5MB กรุณาเลือกไฟล์ที่เล็กกว่า";
+              } else if (errorMessage.includes("Unauthorized")) {
+                userMessage =
+                  "ไม่มีสิทธิ์อัปโหลด กรุณาเข้าสู่ระบบด้วยบัญชี admin";
+              } else if (errorMessage.includes("Upload failed")) {
+                userMessage = "การอัปโหลดล้มเหลว กรุณาลองใหม่อีกครั้ง";
+              }
+
+              alert(`❌ ${userMessage}\n\nรายละเอียด: ${errorMessage}`);
             }
           };
         };

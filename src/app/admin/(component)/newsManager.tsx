@@ -3,11 +3,9 @@ import { Plus, Calendar, FolderOpen, X, Edit, Trash2 } from "lucide-react";
 import { NewsEditorModal } from "./newsEditorModal";
 import { LanguageToggle } from "./languageToggle";
 import { NewsItem, type NewsItemData } from "./newsItem";
-import {
-  LanguageProvider,
-  LanguageToggleButton,
-  useLanguage,
-} from "./languageContext";
+import { LanguageProvider, useLanguage } from "./languageContext";
+import { useToast } from "../../../hooks/useToast";
+import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import {
   useNewsStore,
   type News,
@@ -43,22 +41,10 @@ interface NewsArticleForm {
   publishDate?: Date;
 }
 
-// Interface for category management
-interface CategoryForm {
-  id: string;
-  name: {
-    th: string;
-    en: string;
-  };
-  description?: {
-    th: string;
-    en: string;
-  };
-}
-
 // Main NewsManager component with language context
 const NewsManagerContent = () => {
   const { currentLanguage } = useLanguage();
+  const { showSuccess, showError } = useToast();
   const {
     news,
     loading,
@@ -75,6 +61,20 @@ const NewsManagerContent = () => {
   } = useNewsStore();
   const [showEditor, setShowEditor] = useState(false);
   const [editingNews, setEditingNews] = useState<News | null>(null);
+
+  // Confirmation dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    type?: "danger" | "warning" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   // Category management state
   const [showCategoryManager, setShowCategoryManager] = useState(false);
@@ -95,13 +95,32 @@ const NewsManagerContent = () => {
 
   // Handle success/error messages
   useEffect(() => {
-    if (success) {
-      alert("Operation completed successfully!");
+    if (success && typeof success === "string") {
+      showSuccess(
+        currentLanguage === "th" ? "สำเร็จ" : "Success",
+        currentLanguage === "th"
+          ? success.includes("created")
+            ? "สร้างบทความสำเร็จ"
+            : success.includes("updated")
+            ? "อัปเดตบทความสำเร็จ"
+            : success.includes("deleted")
+            ? "ลบบทความสำเร็จ"
+            : "ดำเนินการเสร็จสิ้น"
+          : success
+      );
+      // Clear success state after showing toast
+      setTimeout(() => {
+        useNewsStore.setState({ success: false });
+      }, 100);
     }
     if (error) {
-      alert(`Error: ${error}`);
+      showError(currentLanguage === "th" ? "เกิดข้อผิดพลาด" : "Error", error);
+      // Clear error state after showing toast
+      setTimeout(() => {
+        useNewsStore.setState({ error: null });
+      }, 100);
     }
-  }, [success, error]);
+  }, [success, error, showSuccess, showError, currentLanguage]);
 
   // Helper functions
   const handleAddNews = () => {
@@ -123,21 +142,75 @@ const NewsManagerContent = () => {
   };
 
   const handleDeleteNews = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this news article?")) {
-      await deleteNews(id);
-    }
+    setConfirmDialog({
+      isOpen: true,
+      title: currentLanguage === "th" ? "ยืนยันการลบ" : "Confirm Delete",
+      message:
+        currentLanguage === "th"
+          ? "คุณแน่ใจหรือไม่ที่จะลบบทความนี้? การดำเนินการนี้ไม่สามารถยกเลิกได้"
+          : "Are you sure you want to delete this news article? This action cannot be undone.",
+      onConfirm: () => deleteNews(id),
+      type: "danger",
+    });
   };
 
   const handleToggleHighlight = async (newsItem: NewsItemData) => {
-    // Create FormData for the update
-    const formData = new FormData();
-    formData.append("id", newsItem.id);
-    formData.append("is_highlighted", (!newsItem.is_highlighted).toString());
-
     try {
+      // Create FormData with all required fields for the update
+      const formData = new FormData();
+      formData.append("id", newsItem.id);
+      formData.append("title_th", newsItem.title_th || "");
+      formData.append("title_en", newsItem.title_en || "");
+      formData.append("excerpt_th", newsItem.excerpt_th || "");
+      formData.append("excerpt_en", newsItem.excerpt_en || "");
+      formData.append("body_th", JSON.stringify(newsItem.body_th || {}));
+      formData.append("body_en", JSON.stringify(newsItem.body_en || {}));
+      formData.append("tag", JSON.stringify(newsItem.tag_id || []));
+      formData.append("category_id", newsItem.cat_id || "");
+      formData.append("is_highlighted", (!newsItem.is_highlighted).toString());
+      formData.append("status", newsItem.status || "draft");
+
+      // Add thumbnail URL if exists
+      if (newsItem.thumbnail) {
+        formData.append("thumbnailUrl", newsItem.thumbnail);
+      }
+
       await updateNews(newsItem.id, formData);
     } catch (error) {
       console.error("Error toggling highlight:", error);
+    }
+  };
+
+  const handleToggleStatus = async (newsItem: NewsItemData) => {
+    try {
+      // Create FormData with all required fields for the update
+      const formData = new FormData();
+      formData.append("id", newsItem.id);
+      formData.append("title_th", newsItem.title_th || "");
+      formData.append("title_en", newsItem.title_en || "");
+      formData.append("excerpt_th", newsItem.excerpt_th || "");
+      formData.append("excerpt_en", newsItem.excerpt_en || "");
+      formData.append("body_th", JSON.stringify(newsItem.body_th || {}));
+      formData.append("body_en", JSON.stringify(newsItem.body_en || {}));
+      formData.append("tag", JSON.stringify(newsItem.tag_id || []));
+      formData.append("category_id", newsItem.cat_id || "");
+      formData.append(
+        "is_highlighted",
+        newsItem.is_highlighted ? "true" : "false"
+      );
+
+      // Toggle status
+      const newStatus = newsItem.status === "published" ? "draft" : "published";
+      formData.append("status", newStatus);
+
+      // Add thumbnail URL if exists
+      if (newsItem.thumbnail) {
+        formData.append("thumbnailUrl", newsItem.thumbnail);
+      }
+
+      await updateNews(newsItem.id, formData);
+    } catch (error) {
+      console.error("Error toggling status:", error);
     }
   };
 
@@ -219,19 +292,47 @@ const NewsManagerContent = () => {
   };
 
   const handleDeleteCategory = async (categoryId: string) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      try {
-        const response = await fetch(`/api/categories?id=${categoryId}`, {
-          method: "DELETE",
-        });
+    setConfirmDialog({
+      isOpen: true,
+      title:
+        currentLanguage === "th"
+          ? "ยืนยันการลบหมวดหมู่"
+          : "Confirm Delete Category",
+      message:
+        currentLanguage === "th"
+          ? "คุณแน่ใจหรือไม่ที่จะลบหมวดหมู่นี้? การดำเนินการนี้ไม่สามารถยกเลิกได้"
+          : "Are you sure you want to delete this category? This action cannot be undone.",
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`/api/categories?id=${categoryId}`, {
+            method: "DELETE",
+          });
 
-        if (response.ok) {
-          await fetchCategories(); // Refresh categories
+          if (response.ok) {
+            await fetchCategories(); // Refresh categories
+            showSuccess(
+              currentLanguage === "th"
+                ? "ลบหมวดหมู่สำเร็จ"
+                : "Category Deleted",
+              currentLanguage === "th"
+                ? "ลบหมวดหมู่เรียบร้อยแล้ว"
+                : "Category has been deleted successfully"
+            );
+          } else {
+            throw new Error("Failed to delete category");
+          }
+        } catch (error) {
+          console.error("Error deleting category:", error);
+          showError(
+            currentLanguage === "th" ? "เกิดข้อผิดพลาด" : "Error",
+            currentLanguage === "th"
+              ? "ไม่สามารถลบหมวดหมู่ได้"
+              : "Failed to delete category"
+          );
         }
-      } catch (error) {
-        console.error("Error deleting category:", error);
-      }
-    }
+      },
+      type: "danger",
+    });
   };
 
   const closeCategoryManager = () => {
@@ -239,6 +340,15 @@ const NewsManagerContent = () => {
     setEditingCategory(null);
     setNewCategoryName({ th: "", en: "" });
     setNewCategoryDescription({ th: "", en: "" });
+  };
+
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      isOpen: false,
+      title: "",
+      message: "",
+      onConfirm: () => {},
+    });
   };
 
   // Modal submission handler
@@ -254,11 +364,16 @@ const NewsManagerContent = () => {
       formData.append("excerpt_en", data.excerpt.en || "");
       formData.append("body_th", JSON.stringify(data.content.th));
       formData.append("body_en", JSON.stringify(data.content.en));
-      formData.append("tag", JSON.stringify(data.tags));
+      // Convert tag IDs from strings to numbers
+      const tagIds = data.tags
+        .map((tagId) => parseInt(tagId, 10))
+        .filter((id) => !isNaN(id));
+      formData.append("tag", JSON.stringify(tagIds));
 
-      // Add category and highlight status
+      // Add category, highlight status, and publication status
       formData.append("category_id", data.category || "");
       formData.append("is_highlighted", data.isHighlighted ? "true" : "false");
+      formData.append("status", data.status || "draft");
 
       // Add featured image if present
       if (data.featuredImage) {
@@ -302,7 +417,6 @@ const NewsManagerContent = () => {
           </h2>
         </div>
         <div className="flex gap-3">
-          <LanguageToggleButton size="medium" />
           <button
             onClick={() => setShowCategoryManager(true)}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2">
@@ -356,6 +470,7 @@ const NewsManagerContent = () => {
                   onEdit={handleEditNews}
                   onDelete={handleDeleteNews}
                   onToggleHighlight={handleToggleHighlight}
+                  onToggleStatus={handleToggleStatus}
                   categories={categories}
                   tags={tags}
                 />
@@ -557,6 +672,18 @@ const NewsManagerContent = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirmDialog}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        type={confirmDialog.type}
+        confirmText={currentLanguage === "th" ? "ยืนยัน" : "Confirm"}
+        cancelText={currentLanguage === "th" ? "ยกเลิก" : "Cancel"}
+      />
     </div>
   );
 };

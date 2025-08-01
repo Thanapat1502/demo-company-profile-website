@@ -55,42 +55,70 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
-    const bucket = (formData.get("bucket") as string) || "images/public";
-
-    if (!file || !bucket) {
-      return NextResponse.json(
-        { error: "File or bucket not provided" },
-        { status: 400 }
-      );
-    }
+    const bucketPath =
+      (formData.get("bucket") as string) || "public/news_store";
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
+    // Validate file type
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json(
+        {
+          error:
+            "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: "File size too large. Maximum size is 5MB." },
+        { status: 400 }
+      );
+    }
+
     // Generate a unique filename
     const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random()
+    const fileName = `content_${Date.now()}_${Math.random()
       .toString(36)
       .substring(2, 8)}.${fileExt}`;
-    // Upload to Supabase Storage
+
+    // Create the full file path within the images bucket
+    const filePath = `${bucketPath}/${fileName}`;
+
+    // Upload to Supabase Storage (images bucket)
     const { error } = await supabase.storage
-      .from(bucket)
-      .upload(fileName, file, { upsert: false });
+      .from("images")
+      .upload(filePath, file, {
+        upsert: false,
+        contentType: file.type,
+      });
 
     if (error) {
-      console.log("upload error 1", error);
+      console.error("Storage upload error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     // Get public URL
     const { data: publicUrlData } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(fileName);
+      .from("images")
+      .getPublicUrl(filePath);
 
     return NextResponse.json({ url: publicUrlData.publicUrl }, { status: 200 });
   } catch (err) {
-    console.log("upload error 2", err);
+    console.error("Upload error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

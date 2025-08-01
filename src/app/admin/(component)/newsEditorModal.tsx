@@ -33,12 +33,21 @@ interface NewsArticleForm {
 
 interface News {
   id: string;
-  title: string;
-  subtitle: string;
+  title_th: string;
+  title_en: string;
+  excerpt_th?: string;
+  excerpt_en?: string;
   body_th: string | object;
   body_en: string | object;
-  tag: number[];
+  tag_id?: number[];
+  cat_id?: string;
+  is_highlighted?: boolean;
+  status?: "draft" | "published";
   thumbnail?: string;
+  // Legacy fields for backward compatibility
+  title?: string;
+  subtitle?: string;
+  tag?: number[];
 }
 
 interface Category {
@@ -118,17 +127,33 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
     };
   };
 
-  // Tag management functions
+  // Tag management functions - now working with tag IDs (numbers)
   const addTag = () => {
-    if (newTag.trim() && !currentTags.includes(newTag.trim())) {
-      const updatedTags = [...currentTags, newTag.trim()];
-      setValue("tags", updatedTags);
-      setNewTag("");
+    if (newTag.trim()) {
+      // Check if it's a new tag or existing tag
+      const existingTag = suggestedTags.find(
+        (tag) => tag.tag_th === newTag.trim() || tag.tag_en === newTag.trim()
+      );
+
+      if (existingTag && !currentTags.includes(existingTag.id.toString())) {
+        // Add existing tag by ID
+        const updatedTags = [...currentTags, existingTag.id.toString()];
+        setValue("tags", updatedTags);
+        setNewTag("");
+      } else if (!existingTag) {
+        // For new tags, we'll need to create them first
+        // For now, just show a message that the tag needs to be created
+        alert(
+          selectedLanguage === "th"
+            ? "กรุณาสร้างแท็กใหม่ในระบบก่อน"
+            : "Please create this tag in the system first"
+        );
+      }
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
-    const updatedTags = currentTags.filter((tag) => tag !== tagToRemove);
+  const removeTag = (tagIdToRemove: string) => {
+    const updatedTags = currentTags.filter((tagId) => tagId !== tagIdToRemove);
     setValue("tags", updatedTags);
   };
 
@@ -139,18 +164,25 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
     }
   };
 
-  const addSuggestedTag = (tag: string) => {
-    if (!currentTags.includes(tag)) {
-      const updatedTags = [...currentTags, tag];
+  const addSuggestedTag = (tagId: number) => {
+    const tagIdStr = tagId.toString();
+    if (!currentTags.includes(tagIdStr)) {
+      const updatedTags = [...currentTags, tagIdStr];
       setValue("tags", updatedTags);
     }
   };
 
   // Get available suggested tags (not already added)
   const availableSuggestedTags = suggestedTags.filter((tag) => {
-    const tagName = selectedLanguage === "th" ? tag.tag_th : tag.tag_en;
-    return !currentTags.includes(tagName);
+    return !currentTags.includes(tag.id.toString());
   });
+
+  // Helper function to get tag name by ID
+  const getTagNameById = (tagId: string) => {
+    const tag = suggestedTags.find((t) => t.id.toString() === tagId);
+    if (!tag) return tagId; // fallback to ID if tag not found
+    return selectedLanguage === "th" ? tag.tag_th : tag.tag_en;
+  };
 
   // Handle image upload
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,12 +222,12 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
   useEffect(() => {
     if (editingNews && isOpen) {
       setValue("title", {
-        th: editingNews.title || "",
-        en: editingNews.title || "",
+        th: editingNews.title_th || editingNews.title || "",
+        en: editingNews.title_en || editingNews.title || "",
       });
       setValue("excerpt", {
-        th: editingNews.subtitle || "",
-        en: editingNews.subtitle || "",
+        th: editingNews.excerpt_th || editingNews.subtitle || "",
+        en: editingNews.excerpt_en || editingNews.subtitle || "",
       });
 
       // Handle content - assuming it's stored as JSON
@@ -222,8 +254,24 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
       }
 
       // Handle tags - convert numbers to strings
-      if (editingNews.tag && Array.isArray(editingNews.tag)) {
-        setValue("tags", editingNews.tag.map(String));
+      const tags = editingNews.tag_id || editingNews.tag || [];
+      if (Array.isArray(tags)) {
+        setValue("tags", tags.map(String));
+      }
+
+      // Handle category
+      if (editingNews.cat_id) {
+        setValue("category", editingNews.cat_id);
+      }
+
+      // Handle highlight status
+      if (editingNews.is_highlighted !== undefined) {
+        setValue("isHighlighted", editingNews.is_highlighted);
+      }
+
+      // Handle status
+      if (editingNews.status) {
+        setValue("status", editingNews.status);
       }
     }
   }, [editingNews, isOpen, setValue]);
@@ -272,6 +320,7 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
                 handleImageUpload={handleImageUpload}
                 createQuillContent={createQuillContent}
                 selectedLanguage={selectedLanguage}
+                getTagNameById={getTagNameById}
               />
             ) : (
               // English Content Page
@@ -290,6 +339,7 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
                 handleImageUpload={handleImageUpload}
                 createQuillContent={createQuillContent}
                 selectedLanguage={selectedLanguage}
+                getTagNameById={getTagNameById}
               />
             )}
 
@@ -330,11 +380,12 @@ interface ContentPageProps {
   addTag: () => void;
   removeTag: (tag: string) => void;
   handleTagKeyDown: (e: React.KeyboardEvent) => void;
-  addSuggestedTag: (tag: string) => void;
+  addSuggestedTag: (tagId: number) => void;
   availableSuggestedTags: NewsTag[];
   handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   createQuillContent: (html: string) => QuillContent;
   selectedLanguage: string;
+  getTagNameById: (tagId: string) => string;
 }
 
 const ThaiContentPage: React.FC<ContentPageProps> = ({
@@ -352,6 +403,7 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
   handleImageUpload,
   createQuillContent,
   selectedLanguage,
+  getTagNameById,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -460,15 +512,15 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
 
           {/* Tags Display */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {currentTags.map((tag, index) => (
+            {currentTags.map((tagId, index) => (
               <span
                 key={index}
                 className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm">
                 <Tag size={12} />
-                {tag}
+                {getTagNameById(tagId)}
                 <button
                   type="button"
-                  onClick={() => removeTag(tag)}
+                  onClick={() => removeTag(tagId)}
                   className="text-blue-600 hover:text-blue-800">
                   <X size={12} />
                 </button>
@@ -488,7 +540,7 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
                     <button
                       key={index}
                       type="button"
-                      onClick={() => addSuggestedTag(tagName)}
+                      onClick={() => addSuggestedTag(tag.id)}
                       className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
                       + {tagName}
                     </button>
@@ -601,6 +653,7 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
   handleImageUpload,
   createQuillContent,
   selectedLanguage,
+  getTagNameById,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -709,15 +762,15 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
 
           {/* Tags Display */}
           <div className="flex flex-wrap gap-2 mb-3">
-            {currentTags.map((tag, index) => (
+            {currentTags.map((tagId, index) => (
               <span
                 key={index}
                 className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm">
                 <Tag size={12} />
-                {tag}
+                {getTagNameById(tagId)}
                 <button
                   type="button"
-                  onClick={() => removeTag(tag)}
+                  onClick={() => removeTag(tagId)}
                   className="text-blue-600 hover:text-blue-800">
                   <X size={12} />
                 </button>
@@ -737,7 +790,7 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
                     <button
                       key={index}
                       type="button"
-                      onClick={() => addSuggestedTag(tagName)}
+                      onClick={() => addSuggestedTag(tag.id)}
                       className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
                       + {tagName}
                     </button>

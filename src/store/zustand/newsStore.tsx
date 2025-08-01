@@ -24,6 +24,7 @@ export type News = {
   status?: "draft" | "published";
   created_at?: string;
   updated_at?: string;
+  publish_at?: string;
   // Legacy fields for backward compatibility
   title?: string;
   subtitle?: string;
@@ -50,7 +51,7 @@ interface NewsStoreState {
   news: News[];
   tags: NewsTag[];
   loading: boolean;
-  success: boolean;
+  success: string | boolean;
   error: string | null;
   categories: Category[];
   fetchCategories: () => Promise<void>;
@@ -79,7 +80,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       if (result.error) {
         set({ error: result.error, loading: false });
       } else {
-        set({ categories: result.data || [], loading: false, success: true });
+        set({ categories: result.data || [], loading: false });
       }
     } catch (error) {
       set({ error: `Failed to fetch categories: ${error}`, loading: false });
@@ -89,7 +90,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     set({ loading: true, error: null, success: false });
     const { data, error } = await supabase.from("news").select("*");
     if (error) set({ error: error.message, loading: false });
-    else set({ news: data || [], loading: false, success: true });
+    else set({ news: data || [], loading: false, error: null });
   },
 
   addNews: async (formData) => {
@@ -102,7 +103,11 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     if (error) {
       set({ error: error.message, loading: false });
     } else {
-      set({ success: true, loading: false });
+      set({
+        success: "News article created successfully",
+        loading: false,
+        error: null,
+      });
       get().fetchNews();
     }
   },
@@ -117,7 +122,11 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
-      set({ success: true, loading: false });
+      set({
+        success: "News article updated successfully",
+        loading: false,
+        error: null,
+      });
       get().fetchNews();
     }
   },
@@ -130,7 +139,11 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     const { error } = await res.json();
     if (error) set({ error: error.message, loading: false });
     else {
-      set({ success: true, loading: false });
+      set({
+        success: "News article deleted successfully",
+        loading: false,
+        error: null,
+      });
       get().fetchNews();
     }
   },
@@ -143,7 +156,7 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       if (result.error) {
         set({ error: result.error, loading: false });
       } else {
-        set({ tags: result.data || [], loading: false, success: true });
+        set({ tags: result.data || [], loading: false });
       }
     } catch {
       set({ error: "Failed to fetch tags", loading: false });
