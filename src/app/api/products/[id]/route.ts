@@ -47,7 +47,7 @@ async function verifyAuth(supabase: ReturnType<typeof createServerClient>) {
 // PUT /api/products/[id]
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createAuthenticatedClient();
@@ -57,7 +57,8 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const id = params.id;
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
     const body = await req.json();
     const { error } = await supabase.from(table).update(body).eq("id", id);
     if (error) {
@@ -75,7 +76,7 @@ export async function PUT(
 // DELETE /api/products/[id]
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createAuthenticatedClient();
@@ -85,7 +86,8 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const id = params.id;
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
     const { error } = await supabase.from(table).delete().eq("id", id);
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

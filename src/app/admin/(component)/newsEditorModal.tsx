@@ -31,14 +31,22 @@ interface NewsArticleForm {
   publishDate?: Date;
 }
 
+// Import the QuillContent type from newsStore
+interface QuillContentFromStore {
+  ops?: Array<{
+    insert?: string | { image?: string };
+    attributes?: Record<string, unknown>;
+  }>;
+}
+
 interface News {
   id: string;
   title_th: string;
   title_en: string;
   excerpt_th?: string;
   excerpt_en?: string;
-  body_th: string | object;
-  body_en: string | object;
+  body_th?: QuillContentFromStore;
+  body_en?: QuillContentFromStore;
   tag_id?: number[];
   cat_id?: string;
   is_highlighted?: boolean;

@@ -18,11 +18,9 @@ interface GalleryOrVideoSectionEditorProps {
   onModeChange: (mode: "gallery" | "video") => void;
 }
 
-export const GalleryOrVideoSectionEditor: React.FC<GalleryOrVideoSectionEditorProps> = ({ 
-  config, 
-  mode, 
-  onModeChange 
-}) => {
+export const GalleryOrVideoSectionEditor: React.FC<
+  GalleryOrVideoSectionEditorProps
+> = ({ config, mode, onModeChange }) => {
   return (
     <div className="space-y-4">
       {/* Mode Toggle */}
@@ -39,7 +37,7 @@ export const GalleryOrVideoSectionEditor: React.FC<GalleryOrVideoSectionEditorPr
                 ? "bg-blue-100 text-blue-700 border border-blue-300"
                 : "bg-gray-100 text-gray-600 border border-gray-300"
             }`}>
-            <Image size={16} alt="" />
+            <Image size={16} />
             <span>Gallery</span>
           </button>
           <button
@@ -63,7 +61,7 @@ export const GalleryOrVideoSectionEditor: React.FC<GalleryOrVideoSectionEditorPr
             Gallery Images (Up to {config.maxImages} images)
           </label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <Image className="mx-auto h-12 w-12 text-gray-400" alt="" />
+            <Image className="mx-auto h-12 w-12 text-gray-400" />
             <div className="mt-4">
               <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                 Upload Gallery Images

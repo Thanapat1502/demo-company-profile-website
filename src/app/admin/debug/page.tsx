@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase-client";
 
+// Force dynamic rendering to prevent SSG issues
+export const dynamic = "force-dynamic";
+
 export default function AdminDebugPage() {
   const { user, session, isAuthenticated } = useAuth();
   const [testResult, setTestResult] = useState<any>(null);
@@ -49,6 +52,8 @@ export default function AdminDebugPage() {
   };
 
   const inspectCookies = async () => {
+    if (typeof window === "undefined") return;
+
     const allCookies = document.cookie.split(";").map((cookie) => {
       const [name, ...valueParts] = cookie.trim().split("=");
       return { name, value: valueParts.join("=") };
@@ -79,12 +84,15 @@ export default function AdminDebugPage() {
         valueLength: c.value?.length || 0,
         valuePreview: c.value?.substring(0, 50) + "...",
       })),
-      localStorage: Object.keys(localStorage)
-        .filter((key) => key.includes("supabase"))
-        .map((key) => ({
-          key,
-          valueLength: localStorage.getItem(key)?.length || 0,
-        })),
+      localStorage:
+        typeof window !== "undefined"
+          ? Object.keys(localStorage)
+              .filter((key) => key.includes("supabase"))
+              .map((key) => ({
+                key,
+                valueLength: localStorage.getItem(key)?.length || 0,
+              }))
+          : [],
       supabaseSession: {
         hasSession: !!session,
         hasUser: !!user,
@@ -178,15 +186,19 @@ export default function AdminDebugPage() {
             <div>
               <p className="text-sm text-gray-600">Cookies:</p>
               <p className="font-mono text-xs break-all">
-                {document.cookie || "None"}
+                {typeof window !== "undefined"
+                  ? document.cookie || "None"
+                  : "Loading..."}
               </p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Local Storage:</p>
               <p className="font-mono text-xs">
-                {Object.keys(localStorage)
-                  .filter((key) => key.includes("supabase"))
-                  .join(", ") || "None"}
+                {typeof window !== "undefined"
+                  ? Object.keys(localStorage)
+                      .filter((key) => key.includes("supabase"))
+                      .join(", ") || "None"
+                  : "Loading..."}
               </p>
             </div>
           </div>

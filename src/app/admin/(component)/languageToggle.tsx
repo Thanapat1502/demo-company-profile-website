@@ -1,12 +1,30 @@
 import React, { useState } from "react";
 
-export const LanguageToggle = ({ value, onChange, size = "default" }) => {
-  const isLarge = size === "large";
+interface LanguageToggleProps {
+  value: string;
+  onChange: (value: string) => void;
+  size?: "default" | "large" | "small";
+}
+
+export const LanguageToggle = ({
+  value,
+  onChange,
+  size = "default",
+}: LanguageToggleProps) => {
+  const getSizeClasses = () => {
+    switch (size) {
+      case "large":
+        return "text-sm";
+      case "small":
+        return "text-xs";
+      default:
+        return "text-xs";
+    }
+  };
+
   return (
     <div
-      className={`inline-flex rounded-lg border bg-gray-50 p-1 ${
-        isLarge ? "text-sm" : "text-xs"
-      }`}>
+      className={`inline-flex rounded-lg border bg-gray-50 p-1 ${getSizeClasses()}`}>
       <button
         type="button"
         className={`px-3 py-1 rounded-md font-medium transition-colors ${
@@ -31,13 +49,26 @@ export const LanguageToggle = ({ value, onChange, size = "default" }) => {
   );
 };
 
+interface BilingualValue {
+  th?: string;
+  en?: string;
+}
+
+interface BilingualInputProps {
+  label: string;
+  value?: BilingualValue;
+  onChange: (value: BilingualValue) => void;
+  type?: "text" | "textarea";
+  placeholder?: BilingualValue;
+}
+
 export const BilingualInput = ({
   label,
   value,
   onChange,
   type = "text",
   placeholder,
-}) => {
+}: BilingualInputProps) => {
   const [activeTab, setActiveTab] = useState("th");
 
   return (
@@ -53,9 +84,9 @@ export const BilingualInput = ({
         {type === "textarea" ? (
           <textarea
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            rows="3"
-            placeholder={placeholder?.[activeTab]}
-            value={value?.[activeTab] || ""}
+            rows={3}
+            placeholder={placeholder?.[activeTab as keyof BilingualValue]}
+            value={value?.[activeTab as keyof BilingualValue] || ""}
             onChange={(e) =>
               onChange({ ...value, [activeTab]: e.target.value })
             }
@@ -64,8 +95,8 @@ export const BilingualInput = ({
           <input
             type={type}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder={placeholder?.[activeTab]}
-            value={value?.[activeTab] || ""}
+            placeholder={placeholder?.[activeTab as keyof BilingualValue]}
+            value={value?.[activeTab as keyof BilingualValue] || ""}
             onChange={(e) =>
               onChange({ ...value, [activeTab]: e.target.value })
             }

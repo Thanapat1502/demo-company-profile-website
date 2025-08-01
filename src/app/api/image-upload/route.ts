@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-// Create authenticated Supabase client
-export async function createAuthenticatedClient() {
+// Create authenticated Supabase client (not exported to avoid Next.js API route conflicts)
+async function createAuthenticatedClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -30,10 +30,8 @@ export async function createAuthenticatedClient() {
   );
 }
 
-// Verify user is authenticated
-export async function verifyAuth(
-  supabase: ReturnType<typeof createServerClient>
-) {
+// Verify user is authenticated (not exported to avoid Next.js API route conflicts)
+async function verifyAuth(supabase: ReturnType<typeof createServerClient>) {
   const {
     data: { user },
     error,
