@@ -82,6 +82,11 @@ body {
     @apply font-black tracking-tight text-white leading-none;
   }
 
+  /* Radial gradient utility */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
   .text-construction {
     @apply text-gray-600 leading-relaxed font-medium;
   }
@@ -1325,7 +1330,8 @@ main {
 }
 
 @keyframes luxuryGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
   }
   50% {
@@ -1429,11 +1435,13 @@ main {
 
 /* Luxury Image Animation Classes */
 .luxury-image-entrance {
-  animation: luxuryImageEntrance 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: luxuryImageEntrance 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    forwards;
 }
 
 .luxury-image-zoom-entrance {
-  animation: luxuryImageZoomEntrance 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: luxuryImageZoomEntrance 8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    forwards;
 }
 
 .luxury-image-slide-entrance {
@@ -1467,21 +1475,25 @@ main {
 
 /* Primary Luxury Button */
 .luxury-hero-btn-primary {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
   color: #1a1a1a;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .luxury-hero-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
 }
 
 /* Secondary Luxury Button */
@@ -1489,8 +1501,7 @@ main {
   background: rgba(255, 255, 255, 0.08);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -1498,8 +1509,7 @@ main {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.4);
-  box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.18),
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -1546,7 +1556,12 @@ main {
   position: absolute;
   inset: 0;
   border: 1px solid transparent;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)) border-box;
+  background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.1)
+    )
+    border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: exclude;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
@@ -1575,20 +1590,20 @@ main {
 
 /* Luxury Button Animations */
 @keyframes luxuryButtonPulse {
-  0%, 100% {
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.12),
+  0%,
+  100% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
   50% {
-    box-shadow:
-      0 12px 48px rgba(0, 0, 0, 0.18),
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.18),
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 }
 
 @keyframes luxuryButtonGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
   }
   50% {
@@ -1604,8 +1619,7 @@ main {
 
 .luxury-hero-btn:focus {
   outline: none;
-  box-shadow:
-    0 0 0 3px rgba(255, 255, 255, 0.3),
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3),
     0 12px 48px rgba(0, 0, 0, 0.18);
 }
 

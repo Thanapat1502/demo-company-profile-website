@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import MainLayout from "@/components/layout/MainLayout";
 import HeroSection from "@/components/sections/home/HeroSection";
 import ServicesSection from "@/components/sections/home/ServicesSection";
+import ProductSection from "@/components/sections/home/ProductSection";
 import StatsSection from "@/components/sections/home/StatsSection";
 import Overview from "@/components/sections/home/Overview";
 import PartnersSection from "@/components/sections/home/PartnersSection";
@@ -59,6 +60,7 @@ export default function Home() {
     <MainLayout>
       <HeroSection />
       <ServicesSection />
+      <ProductSection />
       <Overview />
       <StatsSection />
       <PartnersSection />

@@ -11,7 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
-import { Globe, Sun, Moon } from "lucide-react";
+import { Globe } from "lucide-react";
 import Image from "next/image";
 
 interface NavItem {
@@ -25,7 +25,7 @@ const navigationItems: NavItem[] = [
   { labelKey: "navigation.services", href: "/products-services" },
   { labelKey: "navigation.references", href: "/reference" },
   { labelKey: "navigation.news", href: "/news-events" },
-  { labelKey: "navigation.contact", href: "/contact-us" },
+  // { labelKey: "navigation.contact", href: "/contact-us" },
 ];
 
 export default function MainNavbar() {
@@ -78,37 +78,39 @@ export default function MainNavbar() {
           backgroundColor: isAtTop ? "transparent" : "rgba(255, 255, 255, 1)",
           backdropFilter: isAtTop ? "none" : "blur(10px)",
         }}>
+        {/* Mobile Menu Button */}
+        <NavbarContent justify="start" className="sm:hidden">
+          <Button
+            isIconOnly
+            variant="light"
+            onPress={() => setIsMenuOpen(!isMenuOpen)}
+            className={`transition-all duration-700 ease-out hover:scale-110 ${
+              isAtTop
+                ? "text-white hover:bg-white/10 hover:backdrop-blur-sm"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+            aria-label={
+              isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            }>
+            <div className="relative w-6 h-6">
+              <span
+                className={`absolute top-1 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "rotate-45 translate-y-2" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+              <span
+                className={`absolute top-2.5 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "opacity-0" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+              <span
+                className={`absolute top-4 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+            </div>
+          </Button>
+        </NavbarContent>
+
         {/* Brand - Modern Design */}
-        <NavbarContent>
-          <div className="sm:hidden">
-            <Button
-              isIconOnly
-              variant="light"
-              onPress={() => setIsMenuOpen(!isMenuOpen)}
-              className={`transition-all duration-700 ease-out hover:scale-110 ${
-                isAtTop
-                  ? "text-white hover:bg-white/10 hover:backdrop-blur-sm"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`}
-              aria-label={
-                isMenuOpen ? "Close navigation menu" : "Open navigation menu"
-              }>
-              <div className="relative w-6 h-6">
-                <span
-                  className={`absolute top-1 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
-                    isMenuOpen ? "rotate-45 translate-y-2" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
-                <span
-                  className={`absolute top-2.5 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
-                    isMenuOpen ? "opacity-0" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
-                <span
-                  className={`absolute top-4 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
-                    isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
-              </div>
-            </Button>
-          </div>
+        <NavbarContent justify="start" className="flex-grow-0">
           <NavbarBrand>
             <Link href="/" className="flex items-center space-x-4 group">
               <div
@@ -147,9 +149,9 @@ export default function MainNavbar() {
 
         {/* Desktop Navigation - Modern Design */}
         <NavbarContent
-          className={`hidden sm:flex transition-all duration-700 ease-out ${
+          className={`hidden md:flex transition-all duration-700 ease-out ${
             isAtTop ? "gap-4" : "gap-2"
-          }`}
+          } flex-grow justify-center`}
           justify="center">
           {navigationItems.map((item, index) => (
             <NavbarItem key={item.href}>
@@ -157,8 +159,8 @@ export default function MainNavbar() {
                 href={`/${locale}${item.href}`}
                 className={`relative font-medium transition-all duration-700 ease-out rounded-full group hover:scale-105 ${
                   isAtTop
-                    ? "text-white/90 hover:text-white hover:bg-white/10 px-6 py-3 text-lg"
-                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-4 py-2 text-base"
+                    ? "text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 text-base lg:px-6 lg:py-3 lg:text-lg"
+                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-sm lg:px-4 lg:text-base"
                 }`}
                 style={{
                   animationDelay: `${index * 100}ms`,
@@ -184,7 +186,7 @@ export default function MainNavbar() {
         </NavbarContent>
 
         {/* Right Side Actions - Modern Design */}
-        <NavbarContent justify="end" className="gap-4">
+        <NavbarContent justify="end" className="gap-2 lg:gap-4 flex-grow-0">
           {/* Language Switcher */}
           <NavbarItem>
             <Button
@@ -210,14 +212,14 @@ export default function MainNavbar() {
           </NavbarItem>
 
           {/* Contact Button */}
-          <NavbarItem className="hidden lg:flex">
+          <NavbarItem className="hidden md:flex">
             <Button
               as={Link}
               href={`/${locale}/contact-us`}
               className={`font-semibold transition-all duration-700 ease-out hover:scale-105 hover:shadow-xl relative group overflow-hidden ${
                 isAtTop
-                  ? "bg-white/20 hover:bg-blue-600 text-white border border-white/30 hover:border-blue-600 backdrop-blur-sm px-8 py-3 text-lg"
-                  : "bg-blue-600 hover:bg-blue-700 text-white border border-blue-600 hover:border-blue-700 px-6 py-2 text-base"
+                  ? "bg-white/20 hover:bg-blue-600 text-white border border-white/30 hover:border-blue-600 backdrop-blur-sm px-4 py-2 text-sm lg:px-8 lg:py-3 lg:text-lg"
+                  : "bg-blue-600 hover:bg-blue-700 text-white border border-blue-600 hover:border-blue-700 px-4 py-2 text-sm lg:px-6 lg:text-base"
               }`}>
               <span className="relative z-10 text-white">
                 {t("common.contactUs")}

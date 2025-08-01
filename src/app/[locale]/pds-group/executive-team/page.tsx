@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   History,
   Calendar,
@@ -13,15 +12,13 @@ import {
   Phone,
   Linkedin,
 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function ExecutiveTeamPage() {
-  const t = useTranslations();
   const locale = useLocale();
 
   const subPages = [
@@ -83,18 +80,7 @@ export default function ExecutiveTeamPage() {
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     },
     {
-      name: "นายประสิทธิ์ ก่อสร้าง",
-      position: "ผู้อำนวยการฝ่ายโครงการ",
-      department: "การก่อสร้าง",
-      experience: "18+ ปี",
-      education:
-        "วิศวกรรมศาสตรบัณฑิต สาขาโยธา มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
-      expertise: ["การจัดการโครงการ", "การก่อสร้างสถานีบริการ", "ควบคุมคุณภาพ"],
-      image:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    },
-    {
-      name: "นางสาวอรุณี คุณภาพ",
+      name: "นางสาวปิยะดา คุณภาพ",
       position: "ผู้อำนวยการฝ่ายควบคุมคุณภาพ",
       department: "ควบคุมคุณภาพ",
       experience: "15+ ปี",
@@ -119,36 +105,43 @@ export default function ExecutiveTeamPage() {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
       <ImageCarouselHero
         images={["/images/hero-sections/hero-banner-3.jpg"]}
-        title={`ทีมผู้บริหาร`}
+        title="ทีมผู้บริหาร"
         subtitle="ผู้นำที่มีประสบการณ์"
-        description={`ทีมผู้บริหารมืออาชีพ\nที่มีความเชี่ยวชาญในแต่ละสาขา`}
+        description="ทีมผู้บริหารมืออาชีพ ที่มีความเชี่ยวชาญในแต่ละสาขา"
         autoSlideDelay={6000}>
-        <MinimalButton
-          href={`/${locale}/contact-us`}
-          variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}>
-          ติดต่อเรา
-        </MinimalButton>
+        <div className="luxury-hero-btn-container">
+          <button
+            className="luxury-hero-btn luxury-hero-btn-primary group"
+            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">ติดต่อเรา</span>
+              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+            </span>
+            <div className="luxury-btn-shimmer"></div>
+            <div className="luxury-btn-glow"></div>
+          </button>
+        </div>
       </ImageCarouselHero>
 
       {/* Sub Navigation */}
       <section className="py-16 bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             {subPages.map((page) => (
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 rounded-2xl transition-all duration-300 ${
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
                   page.id === "team"
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
                 }`}>
                 <page.icon className="w-5 h-5 mr-3" />
-                <span className="text-lg font-medium">{page.title}</span>
+                <span className="text-lg font-medium tracking-wide">
+                  {page.title}
+                </span>
               </Link>
             ))}
           </div>
@@ -156,94 +149,93 @@ export default function ExecutiveTeamPage() {
       </section>
 
       {/* Message from Management Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
                 สาส์นจากผู้บริหาร
-              </h2>
-              <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             </div>
 
-            {/* Managing Director Card */}
-            <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
-              <div className="relative">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-200 rounded-full opacity-20 -translate-y-16 translate-x-16"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full opacity-20 translate-y-12 -translate-x-12"></div>
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
+              สาส์นจากผู้บริหาร
+            </h2>
 
-                  <div className="relative z-10">
-                    <div className="w-32 h-32 mx-auto mb-6 relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl rotate-6"></div>
-                      <div className="relative bg-white rounded-2xl p-1 shadow-lg">
-                        <Image
-                          src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                          alt="คุณสุภรา สินสมุทรผดุง"
-                          width={120}
-                          height={120}
-                          className="w-full h-full object-cover rounded-xl"
-                        />
-                      </div>
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+            <div className="relative">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-200 opacity-20 -translate-y-16 translate-x-16"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 opacity-20 translate-y-12 -translate-x-12"></div>
+
+                <div className="relative z-10">
+                  <div className="w-32 h-32 mx-auto mb-6 relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-blue)] to-indigo-600 rotate-6"></div>
+                    <div className="relative bg-white p-1 shadow-lg">
+                      <Image
+                        src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                        alt="คุณสุภรา สินสมุทรผดุง"
+                        width={120}
+                        height={120}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
+                  </div>
 
-                    <div className="text-center">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        คุณสุภรา สินสมุทรผดุง
-                      </h3>
-                      <p className="text-blue-600 font-semibold text-lg mb-4">
-                        กรรมการผู้จัดการ
-                      </p>
-                      <div className="flex justify-center space-x-4">
-                        <div className="w-12 h-0.5 bg-blue-600"></div>
-                        <div className="w-6 h-0.5 bg-blue-400"></div>
-                        <div className="w-3 h-0.5 bg-blue-300"></div>
-                      </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                      คุณสุภรา สินสมุทรผดุง
+                    </h3>
+                    <p className="text-[var(--primary-blue)] font-semibold text-lg mb-4">
+                      กรรมการผู้จัดการ
+                    </p>
+                    <div className="flex justify-center space-x-4">
+                      <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+                      <div className="w-6 h-px bg-[var(--primary-blue)]/60"></div>
+                      <div className="w-3 h-px bg-[var(--primary-blue)]/30"></div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-6">
-                <div className="prose prose-lg max-w-none">
-                  <p className="text-gray-700 leading-relaxed text-lg">
-                    <span className="text-2xl font-bold text-blue-600">
-                      เรียน
-                    </span>{" "}
-                    ท่านลูกค้าและผู้มีส่วนได้ส่วนเสียทุกท่าน
-                  </p>
+            <div className="space-y-8">
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  ในฐานะกรรมการผู้จัดการของบริษัท ผดุงศิลป์โยธาการ จำกัด
+                  ผมรู้สึกภาคภูมิใจที่ได้เป็นส่วนหนึ่งของการพัฒนาอุตสาหกรรมพลังงานของประเทศไทย
+                  มาเป็นเวลากว่า 30 ปี
+                </p>
 
-                  <p className="text-gray-700 leading-relaxed">
-                    ในนามของกลุ่มบริษัท ผดุงศิลป์ฯ
-                    ข้าพเจ้าขอแสดงความขอบคุณทุกท่านที่ได้ให้ความไว้วางใจและสนับสนุนบริษัทของเราเสมอมา
-                    พวกเรามุ่งมั่นรักษาพนักงานระดับปฏิบัติการและบริหารที่มีความเป็นเลิศ
-                    โดยทุกคนมีเป้าหมายเดียวกันในการนำเสนองานก่อสร้าง สินค้า
-                    และบริการที่ดีที่สุด
-                    รวมถึงบุคลากรที่มีความรู้ความสามารถเป็นเยี่ยม
-                  </p>
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  เราได้สร้างสรรค์โครงการสถานีบริการน้ำมันที่มีคุณภาพและปลอดภัย
+                  ด้วยเทคโนโลยี PERMATANK® ที่เป็นมาตรฐานสากล
+                  และทีมงานมืออาชีพที่มีประสบการณ์และความเชี่ยวชาญ
+                </p>
 
-                  <p className="text-gray-700 leading-relaxed">
-                    ช่างเทคนิคและผู้จัดการโครงการของเราได้รับการฝึกฝนและรับรองอย่างดี
-                    และมีประสบการณ์ในอุตสาหกรรมน้ำมันและพลังงานอื่นๆ
-                    เป็นอย่างมาก
-                    ซึ่งเป็นการรับรองว่าผลงานและบริการของเราจะมีคุณภาพและตอบสนองต่อความต้องการของอุตสาหกรรมได้อย่างฉับไว
-                  </p>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  เราจะยังคงมุ่งมั่นในการให้บริการที่เป็นเลิศ
+                  และสร้างสรรค์นวัตกรรมเพื่อตอบสนองความต้องการของลูกค้า
+                  และสังคมอย่างยั่งยืน
+                </p>
+              </div>
 
-                  <p className="text-gray-700 leading-relaxed">
-                    กลุ่มบริษัทในเครือ ผดุงศิลป์ฯ พร้อมเผชิญกับอุปสรรคต่างๆ
-                    ในอนาคต
-                    ด้วยความมุ่งมั่นที่จะนำเสนอผลงานและบริการที่มีคุณภาพดีและโดดเด่น
-                    สมกับที่ทุกท่านได้ให้ความไว้วางใจเรา
-                  </p>
-
-                  <p className="text-gray-700 leading-relaxed">
-                    ขอขอบพระคุณอีกครั้งสำหรับการสนับสนุนและความไว้วางใจที่มีให้กับกลุ่มบริษัท
-                    ผดุงศิลป์ฯ
-                    พวกเราจะยังคงมุ่งมั่นพัฒนาต่อไปเพื่อสร้างสรรค์คุณค่าและตอบสนองต่อความต้องการของทุกท่านอย่างดีที่สุด
-                  </p>
-
-                  <p className="text-blue-600 font-semibold text-lg mt-8">
-                    ขอแสดงความนับถือ
+              <div className="flex items-center space-x-4 pt-6">
+                <div className="w-16 h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center">
+                  <Mail className="w-8 h-8 text-[var(--primary-blue)]" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">ติดต่อโดยตรง</p>
+                  <p className="text-lg font-semibold text-gray-900">
+                    md@padungsilpa.com
                   </p>
                 </div>
               </div>
@@ -253,23 +245,38 @@ export default function ExecutiveTeamPage() {
       </section>
 
       {/* Executive Team Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="section-minimal bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                ทีมงาน
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+            </div>
+
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
               ทีมผู้บริหาร
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               ผู้นำที่มีประสบการณ์และความเชี่ยวชาญในการขับเคลื่อนองค์กรสู่ความสำเร็จ
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {executives.map((executive, index) => (
-              <div key={index} className="group text-center">
-                {/* Profile Image */}
+              <div
+                key={index}
+                className="group text-center card-minimal p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div className="relative mb-6">
-                  <div className="w-32 h-32 mx-auto rounded-full overflow-hidden bg-gray-100 group-hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-32 h-32 mx-auto overflow-hidden bg-gray-100 group-hover:shadow-lg transition-shadow duration-300">
                     <Image
                       src={executive.image}
                       alt={executive.name}
@@ -280,41 +287,17 @@ export default function ExecutiveTeamPage() {
                   </div>
                 </div>
 
-                {/* Name and Position */}
                 <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 tracking-tight">
                     {executive.name}
                   </h3>
                   <p className="text-sm text-gray-600">{executive.position}</p>
+                  <p className="text-xs text-[var(--primary-blue)] font-medium">
+                    {executive.experience}
+                  </p>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            พร้อมที่จะร่วมงานกับทีมมืออาชีพ?
-          </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            ติดต่อเราเพื่อปรึกษาโครงการของคุณกับทีมผู้เชี่ยวชาญ
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <MinimalButton
-              href={`/${locale}/contact-us`}
-              variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}>
-              ติดต่อเรา
-            </MinimalButton>
-            <MinimalButton
-              href={`/${locale}/reference`}
-              variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600">
-              ดูผลงานของเรา
-            </MinimalButton>
           </div>
         </div>
       </section>

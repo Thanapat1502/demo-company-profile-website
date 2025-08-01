@@ -72,33 +72,45 @@ export default function StatsSection() {
   return (
     <section
       id="stats-section"
-      className="py-16 relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #334155 100%)",
-      }}>
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+      className="section-minimal relative overflow-hidden bg-gradient-to-br from-[var(--primary-blue)] via-blue-700 to-blue-900">
+      {/* Enhanced Background with Multiple Layers */}
+      <div className="absolute inset-0">
+        {/* Primary gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-800/20 via-transparent to-blue-900/20"></div>
+
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
+        </div>
+
+        {/* Radial gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/10"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header - Strong & Minimal Style */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             ความเป็นเลิศที่พิสูจน์แล้ว
           </h2>
-          <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6">
+
+          {/* Enhanced Elegant Line with Glow */}
+          <div className="relative flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+            <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm"></div>
+          </div>
+
+          <p className="text-lg text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">
             กลุ่มบริษัทผดุงศิลป์พัฒนาแบบถังน้ำมันใต้ดินและงานสถานีบริการน้ำมันอย่างต่อเนื่อง
             มุ่งเน้นคุณภาพ ความปลอดภัย และมาตรฐานสูงสุด
           </p>
-          <div className="inline-block bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl px-8 py-4 shadow-lg">
-            <p className="text-lg md:text-xl text-gray-900 font-bold">
+          <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 px-8 py-4 shadow-lg">
+            <p className="text-lg text-white font-bold tracking-wide">
               ภายใต้นโยบาย "ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย"
             </p>
           </div>
@@ -108,13 +120,13 @@ export default function StatsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div key={index} className="text-center group">
-              {/* Icon */}
-              <div className="w-20 h-20 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform duration-300">
+              {/* Icon - Minimal design without rounded corners */}
+              <div className="w-20 h-20 mx-auto mb-6 bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <stat.icon className="w-10 h-10 text-white" />
               </div>
 
-              {/* Number */}
-              <div className="text-5xl md:text-7xl font-bold text-white mb-2">
+              {/* Number - Strong typography */}
+              <div className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
                 {index === 0
                   ? `${animatedStats[index]}+`
                   : index === 1
@@ -124,17 +136,17 @@ export default function StatsSection() {
                   : `${animatedStats[index]}+`}
               </div>
 
-              {/* Label */}
-              <div className="text-xl md:text-2xl text-white/90 font-medium">
+              {/* Label - Clean typography */}
+              <div className="text-lg text-white/90 font-medium tracking-wide">
                 {t(stat.labelKey)}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom Message */}
-        <div className="text-center mt-12">
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+        {/* Bottom Message - Clean typography */}
+        <div className="text-center mt-16">
+          <p className="text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
             ด้วยประสบการณ์กว่า 50 ปี เราพร้อมให้บริการครบวงจร ตั้งแต่การออกแบบ
             ก่อสร้าง ติดตั้งระบบ และบำรุงรักษา
           </p>

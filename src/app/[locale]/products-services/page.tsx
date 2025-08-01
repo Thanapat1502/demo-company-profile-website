@@ -1,9 +1,9 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import { ArrowRight } from "lucide-react";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import MinimalButton from "@/components/ui/MinimalButton";
 import ConstructionServiceSection from "@/components/sections/products-services/ConstructionServiceSection";
 import PermatankSection from "@/components/sections/products-services/PermatankSection";
 import PipeInstallationSection from "@/components/sections/products-services/PipeInstallationSection";
@@ -68,15 +68,30 @@ export default function ProductsServicesPage() {
         subtitle="บริการครบวงจร"
         description={`ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน`}
         autoSlideDelay={6000}>
-        <MinimalButton href={`/${locale}/contact-us`} variant="white">
-          ขอใบเสนอราคา
-        </MinimalButton>
-        <MinimalButton
-          href={`/${locale}/reference`}
-          variant="secondary"
-          className="border-white text-white hover:bg-white hover:text-gray-900">
-          ดูผลงาน
-        </MinimalButton>
+        {/* Luxury Hero Buttons */}
+        <div className="luxury-hero-btn-container">
+          <button
+            className="luxury-hero-btn luxury-hero-btn-primary group"
+            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">ขอใบเสนอราคา</span>
+              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+            </span>
+            <div className="luxury-btn-shimmer"></div>
+            <div className="luxury-btn-glow"></div>
+          </button>
+
+          <button
+            className="luxury-hero-btn luxury-hero-btn-secondary group"
+            onClick={() => (window.location.href = `/${locale}/reference`)}>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">ดูผลงาน</span>
+              <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+            </span>
+            <div className="luxury-btn-border"></div>
+            <div className="luxury-btn-glow-secondary"></div>
+          </button>
+        </div>
       </ImageCarouselHero>
 
       {/* Service Sections */}

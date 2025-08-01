@@ -6,6 +6,8 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
+import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import FeaturedNewsCarousel from "@/components/ui/FeaturedNewsCarousel";
 
 export default function NewsEventsPage() {
   const locale = useLocale();
@@ -190,116 +192,57 @@ export default function NewsEventsPage() {
 
   return (
     <MainLayout>
-      {/* Parallax Highlight News Hero */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Parallax Background */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('${featuredNews[0].image}')`,
-            transform: `translateY(${scrollY * 0.5}px)`,
-          }}>
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
-
-        {/* Content */}
-        <div className="relative h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-6 w-full">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left: Highlight News */}
-              <div className="text-white">
-                <div className="mb-6">
-                  <span className="inline-block px-4 py-2 bg-blue-600/80 backdrop-blur-sm text-white text-sm font-medium rounded-full">
-                    {featuredNews[0].category}
-                  </span>
-                </div>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-8 leading-tight">
-                  ข่าวสารและกิจกรรม
-                </h1>
-
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-                  <div className="flex items-center text-sm text-gray-300 mb-4">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    <span>{featuredNews[0].date}</span>
-                    <Clock className="w-4 h-4 ml-4 mr-2" />
-                    <span>{featuredNews[0].readTime}</span>
-                  </div>
-
-                  <h2 className="text-2xl md:text-3xl font-light text-white mb-4 leading-tight">
-                    {featuredNews[0].title}
-                  </h2>
-
-                  <p className="text-gray-300 leading-relaxed mb-6 font-light">
-                    {featuredNews[0].description}
-                  </p>
-
-                  <Link
-                    href={`/${locale}/news-events/${featuredNews[0].slug}`}
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition-all duration-300 hover:scale-105">
-                    <span>อ่านต่อ</span>
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right: Latest News Grid */}
-              <div className="space-y-6">
-                <h3 className="text-2xl font-light text-white mb-6">
-                  ข่าวล่าสุด
-                </h3>
-
-                <div className="space-y-4">
-                  {featuredNews.slice(1, 4).map((news) => (
-                    <Link
-                      key={news.id}
-                      href={`/${locale}/news-events/${news.slug}`}
-                      className="group block bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                      <div className="flex items-start space-x-4">
-                        <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image
-                            src={news.image}
-                            alt={news.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center text-xs text-gray-400 mb-2">
-                            <span className="bg-blue-600/20 px-2 py-1 rounded text-blue-300">
-                              {news.category}
-                            </span>
-                            <span className="ml-3">{news.date}</span>
-                          </div>
-
-                          <h4 className="text-white font-medium leading-tight group-hover:text-blue-300 transition-colors duration-200 line-clamp-2">
-                            {news.title}
-                          </h4>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-light mb-2">
-              เลื่อนลงเพื่อดูเพิ่มเติม
+      {/* Hero Section - Using ImageCarouselHero for consistency */}
+      <ImageCarouselHero
+        images={[featuredNews[0].image]}
+        title="ข่าวสารและกิจกรรม"
+        subtitle={featuredNews[0].category}
+        description="อัพเดทข่าวสารและความเคลื่อนไหวของบริษัทอย่างต่อเนื่อง"
+        autoSlideDelay={6000}>
+        {/* Luxury Hero Buttons */}
+        <div className="luxury-hero-btn-container">
+          <button
+            className="luxury-hero-btn luxury-hero-btn-primary group"
+            onClick={() =>
+              document
+                .getElementById("news-grid")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">
+                ดูข่าวสารทั้งหมด
+              </span>
+              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
             </span>
-            <ArrowRight className="w-5 h-5 rotate-90" />
-          </div>
+            <div className="luxury-btn-shimmer"></div>
+            <div className="luxury-btn-glow"></div>
+          </button>
+
+          <button
+            className="luxury-hero-btn luxury-hero-btn-secondary group"
+            onClick={() =>
+              (window.location.href = `/${locale}/news-events/${featuredNews[0].slug}`)
+            }>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">อ่านข่าวเด่น</span>
+              <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+            </span>
+            <div className="luxury-btn-border"></div>
+            <div className="luxury-btn-glow-secondary"></div>
+          </button>
         </div>
-      </section>
+      </ImageCarouselHero>
+
+      {/* Featured News Carousel */}
+      <FeaturedNewsCarousel
+        news={featuredNews}
+        locale={locale}
+        autoSlideInterval={6000}
+      />
 
       {/* Search and Filter */}
-      <section className="py-8 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <section className="py-8 bg-gray-50" id="news-grid">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
             <div className="flex-1 max-w-md">
               <div className="relative">
@@ -336,8 +279,8 @@ export default function NewsEventsPage() {
       </section>
 
       {/* News Grid */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               ข่าวสารล่าสุด
@@ -443,38 +386,62 @@ export default function NewsEventsPage() {
           )}
 
           <div className="text-center mt-12">
-            <button className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-2xl font-medium hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center mx-auto">
-              <span>โหลดข่าวสารเพิ่มเติม</span>
-              <ArrowRight size={20} className="ml-2" />
-            </button>
+            <div className="luxury-hero-btn-container max-w-xs mx-auto">
+              <button className="luxury-hero-btn luxury-hero-btn-secondary group">
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">
+                    โหลดข่าวสารเพิ่มเติม
+                  </span>
+                  <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+                </span>
+                <div className="luxury-btn-border"></div>
+                <div className="luxury-btn-glow-secondary"></div>
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Subscription */}
+      {/* Newsletter Subscription - Using primary color and luxury buttons */}
       <section
-        className="py-16 bg-gradient-to-r from-blue-600 to-blue-800"
+        className="section-minimal"
+        style={{ background: "var(--primary-blue)" }}
         id="newsletter">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             สมัครรับข่าวสาร
           </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
+
+          {/* Enhanced Elegant Line with Glow */}
+          <div className="relative flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+            <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm"></div>
+          </div>
+
+          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
             รับข่าวสารและอัพเดทล่าสุดจากเราก่อนใคร
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto mb-8">
             <input
               type="email"
               placeholder="กรอกอีเมลของคุณ"
-              className="flex-1 px-6 py-3 rounded-2xl border-0 focus:outline-none focus:ring-2 focus:ring-white"
+              className="flex-1 px-6 py-3 border-0 focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 backdrop-blur-sm text-white placeholder-white/70"
             />
-            <button className="px-8 py-3 bg-white text-blue-600 rounded-2xl font-medium hover:bg-gray-100 transition-colors">
-              สมัครรับข่าวสาร
-            </button>
+            <div className="luxury-hero-btn-container max-w-xs">
+              <button className="luxury-hero-btn luxury-hero-btn-primary group">
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">
+                    สมัครรับข่าวสาร
+                  </span>
+                </span>
+                <div className="luxury-btn-shimmer"></div>
+                <div className="luxury-btn-glow"></div>
+              </button>
+            </div>
           </div>
 
-          <p className="text-sm text-blue-200">
+          <p className="text-sm text-white/70 leading-relaxed">
             เราจะไม่แชร์อีเมลของคุณกับบุคคลที่สาม และคุณสามารถยกเลิกได้ตลอดเวลา
           </p>
         </div>

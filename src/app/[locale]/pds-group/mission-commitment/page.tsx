@@ -115,21 +115,23 @@ export default function MissionCommitmentPage() {
         </MinimalButton>
       </ImageCarouselHero>
 
-      {/* Sub Navigation */}
+      {/* Sub Navigation - Minimal design without rounded corners */}
       <section className="py-16 bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             {subPages.map((page) => (
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 rounded-2xl transition-all duration-300 ${
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
                   page.id === "mission"
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
                 }`}>
                 <page.icon className="w-5 h-5 mr-3" />
-                <span className="text-lg font-medium">{page.title}</span>
+                <span className="text-lg font-medium tracking-wide">
+                  {page.title}
+                </span>
               </Link>
             ))}
           </div>
@@ -137,23 +139,23 @@ export default function MissionCommitmentPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <section className="section-minimal bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Mission */}
             <div className="text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start mb-8">
-                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mr-6">
-                  <Target size={40} className="text-blue-600" />
+                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
+                  <Target size={40} className="text-[var(--primary-blue)]" />
                 </div>
                 <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
                     พันธกิจ
                   </h2>
-                  <div className="w-20 h-1 bg-blue-600 rounded"></div>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
-              <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
                 เป็นผู้นำในการให้บริการด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่มีคุณภาพสูง
                 ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ
                 และการบริการที่เหนือความคาดหมาย
@@ -164,24 +166,24 @@ export default function MissionCommitmentPage() {
                 alt="Mission"
                 width={600}
                 height={400}
-                className="w-full h-80 object-cover rounded-3xl shadow-2xl"
+                className="w-full h-80 object-cover shadow-lg"
               />
             </div>
 
             {/* Vision */}
             <div className="text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start mb-8">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mr-6">
+                <div className="w-20 h-20 bg-green-100 flex items-center justify-center mr-6">
                   <Eye size={40} className="text-green-600" />
                 </div>
                 <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
                     วิสัยทัศน์
                   </h2>
-                  <div className="w-20 h-1 bg-green-600 rounded"></div>
+                  <div className="w-20 h-px bg-green-600"></div>
                 </div>
               </div>
-              <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
                 เป็นบริษัทชั้นนำในภูมิภาคเอเชียตะวันออกเฉียงใต้
                 ด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันและพลังงาน
                 ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน
@@ -192,7 +194,7 @@ export default function MissionCommitmentPage() {
                 alt="Vision"
                 width={600}
                 height={400}
-                className="w-full h-80 object-cover rounded-3xl shadow-2xl"
+                className="w-full h-80 object-cover shadow-lg"
               />
             </div>
           </div>
@@ -200,13 +202,30 @@ export default function MissionCommitmentPage() {
       </section>
 
       {/* Commitments */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            {/* Section Label */}
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                ความมุ่งมั่น
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+            </div>
+
+            {/* Main Heading */}
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
               ความมุ่งมั่นของเรา
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+
+            {/* Enhanced Elegant Line */}
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               หลักการและค่านิยมที่เรายึดถือในการดำเนินธุรกิจอย่างยั่งยืน
             </p>
           </div>
@@ -215,12 +234,12 @@ export default function MissionCommitmentPage() {
             {commitments.map((commitment, index) => (
               <div
                 key={index}
-                className="text-center p-8 bg-gray-50 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                className="text-center p-8 card-minimal hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div
-                  className={`w-20 h-20 ${commitment.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                  className={`w-20 h-20 ${commitment.color} flex items-center justify-center mx-auto mb-6`}>
                   <commitment.icon size={40} />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4 tracking-tight">
                   {commitment.title}
                 </h3>
                 <p className="text-base text-gray-600 leading-relaxed">
@@ -232,28 +251,53 @@ export default function MissionCommitmentPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+      {/* Call to Action - Using primary color and luxury buttons */}
+      <section
+        className="section-minimal"
+        style={{ background: "var(--primary-blue)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             ร่วมสร้างอนาคตที่ยั่งยืน
           </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
+
+          {/* Enhanced Elegant Line with Glow */}
+          <div className="relative flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+            <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm"></div>
+          </div>
+
+          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
             มาร่วมเป็นส่วนหนึ่งในการสร้างสรรค์โครงการที่มีคุณค่าไปกับเรา
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <MinimalButton
-              href={`/${locale}/contact-us`}
-              variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}>
-              ติดต่อเรา
-            </MinimalButton>
-            <MinimalButton
-              href={`/${locale}/reference`}
-              variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600">
-              ดูผลงานของเรา
-            </MinimalButton>
+
+          <div className="flex justify-center">
+            <div className="luxury-hero-btn-container">
+              <button
+                className="luxury-hero-btn luxury-hero-btn-primary group"
+                onClick={() =>
+                  (window.location.href = `/${locale}/contact-us`)
+                }>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">ติดต่อเรา</span>
+                  <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+                </span>
+                <div className="luxury-btn-shimmer"></div>
+                <div className="luxury-btn-glow"></div>
+              </button>
+
+              <button
+                className="luxury-hero-btn luxury-hero-btn-secondary group"
+                onClick={() => (window.location.href = `/${locale}/reference`)}>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">
+                    ดูผลงานของเรา
+                  </span>
+                  <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+                </span>
+                <div className="luxury-btn-border"></div>
+                <div className="luxury-btn-glow-secondary"></div>
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -15,7 +15,6 @@ import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import MinimalButton from "@/components/ui/MinimalButton";
 
 export default function CompanyHistoryPage() {
   const t = useTranslations();
@@ -108,29 +107,38 @@ export default function CompanyHistoryPage() {
         subtitle="เส้นทางแห่งความสำเร็จ"
         description={`มากกว่า 50 ปีแห่งประสบการณ์\nในอุตสาหกรรมการก่อสร้างสถานีบริการน้ำมัน`}
         autoSlideDelay={6000}>
-        <MinimalButton
-          href={`/${locale}/contact-us`}
-          variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}>
-          ติดต่อเรา
-        </MinimalButton>
+        {/* Luxury Hero Buttons */}
+        <div className="luxury-hero-btn-container">
+          <button
+            className="luxury-hero-btn luxury-hero-btn-primary group"
+            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">ติดต่อเรา</span>
+              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+            </span>
+            <div className="luxury-btn-shimmer"></div>
+            <div className="luxury-btn-glow"></div>
+          </button>
+        </div>
       </ImageCarouselHero>
 
-      {/* Sub Navigation */}
+      {/* Sub Navigation - Minimal design without rounded corners */}
       <section className="py-16 bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             {subPages.map((page) => (
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 rounded-2xl transition-all duration-300 ${
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
                   page.id === "history"
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
                 }`}>
                 <page.icon className="w-5 h-5 mr-3" />
-                <span className="text-lg font-medium">{page.title}</span>
+                <span className="text-lg font-medium tracking-wide">
+                  {page.title}
+                </span>
               </Link>
             ))}
           </div>
@@ -138,79 +146,119 @@ export default function CompanyHistoryPage() {
       </section>
 
       {/* Timeline Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="section-minimal bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            {/* Section Label */}
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                ประวัติศาสตร์
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+            </div>
+
+            {/* Main Heading */}
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
               เส้นทางการเติบโต
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+
+            {/* Enhanced Elegant Line */}
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               ติดตามการพัฒนาและความก้าวหน้าของเราตลอด 5 ทศวรรษที่ผ่านมา
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto">
-            <div className="space-y-16">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`grid lg:grid-cols-2 gap-12 items-center ${
-                    index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
-                  }`}>
-                  <div className={index % 2 === 1 ? "lg:col-start-2" : ""}>
-                    <div className="flex items-center mb-6">
-                      <div className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl mr-6">
-                        {milestone.year}
-                      </div>
-                      <div>
-                        <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                          {milestone.title}
-                        </h3>
-                        <div className="w-20 h-1 bg-blue-600 rounded"></div>
-                      </div>
+          <div className="space-y-16">
+            {milestones.map((milestone, index) => (
+              <div
+                key={index}
+                className={`grid lg:grid-cols-2 gap-12 items-center ${
+                  index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
+                }`}>
+                <div className={index % 2 === 1 ? "lg:col-start-2" : ""}>
+                  <div className="flex items-center mb-6">
+                    <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                      {milestone.year}
                     </div>
-                    <p className="text-xl text-gray-600 leading-relaxed">
-                      {milestone.description}
-                    </p>
+                    <div>
+                      <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                        {milestone.title}
+                      </h3>
+                      <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
+                    </div>
                   </div>
-                  <div className={index % 2 === 1 ? "lg:col-start-1" : ""}>
-                    <Image
-                      src={milestone.image}
-                      alt={milestone.title}
-                      width={600}
-                      height={400}
-                      className="w-full h-80 object-cover rounded-3xl shadow-2xl"
-                    />
-                  </div>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    {milestone.description}
+                  </p>
                 </div>
-              ))}
-            </div>
+                <div className={index % 2 === 1 ? "lg:col-start-1" : ""}>
+                  <Image
+                    src={milestone.image}
+                    alt={milestone.title}
+                    width={600}
+                    height={400}
+                    className="w-full h-80 object-cover shadow-lg"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+      {/* Call to Action - Using primary color and luxury buttons */}
+      <section
+        className="section-minimal"
+        style={{ background: "var(--primary-blue)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             ร่วมเป็นส่วนหนึ่งของประวัติศาสตร์
           </h2>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
+
+          {/* Enhanced Elegant Line with Glow */}
+          <div className="relative flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
+            <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm"></div>
+          </div>
+
+          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
             มาร่วมสร้างอนาคตที่ยั่งยืนไปกับเรา
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <MinimalButton
-              href={`/${locale}/contact-us`}
-              variant="white"
-              icon={<ArrowRight className="w-5 h-5" />}>
-              ติดต่อเรา
-            </MinimalButton>
-            <MinimalButton
-              href={`/${locale}/reference`}
-              variant="secondary"
-              className="border-white text-white hover:bg-white hover:text-blue-600">
-              ดูผลงานของเรา
-            </MinimalButton>
+
+          <div className="flex justify-center">
+            <div className="luxury-hero-btn-container">
+              <button
+                className="luxury-hero-btn luxury-hero-btn-primary group"
+                onClick={() =>
+                  (window.location.href = `/${locale}/contact-us`)
+                }>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">ติดต่อเรา</span>
+                  <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+                </span>
+                <div className="luxury-btn-shimmer"></div>
+                <div className="luxury-btn-glow"></div>
+              </button>
+
+              <button
+                className="luxury-hero-btn luxury-hero-btn-secondary group"
+                onClick={() => (window.location.href = `/${locale}/reference`)}>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">
+                    ดูผลงานของเรา
+                  </span>
+                  <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+                </span>
+                <div className="luxury-btn-border"></div>
+                <div className="luxury-btn-glow-secondary"></div>
+              </button>
+            </div>
           </div>
         </div>
       </section>
