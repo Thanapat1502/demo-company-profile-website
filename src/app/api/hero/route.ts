@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/auth-middleware";
 
+// Hero section IDs enum
+export type HeroSectionId =
+  | "HOME"
+  | "ABOUT_MAIN"
+  | "ABOUT_HISTORY"
+  | "ABOUT_VISION"
+  | "ABOUT_EXECUTIVE"
+  | "PRODUCTS_SERVICE"
+  | "NEWS"
+  | "CONTACT";
+
 // Helper to upload hero image directly to Supabase Storage and return public URL
 async function uploadHeroImage(
   file: File,
-  heroId: string,
+  heroId: HeroSectionId,
   imageIndex: number,
   supabase: typeof import("@/lib/supabase").supabase
 ): Promise<string> {
@@ -17,7 +28,9 @@ async function uploadHeroImage(
     "image/webp",
   ];
   if (!allowedTypes.includes(file.type)) {
-    throw new Error("Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.");
+    throw new Error(
+      "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
+    );
   }
 
   // Validate file size (10MB limit)
@@ -30,7 +43,7 @@ async function uploadHeroImage(
   const fileExt = file.name.split(".").pop();
   const fileName = `${heroId}_${imageIndex}_${Date.now()}.${fileExt}`;
 
-  // Create the full file path within the images bucket
+  // Create the full file path within the images bucket - upload to public/hero_store
   const filePath = `public/hero_store/${fileName}`;
 
   // Upload to Supabase Storage (images bucket)
@@ -58,11 +71,30 @@ async function uploadHeroImage(
 export const GET = withAuth(async (req: NextRequest, supabase) => {
   try {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    const id = searchParams.get("id") as HeroSectionId;
 
     if (!id) {
       return NextResponse.json(
         { error: "Hero section ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate hero section ID
+    const validIds: HeroSectionId[] = [
+      "HOME",
+      "ABOUT_MAIN",
+      "ABOUT_HISTORY",
+      "ABOUT_VISION",
+      "ABOUT_EXECUTIVE",
+      "PRODUCTS_SERVICE",
+      "NEWS",
+      "CONTACT",
+    ];
+
+    if (!validIds.includes(id)) {
+      return NextResponse.json(
+        { error: "Invalid hero section ID" },
         { status: 400 }
       );
     }
@@ -88,6 +120,7 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
 
     return NextResponse.json({ data });
   } catch (err) {
+    console.error("GET hero section error:", err);
     return NextResponse.json(
       { error: "Failed to fetch hero section", details: err },
       { status: 500 }
@@ -95,11 +128,11 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
   }
 });
 
-// PUT - Update hero section
-export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
+// PUT - Create or Update hero section
+export const PUT = withAuth(async (req: NextRequest, supabase) => {
   try {
     const formData = await req.formData();
-    const id = formData.get("id") as string;
+    const id = formData.get("id") as HeroSectionId;
 
     if (!id) {
       return NextResponse.json(
@@ -108,10 +141,29 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
       );
     }
 
+    // Validate hero section ID
+    const validIds: HeroSectionId[] = [
+      "HOME",
+      "ABOUT_MAIN",
+      "ABOUT_HISTORY",
+      "ABOUT_VISION",
+      "ABOUT_EXECUTIVE",
+      "PRODUCTS_SERVICE",
+      "NEWS",
+      "CONTACT",
+    ];
+
+    if (!validIds.includes(id)) {
+      return NextResponse.json(
+        { error: "Invalid hero section ID" },
+        { status: 400 }
+      );
+    }
+
     // Get existing hero images
     const existingImages = formData.get("existing_images");
     let heroImages: string[] = [];
-    
+
     if (existingImages) {
       try {
         heroImages = JSON.parse(existingImages as string);
@@ -164,12 +216,12 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
         .from("hero_section")
         .update({
           hero_images: heroImages,
-          updated_at: new Date().toISOString(),
         })
         .eq("id", id)
         .select();
 
       if (error) {
+        console.error("Update hero section error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
       result = data;
@@ -181,12 +233,12 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
           {
             id,
             hero_images: heroImages,
-            created_by: user.id,
           },
         ])
         .select();
 
       if (error) {
+        console.error("Create hero section error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
       result = data;
@@ -197,10 +249,13 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
       message: "Hero section updated successfully",
     });
   } catch (err) {
-    console.error("Hero section update error:", err);
+    console.error("PUT hero section error:", err);
     return NextResponse.json(
       { error: "Failed to update hero section", details: err },
       { status: 500 }
     );
   }
 });
+
+// POST - Create new hero section (alias for PUT for compatibility)
+export const POST = PUT;

@@ -1,10 +1,14 @@
 // Example: Complete Content Manager Implementation
 // This file shows how to use the Content Manager system in a real application
 
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { useContentManager, useImageUpload, useSectionMode } from '@/hooks/useContentManager';
-import { ContentManager } from '@/app/admin/(component)/contentManager';
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import {
+  useContentManager,
+  useImageUpload,
+  useSectionMode,
+} from "@/hooks/useContentManager";
+import { ContentManager } from "@/app/admin/(component)/heroContentManager";
 
 // Example 1: Basic Content Manager Usage
 export const BasicContentManagerExample = () => {
@@ -14,7 +18,7 @@ export const BasicContentManagerExample = () => {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
           Website Content Manager
         </h1>
-        
+
         {/* The main Content Manager component */}
         <ContentManager />
       </div>
@@ -24,9 +28,9 @@ export const BasicContentManagerExample = () => {
 
 // Example 2: Custom Content Manager with Hooks
 export const CustomContentManagerExample = () => {
-  const [selectedPage, setSelectedPage] = useState('home');
-  const [selectedLanguage, setSelectedLanguage] = useState<'th' | 'en'>('th');
-  
+  const [selectedPage, setSelectedPage] = useState("home");
+  const [selectedLanguage, setSelectedLanguage] = useState<"th" | "en">("th");
+
   const {
     pages,
     currentPageData,
@@ -36,7 +40,7 @@ export const CustomContentManagerExample = () => {
     error,
     loadPageData,
     savePageContent,
-    clearError
+    clearError,
   } = useContentManager();
 
   const { uploadImage, getImageUrl, getUploadProgress } = useImageUpload();
@@ -44,24 +48,24 @@ export const CustomContentManagerExample = () => {
   // Load page data when page selection changes
   useEffect(() => {
     if (selectedPage) {
-      loadPageData(selectedPage, 'draft');
+      loadPageData(selectedPage, "draft");
     }
   }, [selectedPage, loadPageData]);
 
   // Form setup
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
-      status: 'draft' as 'draft' | 'published',
-      sections: []
-    }
+      status: "draft" as "draft" | "published",
+      sections: [],
+    },
   });
 
   const onSubmit = async (data: any) => {
     try {
       await savePageContent(selectedPage, data);
-      alert('Content saved successfully!');
+      alert("Content saved successfully!");
     } catch (error) {
-      console.error('Save failed:', error);
+      console.error("Save failed:", error);
     }
   };
 
@@ -81,23 +85,25 @@ export const CustomContentManagerExample = () => {
           <h1 className="text-3xl font-bold text-gray-900">
             Custom Content Manager
           </h1>
-          
+
           <div className="flex items-center space-x-4">
             {/* Language Toggle */}
             <select
               value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value as 'th' | 'en')}
+              onChange={(e) =>
+                setSelectedLanguage(e.target.value as "th" | "en")
+              }
               className="px-3 py-2 border border-gray-300 rounded-md">
               <option value="th">ไทย</option>
               <option value="en">English</option>
             </select>
-            
+
             {/* Save Button */}
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isSaving}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50">
-              {isSaving ? 'Saving...' : 'Save Changes'}
+              {isSaving ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </div>
@@ -129,10 +135,10 @@ export const CustomContentManagerExample = () => {
                   onClick={() => setSelectedPage(page.page_id)}
                   className={`py-4 px-1 border-b-2 font-medium text-sm ${
                     selectedPage === page.page_id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
                   }`}>
-                  {selectedLanguage === 'th' ? page.name_th : page.name_en}
+                  {selectedLanguage === "th" ? page.name_th : page.name_en}
                 </button>
               ))}
             </nav>
@@ -163,11 +169,18 @@ export const CustomContentManagerExample = () => {
 // Example 3: Custom Section Editor Component
 interface CustomSectionEditorProps {
   config: any;
-  selectedLanguage: 'th' | 'en';
+  selectedLanguage: "th" | "en";
   control: any;
-  uploadImage: (file: File, sectionId: string, imageIndex: number) => Promise<any>;
+  uploadImage: (
+    file: File,
+    sectionId: string,
+    imageIndex: number
+  ) => Promise<any>;
   getImageUrl: (sectionId: string, imageIndex: number) => string | undefined;
-  getUploadProgress: (sectionId: string, imageIndex: number) => number | undefined;
+  getUploadProgress: (
+    sectionId: string,
+    imageIndex: number
+  ) => number | undefined;
 }
 
 const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
@@ -176,7 +189,7 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
   control,
   uploadImage,
   getImageUrl,
-  getUploadProgress
+  getUploadProgress,
 }) => {
   const { mode, switchMode } = useSectionMode();
   const [dragOver, setDragOver] = useState(false);
@@ -185,16 +198,16 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
     try {
       await uploadImage(file, config.section_id, imageIndex);
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error("Upload failed:", error);
     }
   };
 
   const handleDrop = (e: React.DragEvent, imageIndex: number) => {
     e.preventDefault();
     setDragOver(false);
-    
+
     const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0 && files[0].type.startsWith('image/')) {
+    if (files.length > 0 && files[0].type.startsWith("image/")) {
       handleFileUpload(files[0], imageIndex);
     }
   };
@@ -203,28 +216,28 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
     <div className="bg-white rounded-lg shadow-sm border p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
-          {selectedLanguage === 'th' ? config.title_th : config.title_en}
+          {selectedLanguage === "th" ? config.title_th : config.title_en}
         </h3>
-        
-        {config.section_type === 'gallery_or_video' && (
+
+        {config.section_type === "gallery_or_video" && (
           <div className="flex items-center space-x-2">
             <button
               type="button"
-              onClick={() => switchMode('gallery')}
+              onClick={() => switchMode("gallery")}
               className={`px-3 py-1 rounded-md text-sm ${
-                mode === 'gallery'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-600'
+                mode === "gallery"
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-gray-100 text-gray-600"
               }`}>
               Gallery
             </button>
             <button
               type="button"
-              onClick={() => switchMode('video')}
+              onClick={() => switchMode("video")}
               className={`px-3 py-1 rounded-md text-sm ${
-                mode === 'video'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-gray-100 text-gray-600'
+                mode === "video"
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-gray-100 text-gray-600"
               }`}>
               Video
             </button>
@@ -241,31 +254,33 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
           render={({ field }) => (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title ({selectedLanguage === 'th' ? 'ไทย' : 'English'})
+                Title ({selectedLanguage === "th" ? "ไทย" : "English"})
               </label>
               <input
                 {...field}
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder={selectedLanguage === 'th' ? 'หัวข้อ' : 'Title'}
+                placeholder={selectedLanguage === "th" ? "หัวข้อ" : "Title"}
               />
             </div>
           )}
         />
 
         {/* Image Upload Areas */}
-        {(config.section_type === 'hero' || config.section_type === 'parallax_gallery' || 
-          (config.section_type === 'gallery_or_video' && mode === 'gallery')) && (
+        {(config.section_type === "hero" ||
+          config.section_type === "parallax_gallery" ||
+          (config.section_type === "gallery_or_video" &&
+            mode === "gallery")) && (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {Array.from({ length: config.max_images || 3 }).map((_, index) => {
               const imageUrl = getImageUrl(config.section_id, index);
               const progress = getUploadProgress(config.section_id, index);
-              
+
               return (
                 <div
                   key={index}
                   className={`border-2 border-dashed rounded-lg p-4 text-center aspect-square flex flex-col items-center justify-center transition-colors ${
-                    dragOver ? 'border-blue-400 bg-blue-50' : 'border-gray-300'
+                    dragOver ? "border-blue-400 bg-blue-50" : "border-gray-300"
                   }`}
                   onDragOver={(e) => {
                     e.preventDefault();
@@ -273,7 +288,6 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
                   }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={(e) => handleDrop(e, index)}>
-                  
                   {imageUrl ? (
                     <div className="relative w-full h-full">
                       <img
@@ -283,14 +297,18 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
                       />
                       <button
                         type="button"
-                        onClick={() => {/* Remove image logic */}}
+                        onClick={() => {
+                          /* Remove image logic */
+                        }}
                         className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
                         ×
                       </button>
                     </div>
                   ) : progress !== undefined ? (
                     <div className="w-full">
-                      <div className="text-sm text-gray-600 mb-2">Uploading...</div>
+                      <div className="text-sm text-gray-600 mb-2">
+                        Uploading...
+                      </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                           className="bg-blue-600 h-2 rounded-full transition-all"
@@ -325,7 +343,7 @@ const CustomSectionEditor: React.FC<CustomSectionEditorProps> = ({
         )}
 
         {/* Video URL Input */}
-        {config.section_type === 'gallery_or_video' && mode === 'video' && (
+        {config.section_type === "gallery_or_video" && mode === "video" && (
           <Controller
             name={`sections.${config.section_id}.video_url`}
             control={control}
@@ -359,10 +377,10 @@ export const ContentDisplayExample = () => {
     const loadContent = async () => {
       try {
         // This would typically come from your content service
-        const data = await fetch('/api/content/home').then(res => res.json());
+        const data = await fetch("/api/content/home").then((res) => res.json());
         setPageData(data);
       } catch (error) {
-        console.error('Failed to load content:', error);
+        console.error("Failed to load content:", error);
       } finally {
         setLoading(false);
       }
@@ -392,9 +410,7 @@ export const ContentDisplayExample = () => {
               <h1 className="text-5xl font-bold mb-4">
                 {pageData.sections.hero.title_en}
               </h1>
-              <p className="text-xl">
-                {pageData.sections.hero.description_en}
-              </p>
+              <p className="text-xl">{pageData.sections.hero.description_en}</p>
             </div>
           </div>
         </section>
@@ -408,15 +424,19 @@ export const ContentDisplayExample = () => {
               {pageData.sections.parallax_gallery.title_en}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {pageData.sections.parallax_gallery.images.map((image: any, index: number) => (
-                <div key={index} className="aspect-square overflow-hidden rounded-lg">
-                  <img
-                    src={image.url}
-                    alt={image.alt_text_en}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))}
+              {pageData.sections.parallax_gallery.images.map(
+                (image: any, index: number) => (
+                  <div
+                    key={index}
+                    className="aspect-square overflow-hidden rounded-lg">
+                    <img
+                      src={image.url}
+                      alt={image.alt_text_en}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )
+              )}
             </div>
           </div>
         </section>
