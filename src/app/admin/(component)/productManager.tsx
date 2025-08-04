@@ -7,6 +7,8 @@ import {
   uploadProductImage,
   Product as StoreProduct,
 } from "@/store/zustand/productStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 type FormValues = {
   name_th: string;
@@ -26,6 +28,7 @@ export const ProductManager = (props: { activeLanguage: string }) => {
     deleteProduct,
     error: productError,
     clearError: clearProductError,
+    loading,
   } = useProductStore();
 
   useEffect(() => {
@@ -41,6 +44,9 @@ export const ProductManager = (props: { activeLanguage: string }) => {
     type: "",
     selectedProduct: null,
   });
+
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   // react-hook-form setup
   const {
@@ -105,25 +111,41 @@ export const ProductManager = (props: { activeLanguage: string }) => {
   };
 
   const onSubmit = async (data: FormValues) => {
-    if (modalState.type === "add") {
-      await addProduct({
-        ...data,
-        id: crypto.randomUUID(),
-      });
-    } else if (modalState.type === "edit" && modalState.selectedProduct) {
-      await updateProduct(modalState.selectedProduct.id, {
-        ...data,
-        id: modalState.selectedProduct.id,
-      });
+    try {
+      if (modalState.type === "add") {
+        await addProduct({
+          ...data,
+          id: crypto.randomUUID(),
+        });
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มผลิตภัณฑ์ใหม่เรียบร้อยแล้ว");
+      } else if (modalState.type === "edit" && modalState.selectedProduct) {
+        await updateProduct(modalState.selectedProduct.id, {
+          ...data,
+          id: modalState.selectedProduct.id,
+        });
+        showSuccess(
+          "อัปเดตสำเร็จ",
+          "ข้อมูลผลิตภัณฑ์ได้รับการอัปเดตเรียบร้อยแล้ว"
+        );
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Error submitting product:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลผลิตภัณฑ์ได้");
     }
-    closeModal();
   };
 
   const handleDelete = async () => {
-    if (modalState.selectedProduct) {
-      await deleteProduct(modalState.selectedProduct.id);
+    try {
+      if (modalState.selectedProduct) {
+        await deleteProduct(modalState.selectedProduct.id);
+        showSuccess("ลบสำเร็จ", "ลบผลิตภัณฑ์เรียบร้อยแล้ว");
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถลบผลิตภัณฑ์ได้");
     }
-    closeModal();
   };
 
   const toggleAvailability = async (productId: string) => {
@@ -438,6 +460,19 @@ export const ProductManager = (props: { activeLanguage: string }) => {
       </div>
 
       <Modal />
+
+      {loading && <LoadingOverlay message="กำลังดำเนินการ..." />}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

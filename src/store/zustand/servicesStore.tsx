@@ -35,6 +35,7 @@ type State = {
     }
   ) => Promise<void>;
   deleteService: (id: string) => Promise<void>;
+  clearMessages: () => void;
 };
 
 export const useServiceStore = create<State>((set, get) => ({
@@ -123,5 +124,8 @@ export const useServiceStore = create<State>((set, get) => ({
       set({ success: true, loading: false });
       get().fetchServices();
     }
+  },
+  clearMessages: () => {
+    set({ error: null, success: false });
   },
 }));

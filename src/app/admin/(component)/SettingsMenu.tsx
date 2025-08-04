@@ -32,20 +32,20 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
       router.push("/admin/login");
     } catch (error) {
       console.error("Error logging out:", error);
-      alert("Error logging out. Please try again.");
+      alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
     }
   };
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (newPassword !== confirmPassword) {
-      alert("New passwords do not match!");
+      alert("รหัสผ่านใหม่ไม่ตรงกัน!");
       return;
     }
 
     if (newPassword.length < 6) {
-      alert("New password must be at least 6 characters long!");
+      alert("รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร!");
       return;
     }
 
@@ -60,14 +60,14 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
         throw error;
       }
 
-      alert("Password changed successfully!");
+      alert("เปลี่ยนรหัสผ่านสำเร็จ!");
       setShowChangePassword(false);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
       console.error("Error changing password:", error);
-      alert(`Error changing password: ${(error as Error).message}`);
+      alert(`เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน: ${(error as Error).message}`);
     } finally {
       setLoading(false);
     }
@@ -82,7 +82,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <Settings className="text-gray-600" size={24} />
-            <h2 className="text-xl font-semibold text-gray-900">Settings</h2>
+            <h2 className="text-xl font-semibold text-gray-900">ตั้งค่า</h2>
           </div>
           <button
             onClick={onClose}
@@ -96,7 +96,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
           {/* User Info */}
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="text-sm font-medium text-gray-700 mb-1">
-              Logged in as:
+              เข้าสู่ระบบด้วย:
             </h3>
             <p className="text-gray-900">{userEmail}</p>
           </div>
@@ -107,13 +107,13 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
               onClick={() => setShowChangePassword(true)}
               className="w-full flex items-center space-x-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
               <Key className="text-blue-600" size={20} />
-              <span className="text-blue-700 font-medium">Change Password</span>
+              <span className="text-blue-700 font-medium">เปลี่ยนรหัสผ่าน</span>
             </button>
           ) : (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium text-gray-900">
-                  Change Password
+                  เปลี่ยนรหัสผ่าน
                 </h3>
                 <button
                   onClick={() => setShowChangePassword(false)}
@@ -126,7 +126,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 {/* Current Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Current Password
+                    รหัสผ่านปัจจุบัน
                   </label>
                   <div className="relative">
                     <input
@@ -138,9 +138,15 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                     />
                     <button
                       type="button"
-                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                      {showCurrentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {showCurrentPassword ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -148,7 +154,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 {/* New Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    New Password
+                    รหัสผ่านใหม่
                   </label>
                   <div className="relative">
                     <input
@@ -163,7 +169,11 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                       type="button"
                       onClick={() => setShowNewPassword(!showNewPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                      {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {showNewPassword ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -171,7 +181,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 {/* Confirm Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Confirm New Password
+                    ยืนยันรหัสผ่านใหม่
                   </label>
                   <div className="relative">
                     <input
@@ -184,9 +194,15 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {showConfirmPassword ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -196,13 +212,13 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
                     type="button"
                     onClick={() => setShowChangePassword(false)}
                     className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
-                    Cancel
+                    ยกเลิก
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
                     className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                    {loading ? "Updating..." : "Update Password"}
+                    {loading ? "กำลังอัปเดต..." : "อัปเดตรหัสผ่าน"}
                   </button>
                 </div>
               </form>
@@ -214,7 +230,7 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({
             onClick={handleLogout}
             className="w-full flex items-center space-x-3 p-4 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
             <LogOut className="text-red-600" size={20} />
-            <span className="text-red-700 font-medium">Logout</span>
+            <span className="text-red-700 font-medium">ออกจากระบบ</span>
           </button>
         </div>
       </div>

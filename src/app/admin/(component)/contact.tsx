@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useContactStore, type Company } from "@/store/zustand/contactStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 type CompanyFormValues = {
   name_th: string;
@@ -29,6 +31,9 @@ type CompanyFormValues = {
 
 export const ContactManager = () => {
   const [activeTab, setActiveTab] = useState("primary");
+
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
   const {
     contactInfo,
     companies,
@@ -215,24 +220,14 @@ export const ContactManager = () => {
   // Handle success and error messages
   React.useEffect(() => {
     if (success) {
-      alert(success);
+      showSuccess("สำเร็จ", success);
       clearMessages();
     }
     if (error) {
-      alert(error);
+      showError("เกิดข้อผิดพลาด", error);
       clearMessages();
     }
-  }, [success, error, clearMessages]);
-
-  // Loading overlay component
-  const LoadingOverlay = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 flex flex-col items-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-        <p className="text-gray-700">Loading...</p>
-      </div>
-    </div>
-  );
+  }, [success, error, clearMessages, showSuccess, showError]);
 
   return (
     <div className="space-y-6 relative">
@@ -721,6 +716,17 @@ export const ContactManager = () => {
             )}
           </div>
         </div>
+      )}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
       )}
     </div>
   );

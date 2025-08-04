@@ -5,6 +5,8 @@ import { AboutContentManager } from "./sections/AboutContentManager";
 import { ProductServiceContentManager } from "./sections/ProductServiceContentManager";
 import { NewsContentManager } from "./sections/NewsContentManager";
 import { ContactContentManager } from "./sections/ContactContentManager";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 // Page configurations for navigation
 interface PageConfig {
@@ -38,6 +40,8 @@ export const ContentManager = () => {
   const [loading, setLoading] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   // Handle click outside dropdown
   useEffect(() => {
@@ -70,11 +74,11 @@ export const ContentManager = () => {
     ? ABOUT_SUBMENU.find((page) => page.id === selectedPage)
     : null;
 
-  const handleSave = (result: any) => {
+  const handleSave = (result: { success: boolean; error?: string }) => {
     if (result.success) {
-      alert("Content updated successfully!");
+      showSuccess("บันทึกสำเร็จ", "เนื้อหาได้รับการอัปเดตเรียบร้อยแล้ว");
     } else {
-      alert(`Error: ${result.error}`);
+      showError("เกิดข้อผิดพลาด", result.error || "ไม่สามารถบันทึกข้อมูลได้");
     }
     setLoading(false);
   };
@@ -231,6 +235,20 @@ export const ContentManager = () => {
         {/* Content Area */}
         <div className="space-y-8">{renderCurrentPageContent()}</div>
       </div>
+
+      {/* Loading Overlay */}
+      {loading && <LoadingOverlay message="กำลังดำเนินการ..." />}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

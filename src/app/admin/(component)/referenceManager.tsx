@@ -12,9 +12,6 @@ import {
   X,
   Upload,
   AlertCircle,
-  CheckCircle,
-  Home,
-  ChevronRight,
 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -22,6 +19,8 @@ import {
   Reference,
   OverseaProject,
 } from "@/store/zustand/referenceStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 // Types
 interface ReferenceFormData {
@@ -53,7 +52,6 @@ export const ReferenceManager = () => {
     overseaProjects,
     loading,
     error,
-    success,
     fetchReference,
     addReference,
     updateReference,
@@ -71,6 +69,9 @@ export const ReferenceManager = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   // Fetch data on mount
   useEffect(() => {
@@ -139,12 +140,15 @@ export const ReferenceManager = () => {
       if (editingId) {
         formData.append("id", editingId);
         await updateReference(editingId, formData);
+        showSuccess("อัปเดตสำเร็จ", "ข้อมูลผลงานได้รับการอัปเดตเรียบร้อยแล้ว");
       } else {
         await addReference(formData);
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มผลงานใหม่เรียบร้อยแล้ว");
       }
       resetReferenceForm();
     } catch (error) {
       console.error("Error submitting reference:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลผลงานได้");
     }
   };
 
@@ -152,12 +156,18 @@ export const ReferenceManager = () => {
     try {
       if (editingId) {
         await updateOverseaProject(editingId, data);
+        showSuccess(
+          "อัปเดตสำเร็จ",
+          "ข้อมูลโครงการต่างประเทศได้รับการอัปเดตเรียบร้อยแล้ว"
+        );
       } else {
         await addOverseaProject(data);
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มโครงการต่างประเทศใหม่เรียบร้อยแล้ว");
       }
       resetOverseaForm();
     } catch (error) {
       console.error("Error submitting oversea project:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลโครงการต่างประเทศได้");
     }
   };
 
@@ -200,36 +210,31 @@ export const ReferenceManager = () => {
   };
 
   const handleDeleteReference = async (id: string) => {
-    if (confirm("Are you sure you want to delete this reference?")) {
+    if (confirm("คุณแน่ใจหรือไม่ที่จะลบผลงานนี้?")) {
       try {
         await deleteReference(id);
+        showSuccess("ลบสำเร็จ", "ลบผลงานเรียบร้อยแล้ว");
       } catch (error) {
         console.error("Error deleting reference:", error);
+        showError("เกิดข้อผิดพลาด", "ไม่สามารถลบผลงานได้");
       }
     }
   };
 
   const handleDeleteOversea = async (id: string) => {
-    if (confirm("Are you sure you want to delete this oversea project?")) {
+    if (confirm("คุณแน่ใจหรือไม่ที่จะลบโครงการต่างประเทศนี้?")) {
       try {
         await deleteOverseaProject(id);
+        showSuccess("ลบสำเร็จ", "ลบโครงการต่างประเทศเรียบร้อยแล้ว");
       } catch (error) {
         console.error("Error deleting oversea project:", error);
+        showError("เกิดข้อผิดพลาด", "ไม่สามารถลบโครงการต่างประเทศได้");
       }
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <nav className="flex items-center space-x-2 text-sm text-gray-600">
-        <Home size={16} />
-        <ChevronRight size={14} />
-        <span>Admin</span>
-        <ChevronRight size={14} />
-        <span className="text-gray-900 font-medium">Reference Manager</span>
-      </nav>
-
       {/* Status Messages */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
@@ -237,18 +242,6 @@ export const ReferenceManager = () => {
           <div>
             <h4 className="text-red-800 font-medium">Error</h4>
             <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        </div>
-      )}
-
-      {success && !loading && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
-          <CheckCircle className="text-green-600" size={20} />
-          <div>
-            <h4 className="text-green-800 font-medium">Success</h4>
-            <p className="text-green-600 text-sm">
-              Operation completed successfully!
-            </p>
           </div>
         </div>
       )}
@@ -1060,6 +1053,19 @@ export const ReferenceManager = () => {
           )}
         </div>
       </div>
+
+      {loading && <LoadingOverlay message="กำลังดำเนินการ..." />}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

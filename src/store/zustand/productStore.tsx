@@ -13,6 +13,7 @@ export interface Product {
 type State = {
   products: Product[] | null;
   error: string | null;
+  loading: boolean;
   fetchProducts: () => void;
   addProduct: (product: Product) => void;
   deleteProduct: (id: string) => void;
@@ -23,7 +24,9 @@ type State = {
 export const useProductStore = create<State>((set, get) => ({
   products: null,
   error: null,
+  loading: false,
   fetchProducts: async () => {
+    set({ loading: true });
     try {
       set({ error: null });
       const res = await fetch("/api/products", {
@@ -35,12 +38,17 @@ export const useProductStore = create<State>((set, get) => ({
         return;
       }
       const data = await res.json();
-      set({ products: data.products, error: null });
+      set({ products: data.products, error: null, loading: false });
     } catch (err: any) {
-      set({ products: [], error: err?.message || "Unknown error" });
+      set({
+        products: [],
+        error: err?.message || "Unknown error",
+        loading: false,
+      });
     }
   },
   addProduct: async (product) => {
+    set({ loading: true });
     try {
       set({ error: null });
       const res = await fetch("/api/products", {
@@ -57,10 +65,11 @@ export const useProductStore = create<State>((set, get) => ({
       await get().fetchProducts();
     } catch (err: any) {
       console.log("error:", err);
-      set({ error: err?.message || "Unknown error" });
+      set({ error: err?.message || "Unknown error", loading: false });
     }
   },
   updateProduct: async (id, updatedProduct) => {
+    set({ loading: true });
     try {
       set({ error: null });
       const res = await fetch(`/api/products/${id}`, {
@@ -76,10 +85,11 @@ export const useProductStore = create<State>((set, get) => ({
       }
       await get().fetchProducts();
     } catch (err: any) {
-      set({ error: err?.message || "Unknown error" });
+      set({ error: err?.message || "Unknown error", loading: false });
     }
   },
   deleteProduct: async (id) => {
+    set({ loading: true });
     try {
       set({ error: null });
       const res = await fetch(`/api/products/${id}`, {
@@ -93,7 +103,7 @@ export const useProductStore = create<State>((set, get) => ({
       }
       await get().fetchProducts();
     } catch (err: any) {
-      set({ error: err?.message || "Unknown error" });
+      set({ error: err?.message || "Unknown error", loading: false });
     }
   },
   clearError: () => set({ error: null }),

@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   Globe,
-  LogOut,
   FileText,
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
@@ -34,26 +33,18 @@ const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState("th");
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-  const { signOut, user } = useAuth();
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
+  const { user } = useAuth();
 
   const menuItems = [
-    { id: "content", label: "Content Manager", icon: Image },
-    { id: "services", label: "Service Manager", icon: Settings },
-    { id: "products", label: "Product Manager", icon: Package },
-    { id: "reference", label: "Reference Manager", icon: FileText },
-    { id: "executives", label: "Executive Manager", icon: Users },
-    { id: "partners", label: "Partner Manager", icon: Globe },
-    { id: "news", label: "News/Event Manager", icon: Newspaper },
-    { id: "contact", label: "Contact Manager", icon: Phone },
-    { id: "text", label: "Text Manager", icon: Type },
+    { id: "content", label: "จัดการเนื้อหา", icon: Image },
+    { id: "services", label: "จัดการบริการ", icon: Settings },
+    { id: "products", label: "จัดการผลิตภัณฑ์", icon: Package },
+    { id: "reference", label: "จัดการผลงาน", icon: FileText },
+    { id: "executives", label: "จัดการผู้บริหาร", icon: Users },
+    { id: "partners", label: "จัดการพันธมิตร", icon: Globe },
+    { id: "news", label: "จัดการข่าวสาร", icon: Newspaper },
+    { id: "contact", label: "จัดการติดต่อ", icon: Phone },
+    { id: "text", label: "จัดการข้อความ", icon: Type },
   ];
 
   const renderSection = () => {
@@ -91,7 +82,7 @@ const AdminDashboard = () => {
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
-              <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+              <h1 className="text-xl font-bold text-gray-900">แผงควบคุม</h1>
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -151,17 +142,17 @@ const AdminDashboard = () => {
               />
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Padungsilpa Admin Panel
+                  Padungsilpa Admin panel
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Manage website content and settings
+                  จัดการเนื้อหาเว็บไซต์และการตั้งค่า
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span>Global Language:</span>
+                <span>ภาษาเว็บไซต์:</span>
                 <LanguageToggle
                   value={currentLanguage}
                   onChange={setCurrentLanguage}
@@ -169,7 +160,7 @@ const AdminDashboard = () => {
               </div>
               <div className="w-px h-6 bg-gray-300" />
               <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm">
-                View Website
+                ดูเว็บไซต์
               </button>
               <div className="w-px h-6 bg-gray-300" />
               <div className="flex items-center gap-2">
@@ -178,7 +169,7 @@ const AdminDashboard = () => {
                   onClick={() => setShowSettingsMenu(true)}
                   className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 text-sm transition-colors">
                   <Settings size={16} />
-                  Settings
+                  ตั้งค่า
                 </button>
               </div>
             </div>

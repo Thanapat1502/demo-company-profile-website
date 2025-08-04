@@ -4,13 +4,14 @@ import { NewsEditorModal } from "./newsEditorModal";
 import { LanguageToggle } from "./languageToggle";
 import { NewsItem, type NewsItemData } from "./newsItem";
 import { LanguageProvider, useLanguage } from "./languageContext";
-import { useToast } from "../../../hooks/useToast";
 import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import {
   useNewsStore,
   type News,
   type Category,
 } from "@/store/zustand/newsStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 // Interface for Quill editor output
 interface QuillContent {
@@ -44,7 +45,8 @@ interface NewsArticleForm {
 // Main NewsManager component with language context
 const NewsManagerContent = () => {
   const { currentLanguage } = useLanguage();
-  const { showSuccess, showError } = useToast();
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
   const {
     news,
     loading,
@@ -394,16 +396,6 @@ const NewsManagerContent = () => {
     }
   };
 
-  // Loading overlay component
-  const LoadingOverlay = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 flex flex-col items-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-        <p className="text-gray-700">Loading...</p>
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-6 relative">
       {loading && <LoadingOverlay />}
@@ -684,6 +676,17 @@ const NewsManagerContent = () => {
         confirmText={currentLanguage === "th" ? "ยืนยัน" : "Confirm"}
         cancelText={currentLanguage === "th" ? "ยกเลิก" : "Cancel"}
       />
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

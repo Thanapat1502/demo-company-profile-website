@@ -10,6 +10,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useWebLabelStore, WebLabels } from "@/store/zustand/useWebLabelStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 interface FormValues {
   text: string;
@@ -24,6 +26,9 @@ export const TextManager = () => {
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [originalValues, setOriginalValues] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   const { control, handleSubmit, reset, watch, setValue } = useForm<FormValues>(
     {
@@ -98,8 +103,10 @@ export const TextManager = () => {
     try {
       await editWebLabel(editingKey, data.text.trim());
       cancelEditing();
+      showSuccess("อัปเดตสำเร็จ", "ข้อความได้รับการอัปเดตเรียบร้อยแล้ว");
     } catch (error) {
       console.error("Error updating label:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถอัปเดตข้อความได้");
     }
   };
 
@@ -341,6 +348,20 @@ export const TextManager = () => {
           </div>
         )}
       </div>
+
+      {/* Loading Overlay */}
+      {loading && <LoadingOverlay message="กำลังโหลดข้อมูล..." />}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

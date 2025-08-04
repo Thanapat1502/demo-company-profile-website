@@ -138,10 +138,10 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
           <h4 className="text-sm font-medium text-gray-700 mb-3">
             New Images to Upload
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {images.map((image, index) => (
               <div key={`new-${index}`} className="relative group">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                   <img
                     src={URL.createObjectURL(image)}
                     alt={`New hero image ${index + 1}`}
@@ -450,11 +450,11 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
                             Refresh
                           </button>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {currentImages[slot.serviceId].map(
                             (imageUrl, imgIndex) => (
                               <div key={imgIndex} className="relative group">
-                                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-green-200">
+                                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-green-200">
                                   <img
                                     src={imageUrl}
                                     alt={`Current ${slot.serviceId} image ${
@@ -490,10 +490,10 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
                       <h4 className="text-sm font-medium text-gray-700">
                         📤 New Images to Upload ({slot.imageUrls.length})
                       </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {slot.imageUrls.map((imageUrl, imgIndex) => (
                           <div key={imgIndex} className="relative group">
-                            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-blue-200">
+                            <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-blue-200">
                               <img
                                 src={imageUrl}
                                 alt={`New ${slot.serviceId} image ${

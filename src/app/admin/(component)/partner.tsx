@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Plus, Edit, Trash2, Upload } from "lucide-react";
 import { usePartnerStore } from "@/store/zustand/partnerStore";
 import { PartnerModal } from "./partnerModal";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 // Types for partner
 interface Partner {
@@ -39,6 +41,9 @@ export const PartnerManager = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
+
   useEffect(() => {
     fetchPartners();
   }, [fetchPartners]);
@@ -62,15 +67,21 @@ export const PartnerManager = () => {
           name: data.name,
           logo: data.logo || undefined,
         });
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มพันธมิตรใหม่เรียบร้อยแล้ว");
       } else if (modalState.type === "edit" && modalState.selectedPartner) {
         await updatePartner(modalState.selectedPartner.id, {
           name: data.name,
           logo: data.logo || undefined,
         });
+        showSuccess(
+          "อัปเดตสำเร็จ",
+          "ข้อมูลพันธมิตรได้รับการอัปเดตเรียบร้อยแล้ว"
+        );
       }
       closeModal();
     } catch (error) {
       console.error("Error submitting partner:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลพันธมิตรได้");
     } finally {
       setIsSubmitting(false);
     }
@@ -82,8 +93,10 @@ export const PartnerManager = () => {
       try {
         await deletePartner(modalState.selectedPartner.id);
         closeModal();
+        showSuccess("ลบสำเร็จ", "ลบพันธมิตรเรียบร้อยแล้ว");
       } catch (error) {
         console.error("Error deleting partner:", error);
+        showError("เกิดข้อผิดพลาด", "ไม่สามารถลบพันธมิตรได้");
       } finally {
         setIsSubmitting(false);
       }
@@ -208,6 +221,22 @@ export const PartnerManager = () => {
         onDelete={handleModalDelete}
         isSubmitting={isSubmitting}
       />
+
+      {/* Loading Overlay */}
+      {(loading || isSubmitting) && (
+        <LoadingOverlay message="กำลังดำเนินการ..." />
+      )}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };

@@ -173,7 +173,6 @@ export default function CompanyHistoryPage() {
               ติดตามการพัฒนาและความก้าวหน้าของเราตลอด 5 ทศวรรษที่ผ่านมา
             </p>
           </div>
-
           <div className="space-y-16">
             {milestones.map((milestone, index) => (
               <div

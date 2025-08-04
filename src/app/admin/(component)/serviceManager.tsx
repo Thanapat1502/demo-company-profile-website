@@ -2,19 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import {
-  Save,
-  X,
-  Edit,
-  Trash2,
-  Plus,
-  Upload,
-  AlertCircle,
-  CheckCircle,
-  Home,
-  ChevronRight,
-} from "lucide-react";
+import { Save, X, Edit, Trash2, Plus, Upload, AlertCircle } from "lucide-react";
 import { useServiceStore, ServiceType } from "@/store/zustand/servicesStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 // Types
 interface FormValues {
@@ -30,7 +21,6 @@ export const ServiceManager = () => {
   const {
     services,
     loading,
-    success,
     error,
     fetchServices,
     addService,
@@ -43,6 +33,8 @@ export const ServiceManager = () => {
     null
   );
   const [showAddForm, setShowAddForm] = useState(false);
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   // Fetch services on component mount
   useEffect(() => {
@@ -79,13 +71,16 @@ export const ServiceManager = () => {
       if (editingService) {
         await updateService(editingService.id, submitData);
         setEditingService(null);
+        showSuccess("อัปเดตสำเร็จ", "ข้อมูลบริการได้รับการอัปเดตเรียบร้อยแล้ว");
       } else {
         await addService(submitData);
         setShowAddForm(false);
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มบริการใหม่เรียบร้อยแล้ว");
       }
       reset();
     } catch (error) {
       console.error("Error submitting service:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลบริการได้");
     }
   };
 
@@ -111,26 +106,19 @@ export const ServiceManager = () => {
 
   // Delete service
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this service?")) {
+    if (confirm("คุณแน่ใจหรือไม่ที่จะลบบริการนี้?")) {
       try {
         await deleteService(id);
+        showSuccess("ลบสำเร็จ", "ลบบริการเรียบร้อยแล้ว");
       } catch (error) {
         console.error("Error deleting service:", error);
+        showError("เกิดข้อผิดพลาด", "ไม่สามารถลบบริการได้");
       }
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <nav className="flex items-center space-x-2 text-sm text-gray-600">
-        <Home size={16} />
-        <ChevronRight size={14} />
-        <span>Admin</span>
-        <ChevronRight size={14} />
-        <span className="text-gray-900 font-medium">Service Manager</span>
-      </nav>
-
       {/* Status Messages */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
@@ -138,18 +126,6 @@ export const ServiceManager = () => {
           <div>
             <h4 className="text-red-800 font-medium">Error</h4>
             <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        </div>
-      )}
-
-      {success && !loading && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
-          <CheckCircle className="text-green-600" size={20} />
-          <div>
-            <h4 className="text-green-800 font-medium">Success</h4>
-            <p className="text-green-600 text-sm">
-              Operation completed successfully!
-            </p>
           </div>
         </div>
       )}
@@ -477,6 +453,20 @@ export const ServiceManager = () => {
             </button>
           </div>
         </form>
+      )}
+
+      {/* Loading Overlay */}
+      {loading && <LoadingOverlay message="กำลังดำเนินการ..." />}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
       )}
     </div>
   );

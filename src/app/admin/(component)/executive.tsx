@@ -6,6 +6,8 @@ import {
   useExecutiveStore,
   ExecutiveType,
 } from "@/store/zustand/executiveStore";
+import { LoadingOverlay } from "./LoadingOverlay";
+import { AdminNotification, useAdminNotification } from "./AdminNotification";
 
 type FormValues = {
   image: File | string | null;
@@ -35,6 +37,9 @@ export const ExecutiveManager = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { notification, hideNotification, showSuccess, showError } =
+    useAdminNotification();
 
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValues>(
     {
@@ -117,6 +122,7 @@ export const ExecutiveManager = () => {
           position_en: data.title.en,
           image: data.image || undefined,
         });
+        showSuccess("เพิ่มสำเร็จ", "เพิ่มผู้บริหารใหม่เรียบร้อยแล้ว");
       } else if (modalState.type === "edit" && modalState.selectedExecutive) {
         await updateExecutiveMember(modalState.selectedExecutive.id, {
           name_th: data.name.th,
@@ -125,10 +131,15 @@ export const ExecutiveManager = () => {
           position_en: data.title.en,
           image: data.image || undefined,
         });
+        showSuccess(
+          "อัปเดตสำเร็จ",
+          "ข้อมูลผู้บริหารได้รับการอัปเดตเรียบร้อยแล้ว"
+        );
       }
       closeModal();
     } catch (error) {
       console.error("Error submitting executive:", error);
+      showError("เกิดข้อผิดพลาด", "ไม่สามารถบันทึกข้อมูลผู้บริหารได้");
     } finally {
       setIsSubmitting(false);
     }
@@ -140,8 +151,10 @@ export const ExecutiveManager = () => {
       try {
         await deleteExecutiveMember(modalState.selectedExecutive.id);
         closeModal();
+        showSuccess("ลบสำเร็จ", "ลบผู้บริหารเรียบร้อยแล้ว");
       } catch (error) {
         console.error("Error deleting executive:", error);
+        showError("เกิดข้อผิดพลาด", "ไม่สามารถลบผู้บริหารได้");
       } finally {
         setIsSubmitting(false);
       }
@@ -433,6 +446,22 @@ export const ExecutiveManager = () => {
       )}
 
       <ExecutiveModal />
+
+      {/* Loading Overlay */}
+      {(loading || isSubmitting) && (
+        <LoadingOverlay message="กำลังดำเนินการ..." />
+      )}
+
+      {/* Notification */}
+      {notification && (
+        <AdminNotification
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+          isVisible={notification.isVisible}
+          onDismiss={hideNotification}
+        />
+      )}
     </div>
   );
 };
