@@ -2,18 +2,14 @@ import { create } from "zustand";
 
 export interface Reference {
   id: string; // UUID
-  client_th: string;
-  client_en: string;
+  name_th: string;
+  name_en: string;
+  type_th: string;
+  type_en: string;
   location_th: string;
   location_en: string;
   open_at: string; // ISO datetime string
-  description_th: string;
-  description_en: string;
-  features_th: string[]; // Array of feature strings
-  features_en: string[];
-  value: number;
-  galleries_th: string[]; // Array of image URLs
-  galleries_en: string[];
+  galleries: string[];
 }
 
 type State = {

@@ -25,6 +25,7 @@ import { ContactManager } from "./(component)/contact";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/components/ui/ToastContainer";
+import { ReferenceManager } from "./(component)/referenceManager";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
@@ -61,7 +62,7 @@ const AdminDashboard = () => {
       case "products":
         return <ProductManager activeLanguage={currentLanguage} />;
       case "reference":
-        return null; //<ReferenceManager />;
+        return <ReferenceManager />;
       case "news":
         return <NewsManager />;
       case "text":

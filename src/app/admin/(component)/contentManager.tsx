@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Save } from "lucide-react";
+import {
+  Save,
+  ChevronDown,
+  ChevronRight,
+  Upload,
+  Image as ImageIcon,
+  Video,
+} from "lucide-react";
 import { useForm, Control } from "react-hook-form";
 import {
   HeroSectionEditor,
@@ -225,6 +232,12 @@ const PAGE_CONFIGURATIONS: PageConfig[] = [
 
 export const ContentManager = () => {
   const [selectedPage, setSelectedPage] = useState("home");
+  const [expandedMenus, setExpandedMenus] = useState<{
+    [key: string]: boolean;
+  }>({
+    about: false,
+    "products-services": false,
+  });
 
   // Get all pages including subpages for dropdown
   const getAllPages = (): {
@@ -262,6 +275,14 @@ export const ContentManager = () => {
   };
 
   const pages = getAllPages();
+
+  // Toggle dropdown menu
+  const toggleMenu = (menuId: string) => {
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [menuId]: !prev[menuId],
+    }));
+  };
 
   // Get current page configuration
   const getCurrentPageConfig = (): PageConfig | null => {
@@ -305,21 +326,135 @@ export const ContentManager = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border">
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6 overflow-x-auto">
-            {pages.map((page) => (
+        <div className="border-b border-gray-200 relative">
+          <nav className="flex space-x-4 px-6 overflow-x-auto relative">
+            {/* Home */}
+            <button
+              className={`py-4 px-3 border-b-2 font-medium text-sm whitespace-nowrap ${
+                selectedPage === "home"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+              onClick={() => setSelectedPage("home")}>
+              Home
+            </button>
+
+            {/* About Menu - Horizontal Expansion */}
+            {expandedMenus.about ? (
+              /* Expanded About Menu */
+              <div className="flex items-center border-b-2 border-blue-500">
+                <button
+                  className="py-4 px-3 font-medium text-sm text-blue-600 flex items-center gap-1"
+                  onClick={() => toggleMenu("about")}>
+                  About
+                  <ChevronDown size={14} />
+                </button>
+                <div className="flex items-center">
+                  <button
+                    className={`py-4 px-3 text-sm hover:text-blue-600 transition-colors ${
+                      selectedPage === "about"
+                        ? "text-blue-600 font-medium"
+                        : "text-gray-600"
+                    }`}
+                    onClick={() => {
+                      setSelectedPage("about");
+                      setExpandedMenus((prev) => ({ ...prev, about: false }));
+                    }}>
+                    Main About
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    className={`py-4 px-3 text-sm hover:text-blue-600 transition-colors ${
+                      selectedPage === "about-history"
+                        ? "text-blue-600 font-medium"
+                        : "text-gray-600"
+                    }`}
+                    onClick={() => {
+                      setSelectedPage("about-history");
+                      setExpandedMenus((prev) => ({ ...prev, about: false }));
+                    }}>
+                    History
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    className={`py-4 px-3 text-sm hover:text-blue-600 transition-colors ${
+                      selectedPage === "about-vision"
+                        ? "text-blue-600 font-medium"
+                        : "text-gray-600"
+                    }`}
+                    onClick={() => {
+                      setSelectedPage("about-vision");
+                      setExpandedMenus((prev) => ({ ...prev, about: false }));
+                    }}>
+                    Vision
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    className={`py-4 px-3 text-sm hover:text-blue-600 transition-colors ${
+                      selectedPage === "about-executive"
+                        ? "text-blue-600 font-medium"
+                        : "text-gray-600"
+                    }`}
+                    onClick={() => {
+                      setSelectedPage("about-executive");
+                      setExpandedMenus((prev) => ({ ...prev, about: false }));
+                    }}>
+                    Executive
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Collapsed About Menu */
               <button
-                key={page.id}
-                className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                  selectedPage === page.id
+                className={`py-4 px-3 border-b-2 font-medium text-sm whitespace-nowrap flex items-center gap-1 ${
+                  [
+                    "about",
+                    "about-main",
+                    "about-history",
+                    "about-vision",
+                    "about-executive",
+                  ].includes(selectedPage)
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
-                onClick={() => setSelectedPage(page.id)}>
-                {page.name}
-                {page.isSubpage && <span className="text-xs ml-1">(Sub)</span>}
+                onClick={() => toggleMenu("about")}>
+                About
+                <ChevronRight size={14} />
               </button>
-            ))}
+            )}
+
+            {/* Products & Services */}
+            <button
+              className={`py-4 px-3 border-b-2 font-medium text-sm whitespace-nowrap ${
+                selectedPage === "products-services"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+              onClick={() => setSelectedPage("products-services")}>
+              Products & Services
+            </button>
+
+            {/* News */}
+            <button
+              className={`py-4 px-3 border-b-2 font-medium text-sm whitespace-nowrap ${
+                selectedPage === "news"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+              onClick={() => setSelectedPage("news")}>
+              News
+            </button>
+
+            {/* Contact */}
+            <button
+              className={`py-4 px-3 border-b-2 font-medium text-sm whitespace-nowrap ${
+                selectedPage === "contact"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+              onClick={() => setSelectedPage("contact")}>
+              Contact
+            </button>
           </nav>
         </div>
 

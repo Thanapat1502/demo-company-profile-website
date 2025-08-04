@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Home,
-  Briefcase,
   Upload,
   Save,
   X,
@@ -10,6 +9,7 @@ import {
   ImageIcon,
   PlayCircle,
 } from "lucide-react";
+// import { ProductServiceSubmenu } from "./ProductServiceSubmenu";
 
 // Types
 interface ServiceItem {
@@ -27,15 +27,6 @@ interface HomePageData {
   serviceItems: ServiceItem[];
 }
 
-interface ServiceSection {
-  id: number;
-  title: string;
-  description: string;
-  mode: "parallax" | "video";
-  images: (File | string)[];
-  videoUrl: string;
-}
-
 interface FormValues {
   title: string;
   description: string;
@@ -49,9 +40,6 @@ interface FormValues {
 export const ServiceManager = () => {
   // State management
   const [activeTab, setActiveTab] = useState<"home" | "services">("home");
-  const [activeSection, setActiveSection] = useState<number>(1);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingSection, setEditingSection] = useState<number | null>(null);
   const [editingServiceItem, setEditingServiceItem] = useState<string | null>(
     null
   );
@@ -91,42 +79,6 @@ export const ServiceManager = () => {
     ],
   });
 
-  const [serviceSections, setServiceSections] = useState<ServiceSection[]>([
-    {
-      id: 1,
-      title: "Construction Services",
-      description:
-        "Complete construction solutions from planning to completion",
-      mode: "parallax",
-      images: [],
-      videoUrl: "",
-    },
-    {
-      id: 2,
-      title: "Engineering Consultation",
-      description: "Expert engineering advice and project consultation",
-      mode: "video",
-      images: [],
-      videoUrl: "https://www.youtube.com/watch?v=example",
-    },
-    {
-      id: 3,
-      title: "Project Management",
-      description: "Professional project management and coordination",
-      mode: "parallax",
-      images: [],
-      videoUrl: "",
-    },
-    {
-      id: 4,
-      title: "Quality Assurance",
-      description: "Comprehensive quality control and assurance services",
-      mode: "video",
-      images: [],
-      videoUrl: "",
-    },
-  ]);
-
   // Form handling
   const { control, handleSubmit, reset, setValue, watch } = useForm<FormValues>(
     {
@@ -142,86 +94,39 @@ export const ServiceManager = () => {
   const watchedValues = watch();
 
   // Helper functions
-  const startEditing = (sectionId?: number) => {
-    if (activeTab === "home") {
-      setIsEditing(true);
-      setValue("title", homePageData.title);
-      setValue("description", homePageData.description);
-      setValue("image", homePageData.image);
-    } else if (sectionId) {
-      const section = serviceSections.find((s) => s.id === sectionId);
-      if (section) {
-        setEditingSection(sectionId);
-        setValue("title", section.title);
-        setValue("description", section.description);
-        setValue("videoUrl", section.videoUrl);
-      }
-    }
-  };
-
-  const cancelEditing = () => {
-    setIsEditing(false);
-    setEditingSection(null);
-    reset();
-  };
 
   const onSubmit = (data: FormValues) => {
-    if (activeTab === "home") {
-      if (editingServiceItem) {
-        // Update existing service item
-        setHomePageData((prev) => ({
-          ...prev,
-          serviceItems: prev.serviceItems.map((item) =>
-            item.id === editingServiceItem
-              ? {
-                  ...item,
-                  title: data.serviceTitle || data.title,
-                  description: data.serviceDescription || data.description,
-                  image: data.image,
-                  learnMoreUrl: data.learnMoreUrl,
-                }
-              : item
-          ),
-        }));
-        setEditingServiceItem(null);
-      } else if (showAddServiceItem) {
-        // Add new service item
-        const newItem: ServiceItem = {
-          id: Date.now().toString(),
-          title: data.serviceTitle || data.title,
-          description: data.serviceDescription || data.description,
-          image: data.image,
-          learnMoreUrl: data.learnMoreUrl,
-        };
-        setHomePageData((prev) => ({
-          ...prev,
-          serviceItems: [...prev.serviceItems, newItem],
-        }));
-        setShowAddServiceItem(false);
-      } else {
-        // Update section header
-        setHomePageData((prev) => ({
-          ...prev,
-          title: data.title,
-          description: data.description,
-          image: data.image,
-        }));
-        setIsEditing(false);
-      }
-    } else if (editingSection) {
-      setServiceSections((prev) =>
-        prev.map((section) =>
-          section.id === editingSection
+    if (editingServiceItem) {
+      // Update existing service item
+      setHomePageData((prev) => ({
+        ...prev,
+        serviceItems: prev.serviceItems.map((item) =>
+          item.id === editingServiceItem
             ? {
-                ...section,
-                title: data.title,
-                description: data.description,
-                videoUrl: data.videoUrl || "",
+                ...item,
+                title: data.serviceTitle || data.title,
+                description: data.serviceDescription || data.description,
+                image: data.image,
+                learnMoreUrl: data.learnMoreUrl,
               }
-            : section
-        )
-      );
-      setEditingSection(null);
+            : item
+        ),
+      }));
+      setEditingServiceItem(null);
+    } else if (showAddServiceItem) {
+      // Add new service item
+      const newItem: ServiceItem = {
+        id: Date.now().toString(),
+        title: data.serviceTitle || data.title,
+        description: data.serviceDescription || data.description,
+        image: data.image,
+        learnMoreUrl: data.learnMoreUrl,
+      };
+      setHomePageData((prev) => ({
+        ...prev,
+        serviceItems: [...prev.serviceItems, newItem],
+      }));
+      setShowAddServiceItem(false);
     }
     reset();
   };
@@ -256,56 +161,12 @@ export const ServiceManager = () => {
     }));
   };
 
-  const handleImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    isMultiple = false
-  ) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    if (isMultiple) {
-      // Handle multiple images for parallax gallery
-      const newImages = Array.from(files);
-      if (editingSection) {
-        setServiceSections((prev) =>
-          prev.map((section) =>
-            section.id === editingSection
-              ? { ...section, images: [...section.images, ...newImages] }
-              : section
-          )
-        );
-      }
-    } else {
-      // Handle single image
-      const file = files[0];
-      setValue("image", file);
-    }
-  };
-
-  const toggleSectionMode = (sectionId: number) => {
-    setServiceSections((prev) =>
-      prev.map((section) =>
-        section.id === sectionId
-          ? {
-              ...section,
-              mode: section.mode === "parallax" ? "video" : "parallax",
-            }
-          : section
-      )
-    );
-  };
-
-  const removeImage = (sectionId: number, imageIndex: number) => {
-    setServiceSections((prev) =>
-      prev.map((section) =>
-        section.id === sectionId
-          ? {
-              ...section,
-              images: section.images.filter((_, index) => index !== imageIndex),
-            }
-          : section
-      )
-    );
+    const file = files[0];
+    setValue("image", file);
   };
 
   return (
@@ -336,6 +197,7 @@ export const ServiceManager = () => {
                 Home Page Services
               </div>
             </button>
+            {/*
             <button
               onClick={() => setActiveTab("services")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
@@ -345,198 +207,18 @@ export const ServiceManager = () => {
               }`}>
               <div className="flex items-center gap-2">
                 <Briefcase size={16} />
-                Product & Service Pages
+                Product & Service Pages (Temporarily Disabled)
               </div>
             </button>
+            */}
           </nav>
         </div>
 
         {/* Tab Content */}
         <div className="p-6">
           {activeTab === "home" ? (
-            /* Home Page Services Section */
+            /* Service Items Management */
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Home Page Services Section
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    Configure the services section displayed on the home page
-                  </p>
-                </div>
-                <button
-                  onClick={() => startEditing()}
-                  className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                    isEditing
-                      ? "bg-orange-600 text-white hover:bg-orange-700"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
-                  }`}>
-                  <Edit size={16} />
-                  {isEditing ? "Cancel Edit" : "Edit Section"}
-                </button>
-              </div>
-
-              {isEditing ? (
-                /* Edit Mode */
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Title */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Section Title
-                      </label>
-                      <Controller
-                        name="title"
-                        control={control}
-                        rules={{ required: "Title is required" }}
-                        render={({ field, fieldState: { error } }) => (
-                          <>
-                            <input
-                              {...field}
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              placeholder="Enter section title"
-                            />
-                            {error && (
-                              <p className="text-red-600 text-xs mt-1">
-                                {error.message}
-                              </p>
-                            )}
-                          </>
-                        )}
-                      />
-                    </div>
-
-                    {/* Image Upload */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Section Image
-                      </label>
-                      <div className="space-y-3">
-                        {watchedValues.image && (
-                          <div className="relative inline-block">
-                            <img
-                              src={
-                                watchedValues.image instanceof File
-                                  ? URL.createObjectURL(watchedValues.image)
-                                  : watchedValues.image
-                              }
-                              alt="Section preview"
-                              className="w-full h-32 object-cover rounded-lg border"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setValue("image", null)}
-                              className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
-                              <X size={14} />
-                            </button>
-                          </div>
-                        )}
-                        <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 w-fit">
-                          <Upload size={16} />
-                          {watchedValues.image
-                            ? "Change Image"
-                            : "Upload Image"}
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e)}
-                            className="hidden"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Section Description
-                    </label>
-                    <Controller
-                      name="description"
-                      control={control}
-                      rules={{ required: "Description is required" }}
-                      render={({ field, fieldState: { error } }) => (
-                        <>
-                          <textarea
-                            {...field}
-                            rows={4}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                            placeholder="Enter section description"
-                          />
-                          {error && (
-                            <p className="text-red-600 text-xs mt-1">
-                              {error.message}
-                            </p>
-                          )}
-                        </>
-                      )}
-                    />
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={cancelEditing}
-                      className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2">
-                      <X size={16} />
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                      <Save size={16} />
-                      Save Changes
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                /* View Mode */
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">
-                        Current Title
-                      </h4>
-                      <p className="text-gray-700">{homePageData.title}</p>
-
-                      <h4 className="font-medium text-gray-900 mb-2 mt-4">
-                        Current Description
-                      </h4>
-                      <p className="text-gray-700">
-                        {homePageData.description}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">
-                        Current Image
-                      </h4>
-                      {homePageData.image ? (
-                        <img
-                          src={
-                            homePageData.image instanceof File
-                              ? URL.createObjectURL(homePageData.image)
-                              : homePageData.image
-                          }
-                          alt="Section"
-                          className="w-full h-32 object-cover rounded-lg border"
-                        />
-                      ) : (
-                        <div className="w-full h-32 bg-gray-200 rounded-lg border flex items-center justify-center">
-                          <div className="text-center text-gray-500">
-                            <ImageIcon size={24} className="mx-auto mb-2" />
-                            <span className="text-sm">No image uploaded</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {/* Service Items Management */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
@@ -934,20 +616,28 @@ export const ServiceManager = () => {
               </div>
             </div>
           ) : (
-            /* Product & Service Pages */
+            /* Product & Service Pages - COMMENTED OUT */
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">
-                    Product & Service Pages
+                    Product & Service Pages (Temporarily Disabled)
                   </h3>
                   <p className="text-sm text-gray-500">
-                    Manage 4 service sections with parallax galleries and videos
+                    This submenu has been moved to its own component and is
+                    currently disabled
                   </p>
                 </div>
               </div>
+              {/*
+              <ProductServiceSubmenu
+                onSectionSelect={(section) => console.log(section)}
+                activeSection="hero"
+              />
+              */}
 
-              {/* Section Navigation */}
+              {/*
+              Section Navigation - COMMENTED OUT
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {serviceSections.map((section) => (
                   <button
@@ -989,8 +679,10 @@ export const ServiceManager = () => {
                   </button>
                 ))}
               </div>
+              */}
 
-              {/* Active Section Content */}
+              {/*
+              Active Section Content - COMMENTED OUT
               {(() => {
                 const currentSection = serviceSections.find(
                   (s) => s.id === activeSection
@@ -1008,260 +700,7 @@ export const ServiceManager = () => {
                           {currentSection.description}
                         </p>
                       </div>
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => toggleSectionMode(currentSection.id)}
-                          className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                            currentSection.mode === "parallax"
-                              ? "bg-green-100 text-green-700 hover:bg-green-200"
-                              : "bg-purple-100 text-purple-700 hover:bg-purple-200"
-                          }`}>
-                          {currentSection.mode === "parallax" ? (
-                            <ImageIcon size={16} />
-                          ) : (
-                            <PlayCircle size={16} />
-                          )}
-                          Switch to{" "}
-                          {currentSection.mode === "parallax"
-                            ? "Video"
-                            : "Parallax"}
-                        </button>
-                        <button
-                          onClick={() => startEditing(currentSection.id)}
-                          className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                            editingSection === currentSection.id
-                              ? "bg-orange-600 text-white hover:bg-orange-700"
-                              : "bg-blue-600 text-white hover:bg-blue-700"
-                          }`}>
-                          <Edit size={16} />
-                          {editingSection === currentSection.id
-                            ? "Cancel Edit"
-                            : "Edit Section"}
-                        </button>
-                      </div>
-                    </div>
-
-                    {editingSection === currentSection.id ? (
-                      /* Edit Mode */
-                      <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="space-y-6">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                          {/* Title */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Section Title
-                            </label>
-                            <Controller
-                              name="title"
-                              control={control}
-                              rules={{ required: "Title is required" }}
-                              render={({ field, fieldState: { error } }) => (
-                                <>
-                                  <input
-                                    {...field}
-                                    type="text"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter section title"
-                                  />
-                                  {error && (
-                                    <p className="text-red-600 text-xs mt-1">
-                                      {error.message}
-                                    </p>
-                                  )}
-                                </>
-                              )}
-                            />
-                          </div>
-
-                          {/* Video URL (only for video mode) */}
-                          {currentSection.mode === "video" && (
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Video URL
-                              </label>
-                              <Controller
-                                name="videoUrl"
-                                control={control}
-                                render={({ field }) => (
-                                  <input
-                                    {...field}
-                                    type="url"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="https://www.youtube.com/watch?v=..."
-                                  />
-                                )}
-                              />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Description */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Section Description
-                          </label>
-                          <Controller
-                            name="description"
-                            control={control}
-                            rules={{ required: "Description is required" }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <textarea
-                                  {...field}
-                                  rows={3}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                                  placeholder="Enter section description"
-                                />
-                                {error && (
-                                  <p className="text-red-600 text-xs mt-1">
-                                    {error.message}
-                                  </p>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex gap-3">
-                          <button
-                            type="button"
-                            onClick={cancelEditing}
-                            className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2">
-                            <X size={16} />
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                            <Save size={16} />
-                            Save Changes
-                          </button>
-                        </div>
-                      </form>
-                    ) : (
-                      /* View Mode */
-                      <div className="space-y-6">
-                        {/* Current Content Display */}
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <h5 className="font-medium text-gray-900 mb-2">
-                            Current Content
-                          </h5>
-                          <p className="text-gray-700 text-sm">
-                            {currentSection.description}
-                          </p>
-                          {currentSection.mode === "video" &&
-                            currentSection.videoUrl && (
-                              <div className="mt-3">
-                                <span className="text-sm font-medium text-gray-700">
-                                  Video URL:{" "}
-                                </span>
-                                <a
-                                  href={currentSection.videoUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-700 text-sm break-all">
-                                  {currentSection.videoUrl}
-                                </a>
-                              </div>
-                            )}
-                        </div>
-
-                        {/* Media Management */}
-                        {currentSection.mode === "parallax" ? (
-                          /* Parallax Gallery Management */
-                          <div>
-                            <div className="flex items-center justify-between mb-4">
-                              <h5 className="font-medium text-gray-900">
-                                Parallax Gallery Images
-                              </h5>
-                              <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                                <Upload size={16} />
-                                Add Images
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  multiple
-                                  onChange={(e) => handleImageUpload(e, true)}
-                                  className="hidden"
-                                />
-                              </label>
-                            </div>
-
-                            {currentSection.images.length > 0 ? (
-                              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {currentSection.images.map((image, index) => (
-                                  <div key={index} className="relative group">
-                                    <img
-                                      src={
-                                        image instanceof File
-                                          ? URL.createObjectURL(image)
-                                          : image
-                                      }
-                                      alt={`Gallery ${index + 1}`}
-                                      className="w-full h-24 object-cover rounded-lg border"
-                                    />
-                                    <button
-                                      onClick={() =>
-                                        removeImage(currentSection.id, index)
-                                      }
-                                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700 opacity-0 group-hover:opacity-100 transition-opacity">
-                                      <X size={12} />
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                                <ImageIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                                <p className="text-gray-500">
-                                  No images uploaded yet
-                                </p>
-                                <p className="text-gray-400 text-sm">
-                                  Upload images for the parallax gallery
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          /* Video Mode Display */
-                          <div>
-                            <h5 className="font-medium text-gray-900 mb-4">
-                              Video Content
-                            </h5>
-                            {currentSection.videoUrl ? (
-                              <div className="bg-gray-100 rounded-lg p-6 text-center">
-                                <PlayCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                                <p className="text-gray-700 mb-2">
-                                  Video URL configured
-                                </p>
-                                <a
-                                  href={currentSection.videoUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-700 text-sm break-all">
-                                  {currentSection.videoUrl}
-                                </a>
-                              </div>
-                            ) : (
-                              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                                <PlayCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                                <p className="text-gray-500">
-                                  No video URL configured
-                                </p>
-                                <p className="text-gray-400 text-sm">
-                                  Click "Edit Section" to add a video URL
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
+              */}
             </div>
           )}
         </div>
