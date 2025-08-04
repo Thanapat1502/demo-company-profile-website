@@ -30,6 +30,10 @@ type State = {
     id: string,
     contentData: ContentUpload
   ) => Promise<Content | null>;
+  updateServiceContent: (
+    id: string,
+    contentData: ContentUpload
+  ) => Promise<void>;
   deleteContent: (id: string) => Promise<boolean>;
   clearError: () => void;
   clearSuccess: () => void;
@@ -176,7 +180,65 @@ export const useContentStore = create<State>((set) => ({
       return null;
     }
   },
+  updateServiceContent: async (id: string, contentData: ContentUpload) => {
+    console.log("SC I");
+    try {
+      console.log("SC II");
+      const formData = new FormData();
 
+      // Add service ID and page
+      formData.append("id", id);
+      formData.append("page", "SERVICE");
+      formData.append("type", contentData.type);
+
+      // Handle images if provided
+      if (contentData.images && contentData.images.length > 0) {
+        contentData.images.forEach((image, index) => {
+          formData.append(`image_${index}`, image);
+        });
+      }
+
+      // Handle existing images if provided
+      if (contentData.existing_images) {
+        formData.append(
+          "existing_images",
+          JSON.stringify(contentData.existing_images)
+        );
+      }
+
+      // Handle video URL if provided
+      if (contentData.video_url) {
+        formData.append("video_url", contentData.video_url);
+      }
+
+      const response = await fetch("/api/service-content", {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("SC xII API Error:", errorData);
+        throw new Error(errorData.error || "Failed to update service content");
+      }
+
+      const result = await response.json();
+
+      // Update the store state if needed
+      set((state) => ({
+        content: state.content.map((item) =>
+          item.id === id ? { ...item, ...result.data } : item
+        ),
+      }));
+
+      return result.data;
+    } catch (error) {
+      console.log("SC xI catch Error:", error);
+
+      console.error("Error updating service content:", error);
+      throw error;
+    }
+  },
   deleteContent: async (id: string) => {
     set({ loading: true, error: null });
     try {

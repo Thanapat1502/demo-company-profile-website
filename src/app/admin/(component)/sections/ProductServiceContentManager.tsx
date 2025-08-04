@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
-import {
-  Save,
-  Upload,
-  X,
-  GripVertical,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Save, Upload, X, Image as ImageIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
+import { useContentStore } from "@/store/zustand/contentStore";
+import { ServiceContentToggle } from "../ServiceContentToggle";
 
 interface ProductServiceContentFormData {
   heroImages: File[];
 }
 
 interface ProductServiceContentManagerProps {
-  onSave?: (data: any) => void;
+  onSave?: (data: { success: boolean; error?: string }) => void;
   loading?: boolean;
 }
 
 // Product & Service Upload Component
 interface ProductServiceSlot {
   id: string;
-  image?: File;
-  imageUrl?: string;
+  serviceId: string; // SERVICE_1, SERVICE_2, SERVICE_3, SERVICE_4
+  images?: File[]; // Multiple images support
+  imageUrls?: string[]; // Multiple image URLs
+  existingImages?: string[];
   videoUrl?: string;
   type: "image" | "video";
+  contentType: "gallery" | "video"; // For API
   instruction: string;
   order: number;
+  updateMode: boolean; // Toggle for update functionality
 }
 
 // Hero Image Upload Component (simplified for single image)
@@ -177,14 +177,28 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
   onSlotsChange,
   loading,
 }) => {
-  const handleImageUpload = (slotIndex: number, file: File) => {
+  const handleImageUpload = (slotIndex: number, files: FileList | File[]) => {
     const newSlots = [...slots];
+    const fileArray = Array.from(files);
+    const currentImages = newSlots[slotIndex].images || [];
+    const currentImageUrls = newSlots[slotIndex].imageUrls || [];
+
+    // Limit to max 20 images total
+    const totalImages = currentImages.length + fileArray.length;
+    const filesToAdd =
+      totalImages > 20
+        ? fileArray.slice(0, 20 - currentImages.length)
+        : fileArray;
+
+    const newImageUrls = filesToAdd.map((file) => URL.createObjectURL(file));
+
     newSlots[slotIndex] = {
       ...newSlots[slotIndex],
-      image: file,
-      imageUrl: URL.createObjectURL(file),
+      images: [...currentImages, ...filesToAdd],
+      imageUrls: [...currentImageUrls, ...newImageUrls],
       videoUrl: undefined,
       type: "image",
+      contentType: "gallery",
     };
     onSlotsChange(newSlots);
   };
@@ -194,9 +208,10 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
     newSlots[slotIndex] = {
       ...newSlots[slotIndex],
       videoUrl,
-      image: undefined,
-      imageUrl: undefined,
+      images: undefined,
+      imageUrls: undefined,
       type: "video",
+      contentType: "video",
     };
     onSlotsChange(newSlots);
   };
@@ -205,26 +220,29 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
     const newSlots = [...slots];
     newSlots[slotIndex] = {
       ...newSlots[slotIndex],
-      image: undefined,
-      imageUrl: undefined,
+      images: undefined,
+      imageUrls: undefined,
       videoUrl: undefined,
       type: "image",
     };
     onSlotsChange(newSlots);
   };
 
-  const moveSlot = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= slots.length) return;
-
+  const removeImage = (slotIndex: number, imageIndex: number) => {
     const newSlots = [...slots];
-    const [movedSlot] = newSlots.splice(fromIndex, 1);
-    newSlots.splice(toIndex, 0, movedSlot);
+    const currentImages = newSlots[slotIndex].images || [];
+    const currentImageUrls = newSlots[slotIndex].imageUrls || [];
 
-    // Update order numbers
-    newSlots.forEach((slot, index) => {
-      slot.order = index;
-    });
+    const newImages = currentImages.filter((_, index) => index !== imageIndex);
+    const newImageUrls = currentImageUrls.filter(
+      (_, index) => index !== imageIndex
+    );
 
+    newSlots[slotIndex] = {
+      ...newSlots[slotIndex],
+      images: newImages.length > 0 ? newImages : undefined,
+      imageUrls: newImageUrls.length > 0 ? newImageUrls : undefined,
+    };
     onSlotsChange(newSlots);
   };
 
@@ -250,24 +268,25 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
             className="border border-gray-200 rounded-lg p-4 space-y-4">
             {/* Slot Header */}
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">
-                Slot {index + 1}
-              </span>
-              <div className="flex items-center space-x-2">
-                <button
-                  type="button"
-                  onClick={() => moveSlot(index, index - 1)}
-                  disabled={index === 0}
-                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
-                  <GripVertical size={16} className="rotate-90" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveSlot(index, index + 1)}
-                  disabled={index === slots.length - 1}
-                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
-                  <GripVertical size={16} className="-rotate-90" />
-                </button>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm font-medium text-gray-700">
+                  Slot {index + 1} ({slot.serviceId})
+                </span>
+
+                {/* Independent Content Type Toggle */}
+                <ServiceContentToggle
+                  serviceId={slot.serviceId}
+                  currentType={slot.contentType}
+                  onTypeChange={(newType) => {
+                    const newSlots = [...slots];
+                    newSlots[index] = {
+                      ...newSlots[index],
+                      contentType: newType,
+                      type: newType === "gallery" ? "image" : "video",
+                    };
+                    onSlotsChange(newSlots);
+                  }}
+                />
               </div>
             </div>
 
@@ -301,8 +320,9 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
                     newSlots[index] = {
                       ...newSlots[index],
                       type: "video",
-                      image: undefined,
-                      imageUrl: undefined,
+                      contentType: "video",
+                      images: undefined,
+                      imageUrls: undefined,
                     };
                     onSlotsChange(newSlots);
                   }
@@ -320,41 +340,60 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
             <div className="space-y-2">
               {slot.type === "image" ? (
                 // Image Upload
-                slot.imageUrl ? (
-                  <div className="relative">
-                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                      <img
-                        src={slot.imageUrl}
-                        alt={`Slot ${index + 1} image`}
-                        className="w-full h-full object-cover"
-                      />
+                <div className="space-y-4">
+                  {/* Existing Images Grid */}
+                  {slot.imageUrls && slot.imageUrls.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {slot.imageUrls.map((imageUrl, imgIndex) => (
+                        <div key={imgIndex} className="relative group">
+                          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                            <img
+                              src={imageUrl}
+                              alt={`Slot ${index + 1} image ${imgIndex + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index, imgIndex)}
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100">
+                            <X size={12} />
+                          </button>
+                          <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
+                            {imgIndex + 1}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => removeContent(index)}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
-                      <X size={16} />
-                    </button>
-                  </div>
-                ) : (
+                  )}
+
+                  {/* Upload Area */}
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
                     <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                    <label className="cursor-pointer">
-                      <span className="text-sm text-blue-600 hover:text-blue-700">
-                        Upload Image
-                      </span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) handleImageUpload(index, file);
-                        }}
-                        className="hidden"
-                      />
-                    </label>
+                    <div className="space-y-2">
+                      <label className="cursor-pointer">
+                        <span className="text-sm text-blue-600 hover:text-blue-700">
+                          Upload Images (Max 20)
+                        </span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={(e) => {
+                            const files = e.target.files;
+                            if (files && files.length > 0) {
+                              handleImageUpload(index, files);
+                            }
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                      <p className="text-xs text-gray-500">
+                        Current: {slot.imageUrls?.length || 0}/20 images
+                      </p>
+                    </div>
                   </div>
-                )
+                </div>
               ) : (
                 // Video URL Input
                 <div className="space-y-2">
@@ -415,6 +454,7 @@ export const ProductServiceContentManager: React.FC<
   const [productServiceSlots, setProductServiceSlots] = useState<
     ProductServiceSlot[]
   >([]);
+  const { updateServiceContent } = useContentStore();
 
   const { control, handleSubmit, reset } =
     useForm<ProductServiceContentFormData>({
@@ -433,12 +473,18 @@ export const ProductServiceContentManager: React.FC<
         "Upload customer testimonial or result",
       ];
 
+      const serviceIds = ["SERVICE_1", "SERVICE_2", "SERVICE_3", "SERVICE_4"];
+
       return Array.from({ length: 4 }, (_, index) => ({
         id: `products-services-slot-${index}`,
+        serviceId: serviceIds[index],
         type: "image" as const,
+        contentType: "gallery" as const,
         instruction:
           instructions[index] || `Upload content for slot ${index + 1}`,
         order: index,
+        updateMode: false,
+        existingImages: [],
       }));
     }, []);
 
@@ -488,9 +534,31 @@ export const ProductServiceContentManager: React.FC<
         throw new Error(`Hero section error: ${heroResult.error}`);
       }
 
-      // Product & Service slots are standalone - no API integration for now
-      console.log("Product & Service slots (standalone):", productServiceSlots);
-      // TODO: Add API integration later when needed
+      // Handle Product & Service content updates
+      for (const slot of productServiceSlots) {
+        if (slot.images && slot.images.length > 0) {
+          // Update gallery content
+          const contentData = {
+            page: "SERVICE",
+            type: "gallery" as const,
+            images: slot.images,
+            existing_images: slot.existingImages || [],
+          };
+          await updateServiceContent(slot.serviceId, contentData);
+        } else if (slot.videoUrl && slot.contentType === "video") {
+          // Update video content
+          const contentData = {
+            page: "SERVICE",
+            type: "video" as const,
+            video_url: slot.videoUrl,
+            existing_images: slot.existingImages || [],
+          };
+          await updateServiceContent(slot.serviceId, contentData);
+        }
+      }
+
+      // Reset slots after successful update
+      setProductServiceSlots(initializeProductServiceSlots());
 
       // Reload data
       await loadHeroSection();

@@ -25,11 +25,11 @@ const PAGE_CONFIGURATIONS: PageConfig[] = [
 ];
 
 // Group configurations for navigation
-const MAIN_PAGES = PAGE_CONFIGURATIONS.filter(page => 
-  !page.id.startsWith("about-") || page.id === "about-main"
-).map(page => page.id === "about-main" ? { ...page, name: "About" } : page);
+const MAIN_PAGES = PAGE_CONFIGURATIONS.filter(
+  (page) => !page.id.startsWith("about-") || page.id === "about-main"
+).map((page) => (page.id === "about-main" ? { ...page, name: "About" } : page));
 
-const ABOUT_SUBMENU = PAGE_CONFIGURATIONS.filter(page => 
+const ABOUT_SUBMENU = PAGE_CONFIGURATIONS.filter((page) =>
   page.id.startsWith("about-")
 );
 
@@ -83,52 +83,54 @@ export const ContentManager = () => {
     switch (selectedPage) {
       case "home":
         return <HomeContentManager onSave={handleSave} loading={loading} />;
-      
+
       case "about-main":
         return (
-          <AboutContentManager 
-            pageId="about-main" 
-            onSave={handleSave} 
-            loading={loading} 
+          <AboutContentManager
+            pageId="about-main"
+            onSave={handleSave}
+            loading={loading}
           />
         );
-      
+
       case "about-history":
         return (
-          <AboutContentManager 
-            pageId="about-history" 
-            onSave={handleSave} 
-            loading={loading} 
+          <AboutContentManager
+            pageId="about-history"
+            onSave={handleSave}
+            loading={loading}
           />
         );
-      
+
       case "about-vision":
         return (
-          <AboutContentManager 
-            pageId="about-vision" 
-            onSave={handleSave} 
-            loading={loading} 
+          <AboutContentManager
+            pageId="about-vision"
+            onSave={handleSave}
+            loading={loading}
           />
         );
-      
+
       case "about-executive":
         return (
-          <AboutContentManager 
-            pageId="about-executive" 
-            onSave={handleSave} 
-            loading={loading} 
+          <AboutContentManager
+            pageId="about-executive"
+            onSave={handleSave}
+            loading={loading}
           />
         );
-      
+
       case "products-services":
-        return <ProductServiceContentManager onSave={handleSave} loading={loading} />;
-      
+        return (
+          <ProductServiceContentManager onSave={handleSave} loading={loading} />
+        );
+
       case "news":
         return <NewsContentManager onSave={handleSave} loading={loading} />;
-      
+
       case "contact":
         return <ContactContentManager onSave={handleSave} loading={loading} />;
-      
+
       default:
         return <HomeContentManager onSave={handleSave} loading={loading} />;
     }
@@ -151,9 +153,8 @@ export const ContentManager = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 relative">
           <div className="border-b border-gray-200">
             <nav
-              className="flex space-x-8 px-6 overflow-x-auto relative"
+              className="flex space-x-8 px-6 overflow-visible relative"
               aria-label="Tabs">
-              
               {/* Home Tab */}
               <button
                 className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
@@ -175,8 +176,8 @@ export const ContentManager = () => {
                   }`}
                   onClick={toggleAboutDropdown}>
                   About {selectedAboutPage && `- ${selectedAboutPage.name}`}
-                  <ChevronDown 
-                    size={14} 
+                  <ChevronDown
+                    size={14}
                     className={`transform transition-transform ${
                       aboutDropdownOpen ? "rotate-180" : ""
                     }`}
@@ -228,9 +229,7 @@ export const ContentManager = () => {
         </div>
 
         {/* Content Area */}
-        <div className="space-y-8">
-          {renderCurrentPageContent()}
-        </div>
+        <div className="space-y-8">{renderCurrentPageContent()}</div>
       </div>
     </div>
   );

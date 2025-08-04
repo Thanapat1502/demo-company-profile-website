@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Save,
-  Upload,
-  X,
-  GripVertical,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Save, Upload, X, Image as ImageIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { HeroSectionId } from "@/app/api/hero/route";
 import { useContentStore } from "@/store/zustand/contentStore";
@@ -203,21 +197,6 @@ const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
     onSlotsChange(newSlots);
   };
 
-  const moveSlot = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= slots.length) return;
-
-    const newSlots = [...slots];
-    const [movedSlot] = newSlots.splice(fromIndex, 1);
-    newSlots.splice(toIndex, 0, movedSlot);
-
-    // Update order numbers
-    newSlots.forEach((slot, index) => {
-      slot.order = index;
-    });
-
-    onSlotsChange(newSlots);
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -241,22 +220,6 @@ const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
               <span className="text-sm font-medium text-gray-700">
                 Slot {index + 1}
               </span>
-              <div className="flex items-center space-x-2">
-                <button
-                  type="button"
-                  onClick={() => moveSlot(index, index - 1)}
-                  disabled={index === 0}
-                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
-                  <GripVertical size={16} className="rotate-90" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveSlot(index, index + 1)}
-                  disabled={index === slots.length - 1}
-                  className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50">
-                  <GripVertical size={16} className="-rotate-90" />
-                </button>
-              </div>
             </div>
 
             {/* Image Upload Area */}
