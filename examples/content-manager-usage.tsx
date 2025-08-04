@@ -8,7 +8,7 @@ import {
   useImageUpload,
   useSectionMode,
 } from "@/hooks/useContentManager";
-import { ContentManager } from "@/app/admin/(component)/heroContentManager";
+import { ContentManager } from "@/app/admin/(component)/heroContentManagerNew";
 
 // Example 1: Basic Content Manager Usage
 export const BasicContentManagerExample = () => {
