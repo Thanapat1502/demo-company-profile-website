@@ -20,6 +20,7 @@ async function uploadServiceImage(
     "image/gif",
     "image/webp",
   ];
+
   if (!allowedTypes.includes(file.type)) {
     throw new Error(
       "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
@@ -36,7 +37,11 @@ async function uploadServiceImage(
   const fileExt = file.name.split(".").pop();
   const fileName = `public/content_store/service/${serviceId}/${Date.now()}-${imageIndex}.${fileExt}`;
 
-  // Upload to Supabase Storage (images bucket) - using File directly like reference route
+  // Upload to Supabase Storage (images bucket) - using File directly
+  console.log("Attempting upload to:", fileName);
+  console.log("File size:", file.size, "bytes");
+  console.log("File type:", file.type);
+
   const { error: uploadError } = await supabaseClient.storage
     .from("images")
     .upload(fileName, file, {
@@ -57,9 +62,20 @@ async function uploadServiceImage(
   return publicUrlData.publicUrl;
 }
 
-export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
+export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
+  console.log("------------PUT API-----------------------------");
   try {
-    console.log("Service Content PUT - Authenticated request");
+    console.log("Service Content PUT - Authenticated user:", user.id);
+    console.log("User email:", user.email);
+
+    // Test authentication by checking user session
+    const { data: sessionData, error: sessionError } =
+      await supabaseAuth.auth.getUser();
+    console.log(
+      "Session check:",
+      sessionData ? "Valid" : "Invalid",
+      sessionError?.message || ""
+    );
     const formData = await req.formData();
 
     const id = formData.get("id") as string;
@@ -122,7 +138,7 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
     if (imageFiles.length > 0) {
       try {
         const uploadPromises = imageFiles.map((file, i) =>
-          uploadServiceImage(file, id, i, supabase)
+          uploadServiceImage(file, id, i, supabaseAuth)
         );
         const newImageUrls = await Promise.all(uploadPromises);
         uploadedImageUrls.push(...newImageUrls);
@@ -188,7 +204,7 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
       // Create new record
       contentData.created_at = new Date().toISOString();
 
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAuth
         .from("contents")
         .insert(contentData)
         .select()
@@ -220,9 +236,9 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
   }
 });
 
-export const GET = withAuth(async (req: NextRequest, supabase, user) => {
+export async function GET(req: NextRequest) {
   try {
-    console.log("Service Content GET - Authenticated user:", user.id);
+    console.log("Service Content GET - Public request");
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
@@ -285,4 +301,4 @@ export const GET = withAuth(async (req: NextRequest, supabase, user) => {
       { status: 500 }
     );
   }
-});
+}

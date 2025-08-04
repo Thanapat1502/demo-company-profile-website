@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import {
   MapPin,
   Phone,
@@ -118,12 +118,13 @@ export default function ContactUsPage() {
   return (
     <MainLayout>
       <div className="min-h-screen bg-white">
-        {/* Hero Section - Using ImageCarouselHero for consistency */}
-        <ImageCarouselHero
-          images={["/images/hero-sections/hero-banner-1.jpg"]}
+        {/* Hero Section - Using DynamicHeroSection for consistency */}
+        <DynamicHeroSection
+          pageId="contact"
           title="ติดต่อเรา"
           subtitle="พร้อมให้คำปรึกษา"
           description="และข้อเสนอที่ดีที่สุดสำหรับโครงการของคุณ"
+          fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
           autoSlideDelay={6000}>
           {/* Luxury Hero Buttons */}
           <div className="luxury-hero-btn-container">
@@ -155,7 +156,7 @@ export default function ContactUsPage() {
               <div className="luxury-btn-glow-secondary"></div>
             </button>
           </div>
-        </ImageCarouselHero>
+        </DynamicHeroSection>
 
         {/* Contact Methods */}
         <section className="section-minimal bg-white">

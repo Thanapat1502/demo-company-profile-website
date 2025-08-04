@@ -4,16 +4,20 @@ import { withAuth } from "@/lib/auth-middleware";
 // Valid service IDs
 const VALID_SERVICE_IDS = ["SERVICE_1", "SERVICE_2", "SERVICE_3", "SERVICE_4"];
 
-export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
+export const PUT = withAuth(async (req: NextRequest, supabase) => {
   try {
-    console.log("Service Content Toggle Type - Authenticated user:", user.id);
-    
+    console.log("Service Content Toggle Type - Authenticated request");
+
     const { serviceId, type } = await req.json();
 
     // Validate service ID
     if (!VALID_SERVICE_IDS.includes(serviceId)) {
       return NextResponse.json(
-        { error: `Invalid service ID. Must be one of: ${VALID_SERVICE_IDS.join(", ")}` },
+        {
+          error: `Invalid service ID. Must be one of: ${VALID_SERVICE_IDS.join(
+            ", "
+          )}`,
+        },
         { status: 400 }
       );
     }
@@ -36,10 +40,7 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
 
     if (fetchError && fetchError.code !== "PGRST116") {
       console.error("Error fetching existing record:", fetchError);
-      return NextResponse.json(
-        { error: "Database error" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 
     let result;
@@ -99,7 +100,6 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
       data: result,
       message: `Service content type updated to ${type}`,
     });
-
   } catch (error) {
     console.error("Service content toggle type API error:", error);
     return NextResponse.json(

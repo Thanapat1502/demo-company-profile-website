@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 
 export default function ReferencePage() {
   const locale = useLocale();
@@ -298,10 +298,11 @@ export default function ReferencePage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <ImageCarouselHero
-        images={["/images/hero-sections/hero-banner-1.jpg"]}
+      <DynamicHeroSection
+        pageId="reference"
         title="ผลงานและโครงการ"
         subtitle="ความภาคภูมิใจในทุกโครงการที่เราได้สร้างสรรค์"
+        fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
         autoSlideDelay={6000}>
         {/* Luxury Hero Buttons */}
         <div className="luxury-hero-btn-container">
@@ -333,7 +334,7 @@ export default function ReferencePage() {
             <div className="luxury-btn-glow-secondary"></div>
           </button>
         </div>
-      </ImageCarouselHero>
+      </DynamicHeroSection>
 
       {/* Reference Projects - Simplified Cards */}
       <section id="projects-section" className="section-minimal bg-white">

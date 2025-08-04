@@ -1,6 +1,6 @@
 "use client";
 
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
@@ -11,17 +11,18 @@ export default function HeroSection() {
   const locale = useLocale();
 
   return (
-    <ImageCarouselHero
-      images={[
+    <DynamicHeroSection
+      pageId="home"
+      title={t("home.hero.title")}
+      subtitle={t("home.hero.subtitle")}
+      description={t("home.hero.description")}
+      fallbackImages={[
         "/images/hero-sections/hero-banner-2.jpg",
         "/images/hero-sections/hero-banner-3.jpg",
         "/images/hero-sections/hero-banner-5.jpg",
         "/images/hero-sections/hero-banner-4.jpg",
         "/images/hero-sections/hero-banner-1.jpg",
       ]}
-      title={t("home.hero.title")}
-      subtitle={t("home.hero.subtitle")}
-      description={t("home.hero.description")}
       autoSlideDelay={6000}>
       {/* Luxury Hero Buttons */}
       <div className="luxury-hero-btn-container">
@@ -54,6 +55,6 @@ export default function HeroSection() {
           <div className="luxury-btn-glow-secondary"></div>
         </button>
       </div>
-    </ImageCarouselHero>
+    </DynamicHeroSection>
   );
 }
