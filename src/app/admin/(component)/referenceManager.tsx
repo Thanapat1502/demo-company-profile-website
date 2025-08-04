@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Save,
   Plus,
@@ -11,39 +11,29 @@ import {
   Globe,
   X,
   Upload,
+  AlertCircle,
+  CheckCircle,
+  Home,
+  ChevronRight,
 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
+import {
+  useReferenceStore,
+  Reference,
+  OverseaProject,
+} from "@/store/zustand/referenceStore";
 
 // Types
-interface ReferenceItem {
-  id: string;
-  title_th: string;
-  title_en: string;
-  location: string; // Google URL
-  type_th: string;
-  type_en: string;
-  opened_at: string; // ISO date string with timezone
-  thumbnail: string; // Image URL
-  gallery: string[]; // Array of image URLs
-}
-
-interface OverseaItem {
-  id: string;
-  brand: string;
-  type: string;
-  project_name: string;
-  country: string;
-}
-
 interface ReferenceFormData {
-  title_th: string;
-  title_en: string;
-  location: string;
+  name_th: string;
+  name_en: string;
+  location_th: string;
+  location_en: string;
   type_th: string;
   type_en: string;
-  opened_at: string;
+  open_at: string;
   thumbnail: File | string | null;
-  gallery: (File | string)[];
+  galleries: (File | string)[];
 }
 
 interface OverseaFormData {
@@ -54,6 +44,24 @@ interface OverseaFormData {
 }
 
 export const ReferenceManager = () => {
+  // Store
+  const {
+    references,
+    overseaProjects,
+    loading,
+    error,
+    success,
+    fetchReference,
+    addReference,
+    updateReference,
+    deleteReference,
+    fetchOverseaProjects,
+    addOverseaProject,
+    updateOverseaProject,
+    deleteOverseaProject,
+  } = useReferenceStore();
+
+  // State
   const [activeTab, setActiveTab] = useState<"reference" | "oversea">(
     "reference"
   );
@@ -61,74 +69,27 @@ export const ReferenceManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // Mock data
-  const [referenceItems, setReferenceItems] = useState<ReferenceItem[]>([
-    {
-      id: "1",
-      title_th: "สถานีบริการน้ำมัน ปตท. สาขาลาดพร้าว",
-      title_en: "PTT Gas Station Ladprao Branch",
-      location: "https://maps.google.com/example1",
-      type_th: "สถานีบริการน้ำมัน",
-      type_en: "Gas Station",
-      opened_at: "2023-06-15T10:00:00+07:00",
-      thumbnail:
-        "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=400",
-      gallery: [
-        "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800",
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-      ],
-    },
-    {
-      id: "2",
-      title_th: "โรงงานผลิตน้ำมัน บางจาก",
-      title_en: "Bangchak Oil Refinery",
-      location: "https://maps.google.com/example2",
-      type_th: "โรงงานอุตสาหกรรม",
-      type_en: "Industrial Plant",
-      opened_at: "2023-08-20T14:30:00+07:00",
-      thumbnail:
-        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
-      gallery: [
-        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800",
-      ],
-    },
-  ]);
-
-  const [overseaItems, setOverseaItems] = useState<OverseaItem[]>([
-    {
-      id: "1",
-      brand: "Shell",
-      type: "Gas Station",
-      project_name: "Shell Station Bangkok International",
-      country: "Thailand",
-    },
-    {
-      id: "2",
-      brand: "Chevron",
-      type: "Fuel Terminal",
-      project_name: "Chevron Fuel Distribution Center",
-      country: "Singapore",
-    },
-    {
-      id: "3",
-      brand: "ExxonMobil",
-      type: "Refinery",
-      project_name: "ExxonMobil Refinery Complex",
-      country: "Malaysia",
-    },
-  ]);
+  // Fetch data on mount
+  useEffect(() => {
+    if (activeTab === "reference") {
+      fetchReference();
+    } else {
+      fetchOverseaProjects();
+    }
+  }, [activeTab, fetchReference, fetchOverseaProjects]);
 
   // Form setup for Reference
   const referenceForm = useForm<ReferenceFormData>({
     defaultValues: {
-      title_th: "",
-      title_en: "",
-      location: "",
+      name_th: "",
+      name_en: "",
+      location_th: "",
+      location_en: "",
       type_th: "",
       type_en: "",
-      opened_at: "",
+      open_at: "",
       thumbnail: null,
-      gallery: [],
+      galleries: [],
     },
   });
 
@@ -143,64 +104,41 @@ export const ReferenceManager = () => {
   });
 
   // Reference handlers
-  const onSubmitReference = (data: ReferenceFormData) => {
-    if (editingId) {
-      // Update existing
-      setReferenceItems((prev) =>
-        prev.map((item) =>
-          item.id === editingId
-            ? {
-                ...item,
-                ...data,
-                thumbnail:
-                  typeof data.thumbnail === "string"
-                    ? data.thumbnail
-                    : item.thumbnail,
-                gallery: data.gallery.map((img) =>
-                  typeof img === "string" ? img : URL.createObjectURL(img)
-                ),
-              }
-            : item
-        )
-      );
-    } else {
-      // Add new
-      const newItem: ReferenceItem = {
-        id: Date.now().toString(),
-        ...data,
-        thumbnail: data.thumbnail
-          ? typeof data.thumbnail === "string"
-            ? data.thumbnail
-            : URL.createObjectURL(data.thumbnail)
-          : "",
-        gallery: data.gallery.map((img) =>
-          typeof img === "string" ? img : URL.createObjectURL(img)
-        ),
+  const onSubmitReference = async (data: ReferenceFormData) => {
+    try {
+      const submitData = {
+        name_th: data.name_th,
+        name_en: data.name_en,
+        type_th: data.type_th,
+        type_en: data.type_en,
+        location_th: data.location_th,
+        location_en: data.location_en,
+        open_at: data.open_at,
+        galleries: data.galleries.map((g) => (typeof g === "string" ? g : "")), // Convert files to URLs later
       };
-      setReferenceItems((prev) => [...prev, newItem]);
-    }
 
-    resetReferenceForm();
+      if (editingId) {
+        await updateReference(editingId, submitData);
+      } else {
+        await addReference(submitData);
+      }
+      resetReferenceForm();
+    } catch (error) {
+      console.error("Error submitting reference:", error);
+    }
   };
 
-  const onSubmitOversea = (data: OverseaFormData) => {
-    if (editingId) {
-      // Update existing
-      setOverseaItems((prev) =>
-        prev.map((item) =>
-          item.id === editingId ? { ...item, ...data } : item
-        )
-      );
-    } else {
-      // Add new
-      const newItem: OverseaItem = {
-        id: Date.now().toString(),
-        ...data,
-      };
-      setOverseaItems((prev) => [...prev, newItem]);
+  const onSubmitOversea = async (data: OverseaFormData) => {
+    try {
+      if (editingId) {
+        await updateOverseaProject(editingId, data);
+      } else {
+        await addOverseaProject(data);
+      }
+      resetOverseaForm();
+    } catch (error) {
+      console.error("Error submitting oversea project:", error);
     }
-
-    resetOverseaForm();
   };
 
   const resetReferenceForm = () => {
@@ -217,44 +155,90 @@ export const ReferenceManager = () => {
     overseaForm.reset();
   };
 
-  const startEditingReference = (item: ReferenceItem) => {
+  const startEditingReference = (item: Reference) => {
     setIsEditing(true);
     setEditingId(item.id);
     setShowAddForm(true);
     referenceForm.reset({
-      title_th: item.title_th,
-      title_en: item.title_en,
-      location: item.location,
+      name_th: item.name_th,
+      name_en: item.name_en,
+      location_th: item.location_th,
+      location_en: item.location_en,
       type_th: item.type_th,
       type_en: item.type_en,
-      opened_at: item.opened_at.split("T")[0], // Convert to date input format
-      thumbnail: item.thumbnail,
-      gallery: item.gallery,
+      open_at: item.open_at.split("T")[0], // Convert to date input format
+      thumbnail: null, // Reset for new upload
+      galleries: item.galleries || [],
     });
   };
 
-  const startEditingOversea = (item: OverseaItem) => {
+  const startEditingOversea = (item: OverseaProject) => {
     setIsEditing(true);
     setEditingId(item.id);
     setShowAddForm(true);
     overseaForm.reset(item);
   };
 
-  const deleteReferenceItem = (id: string) => {
-    setReferenceItems((prev) => prev.filter((item) => item.id !== id));
+  const handleDeleteReference = async (id: string) => {
+    if (confirm("Are you sure you want to delete this reference?")) {
+      try {
+        await deleteReference(id);
+      } catch (error) {
+        console.error("Error deleting reference:", error);
+      }
+    }
   };
 
-  const deleteOverseaItem = (id: string) => {
-    setOverseaItems((prev) => prev.filter((item) => item.id !== id));
+  const handleDeleteOversea = async (id: string) => {
+    if (confirm("Are you sure you want to delete this oversea project?")) {
+      try {
+        await deleteOverseaProject(id);
+      } catch (error) {
+        console.error("Error deleting oversea project:", error);
+      }
+    }
   };
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb */}
+      <nav className="flex items-center space-x-2 text-sm text-gray-600">
+        <Home size={16} />
+        <ChevronRight size={14} />
+        <span>Admin</span>
+        <ChevronRight size={14} />
+        <span className="text-gray-900 font-medium">Reference Manager</span>
+      </nav>
+
+      {/* Status Messages */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
+          <AlertCircle className="text-red-600" size={20} />
+          <div>
+            <h4 className="text-red-800 font-medium">Error</h4>
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {success && !loading && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+          <CheckCircle className="text-green-600" size={20} />
+          <div>
+            <h4 className="text-green-800 font-medium">Success</h4>
+            <p className="text-green-600 text-sm">
+              Operation completed successfully!
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Reference Manager</h2>
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2">
+          disabled={loading}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
           <Plus size={16} />
           Add New {activeTab === "reference" ? "Reference" : "Oversea Project"}
         </button>
@@ -327,7 +311,7 @@ export const ReferenceManager = () => {
                           Title (Thai)
                         </label>
                         <Controller
-                          name="title_th"
+                          name="name_th"
                           control={referenceForm.control}
                           rules={{ required: "Thai title is required" }}
                           render={({ field, fieldState: { error } }) => (
@@ -354,7 +338,7 @@ export const ReferenceManager = () => {
                           Title (English)
                         </label>
                         <Controller
-                          name="title_en"
+                          name="name_en"
                           control={referenceForm.control}
                           rules={{ required: "English title is required" }}
                           render={({ field, fieldState: { error } }) => (
@@ -429,22 +413,49 @@ export const ReferenceManager = () => {
                         />
                       </div>
 
-                      {/* Location */}
+                      {/* Location Thai */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Location (Google Maps URL)
+                          Location (Thai)
                         </label>
                         <Controller
-                          name="location"
+                          name="location_th"
                           control={referenceForm.control}
-                          rules={{ required: "Location URL is required" }}
+                          rules={{ required: "Thai location is required" }}
                           render={({ field, fieldState: { error } }) => (
                             <>
                               <input
                                 {...field}
-                                type="url"
+                                type="text"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="https://maps.google.com/..."
+                                placeholder="ที่ตั้งโครงการภาษาไทย"
+                              />
+                              {error && (
+                                <p className="text-red-600 text-xs mt-1">
+                                  {error.message}
+                                </p>
+                              )}
+                            </>
+                          )}
+                        />
+                      </div>
+
+                      {/* Location English */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Location (English)
+                        </label>
+                        <Controller
+                          name="location_en"
+                          control={referenceForm.control}
+                          rules={{ required: "English location is required" }}
+                          render={({ field, fieldState: { error } }) => (
+                            <>
+                              <input
+                                {...field}
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Project Location in English"
                               />
                               {error && (
                                 <p className="text-red-600 text-xs mt-1">
@@ -462,7 +473,7 @@ export const ReferenceManager = () => {
                           Opened Date
                         </label>
                         <Controller
-                          name="opened_at"
+                          name="open_at"
                           control={referenceForm.control}
                           rules={{ required: "Opened date is required" }}
                           render={({ field, fieldState: { error } }) => (
@@ -527,7 +538,7 @@ export const ReferenceManager = () => {
                             Choose Gallery Images
                           </span>
                           <Controller
-                            name="gallery"
+                            name="galleries"
                             control={referenceForm.control}
                             render={({ field: { onChange } }) => (
                               <input
@@ -567,54 +578,74 @@ export const ReferenceManager = () => {
               )}
 
               {/* Reference Items List */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {referenceItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="aspect-video bg-gray-100">
-                      {item.thumbnail && (
-                        <img
-                          src={item.thumbnail}
-                          alt={item.title_en}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
+              {loading && (
+                <div className="text-center py-8">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <p className="mt-2 text-gray-600">Loading references...</p>
+                </div>
+              )}
+
+              {!loading && references && references.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {references.map((item) => (
+                    <div
+                      key={item.id}
+                      className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="aspect-video bg-gray-100">
+                        {item.galleries && item.galleries.length > 0 && (
+                          <img
+                            src={item.galleries[0]}
+                            alt={item.name_en}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-gray-900 mb-1">
+                          {item.name_en}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-2">
+                          {item.name_th}
+                        </p>
+                        <div className="flex items-center text-gray-500 text-xs mb-2">
+                          <MapPin size={12} className="mr-1" />
+                          <span className="truncate">{item.type_en}</span>
+                        </div>
+                        <div className="flex items-center text-gray-500 text-xs mb-3">
+                          <Calendar size={12} className="mr-1" />
+                          <span>
+                            {new Date(item.open_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => startEditingReference(item)}
+                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition-colors flex items-center justify-center gap-1">
+                            <Edit size={14} />
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteReference(item.id)}
+                            className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700 transition-colors">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-1">
-                        {item.title_en}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-2">
-                        {item.title_th}
-                      </p>
-                      <div className="flex items-center text-gray-500 text-xs mb-2">
-                        <MapPin size={12} className="mr-1" />
-                        <span className="truncate">{item.type_en}</span>
-                      </div>
-                      <div className="flex items-center text-gray-500 text-xs mb-3">
-                        <Calendar size={12} className="mr-1" />
-                        <span>
-                          {new Date(item.opened_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => startEditingReference(item)}
-                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition-colors flex items-center justify-center gap-1">
-                          <Edit size={14} />
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteReferenceItem(item.id)}
-                          className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700 transition-colors">
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
+
+              {!loading && references && references.length === 0 && (
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No references found
+                  </h3>
+                  <p className="text-gray-500">
+                    Start by adding your first reference project.
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             /* Oversea Tab */
@@ -789,38 +820,67 @@ export const ReferenceManager = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {overseaItems.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {item.brand}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.type}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.project_name}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.country}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => startEditingOversea(item)}
-                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 transition-colors flex items-center gap-1">
-                                <Edit size={12} />
-                                Edit
-                              </button>
-                              <button
-                                onClick={() => deleteOverseaItem(item.id)}
-                                className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition-colors flex items-center gap-1">
-                                <Trash2 size={12} />
-                                Delete
-                              </button>
-                            </div>
+                      {loading && (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-8 text-center">
+                            <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                            <p className="mt-2 text-gray-600">
+                              Loading oversea projects...
+                            </p>
                           </td>
                         </tr>
-                      ))}
+                      )}
+
+                      {!loading &&
+                        overseaProjects &&
+                        overseaProjects.length > 0 &&
+                        overseaProjects.map((item) => (
+                          <tr key={item.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {item.brand}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {item.type}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {item.project_name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {item.country}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => startEditingOversea(item)}
+                                  className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 transition-colors flex items-center gap-1">
+                                  <Edit size={12} />
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteOversea(item.id)}
+                                  className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition-colors flex items-center gap-1">
+                                  <Trash2 size={12} />
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+
+                      {!loading &&
+                        overseaProjects &&
+                        overseaProjects.length === 0 && (
+                          <tr>
+                            <td colSpan={5} className="px-6 py-12 text-center">
+                              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                No oversea projects found
+                              </h3>
+                              <p className="text-gray-500">
+                                Start by adding your first oversea project.
+                              </p>
+                            </td>
+                          </tr>
+                        )}
                     </tbody>
                   </table>
                 </div>
