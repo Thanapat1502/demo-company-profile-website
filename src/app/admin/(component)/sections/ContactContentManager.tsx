@@ -60,10 +60,10 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
           <h4 className="text-sm font-medium text-gray-700 mb-3">
             Current Images
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {existingImages.map((imageUrl, index) => (
               <div key={`existing-${index}`} className="relative group">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                   <img
                     src={imageUrl}
                     alt={`Existing hero image ${index + 1}`}
@@ -121,10 +121,10 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
           <h4 className="text-sm font-medium text-gray-700 mb-3">
             New Images to Upload
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {images.map((image, index) => (
               <div key={`new-${index}`} className="relative group">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                   <img
                     src={URL.createObjectURL(image)}
                     alt={`New hero image ${index + 1}`}

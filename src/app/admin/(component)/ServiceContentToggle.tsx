@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ToggleLeft, ToggleRight } from "lucide-react";
 
 interface ServiceContentToggleProps {
   serviceId: string;
@@ -37,14 +36,15 @@ export const ServiceContentToggle: React.FC<ServiceContentToggleProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.log("Failed to toggle content type:", errorData);
         throw new Error(errorData.error || "Failed to update content type");
       }
 
       const result = await response.json();
-      
+
       // Update local state
       setType(newType);
-      
+
       // Call callback if provided
       if (onTypeChange) {
         onTypeChange(newType);
@@ -60,34 +60,50 @@ export const ServiceContentToggle: React.FC<ServiceContentToggleProps> = ({
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleToggle}
-      disabled={disabled || isLoading}
-      className={`flex items-center space-x-1 px-3 py-1 rounded text-xs font-medium transition-colors ${
-        disabled || isLoading
-          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-          : type === "gallery"
-          ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
-          : "bg-purple-100 text-purple-700 hover:bg-purple-200"
-      }`}
-    >
-      {isLoading ? (
-        <>
-          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current"></div>
+    <div className="flex items-center space-x-3">
+      {/* iPhone-style Toggle Switch */}
+      <button
+        type="button"
+        onClick={handleToggle}
+        disabled={disabled || isLoading}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+          disabled || isLoading
+            ? "bg-gray-300 cursor-not-allowed"
+            : type === "gallery"
+            ? "bg-blue-500"
+            : "bg-purple-500"
+        }`}>
+        <span
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+            type === "gallery" ? "translate-x-1" : "translate-x-6"
+          }`}
+        />
+      </button>
+
+      {/* Mode Labels */}
+      <div className="flex items-center space-x-2 text-sm">
+        <span
+          className={`transition-colors ${
+            type === "gallery" ? "text-blue-600 font-medium" : "text-gray-500"
+          }`}>
+          📷 Gallery
+        </span>
+        <span className="text-gray-300">|</span>
+        <span
+          className={`transition-colors ${
+            type === "video" ? "text-purple-600 font-medium" : "text-gray-500"
+          }`}>
+          🎥 Video
+        </span>
+      </div>
+
+      {/* Loading Indicator */}
+      {isLoading && (
+        <div className="flex items-center space-x-1 text-xs text-gray-500">
+          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-400"></div>
           <span>Updating...</span>
-        </>
-      ) : type === "gallery" ? (
-        <>
-          <ToggleLeft size={14} />
-          <span>📷 Gallery Mode</span>
-        </>
-      ) : (
-        <>
-          <ToggleRight size={14} />
-          <span>🎥 Video Mode</span>
-        </>
+        </div>
       )}
-    </button>
+    </div>
   );
 };

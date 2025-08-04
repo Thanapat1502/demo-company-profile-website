@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Save, Upload, X, ChevronDown } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import { HeroSectionId } from "@/app/api/hero/route";
 import { useContentStore } from "@/store/zustand/contentStore";
 
 interface HomeContentFormData {

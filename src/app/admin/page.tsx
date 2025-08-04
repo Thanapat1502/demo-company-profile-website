@@ -12,6 +12,7 @@ import {
   X,
   Globe,
   LogOut,
+  FileText,
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
 import { ProductManager } from "./(component)/productManager";
@@ -26,11 +27,13 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/components/ui/ToastContainer";
 import { ReferenceManager } from "./(component)/referenceManager";
+import { SettingsMenu } from "./(component)/SettingsMenu";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState("th");
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const { signOut, user } = useAuth();
 
   const handleLogout = async () => {
@@ -45,7 +48,7 @@ const AdminDashboard = () => {
     { id: "content", label: "Content Manager", icon: Image },
     { id: "services", label: "Service Manager", icon: Settings },
     { id: "products", label: "Product Manager", icon: Package },
-    { id: "reference", label: "Reference Manager", icon: Package },
+    { id: "reference", label: "Reference Manager", icon: FileText },
     { id: "executives", label: "Executive Manager", icon: Users },
     { id: "partners", label: "Partner Manager", icon: Globe },
     { id: "news", label: "News/Event Manager", icon: Newspaper },
@@ -141,13 +144,17 @@ const AdminDashboard = () => {
         <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Globe className="text-blue-600" size={24} />
+              <img
+                src="/images/pds-logo.png"
+                alt="Padungsilpa Logo"
+                className="w-6 h-6 object-contain"
+              />
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Corporate Website Admin
+                  Padungsilpa Admin Panel
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Manage bilingual content and settings
+                  Manage website content and settings
                 </p>
               </div>
             </div>
@@ -168,10 +175,10 @@ const AdminDashboard = () => {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">{user?.email}</span>
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm transition-colors">
-                  <LogOut size={16} />
-                  Logout
+                  onClick={() => setShowSettingsMenu(true)}
+                  className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 text-sm transition-colors">
+                  <Settings size={16} />
+                  Settings
                 </button>
               </div>
             </div>
@@ -181,6 +188,13 @@ const AdminDashboard = () => {
         {/* Content */}
         <main className="flex-1 p-6 mt-6 overflow-auto">{renderSection()}</main>
       </div>
+
+      {/* Settings Menu */}
+      <SettingsMenu
+        isOpen={showSettingsMenu}
+        onClose={() => setShowSettingsMenu(false)}
+        userEmail={user?.email}
+      />
     </div>
   );
 };

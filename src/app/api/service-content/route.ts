@@ -76,6 +76,83 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth, user) => {
       sessionData ? "Valid" : "Invalid",
       sessionError?.message || ""
     );
+
+    // Check if this is a JSON request (for delete operations)
+    const contentType = req.headers.get("content-type");
+
+    if (contentType?.includes("application/json")) {
+      // Handle JSON requests (delete image)
+      const body = await req.json();
+      const { id, page, type, action, image_url } = body;
+
+      if (action === "delete_image") {
+        // Validate inputs
+        if (!VALID_SERVICE_IDS.includes(id)) {
+          return NextResponse.json(
+            {
+              error: `Invalid service ID. Must be one of: ${VALID_SERVICE_IDS.join(
+                ", "
+              )}`,
+            },
+            { status: 400 }
+          );
+        }
+
+        if (page !== "SERVICE") {
+          return NextResponse.json(
+            { error: "Page must be 'SERVICE'" },
+            { status: 400 }
+          );
+        }
+
+        // Get current record
+        const { data: existingRecord, error: fetchError } = await supabaseAuth
+          .from("contents")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (fetchError || !existingRecord) {
+          return NextResponse.json(
+            { error: "Record not found" },
+            { status: 404 }
+          );
+        }
+
+        // Remove image from array
+        const currentImages = existingRecord.images_url || [];
+        const updatedImages = currentImages.filter(
+          (url: string) => url !== image_url
+        );
+
+        // Update record
+        const { data, error } = await supabaseAuth
+          .from("contents")
+          .update({
+            images_url: updatedImages,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Error deleting image:", error);
+          return NextResponse.json(
+            { error: "Failed to delete image" },
+            { status: 500 }
+          );
+        }
+
+        return NextResponse.json({
+          success: true,
+          data,
+          message: "Image deleted successfully",
+        });
+      }
+    }
+
+    // Handle FormData requests (upload operations)
     const formData = await req.formData();
 
     const id = formData.get("id") as string;
