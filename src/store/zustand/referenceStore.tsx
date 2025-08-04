@@ -14,9 +14,12 @@ export interface Reference {
 export interface OverseaProject {
   id: string; // UUID
   brand: string;
-  type: string;
-  project_name: string;
-  country: string;
+  type_th: string;
+  type_en: string;
+  project_name_th: string;
+  project_name_en: string;
+  country_th: string;
+  country_en: string;
 }
 
 type State = {
@@ -27,11 +30,11 @@ type State = {
   success: boolean;
 
   fetchReference: () => Promise<void>;
-  addReference: (reference: Omit<Reference, "id">) => Promise<void>;
+  addReference: (reference: FormData | Omit<Reference, "id">) => Promise<void>;
   deleteReference: (id: string) => Promise<void>;
   updateReference: (
     id: string,
-    updatedProject: Omit<Reference, "id">
+    updatedProject: FormData | Omit<Reference, "id">
   ) => Promise<void>;
 
   fetchOverseaProjects: () => Promise<void>;
@@ -68,21 +71,32 @@ export const useReferenceStore = create<State>((set) => ({
     }
   },
 
-  addReference: async (reference: Omit<Reference, "id">) => {
+  addReference: async (reference: FormData | Omit<Reference, "id">) => {
     set({ loading: true, error: null, success: false });
+    console.log("Reference Store I");
     try {
-      const formData = new FormData();
-      formData.append("name_th", reference.name_th);
-      formData.append("name_en", reference.name_en);
-      formData.append("type_th", reference.type_th);
-      formData.append("type_en", reference.type_en);
-      formData.append("location_th", reference.location_th);
-      formData.append("location_en", reference.location_en);
-      formData.append("open_at", reference.open_at);
+      console.log("Reference Store II");
+      let formData: FormData;
 
-      // Handle galleries as JSON for now
-      if (reference.galleries && reference.galleries.length > 0) {
-        formData.append("galleries_json", JSON.stringify(reference.galleries));
+      if (reference instanceof FormData) {
+        formData = reference;
+      } else {
+        formData = new FormData();
+        formData.append("name_th", reference.name_th);
+        formData.append("name_en", reference.name_en);
+        formData.append("type_th", reference.type_th);
+        formData.append("type_en", reference.type_en);
+        formData.append("location_th", reference.location_th);
+        formData.append("location_en", reference.location_en);
+        formData.append("opened_at", reference.open_at);
+
+        // Handle galleries as JSON for now
+        if (reference.galleries && reference.galleries.length > 0) {
+          formData.append(
+            "galleries_json",
+            JSON.stringify(reference.galleries)
+          );
+        }
       }
 
       const res = await fetch("/api/references", {
@@ -90,7 +104,11 @@ export const useReferenceStore = create<State>((set) => ({
         body: formData,
       });
       const { data, error } = await res.json();
-      if (error) throw new Error(error.message || "Failed to add reference");
+      console.log("Reference Store III");
+      if (error) {
+        console.log("Reference Store xIII:", error);
+        throw new Error(error.message || "Failed to add reference");
+      }
 
       set((state) => ({
         references: state.references
@@ -100,6 +118,7 @@ export const useReferenceStore = create<State>((set) => ({
         success: true,
       }));
     } catch (err) {
+      console.log("Reference Store Error:", err);
       set({
         loading: false,
         error: err instanceof Error ? err.message : "Failed to add reference",
@@ -131,26 +150,36 @@ export const useReferenceStore = create<State>((set) => ({
 
   updateReference: async (
     id: string,
-    updatedProject: Omit<Reference, "id">
+    updatedProject: FormData | Omit<Reference, "id">
   ) => {
     set({ loading: true, error: null, success: false });
     try {
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("name_th", updatedProject.name_th);
-      formData.append("name_en", updatedProject.name_en);
-      formData.append("type_th", updatedProject.type_th);
-      formData.append("type_en", updatedProject.type_en);
-      formData.append("location_th", updatedProject.location_th);
-      formData.append("location_en", updatedProject.location_en);
-      formData.append("open_at", updatedProject.open_at);
+      let formData: FormData;
 
-      // Handle galleries as JSON for now
-      if (updatedProject.galleries && updatedProject.galleries.length > 0) {
-        formData.append(
-          "galleries_json",
-          JSON.stringify(updatedProject.galleries)
-        );
+      if (updatedProject instanceof FormData) {
+        formData = updatedProject;
+        // Ensure ID is set
+        if (!formData.has("id")) {
+          formData.append("id", id);
+        }
+      } else {
+        formData = new FormData();
+        formData.append("id", id);
+        formData.append("name_th", updatedProject.name_th);
+        formData.append("name_en", updatedProject.name_en);
+        formData.append("type_th", updatedProject.type_th);
+        formData.append("type_en", updatedProject.type_en);
+        formData.append("location_th", updatedProject.location_th);
+        formData.append("location_en", updatedProject.location_en);
+        formData.append("opened_at", updatedProject.open_at);
+
+        // Handle galleries as JSON for now
+        if (updatedProject.galleries && updatedProject.galleries.length > 0) {
+          formData.append(
+            "galleries_json",
+            JSON.stringify(updatedProject.galleries)
+          );
+        }
       }
 
       const res = await fetch("/api/references", {

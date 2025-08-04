@@ -24,11 +24,29 @@ export async function GET(req: Request) {
   }
 }
 
-export const POST = withAuth(async (req: NextRequest, supabase, user) => {
+export const POST = withAuth(async (req: NextRequest, supabase) => {
+  console.log("oversea I");
   try {
-    const { brand, type, project_name, country } = await req.json();
+    console.log("oversea II");
+    const {
+      brand,
+      type_th,
+      type_en,
+      project_name_th,
+      project_name_en,
+      country_th,
+      country_en,
+    } = await req.json();
 
-    if (!brand || !type || !project_name || !country) {
+    if (
+      !brand ||
+      !type_th ||
+      !type_en ||
+      !project_name_th ||
+      !project_name_en ||
+      !country_th ||
+      !country_en
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -40,15 +58,18 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
       .insert([
         {
           brand,
-          type,
-          project_name,
-          country,
-          created_by: user.id,
+          type_th,
+          type_en,
+          project_name_th,
+          project_name_en,
+          country_th,
+          country_en,
         },
       ])
       .select();
 
     if (error) {
+      console.log("400 Oversea xII:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -57,6 +78,8 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
       message: "Oversea project created successfully",
     });
   } catch (err) {
+    console.log("500 Oversea xI:", err);
+
     return NextResponse.json(
       { error: "Failed to create oversea project", details: err },
       { status: 500 }
@@ -66,7 +89,16 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
 
 export const PUT = withAuth(async (req: NextRequest, supabase) => {
   try {
-    const { id, brand, type, project_name, country } = await req.json();
+    const {
+      id,
+      brand,
+      type_th,
+      type_en,
+      project_name_th,
+      project_name_en,
+      country_th,
+      country_en,
+    } = await req.json();
 
     if (!id) {
       return NextResponse.json(
@@ -79,9 +111,12 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
       .from("references_oversea")
       .update({
         brand,
-        type,
-        project_name,
-        country,
+        type_th,
+        type_en,
+        project_name_th,
+        project_name_en,
+        country_th,
+        country_en,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)

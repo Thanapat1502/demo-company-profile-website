@@ -38,9 +38,12 @@ interface ReferenceFormData {
 
 interface OverseaFormData {
   brand: string;
-  type: string;
-  project_name: string;
-  country: string;
+  type_th: string;
+  type_en: string;
+  project_name_th: string;
+  project_name_en: string;
+  country_th: string;
+  country_en: string;
 }
 
 export const ReferenceManager = () => {
@@ -97,30 +100,47 @@ export const ReferenceManager = () => {
   const overseaForm = useForm<OverseaFormData>({
     defaultValues: {
       brand: "",
-      type: "",
-      project_name: "",
-      country: "",
+      type_th: "",
+      type_en: "",
+      project_name_th: "",
+      project_name_en: "",
+      country_th: "",
+      country_en: "",
     },
   });
 
   // Reference handlers
   const onSubmitReference = async (data: ReferenceFormData) => {
     try {
-      const submitData = {
-        name_th: data.name_th,
-        name_en: data.name_en,
-        type_th: data.type_th,
-        type_en: data.type_en,
-        location_th: data.location_th,
-        location_en: data.location_en,
-        open_at: data.open_at,
-        galleries: data.galleries.map((g) => (typeof g === "string" ? g : "")), // Convert files to URLs later
-      };
+      // Create FormData for file uploads
+      const formData = new FormData();
+      formData.append("name_th", data.name_th);
+      formData.append("name_en", data.name_en);
+      formData.append("type_th", data.type_th);
+      formData.append("type_en", data.type_en);
+      formData.append("location_th", data.location_th);
+      formData.append("location_en", data.location_en);
+      formData.append("opened_at", data.open_at);
+
+      // Handle thumbnail upload
+      if (data.thumbnail && typeof data.thumbnail === "object") {
+        formData.append("thumbnail_file", data.thumbnail);
+      }
+
+      // Handle gallery uploads
+      if (data.galleries && data.galleries.length > 0) {
+        data.galleries.forEach((file) => {
+          if (typeof file === "object") {
+            formData.append("galleries", file);
+          }
+        });
+      }
 
       if (editingId) {
-        await updateReference(editingId, submitData);
+        formData.append("id", editingId);
+        await updateReference(editingId, formData);
       } else {
-        await addReference(submitData);
+        await addReference(formData);
       }
       resetReferenceForm();
     } catch (error) {
@@ -499,31 +519,60 @@ export const ReferenceManager = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Thumbnail Image
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                        <label className="cursor-pointer">
-                          <span className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors inline-block">
-                            Choose Thumbnail
-                          </span>
-                          <Controller
-                            name="thumbnail"
-                            control={referenceForm.control}
-                            render={({ field: { onChange } }) => (
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) =>
-                                  onChange(e.target.files?.[0] || null)
-                                }
-                                className="hidden"
-                              />
+                      <Controller
+                        name="thumbnail"
+                        control={referenceForm.control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="space-y-3">
+                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                              <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                              <label className="cursor-pointer">
+                                <span className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                                  Choose Thumbnail
+                                </span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) =>
+                                    onChange(e.target.files?.[0] || null)
+                                  }
+                                  className="hidden"
+                                />
+                              </label>
+                              <p className="text-gray-500 text-sm mt-1">
+                                PNG, JPG up to 10MB
+                              </p>
+                            </div>
+
+                            {/* Thumbnail Preview */}
+                            {value && typeof value === "object" && (
+                              <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden">
+                                  <img
+                                    src={URL.createObjectURL(value)}
+                                    alt="Thumbnail preview"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm text-blue-800 font-medium">
+                                    {value.name}
+                                  </p>
+                                  <p className="text-xs text-blue-600">
+                                    {(value.size / 1024 / 1024).toFixed(2)} MB
+                                  </p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => onChange(null)}
+                                  className="text-blue-600 hover:text-blue-800">
+                                  <X size={16} />
+                                </button>
+                              </div>
                             )}
-                          />
-                        </label>
-                        <p className="text-gray-500 text-sm mt-1">
-                          PNG, JPG up to 10MB
-                        </p>
-                      </div>
+                          </div>
+                        )}
+                      />
                     </div>
 
                     {/* Gallery Upload */}
@@ -531,32 +580,71 @@ export const ReferenceManager = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Gallery Images (Optional)
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                        <label className="cursor-pointer">
-                          <span className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors inline-block">
-                            Choose Gallery Images
-                          </span>
-                          <Controller
-                            name="galleries"
-                            control={referenceForm.control}
-                            render={({ field: { onChange } }) => (
-                              <input
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={(e) =>
-                                  onChange(Array.from(e.target.files || []))
-                                }
-                                className="hidden"
-                              />
+                      <Controller
+                        name="galleries"
+                        control={referenceForm.control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="space-y-3">
+                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                              <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                              <label className="cursor-pointer">
+                                <span className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors inline-block">
+                                  Choose Gallery Images
+                                </span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  onChange={(e) =>
+                                    onChange(Array.from(e.target.files || []))
+                                  }
+                                  className="hidden"
+                                />
+                              </label>
+                              <p className="text-gray-500 text-sm mt-1">
+                                Multiple images for gallery
+                              </p>
+                            </div>
+
+                            {/* Gallery Preview */}
+                            {value && value.length > 0 && (
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                {value.map((file, index) => (
+                                  <div key={index} className="relative group">
+                                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                                      <img
+                                        src={
+                                          typeof file === "object"
+                                            ? URL.createObjectURL(file)
+                                            : file
+                                        }
+                                        alt={`Gallery ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newFiles = value.filter(
+                                          (_, i) => i !== index
+                                        );
+                                        onChange(newFiles);
+                                      }}
+                                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <X size={12} />
+                                    </button>
+                                    {typeof file === "object" && (
+                                      <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
+                                        {(file.size / 1024 / 1024).toFixed(1)}MB
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             )}
-                          />
-                        </label>
-                        <p className="text-gray-500 text-sm mt-1">
-                          Multiple images for gallery
-                        </p>
-                      </div>
+                          </div>
+                        )}
+                      />
                     </div>
 
                     <div className="flex gap-3 pt-4">
@@ -696,15 +784,42 @@ export const ReferenceManager = () => {
                         />
                       </div>
 
-                      {/* Type */}
+                      {/* Type Thai */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Type
+                          Type (Thai)
                         </label>
                         <Controller
-                          name="type"
+                          name="type_th"
                           control={overseaForm.control}
-                          rules={{ required: "Type is required" }}
+                          rules={{ required: "Thai type is required" }}
+                          render={({ field, fieldState: { error } }) => (
+                            <>
+                              <input
+                                {...field}
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="ประเภทโครงการภาษาไทย"
+                              />
+                              {error && (
+                                <p className="text-red-600 text-xs mt-1">
+                                  {error.message}
+                                </p>
+                              )}
+                            </>
+                          )}
+                        />
+                      </div>
+
+                      {/* Type English */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Type (English)
+                        </label>
+                        <Controller
+                          name="type_en"
+                          control={overseaForm.control}
+                          rules={{ required: "English type is required" }}
                           render={({ field, fieldState: { error } }) => (
                             <>
                               <input
@@ -723,22 +838,22 @@ export const ReferenceManager = () => {
                         />
                       </div>
 
-                      {/* Project Name */}
+                      {/* Project Name Thai */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Project Name
+                          Project Name (Thai)
                         </label>
                         <Controller
-                          name="project_name"
+                          name="project_name_th"
                           control={overseaForm.control}
-                          rules={{ required: "Project name is required" }}
+                          rules={{ required: "Thai project name is required" }}
                           render={({ field, fieldState: { error } }) => (
                             <>
                               <input
                                 {...field}
                                 type="text"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                                placeholder="Full project name"
+                                placeholder="ชื่อโครงการภาษาไทย"
                               />
                               {error && (
                                 <p className="text-red-600 text-xs mt-1">
@@ -750,22 +865,78 @@ export const ReferenceManager = () => {
                         />
                       </div>
 
-                      {/* Country */}
+                      {/* Project Name English */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Country
+                          Project Name (English)
                         </label>
                         <Controller
-                          name="country"
+                          name="project_name_en"
                           control={overseaForm.control}
-                          rules={{ required: "Country is required" }}
+                          rules={{
+                            required: "English project name is required",
+                          }}
                           render={({ field, fieldState: { error } }) => (
                             <>
                               <input
                                 {...field}
                                 type="text"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                                placeholder="Thailand, Singapore, etc."
+                                placeholder="Project name in English"
+                              />
+                              {error && (
+                                <p className="text-red-600 text-xs mt-1">
+                                  {error.message}
+                                </p>
+                              )}
+                            </>
+                          )}
+                        />
+                      </div>
+
+                      {/* Country Thai */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Country (Thai)
+                        </label>
+                        <Controller
+                          name="country_th"
+                          control={overseaForm.control}
+                          rules={{ required: "Thai country is required" }}
+                          render={({ field, fieldState: { error } }) => (
+                            <>
+                              <input
+                                {...field}
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="ประเทศภาษาไทย"
+                              />
+                              {error && (
+                                <p className="text-red-600 text-xs mt-1">
+                                  {error.message}
+                                </p>
+                              )}
+                            </>
+                          )}
+                        />
+                      </div>
+
+                      {/* Country English */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Country (English)
+                        </label>
+                        <Controller
+                          name="country_en"
+                          control={overseaForm.control}
+                          rules={{ required: "English country is required" }}
+                          render={({ field, fieldState: { error } }) => (
+                            <>
+                              <input
+                                {...field}
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                placeholder="Country name in English"
                               />
                               {error && (
                                 <p className="text-red-600 text-xs mt-1">
@@ -840,13 +1011,13 @@ export const ReferenceManager = () => {
                               {item.brand}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {item.type}
+                              {item.type_en}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {item.project_name}
+                              {item.project_name_en}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {item.country}
+                              {item.country_en}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex gap-2">
