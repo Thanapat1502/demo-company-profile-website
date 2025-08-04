@@ -31,6 +31,7 @@ interface HeroImageUploadProps {
   existingImages: string[];
   onRemoveExisting: (index: number) => void;
   loading: boolean;
+  className: string;
 }
 
 const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
@@ -40,6 +41,7 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
   existingImages,
   onRemoveExisting,
   loading,
+  className,
 }) => {
   const totalImages = existingImages.length + images.length;
 
@@ -57,7 +59,7 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
+      <div className={`flex items-center justify-center p-8 ${className}`}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-2 text-gray-600">Loading existing images...</span>
       </div>
@@ -296,13 +298,13 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     "about-main": {
       heroId: "ABOUT_MAIN" as HeroSectionId,
       title: "About Main",
-      maxHeroImages: 3,
+      maxHeroImages: 1,
       hasCustomSlots: false,
     },
     "about-history": {
       heroId: "ABOUT_HISTORY" as HeroSectionId,
       title: "About History",
-      maxHeroImages: 6,
+      maxHeroImages: 1,
       hasCustomSlots: true,
       slotsCount: 6,
       slotsTitle: "History Timeline (6 slots)",
@@ -310,7 +312,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     "about-vision": {
       heroId: "ABOUT_VISION" as HeroSectionId,
       title: "About Vision",
-      maxHeroImages: 2,
+      maxHeroImages: 1,
       hasCustomSlots: true,
       slotsCount: 2,
       slotsTitle: "Vision Gallery (2 slots)",
@@ -318,7 +320,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     "about-executive": {
       heroId: "ABOUT_EXECUTIVE" as HeroSectionId,
       title: "About Executive",
-      maxHeroImages: 4,
+      maxHeroImages: 1,
       hasCustomSlots: false,
     },
   };
@@ -508,6 +510,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
               existingImages={existingHeroImages}
               onRemoveExisting={removeExistingHeroImage}
               loading={loading}
+              className=""
             />
           )}
         />

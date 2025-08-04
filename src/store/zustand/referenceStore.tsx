@@ -10,6 +10,7 @@ export interface Reference {
   location_en: string;
   open_at: string; // ISO datetime string
   galleries: string[];
+  thumbnail: string;
 }
 export interface OverseaProject {
   id: string; // UUID

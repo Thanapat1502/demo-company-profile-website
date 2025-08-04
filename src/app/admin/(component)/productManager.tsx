@@ -4,7 +4,6 @@ import { Plus, Eye, EyeOff, X, Upload, Edit, Trash2 } from "lucide-react";
 
 import {
   useProductStore,
-  uploadProductImage,
   Product as StoreProduct,
 } from "@/store/zustand/productStore";
 import { LoadingOverlay } from "./LoadingOverlay";
@@ -17,6 +16,7 @@ type FormValues = {
   description_en: string;
   image_url: string;
   status: "available" | "unavailable";
+  image?: File | string | null;
 };
 export const ProductManager = (props: { activeLanguage: string }) => {
   const { activeLanguage } = props;
@@ -68,6 +68,24 @@ export const ProductManager = (props: { activeLanguage: string }) => {
   });
 
   const image_url = watch("image_url");
+  const imageFile = watch("image");
+
+  // Create preview URL for selected file
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (imageFile && typeof imageFile === "object") {
+      const previewUrl = URL.createObjectURL(imageFile);
+      setImagePreview(previewUrl);
+
+      // Cleanup function to revoke the object URL
+      return () => {
+        URL.revokeObjectURL(previewUrl);
+      };
+    } else {
+      setImagePreview(null);
+    }
+  }, [imageFile]);
 
   const openAddModal = () => {
     reset({
@@ -102,11 +120,10 @@ export const ProductManager = (props: { activeLanguage: string }) => {
     reset();
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = await uploadProductImage(file);
-      if (url) setValue("image_url", url);
+      setValue("image", file); // Store the file object for upload
     }
   };
 
@@ -205,16 +222,20 @@ export const ProductManager = (props: { activeLanguage: string }) => {
                     Product Image
                   </label>
                   <div className="space-y-3">
-                    {image_url ? (
+                    {image_url || imagePreview ? (
                       <div className="relative">
                         <img
-                          src={image_url}
+                          src={imagePreview || image_url}
                           alt="Product preview"
                           className="w-full h-48 object-cover rounded-lg border"
                         />
                         <button
                           type="button"
-                          onClick={() => setValue("image_url", "")}
+                          onClick={() => {
+                            setValue("image_url", "");
+                            setValue("image", null);
+                            setImagePreview(null);
+                          }}
                           className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
                           <X size={16} />
                         </button>

@@ -229,12 +229,19 @@ export const ExecutiveManager = () => {
                   {/* Image Preview */}
                   {getImagePreview() && (
                     <div className="mb-4">
-                      <div className="w-32 h-32 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="relative w-full h-48 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
                         <img
                           src={getImagePreview()!}
                           alt="Executive preview"
-                          className="max-w-full max-h-full object-cover"
+                          className="w-full h-full object-cover"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setValue("image", null)}
+                          className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                          disabled={isSubmitting}>
+                          <X size={16} />
+                        </button>
                       </div>
                     </div>
                   )}
@@ -252,15 +259,6 @@ export const ExecutiveManager = () => {
                         disabled={isSubmitting}
                       />
                     </label>
-                    {image && (
-                      <button
-                        type="button"
-                        onClick={() => setValue("image", null)}
-                        className="text-red-600 hover:text-red-700 text-sm"
-                        disabled={isSubmitting}>
-                        Remove
-                      </button>
-                    )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     Supported formats: JPEG, PNG, GIF, WebP (max 5MB)

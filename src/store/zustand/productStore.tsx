@@ -8,6 +8,7 @@ export interface Product {
   description_en?: string;
   image_url: string;
   status: "available" | "unavailable";
+  image?: File | string | null; // For file uploads
 }
 
 type State = {
@@ -51,18 +52,35 @@ export const useProductStore = create<State>((set, get) => ({
     set({ loading: true });
     try {
       set({ error: null });
+
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("name_th", product.name_th);
+      formData.append("name_en", product.name_en);
+      formData.append("description_th", product.description_th || "");
+      formData.append("description_en", product.description_en || "");
+      formData.append("status", product.status);
+
+      if (product.image && typeof product.image === "object") {
+        formData.append("image", product.image);
+      } else if (product.image_url) {
+        formData.append("image_url", product.image_url);
+      }
+
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include", // Include cookies for authentication
-        body: JSON.stringify(product),
+        body: formData, // Send FormData instead of JSON
       });
+
       if (!res.ok) {
         const data = await res.json();
-        set({ error: data.error || "Failed to add product" });
+        set({ error: data.error || "Failed to add product", loading: false });
         return;
       }
-      await get().fetchProducts();
+
+      // Refresh products list
+      get().fetchProducts();
     } catch (err: any) {
       console.log("error:", err);
       set({ error: err?.message || "Unknown error", loading: false });
@@ -72,18 +90,39 @@ export const useProductStore = create<State>((set, get) => ({
     set({ loading: true });
     try {
       set({ error: null });
-      const res = await fetch(`/api/products/${id}`, {
+
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("name_th", updatedProduct.name_th);
+      formData.append("name_en", updatedProduct.name_en);
+      formData.append("description_th", updatedProduct.description_th || "");
+      formData.append("description_en", updatedProduct.description_en || "");
+      formData.append("status", updatedProduct.status);
+
+      if (updatedProduct.image && typeof updatedProduct.image === "object") {
+        formData.append("image", updatedProduct.image);
+      } else if (updatedProduct.image_url) {
+        formData.append("image_url", updatedProduct.image_url);
+      }
+
+      const res = await fetch("/api/products", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         credentials: "include", // Include cookies for authentication
-        body: JSON.stringify(updatedProduct),
+        body: formData, // Send FormData instead of JSON
       });
+
       if (!res.ok) {
         const data = await res.json();
-        set({ error: data.error || "Failed to update product" });
+        set({
+          error: data.error || "Failed to update product",
+          loading: false,
+        });
         return;
       }
-      await get().fetchProducts();
+
+      // Refresh products list
+      get().fetchProducts();
     } catch (err: any) {
       set({ error: err?.message || "Unknown error", loading: false });
     }
@@ -92,16 +131,21 @@ export const useProductStore = create<State>((set, get) => ({
     set({ loading: true });
     try {
       set({ error: null });
-      const res = await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products?id=${id}`, {
         method: "DELETE",
         credentials: "include", // Include cookies for authentication
       });
       if (!res.ok) {
         const data = await res.json();
-        set({ error: data.error || "Failed to delete product" });
+        set({
+          error: data.error || "Failed to delete product",
+          loading: false,
+        });
         return;
       }
-      await get().fetchProducts();
+
+      // Refresh products list
+      get().fetchProducts();
     } catch (err: any) {
       set({ error: err?.message || "Unknown error", loading: false });
     }
@@ -109,17 +153,4 @@ export const useProductStore = create<State>((set, get) => ({
   clearError: () => set({ error: null }),
 }));
 
-// Helper for image upload
-export async function uploadProductImage(file: File): Promise<string | null> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("bucket", "images/public/products_store");
-  const res = await fetch("/api/image-upload", {
-    method: "POST",
-    credentials: "include", // Include cookies for authentication
-    body: formData,
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.url as string;
-}
+// Note: Image upload is now handled directly by the /api/products endpoint

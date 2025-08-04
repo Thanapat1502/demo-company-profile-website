@@ -13,7 +13,7 @@ interface ProductServiceContentManagerProps {
   loading?: boolean;
 }
 
-// Product & Service Upload Component
+// Product & Service Upload Component WATCH
 interface ProductServiceSlot {
   id: string;
   serviceId: string; // SERVICE_1, SERVICE_2, SERVICE_3, SERVICE_4
@@ -26,6 +26,7 @@ interface ProductServiceSlot {
   instruction: string;
   order: number;
   updateMode: boolean; // Toggle for update functionality
+  title: string;
 }
 
 // Hero Image Upload Component (simplified for single image)
@@ -79,8 +80,8 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({
           </h4>
           <div className="gap-4">
             {existingImages.map((imageUrl, index) => (
-              <div key={`existing-${index}`} className="relative group w-full">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+              <div key={`existing-${index}`} className="relative ">
+                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden w-1/2">
                   <img
                     src={imageUrl}
                     alt={`Existing hero image ${index + 1}`}
@@ -362,8 +363,9 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
             {/* Slot Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
+                {/**WATCH */}
                 <span className="text-sm font-medium text-gray-700">
-                  Slot {index + 1} ({slot.serviceId})
+                  Slot {index + 1} ({slot.title})
                 </span>
 
                 {/* Independent Content Type Toggle */}
@@ -450,10 +452,12 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
                             Refresh
                           </button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-row flex-wrap gap-4">
                           {currentImages[slot.serviceId].map(
                             (imageUrl, imgIndex) => (
-                              <div key={imgIndex} className="relative group">
+                              <div
+                                key={imgIndex}
+                                className="relative group w-80">
                                 <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-green-200">
                                   <img
                                     src={imageUrl}
@@ -661,13 +665,29 @@ export const ProductServiceContentManager: React.FC<
         "Upload secondary offering highlight",
         "Upload process or workflow demonstration",
         "Upload customer testimonial or result",
+        "Upload additional service content",
       ];
 
-      const serviceIds = ["SERVICE_1", "SERVICE_2", "SERVICE_3", "SERVICE_4"];
+      const serviceIds = [
+        "SERVICE_1",
+        "SERVICE_2",
+        "SERVICE_3",
+        "SERVICE_4",
+        "SERVICE_5",
+      ];
 
-      return Array.from({ length: 4 }, (_, index) => ({
+      const serviceTitles = [
+        "งานก่อสร้างสถานีบริการน้ำมัน",
+        "PERMATANK และถังน้ำมันแบบต่าง ๆ",
+        "จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น",
+        "ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
+        "บริการต่าง ๆ เกี่ยวกับถังน้ำมัน",
+      ];
+
+      return Array.from({ length: 5 }, (_, index) => ({
         id: `products-services-slot-${index}`,
         serviceId: serviceIds[index],
+        title: serviceTitles[index],
         type: "image" as const,
         contentType: "gallery" as const,
         instruction:

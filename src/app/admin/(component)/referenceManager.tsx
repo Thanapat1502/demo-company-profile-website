@@ -45,6 +45,34 @@ interface OverseaFormData {
   country_en: string;
 }
 
+// Helper function to format Supabase date
+const formatSupabaseDate = (dateString: string): string => {
+  try {
+    // Handle Supabase timestamp format: "2025-08-04 00:00:00+00"
+    // Convert to ISO format if needed
+    let isoString = dateString;
+    if (dateString.includes(" ") && !dateString.includes("T")) {
+      // Replace space with T and ensure proper timezone format
+      isoString = dateString.replace(" ", "T");
+      if (!isoString.includes("Z") && !isoString.includes("+")) {
+        isoString += "Z";
+      }
+    }
+
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) {
+      // If still invalid, try parsing just the date part
+      const datePart = dateString.split(" ")[0];
+      return new Date(datePart).toLocaleDateString();
+    }
+
+    return date.toLocaleDateString();
+  } catch (error) {
+    console.error("Error formatting date:", dateString, error);
+    return "Invalid Date";
+  }
+};
+
 export const ReferenceManager = () => {
   // Store
   const {
@@ -257,8 +285,8 @@ export const ReferenceManager = () => {
         </button>
       </div>
 
-      {/* Tab Navigation */}
       <div className="bg-white rounded-lg shadow-sm border">
+        {/* Tab Navigation */}
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6">
             <button
@@ -539,28 +567,30 @@ export const ReferenceManager = () => {
 
                             {/* Thumbnail Preview */}
                             {value && typeof value === "object" && (
-                              <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden">
+                              <div className="space-y-3">
+                                <div className="relative">
                                   <img
                                     src={URL.createObjectURL(value)}
                                     alt="Thumbnail preview"
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-48 object-cover rounded-lg border"
                                   />
+                                  <button
+                                    type="button"
+                                    onClick={() => onChange(null)}
+                                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
+                                    <X size={16} />
+                                  </button>
                                 </div>
-                                <div className="flex-1">
-                                  <p className="text-sm text-blue-800 font-medium">
-                                    {value.name}
-                                  </p>
-                                  <p className="text-xs text-blue-600">
-                                    {(value.size / 1024 / 1024).toFixed(2)} MB
-                                  </p>
+                                <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                  <div className="flex-1">
+                                    <p className="text-sm text-blue-800 font-medium">
+                                      {value.name}
+                                    </p>
+                                    <p className="text-xs text-blue-600">
+                                      {(value.size / 1024 / 1024).toFixed(2)} MB
+                                    </p>
+                                  </div>
                                 </div>
-                                <button
-                                  type="button"
-                                  onClick={() => onChange(null)}
-                                  className="text-blue-600 hover:text-blue-800">
-                                  <X size={16} />
-                                </button>
                               </div>
                             )}
                           </div>
@@ -665,7 +695,6 @@ export const ReferenceManager = () => {
                   <p className="mt-2 text-gray-600">Loading references...</p>
                 </div>
               )}
-
               {!loading && references && references.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {references.map((item) => (
@@ -673,9 +702,9 @@ export const ReferenceManager = () => {
                       key={item.id}
                       className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
                       <div className="aspect-video bg-gray-100">
-                        {item.galleries && item.galleries.length > 0 && (
+                        {item.thumbnail && (
                           <img
-                            src={item.galleries[0]}
+                            src={item.thumbnail}
                             alt={item.name_en}
                             className="w-full h-full object-cover"
                           />
@@ -694,9 +723,7 @@ export const ReferenceManager = () => {
                         </div>
                         <div className="flex items-center text-gray-500 text-xs mb-3">
                           <Calendar size={12} className="mr-1" />
-                          <span>
-                            {new Date(item.open_at).toLocaleDateString()}
-                          </span>
+                          <span>{formatSupabaseDate(item.open_at)}</span>
                         </div>
                         <div className="flex gap-2">
                           <button
