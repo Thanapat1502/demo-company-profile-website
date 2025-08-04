@@ -1,21 +1,60 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { withAuth } from "@/lib/auth-middleware";
-// Helper to upload image to Supabase Storage and return public URL
-async function uploadServiceImage(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("bucket", "services_store");
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/image-upload`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
-  const result = await res.json();
-  if (result.url) return result.url;
-  throw new Error(result.error || "Image upload failed");
+// Helper to upload image directly to Supabase Storage and return public URL
+async function uploadServiceImage(
+  file: File,
+  serviceId: string,
+  supabase: typeof import("@/lib/supabase").supabase
+): Promise<string> {
+  // Validate file type
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ];
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error(
+      "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
+    );
+  }
+
+  // Validate file size (5MB limit)
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    throw new Error("File size too large. Maximum size is 5MB.");
+  }
+
+  // Generate a unique filename
+  const fileExt = file.name.split(".").pop();
+  const fileName = `service_${serviceId}_${Date.now()}_${Math.random()
+    .toString(36)
+    .substring(2, 8)}.${fileExt}`;
+
+  // Create the full file path within the images bucket
+  const filePath = `public/services_store/${fileName}`;
+
+  // Upload to Supabase Storage (images bucket)
+  const { error } = await supabase.storage
+    .from("images")
+    .upload(filePath, file, {
+      upsert: false,
+      contentType: file.type,
+    });
+
+  if (error) {
+    console.error("Storage upload error:", error);
+    throw new Error(`Upload failed: ${error.message}`);
+  }
+
+  // Get public URL
+  const { data: publicUrlData } = supabase.storage
+    .from("images")
+    .getPublicUrl(filePath);
+
+  return publicUrlData.publicUrl;
 }
 
 export async function GET(req: Request) {
@@ -39,8 +78,10 @@ export async function GET(req: Request) {
   }
 }
 
-export const POST = withAuth(async (req: NextRequest, supabase, user) => {
+export const POST = withAuth(async (req: NextRequest, supabase) => {
+  console.log("POST API I");
   try {
+    console.log("POST API II");
     const formData = await req.formData();
     const name_th = formData.get("name_th") as string;
     const name_en = formData.get("name_en") as string;
@@ -49,10 +90,16 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
     let image_url = formData.get("image_url") as string;
     const imageFile = formData.get("image") as File | null;
 
+    // Generate a unique service ID for image upload
+    const serviceId = `${Date.now()}_${Math.random()
+      .toString(36)
+      .substring(2, 8)}`;
+
     if (imageFile && typeof imageFile === "object") {
       try {
-        image_url = await uploadServiceImage(imageFile);
-      } catch {
+        image_url = await uploadServiceImage(imageFile, serviceId, supabase);
+      } catch (err) {
+        console.log("upload image fail:", err);
         return NextResponse.json(
           { error: "Image upload failed" },
           { status: 500 }
@@ -69,7 +116,6 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
           description_th,
           description_en,
           image_url,
-          created_by: user.id,
         },
       ])
       .select();
@@ -80,6 +126,7 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
 
     return NextResponse.json({ data, message: "Service created successfully" });
   } catch (err) {
+    console.log("POST API Error:", err);
     return NextResponse.json(
       { error: "Failed to create service", details: err },
       { status: 500 }
@@ -107,8 +154,9 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
 
     if (imageFile && typeof imageFile === "object") {
       try {
-        image_url = await uploadServiceImage(imageFile);
-      } catch {
+        image_url = await uploadServiceImage(imageFile, id, supabase);
+      } catch (err) {
+        console.log("upload image fail:", err);
         return NextResponse.json(
           { error: "Image upload failed" },
           { status: 500 }

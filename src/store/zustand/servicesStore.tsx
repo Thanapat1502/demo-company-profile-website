@@ -59,6 +59,7 @@ export const useServiceStore = create<State>((set, get) => ({
     image,
   }) => {
     set({ loading: true, error: null, success: false });
+    console.log("Service Store I");
     const formData = new FormData();
     formData.append("name_th", name_th);
     formData.append("name_en", name_en);
@@ -74,8 +75,10 @@ export const useServiceStore = create<State>((set, get) => ({
       body: formData,
     });
     const { error } = await res.json();
-    if (error) set({ error: error.message, loading: false });
-    else {
+    if (error) {
+      set({ error: error.message, loading: false });
+      console.log("Service Store Error:", error);
+    } else {
       set({ success: true, loading: false });
       get().fetchServices();
     }
