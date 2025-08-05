@@ -19,7 +19,7 @@ type State = {
   updateHeroImages: (id: string, updatedImage: HeroImage) => void;
 };
 
-export const useContactStore = create<State>((set) => ({
+export const useHeroStore = create<State>((set) => ({
   heroImages: null,
   fetchHeroImages: async () => {
     try {

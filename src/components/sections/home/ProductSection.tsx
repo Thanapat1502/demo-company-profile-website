@@ -1,53 +1,81 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import { ProductCard } from "@/components/share/ProductCard";
+import { useTranslations, useLocale } from "next-intl";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { ProductType } from "@/store/zustand/productStore";
 
-interface Product {
-  name: string;
-  description: string;
-  image: string;
-}
+// const products: Product[] = [
+//   {
+//     name: "PERMATANK ถังน้ำมันใต้ดิน",
+//     description: "ถังน้ำมันใต้ดินแบบผนัง 2 ชั้น ผลิตตามมาตรฐาน UL 58 & UL 1746",
+//     image:
+//       "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+//   {
+//     name: "ท่อน้ำมันผนัง 2 ชั้น",
+//     description:
+//       "ท่อน้ำมันใต้ดินยี่ห้อ NUPI รุ่น Smartflex และ Ecoflex จากอิตาลี",
+//     image:
+//       "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+//   {
+//     name: "ระบบ ATG อัตโนมัติ",
+//     description:
+//       "ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน สำหรับการตรวจสอบแบบ Real-Time",
+//     image:
+//       "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+//   {
+//     name: "อุปกรณ์สถานีบริการ",
+//     description: "อุปกรณ์และเครื่องมือต่างๆ สำหรับสถานีบริการน้ำมันครบวงจร",
+//     image:
+//       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+//   {
+//     name: "ระบบป้องกันการรั่วไหล",
+//     description: "ระบบตรวจจับและป้องกันการรั่วไหลของน้ำมันด้วยเทคโนโลยีทันสมัย",
+//     image:
+//       "https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+//   {
+//     name: "บริการติดตั้งและบำรุงรักษา",
+//     description: "บริการติดตั้ง ตรวจสอบ และบำรุงรักษาระบบสถานีบริการน้ำมัน",
+//     image:
+//       "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+//   },
+// ];
 
-export default function ProductSection() {
+export default function ProductSection(props: { products: ProductType[] }) {
+  const { products } = props;
   const locale = useLocale();
   const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  const t = useTranslations();
 
   // Sample products data - in real app this would come from props or API
-  const products: Product[] = [
-    {
-      name: "PERMATANK ถังน้ำมันใต้ดิน",
-      description: "ถังน้ำมันใต้ดินแบบผนัง 2 ชั้น ผลิตตามมาตรฐาน UL 58 & UL 1746",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      name: "ท่อน้ำมันผนัง 2 ชั้น",
-      description: "ท่อน้ำมันใต้ดินยี่ห้อ NUPI รุ่น Smartflex และ Ecoflex จากอิตาลี",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      name: "ระบบ ATG อัตโนมัติ",
-      description: "ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน สำหรับการตรวจสอบแบบ Real-Time",
-      image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      name: "อุปกรณ์สถานีบริการ",
-      description: "อุปกรณ์และเครื่องมือต่างๆ สำหรับสถานีบริการน้ำมันครบวงจร",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      name: "ระบบป้องกันการรั่วไหล",
-      description: "ระบบตรวจจับและป้องกันการรั่วไหลของน้ำมันด้วยเทคโนโลยีทันสมัย",
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      name: "บริการติดตั้งและบำรุงรักษา",
-      description: "บริการติดตั้ง ตรวจสอบ และบำรุงรักษาระบบสถานีบริการน้ำมัน",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    }
-  ];
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % products.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, products.length]);
+
+  const handleProductClick = (index: number) => {
+    setActiveIndex(index);
+    setIsAutoPlaying(false);
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
 
   return (
     <section className="section-minimal bg-white">
@@ -66,13 +94,13 @@ export default function ProductSection() {
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             ผลิตภัณฑ์และบริการ
           </h2>
-          
+
           {/* Enhanced Elegant Line with Glow */}
           <div className="relative flex items-center justify-center mb-8">
             <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
             <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
           </div>
-          
+
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
             ผลิตภัณฑ์และบริการคุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน
           </p>
@@ -81,29 +109,11 @@ export default function ProductSection() {
         {/* Products Grid - Display exactly 6 products */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.slice(0, 6).map((product, index) => (
-            <div
+            <ProductCard
               key={index}
-              className="group cursor-pointer card-minimal p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              {/* Image container - Minimal design without rounded corners */}
-              <div className="relative h-64 mb-6 overflow-hidden bg-gray-100">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-[var(--primary-blue)] transition-colors tracking-tight">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-            </div>
+              product={product}
+              handleProductClick={() => handleProductClick(index)}
+            />
           ))}
         </div>
 

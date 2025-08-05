@@ -1,50 +1,53 @@
 "use client";
 
 import { Star } from "lucide-react";
+import { PartnerType } from "@/store/zustand/partnerStore";
+import Image from "next/image";
 
-export default function PartnersSection() {
-  const partners = [
-    {
-      id: 1,
-      name: "PTT",
-      description: "บริษัท ปตท. จำกัด (มหาชน)",
-    },
-    {
-      id: 2,
-      name: "Shell",
-      description: "Shell Thailand",
-    },
-    {
-      id: 3,
-      name: "Chevron",
-      description: "Chevron Thailand",
-    },
-    {
-      id: 4,
-      name: "Esso",
-      description: "Esso Thailand",
-    },
-    {
-      id: 5,
-      name: "Bangchak",
-      description: "บริษัท บางจาก คอร์ปอเรชั่น จำกัด (มหาชน)",
-    },
-    {
-      id: 6,
-      name: "IRPC",
-      description: "บริษัท ไออาร์พีซี จำกัด (มหาชน)",
-    },
-    {
-      id: 7,
-      name: "OR",
-      description: "บริษัท ปตท. น้ำมันและการค้าปลีก จำกัด (มหาชน)",
-    },
-    {
-      id: 8,
-      name: "Susco",
-      description: "บริษัท ซัสโก้ จำกัด (มหาชน)",
-    },
-  ];
+export default function PartnersSection(props: { partners: PartnerType[] }) {
+  // const partners = [
+  //   {
+  //     id: 1,
+  //     name: "PTT",
+  //     description: "บริษัท ปตท. จำกัด (มหาชน)",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Shell",
+  //     description: "Shell Thailand",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Chevron",
+  //     description: "Chevron Thailand",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Esso",
+  //     description: "Esso Thailand",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Bangchak",
+  //     description: "บริษัท บางจาก คอร์ปอเรชั่น จำกัด (มหาชน)",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "IRPC",
+  //     description: "บริษัท ไออาร์พีซี จำกัด (มหาชน)",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "OR",
+  //     description: "บริษัท ปตท. น้ำมันและการค้าปลีก จำกัด (มหาชน)",
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Susco",
+  //     description: "บริษัท ซัสโก้ จำกัด (มหาชน)",
+  //   },
+  // ];
+  const { partners } = props;
 
   return (
     <section className="py-16 bg-white">

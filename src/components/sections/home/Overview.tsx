@@ -2,8 +2,11 @@
 
 import { Shield, Award, Users, Wrench, ArrowRight } from "lucide-react";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
+import { Content } from "@/store/zustand/contentStore";
 
-export default function Overview() {
+export default function Overview(props: { gallery: Content[] }) {
+  const { gallery } = props;
+
   const features = [
     {
       icon: Shield,
@@ -28,13 +31,14 @@ export default function Overview() {
     },
   ];
 
-  const companyImages = [
-    "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  ];
+  // const companyImages = [
+  //   "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  //   "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  //   "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  //   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  // ];
 
+  /*REPLACE "companyImages" with  "gallery"*/
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,7 +119,9 @@ export default function Overview() {
                   className="luxury-hero-btn luxury-hero-btn-secondary group"
                   onClick={() => (window.location.href = "/th/reference")}>
                   <span className="relative z-10 flex items-center justify-center gap-3">
-                    <span className="font-semibold tracking-wide">ดูผลงาน</span>
+                    <span className="font-semibold tracking-wide text-black">
+                      ดูผลงาน
+                    </span>
                     <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
                   </span>
                   <div className="luxury-btn-border"></div>

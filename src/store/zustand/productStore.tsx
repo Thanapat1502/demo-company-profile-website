@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export interface Product {
+export interface ProductType {
   id: string; // UUID
   name_th: string;
   name_en: string;
@@ -12,18 +12,18 @@ export interface Product {
 }
 
 type State = {
-  products: Product[] | null;
+  products: ProductType[];
   error: string | null;
   loading: boolean;
   fetchProducts: () => void;
-  addProduct: (product: Product) => void;
+  addProduct: (product: ProductType) => void;
   deleteProduct: (id: string) => void;
-  updateProduct: (id: string, updatedProduct: Product) => void;
+  updateProduct: (id: string, updatedProduct: ProductType) => void;
   clearError: () => void;
 };
 
 export const useProductStore = create<State>((set, get) => ({
-  products: null,
+  products: [],
   error: null,
   loading: false,
   fetchProducts: async () => {

@@ -41,10 +41,9 @@ export default function DynamicHeroSection({
       try {
         // Fetch hero content for the specific page
         const { data, error } = await supabase
-          .from("contents")
+          .from("hero_section")
           .select("*")
-          .eq("page", pageId.toUpperCase())
-          .eq("type", "gallery")
+          .eq("id", pageId.toUpperCase())
           .single();
 
         if (error) {
