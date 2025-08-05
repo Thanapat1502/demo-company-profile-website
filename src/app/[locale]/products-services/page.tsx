@@ -2,6 +2,7 @@
 
 import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import ConstructionServiceSection from "@/components/sections/products-services/ConstructionServiceSection";
@@ -10,63 +11,121 @@ import PipeInstallationSection from "@/components/sections/products-services/Pip
 import ATGSystemSection from "@/components/sections/products-services/ATGSystemSection";
 import TankServicesSection from "@/components/sections/products-services/TankServicesSection";
 import ProductsSection from "@/components/sections/products-services/ProductsSection";
-
+import { useProductStore } from "@/store/zustand/productStore";
+import { useServiceStore } from "@/store/zustand/servicesStore";
+import { useContentStore } from "@/store/zustand/contentStore";
 export default function ProductsServicesPage() {
   const locale = useLocale();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  const allProducts = [
-    {
-      name: "ถังน้ำมันใต้ดิน PERMATANK®",
-      description:
-        "ถังน้ำมันใต้ดินผนัง 2 ชั้น ทนทาน ปลอดภัย ได้มาตรฐานสากล UL 58 และ UL 1746 ออกแบบเพื่อความปลอดภัยสูงสุดและอายุการใช้งานยาวนาน",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "ท่อน้ำมันใต้ดินผนัง 2 ชั้น",
-      description:
-        "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์ เหมาะสำหรับการติดตั้งในสถานีบริการน้ำมันทุกขนาด",
-      image:
-        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "ระบบวัดน้ำมันอัตโนมัติ (ATG)",
-      description:
-        "ระบบตรวจวัดระดับน้ำมันและการรั่วไหลแบบอัตโนมัติ เชื่อมต่อระบบคอมพิวเตอร์และ IoT สำหรับการจัดการที่มีประสิทธิภาพและทันสมัย",
-      image:
-        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "หัวจ่ายน้ำมันอัตโนมัติ",
-      description:
-        "หัวจ่ายน้ำมันที่ทันสมัย ปลอดภัย และมีประสิทธิภาพสูง พร้อมระบบควบคุมอัตโนมัติ ออกแบบเพื่อการใช้งานที่สะดวกและประหยัดพลังงาน",
-      image:
-        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "ระบบป้องกันการล้นถัง",
-      description:
-        "ระบบป้องกันการล้นถังน้ำมันที่ทันสมัย ช่วยป้องกันอุบัติเหตุและการสูญเสีย พร้อมระบบแจ้งเตือนอัตโนมัติและการติดตั้งที่ง่ายดาย",
-      image:
-        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      name: "ระบบดับเพลิงอัตโนมัติ",
-      description:
-        "ระบบดับเพลิงที่ทันสมัยและมีประสิทธิภาพสูง เพื่อความปลอดภัยสูงสุด ตรวจจับและดับเพลิงได้อย่างรวดเร็วและมีประสิทธิภาพ",
-      image:
-        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    },
-  ];
+  // Zustand stores
+  const {
+    products,
+    loading: productsLoading,
+    error: productsError,
+    fetchProducts,
+  } = useProductStore();
+
+  const {
+    services,
+    loading: servicesLoading,
+    error: servicesError,
+    fetchServices,
+  } = useServiceStore();
+
+  const {
+    content,
+    loading: contentLoading,
+    error: contentError,
+    fetchContent,
+  } = useContentStore();
+
+  // Fetch all data on component mount
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setIsInitialLoading(true);
+      try {
+        await Promise.all([
+          fetchProducts(),
+          fetchServices(),
+          fetchContent("SERVICE", "gallery"),
+          fetchContent("SERVICE", "video"),
+        ]);
+      } catch (error) {
+        console.error("Error fetching products-services data:", error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, [fetchProducts, fetchServices, fetchContent]);
+
+  // Filter services by ID for each section
+  const getServiceById = (serviceId: string) => {
+    return services.find((service) => service.id === serviceId);
+  };
+
+  // Get content for a specific service
+  const getServiceContent = (serviceId: string) => {
+    return content.filter(
+      (c) =>
+        c.page === "SERVICE" && (c.id === serviceId || c.id.includes(serviceId))
+    );
+  };
+
+  // Service section data
+  const constructionService = getServiceById("SERVICE_1");
+  const permatankService = getServiceById("SERVICE_2");
+  const pipeInstallationService = getServiceById("SERVICE_3");
+  const atgSystemService = getServiceById("SERVICE_4");
+  const tankServicesService = getServiceById("SERVICE_5");
+
+  // Content for each service
+  const constructionContent = getServiceContent("SERVICE_1");
+  const permatankContent = getServiceContent("SERVICE_2");
+  const pipeInstallationContent = getServiceContent("SERVICE_3");
+  const atgSystemContent = getServiceContent("SERVICE_4");
+  const tankServicesContent = getServiceContent("SERVICE_5");
+
+  // Loading state for initial page load
+  if (isInitialLoading) {
+    return (
+      <MainLayout>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="text-gray-600 text-lg">
+              {locale === "th" ? "กำลังโหลด..." : "Loading..."}
+            </p>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  // Error state (optional - you can customize this)
+  const hasErrors = servicesError || productsError || contentError;
+  if (hasErrors) {
+    console.warn("Products-Services page errors:", {
+      servicesError,
+      productsError,
+      contentError,
+    });
+  }
 
   return (
     <MainLayout>
       {/* Hero Section */}
       <ImageCarouselHero
         images={["/images/hero-sections/hero-banner-3.jpg"]}
-        title={`ผลิตภัณฑ์และบริการ`}
-        subtitle="บริการครบวงจร"
-        description={`ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน`}
+        title={locale === "th" ? "ผลิตภัณฑ์และบริการ" : "Products & Services"}
+        subtitle={locale === "th" ? "บริการครบวงจร" : "Complete Solutions"}
+        description={
+          locale === "th"
+            ? "ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
+            : "High-quality products and services\nfor gas stations and energy industry"
+        }
         autoSlideDelay={6000}>
         {/* Luxury Hero Buttons */}
         <div className="luxury-hero-btn-container">
@@ -74,7 +133,9 @@ export default function ProductsServicesPage() {
             className="luxury-hero-btn luxury-hero-btn-primary group"
             onClick={() => (window.location.href = `/${locale}/contact-us`)}>
             <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">ขอใบเสนอราคา</span>
+              <span className="font-semibold tracking-wide">
+                {locale === "th" ? "ขอใบเสนอราคา" : "Request Quote"}
+              </span>
               <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
             </span>
             <div className="luxury-btn-shimmer"></div>
@@ -85,7 +146,9 @@ export default function ProductsServicesPage() {
             className="luxury-hero-btn luxury-hero-btn-secondary group"
             onClick={() => (window.location.href = `/${locale}/reference`)}>
             <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">ดูผลงาน</span>
+              <span className="font-semibold tracking-wide">
+                {locale === "th" ? "ดูผลงาน" : "View Portfolio"}
+              </span>
               <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
             </span>
             <div className="luxury-btn-border"></div>
@@ -95,14 +158,43 @@ export default function ProductsServicesPage() {
       </ImageCarouselHero>
 
       {/* Service Sections */}
-      <ConstructionServiceSection />
-      <PermatankSection />
-      <PipeInstallationSection />
-      <ATGSystemSection />
-      <TankServicesSection />
+      <ConstructionServiceSection
+        service={constructionService}
+        content={constructionContent}
+        locale={locale}
+        loading={servicesLoading || contentLoading}
+      />
+      <PermatankSection
+        service={permatankService}
+        content={permatankContent}
+        locale={locale}
+        loading={servicesLoading || contentLoading}
+      />
+      <PipeInstallationSection
+        service={pipeInstallationService}
+        content={pipeInstallationContent}
+        locale={locale}
+        loading={servicesLoading || contentLoading}
+      />
+      <ATGSystemSection
+        service={atgSystemService}
+        content={atgSystemContent}
+        locale={locale}
+        loading={servicesLoading || contentLoading}
+      />
+      <TankServicesSection
+        service={tankServicesService}
+        content={tankServicesContent}
+        locale={locale}
+        loading={servicesLoading || contentLoading}
+      />
 
       {/* Products Section */}
-      <ProductsSection products={allProducts} />
+      <ProductsSection
+        products={products}
+        locale={locale}
+        loading={productsLoading}
+      />
     </MainLayout>
   );
 }

@@ -3,9 +3,63 @@
 import { Cog, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
 import Image from "next/image";
+import { ServiceType } from "@/store/zustand/servicesStore";
+import { Content } from "@/store/zustand/contentStore";
+import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
-export default function TankServicesSection() {
-  const locale = useLocale();
+interface TankServicesSectionProps {
+  service?: ServiceType;
+  content?: Content[];
+  locale?: string;
+  loading?: boolean;
+}
+
+export default function TankServicesSection({
+  service,
+  content = [],
+  locale: propLocale,
+  loading = false,
+}: TankServicesSectionProps) {
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">
+              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Get service data (fallback to default if not provided)
+  const serviceName = service
+    ? getBilingualName(service, locale)
+    : locale === "th"
+    ? "บริการถังน้ำมัน"
+    : "Tank Services";
+
+  const serviceDescription = service
+    ? getBilingualDescription(service, locale)
+    : locale === "th"
+    ? "บริการครบวงจรสำหรับถังน้ำมัน ตั้งแต่การติดตั้ง บำรุงรักษา จนถึงการซ่อมแซม"
+    : "Complete tank services from installation, maintenance to repair";
+
+  // Get gallery images from content
+  const galleryImages = content
+    .filter((c) => c.type === "gallery")
+    .flatMap((c) => c.images_url || []);
+
+  // Get video URL from content
+  const videoContent = content.find((c) => c.type === "video");
+  const videoUrl = videoContent?.video_url;
 
   return (
     <section className="section-minimal bg-white">

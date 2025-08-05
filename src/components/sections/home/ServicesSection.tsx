@@ -8,13 +8,23 @@ import Image from "next/image";
 import { ProductCard } from "@/components/share/ProductCard";
 import { ServiceType } from "@/store/zustand/servicesStore";
 
-export default function ServicesSection(props: { services: ServiceType[] }) {
-  const { services: products } = props;
+interface ServicesSectionProps {
+  services: ServiceType[];
+  loading?: boolean;
+  locale?: string;
+}
+
+export default function ServicesSection({
+  services: products,
+  loading = false,
+  locale: propLocale,
+}: ServicesSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const t = useTranslations();
-  const locale = useLocale();
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
   const router = useRouter();
 
   // const products = [
@@ -98,6 +108,26 @@ export default function ServicesSection(props: { services: ServiceType[] }) {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <section
+        id="services"
+        className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap">
+        <div className="relative z-10 py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">
+                {locale === "th" ? "กำลังโหลดบริการ..." : "Loading services..."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="services"
@@ -160,6 +190,7 @@ export default function ServicesSection(props: { services: ServiceType[] }) {
                     key={product.id}
                     product={product}
                     handleProductClick={() => handleProductClick(index)}
+                    locale={locale}
                   />
                 ))}
               </div>
@@ -179,6 +210,7 @@ export default function ServicesSection(props: { services: ServiceType[] }) {
                           key={product.id}
                           product={product}
                           handleProductClick={() => handleProductClick(index)}
+                          locale={locale}
                         />
                         // <div
                         //   key={product.id}

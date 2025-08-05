@@ -2,15 +2,28 @@
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { ServiceType } from "@/store/zustand/servicesStore";
+import { ProductType } from "@/store/zustand/productStore";
+import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
 interface Props {
-  product: any;
+  product: ServiceType | ProductType;
   handleProductClick: () => void;
+  locale?: string; // Optional prop, will use useLocale if not provided
 }
 
-export const ProductCard = ({ product, handleProductClick }) => {
+export const ProductCard: React.FC<Props> = ({
+  product,
+  handleProductClick,
+  locale: propLocale,
+}) => {
   const t = useTranslations();
-  const locale = useLocale();
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
+
+  // Get bilingual content
+  const productName = getBilingualName(product, locale);
+  const productDescription = getBilingualDescription(product, locale);
 
   return (
     <div
@@ -18,10 +31,12 @@ export const ProductCard = ({ product, handleProductClick }) => {
       onClick={handleProductClick}>
       {/* Product Image */}
       <Image
-        src={product.image}
-        alt={product.title}
+        src={product.image_url}
+        alt={productName}
         fill
         className="object-cover transition-transform duration-500 group-hover:scale-110"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        priority={false}
       />
 
       {/* Gradient overlay */}
@@ -34,12 +49,12 @@ export const ProductCard = ({ product, handleProductClick }) => {
           <div className="md:space-y-3">
             {/* Product Title - Moves up on hover */}
             <h3 className="text-xl lg:text-xl font-black text-white line-clamp-2 md:line-clamp-1 leading-tight transform transition-all duration-500 ease-out">
-              {product.title}
+              {productName}
             </h3>
 
             {/* Product Description - Moves up on hover */}
             <p className="text-white/80 text-sm md:text-lg leading-relaxed line-clamp-2 transform transition-all duration-500 ease-out">
-              {product.description}
+              {productDescription}
             </p>
           </div>
         </div>

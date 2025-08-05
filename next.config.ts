@@ -5,7 +5,11 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["images.unsplash.com", "i.pravatar.cc"],
+    domains: [
+      "images.unsplash.com",
+      "i.pravatar.cc",
+      "rmzwbozxbepjfonhmgfv.supabase.co",
+    ],
   },
   turbopack: {
     rules: {

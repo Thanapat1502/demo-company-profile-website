@@ -4,7 +4,7 @@ import { Plus, Eye, EyeOff, X, Upload, Edit, Trash2 } from "lucide-react";
 
 import {
   useProductStore,
-  Product as StoreProduct,
+  ProductType as StoreProduct,
 } from "@/store/zustand/productStore";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { AdminNotification, useAdminNotification } from "./AdminNotification";

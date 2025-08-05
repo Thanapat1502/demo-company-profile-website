@@ -49,9 +49,19 @@ import { ProductType } from "@/store/zustand/productStore";
 //   },
 // ];
 
-export default function ProductSection(props: { products: ProductType[] }) {
-  const { products } = props;
-  const locale = useLocale();
+interface ProductSectionProps {
+  products: ProductType[];
+  loading?: boolean;
+  locale?: string;
+}
+
+export default function ProductSection({
+  products,
+  loading = false,
+  locale: propLocale,
+}: ProductSectionProps) {
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -77,6 +87,24 @@ export default function ProductSection(props: { products: ProductType[] }) {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">
+              {locale === "th"
+                ? "กำลังโหลดผลิตภัณฑ์..."
+                : "Loading products..."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,14 +113,14 @@ export default function ProductSection(props: { products: ProductType[] }) {
           <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-              ผลิตภัณฑ์
+              {locale === "th" ? "ผลิตภัณฑ์" : "PRODUCTS"}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
           </div>
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            ผลิตภัณฑ์และบริการ
+            {locale === "th" ? "ผลิตภัณฑ์และบริการ" : "Products & Services"}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -102,7 +130,9 @@ export default function ProductSection(props: { products: ProductType[] }) {
           </div>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            ผลิตภัณฑ์และบริการคุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน
+            {locale === "th"
+              ? "ผลิตภัณฑ์และบริการคุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
+              : "High-quality products and services for gas stations and energy industry"}
           </p>
         </div>
 
@@ -110,9 +140,10 @@ export default function ProductSection(props: { products: ProductType[] }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.slice(0, 6).map((product, index) => (
             <ProductCard
-              key={index}
+              key={product.id}
               product={product}
               handleProductClick={() => handleProductClick(index)}
+              locale={locale}
             />
           ))}
         </div>
@@ -125,7 +156,7 @@ export default function ProductSection(props: { products: ProductType[] }) {
               onClick={() => router.push(`/${locale}/products-services`)}>
               <span className="relative z-10 flex items-center justify-center gap-3">
                 <span className="font-semibold tracking-wide">
-                  ดูผลิตภัณฑ์ทั้งหมด
+                  {locale === "th" ? "ดูผลิตภัณฑ์ทั้งหมด" : "View All Products"}
                 </span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
               </span>

@@ -4,32 +4,66 @@ import { Shield, Award, Users, Wrench, ArrowRight } from "lucide-react";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
 import { Content } from "@/store/zustand/contentStore";
 
-export default function Overview(props: { gallery: Content[] }) {
-  const { gallery } = props;
+interface OverviewProps {
+  gallery: Content[];
+  loading?: boolean;
+  locale?: string;
+}
 
+export default function Overview({
+  gallery,
+  loading = false,
+  locale = "th",
+}: OverviewProps) {
   const features = [
     {
       icon: Shield,
-      title: "มาตรฐานความปลอดภัยสูงสุด",
+      title:
+        locale === "th"
+          ? "มาตรฐานความปลอดภัยสูงสุด"
+          : "Highest Safety Standards",
       description:
-        "ระบบความปลอดภัยที่ได้รับการรับรองมาตรฐานสากล UL และ STI-P3®",
+        locale === "th"
+          ? "ระบบความปลอดภัยที่ได้รับการรับรองมาตรฐานสากล UL และ STI-P3®"
+          : "Safety systems certified to international UL and STI-P3® standards",
     },
     {
       icon: Award,
-      title: "ความเชี่ยวชาญระดับมืออาชีพ",
-      description: "ทีมงานผู้เชี่ยวชาญด้านวิศวกรรมและการก่อสร้างกว่า 50 ปี",
+      title:
+        locale === "th"
+          ? "ความเชี่ยวชาญระดับมืออาชีพ"
+          : "Professional Expertise",
+      description:
+        locale === "th"
+          ? "ทีมงานผู้เชี่ยวชาญด้านวิศวกรรมและการก่อสร้างกว่า 50 ปี"
+          : "Expert engineering and construction team with over 50 years of experience",
     },
     {
       icon: Users,
-      title: "บริการหลังการขายตลอด 24 ชั่วโมง",
-      description: "ทีมซัพพอร์ตพร้อมให้บริการตลอดเวลาเพื่อความปลอดภัยสูงสุด",
+      title:
+        locale === "th"
+          ? "บริการหลังการขายตลอด 24 ชั่วโมง"
+          : "24/7 After-Sales Service",
+      description:
+        locale === "th"
+          ? "ทีมซัพพอร์ตพร้อมให้บริการตลอดเวลาเพื่อความปลอดภัยสูงสุด"
+          : "Support team ready to serve around the clock for maximum safety",
     },
     {
       icon: Wrench,
-      title: "เทคโนโลยี PERMATANK® ทันสมัย",
-      description: "ถังเก็บน้ำมันใต้ดินผนัง 2 ชั้นที่ได้มาตรฐานระหว่างประเทศ",
+      title:
+        locale === "th"
+          ? "เทคโนโลยี PERMATANK® ทันสมัย"
+          : "Advanced PERMATANK® Technology",
+      description:
+        locale === "th"
+          ? "ถังเก็บน้ำมันใต้ดินผนัง 2 ชั้นที่ได้มาตรฐานระหว่างประเทศ"
+          : "Double-wall underground fuel storage tanks meeting international standards",
     },
   ];
+
+  // Extract images from gallery content
+  const companyImages = gallery.length > 0 ? gallery[0]?.images_url || [] : [];
 
   // const companyImages = [
   //   "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
@@ -38,7 +72,22 @@ export default function Overview(props: { gallery: Content[] }) {
   //   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
   // ];
 
-  /*REPLACE "companyImages" with  "gallery"*/
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">
+              {locale === "th" ? "กำลังโหลดข้อมูล..." : "Loading content..."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,16 +98,27 @@ export default function Overview(props: { gallery: Content[] }) {
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                เกี่ยวกับเรา
+                {locale === "th" ? "เกี่ยวกับเรา" : "ABOUT US"}
               </span>
             </div>
 
             {/* Main Heading - Strong & Minimal Style */}
             <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
-              บริษัทผู้นำด้าน
-              <span className="block text-[var(--primary-blue)]">
-                การก่อสร้างสถานีบริการน้ำมัน
-              </span>
+              {locale === "th" ? (
+                <>
+                  บริษัทผู้นำด้าน
+                  <span className="block text-[var(--primary-blue)]">
+                    การก่อสร้างสถานีบริการน้ำมัน
+                  </span>
+                </>
+              ) : (
+                <>
+                  Leading Company in
+                  <span className="block text-[var(--primary-blue)]">
+                    Gas Station Construction
+                  </span>
+                </>
+              )}
             </h2>
 
             {/* Enhanced Elegant Line with Glow - Matching ServicesSection */}
@@ -69,10 +129,9 @@ export default function Overview(props: { gallery: Content[] }) {
 
             {/* Description - Clean Typography */}
             <p className="text-lg text-gray-600 leading-relaxed max-w-3xl">
-              เรามุ่งมั่นรักษามาตรฐานสูงสุดด้านคุณภาพสินค้าและบริการ
-              พร้อมให้คำปรึกษาผู้เชี่ยวชาญเพื่อพัฒนาอย่างต่อเนื่อง
-              และคำนึงถึงความปลอดภัยของพนักงานและลูกค้าทุกท่าน ภายใต้แนวคิด
-              'ถูกต้อง ถูกหลักดี ทันสมัย ปลอดภัย'
+              {locale === "th"
+                ? "เรามุ่งมั่นรักษามาตรฐานสูงสุดด้านคุณภาพสินค้าและบริการ พร้อมให้คำปรึกษาผู้เชี่ยวชาญเพื่อพัฒนาอย่างต่อเนื่อง และคำนึงถึงความปลอดภัยของพนักงานและลูกค้าทุกท่าน ภายใต้แนวคิด 'ถูกต้อง ถูกหลักดี ทันสมัย ปลอดภัย'"
+                : "We are committed to maintaining the highest standards of product and service quality, providing expert consultation for continuous development, and prioritizing the safety of all employees and customers under the concept of 'Correct, Principled, Modern, Safe'"}
             </p>
 
             {/* Features Grid - Minimal Cards without rounded corners */}

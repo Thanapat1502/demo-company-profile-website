@@ -3,9 +3,63 @@
 import { Wrench, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
 import Image from "next/image";
+import { ServiceType } from "@/store/zustand/servicesStore";
+import { Content } from "@/store/zustand/contentStore";
+import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
-export default function PipeInstallationSection() {
-  const locale = useLocale();
+interface PipeInstallationSectionProps {
+  service?: ServiceType;
+  content?: Content[];
+  locale?: string;
+  loading?: boolean;
+}
+
+export default function PipeInstallationSection({
+  service,
+  content = [],
+  locale: propLocale,
+  loading = false,
+}: PipeInstallationSectionProps) {
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">
+              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Get service data (fallback to default if not provided)
+  const serviceName = service
+    ? getBilingualName(service, locale)
+    : locale === "th"
+    ? "ท่อน้ำมันใต้ดินผนัง 2 ชั้น"
+    : "Double-Wall Underground Piping";
+
+  const serviceDescription = service
+    ? getBilingualDescription(service, locale)
+    : locale === "th"
+    ? "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์"
+    : "Underground fuel piping system that prevents leaks with real-time leak detection system";
+
+  // Get gallery images from content
+  const galleryImages = content
+    .filter((c) => c.type === "gallery")
+    .flatMap((c) => c.images_url || []);
+
+  // Get video URL from content
+  const videoContent = content.find((c) => c.type === "video");
+  const videoUrl = videoContent?.video_url;
 
   return (
     <section className="section-minimal bg-white">

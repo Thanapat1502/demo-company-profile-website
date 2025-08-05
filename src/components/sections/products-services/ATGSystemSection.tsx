@@ -2,9 +2,63 @@
 
 import { Cog, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
+import { ServiceType } from "@/store/zustand/servicesStore";
+import { Content } from "@/store/zustand/contentStore";
+import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
-export default function ATGSystemSection() {
-  const locale = useLocale();
+interface ATGSystemSectionProps {
+  service?: ServiceType;
+  content?: Content[];
+  locale?: string;
+  loading?: boolean;
+}
+
+export default function ATGSystemSection({
+  service,
+  content = [],
+  locale: propLocale,
+  loading = false,
+}: ATGSystemSectionProps) {
+  const hookLocale = useLocale();
+  const locale = propLocale || hookLocale;
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="section-minimal bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">
+              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Get service data (fallback to default if not provided)
+  const serviceName = service
+    ? getBilingualName(service, locale)
+    : locale === "th"
+    ? "ระบบวัดน้ำมันอัตโนมัติ (ATG)"
+    : "Automatic Tank Gauging (ATG) System";
+
+  const serviceDescription = service
+    ? getBilingualDescription(service, locale)
+    : locale === "th"
+    ? "ระบบตรวจวัดระดับน้ำมันและการรั่วไหลแบบอัตโนมัติ เชื่อมต่อระบบคอมพิวเตอร์และ IoT"
+    : "Automatic fuel level and leak detection system connected to computer and IoT systems";
+
+  // Get gallery images from content
+  const galleryImages = content
+    .filter((c) => c.type === "gallery")
+    .flatMap((c) => c.images_url || []);
+
+  // Get video URL from content
+  const videoContent = content.find((c) => c.type === "video");
+  const videoUrl = videoContent?.video_url;
 
   return (
     <section className="section-minimal bg-gray-50">

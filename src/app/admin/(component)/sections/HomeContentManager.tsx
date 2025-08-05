@@ -42,6 +42,24 @@ const HomeCarouselUpload: React.FC<HomeCarouselUploadProps> = ({
     const files = Array.from(event.target.files || []);
     const remainingSlots = maxImages - totalImages;
     const filesToAdd = files.slice(0, remainingSlots);
+
+    console.log("🖼️ HomeCarouselUpload - File Selection Debug:");
+    console.log("- Selected files count:", files.length);
+    console.log(
+      "- Selected files:",
+      files.map((f) => ({ name: f.name, size: f.size, type: f.type }))
+    );
+    console.log("- Current images count:", images.length);
+    console.log("- Existing images count:", existingImages.length);
+    console.log("- Total images:", totalImages);
+    console.log("- Max images:", maxImages);
+    console.log("- Remaining slots:", remainingSlots);
+    console.log("- Files to add:", filesToAdd.length);
+    console.log(
+      "- New total after addition:",
+      [...images, ...filesToAdd].length
+    );
+
     onChange([...images, ...filesToAdd]);
   };
 
@@ -220,40 +238,76 @@ export const HomeContentManager: React.FC<HomeContentManagerProps> = ({
   }, []);
 
   const loadHeroSection = async () => {
+    console.log("📥 Loading Hero Section...");
     try {
       const response = await fetch(`/api/hero?id=HOME`);
+      console.log("- Hero API response status:", response.status);
+
       const result = await response.json();
+      console.log("- Hero API result:", result);
 
       if (result.data && result.data.hero_images) {
+        console.log("- Found hero images:", result.data.hero_images);
         setExistingHeroImages(result.data.hero_images);
       } else {
+        console.log("- No hero images found, setting empty array");
         setExistingHeroImages([]);
       }
     } catch (error) {
-      console.error("Failed to load hero section:", error);
+      console.error("❌ Failed to load hero section:", error);
       setExistingHeroImages([]);
     }
   };
 
   const loadCustomContent = async () => {
+    console.log("📥 Loading Custom Content...");
     try {
-      await fetchContent("home", "gallery");
+      console.log("- Fetching content for page: HOME, type: gallery");
+      await fetchContent("HOME", "gallery");
+      console.log("- Content store after fetch:", content);
 
       if (content && content.length > 0) {
         const contentData = content[0];
+        console.log("- Found content data:", contentData);
+        console.log(
+          "- Setting existing custom images:",
+          contentData.images_url || []
+        );
         setExistingCustomImages(contentData.images_url || []);
       } else {
+        console.log("- No content found, setting empty array");
         setExistingCustomImages([]);
       }
     } catch (error) {
-      console.error("Failed to load custom content:", error);
+      console.error("❌ Failed to load custom content:", error);
       setExistingCustomImages([]);
     }
   };
 
   const onSubmit = async (data: HomeContentFormData) => {
+    console.log("🚀 HomeContentManager - Form Submission Debug:");
+    console.log("- Form data received:", {
+      heroImages: data.heroImages.length,
+      customImages: data.customImages.length,
+    });
+    console.log(
+      "- Hero images to upload:",
+      data.heroImages.map((f) => ({ name: f.name, size: f.size, type: f.type }))
+    );
+    console.log(
+      "- Custom images to upload:",
+      data.customImages.map((f) => ({
+        name: f.name,
+        size: f.size,
+        type: f.type,
+      }))
+    );
+    console.log("- Existing hero images:", existingHeroImages);
+    console.log("- Existing custom images:", existingCustomImages);
+
     try {
       // Update hero section
+      console.log("📸 Processing Hero Section Upload...");
       const heroFormData = new FormData();
       heroFormData.append("id", "HOME");
       heroFormData.append(
@@ -262,56 +316,102 @@ export const HomeContentManager: React.FC<HomeContentManagerProps> = ({
       );
 
       data.heroImages.forEach((file, index) => {
+        console.log(`- Adding hero image ${index}:`, {
+          name: file.name,
+          size: file.size,
+        });
         heroFormData.append(`hero_image_${index}`, file);
       });
+
+      console.log("- Hero FormData entries:");
+      for (const [key, value] of heroFormData.entries()) {
+        if (value instanceof File) {
+          console.log(`  ${key}: File(${value.name}, ${value.size} bytes)`);
+        } else {
+          console.log(`  ${key}: ${value}`);
+        }
+      }
 
       const heroResponse = await fetch("/api/hero", {
         method: "PUT",
         body: heroFormData,
       });
 
+      console.log("- Hero API response status:", heroResponse.status);
+
       if (!heroResponse.ok) {
         const heroResult = await heroResponse.json();
+        console.error("❌ Hero section error:", heroResult);
         throw new Error(`Hero section error: ${heroResult.error}`);
       }
 
+      const heroResult = await heroResponse.json();
+      console.log("✅ Hero section updated successfully:", heroResult);
+
       // Handle custom content uploads
       if (data.customImages.length > 0) {
+        console.log("🎨 Processing Custom Content Upload...");
+        console.log("- Custom images count:", data.customImages.length);
+        console.log("- Current content store:", content);
+
         const existingContent = content.find(
-          (c) => c.page === "home" && c.type === "gallery"
+          (c) => c.page === "HOME" && c.type === "gallery"
         );
 
+        console.log("- Existing content found:", existingContent);
+
         if (existingContent) {
-          await updateContent(existingContent.id, {
-            page: "home",
-            type: "gallery",
+          console.log(
+            "- Updating existing content with ID:",
+            existingContent.id
+          );
+          const updateData = {
+            page: "HOME",
+            type: "gallery" as const,
             images: data.customImages,
             existing_images: existingCustomImages,
-          });
+          };
+          console.log("- Update data:", updateData);
+
+          const result = await updateContent(existingContent.id, updateData);
+          console.log("✅ Custom content updated:", result);
         } else {
-          await createContent({
-            page: "home",
-            type: "gallery",
+          console.log("- Creating new content");
+          const createData = {
+            page: "HOME",
+            type: "gallery" as const,
             images: data.customImages,
-          });
+          };
+          console.log("- Create data:", createData);
+
+          const result = await createContent(createData);
+          console.log("✅ Custom content created:", result);
         }
+      } else {
+        console.log(
+          "⏭️ No custom images to upload, skipping custom content section"
+        );
       }
 
       // Reload data
+      console.log("🔄 Reloading data after successful upload...");
       await loadHeroSection();
       await loadCustomContent();
 
       // Reset form
+      console.log("🧹 Resetting form...");
       reset({
         heroImages: [],
         customImages: [],
       });
 
+      console.log("✅ All operations completed successfully!");
       if (onSave) {
         onSave({ success: true });
       }
     } catch (error) {
-      console.error("Failed to update content:", error);
+      console.error("❌ Failed to update content:", error);
+      console.error("- Error details:", error);
       if (onSave) {
         onSave({ success: false, error: (error as Error).message });
       }
@@ -319,12 +419,18 @@ export const HomeContentManager: React.FC<HomeContentManagerProps> = ({
   };
 
   const removeExistingHeroImage = (index: number) => {
+    console.log("🗑️ Removing existing hero image at index:", index);
+    console.log("- Current hero images:", existingHeroImages);
     const newImages = existingHeroImages.filter((_, i) => i !== index);
+    console.log("- New hero images after removal:", newImages);
     setExistingHeroImages(newImages);
   };
 
   const removeExistingCustomImage = (index: number) => {
+    console.log("🗑️ Removing existing custom image at index:", index);
+    console.log("- Current custom images:", existingCustomImages);
     const newImages = existingCustomImages.filter((_, i) => i !== index);
+    console.log("- New custom images after removal:", newImages);
     setExistingCustomImages(newImages);
   };
 

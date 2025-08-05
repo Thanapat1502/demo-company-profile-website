@@ -57,6 +57,7 @@ export const useContentStore = create<State>((set) => ({
       const result = await response.json();
 
       if (response.ok) {
+        console.log("Fetch content:", result.data);
         set({ content: result.data || [], loading: false, success: true });
       } else {
         set({
@@ -74,6 +75,8 @@ export const useContentStore = create<State>((set) => ({
   },
 
   createContent: async (contentData: ContentUpload) => {
+    console.log("🏗️ ContentStore - Creating Content:");
+    console.log("- Content data:", contentData);
     set({ loading: true, error: null });
     try {
       const formData = new FormData();
@@ -85,20 +88,36 @@ export const useContentStore = create<State>((set) => ({
       }
 
       if (contentData.images) {
+        console.log("- Adding images to FormData:", contentData.images.length);
         contentData.images.forEach((file, index) => {
+          console.log(`  - Image ${index}:`, {
+            name: file.name,
+            size: file.size,
+            type: file.type,
+          });
           formData.append(`image_${index}`, file);
         });
       }
 
+      console.log("- Sending POST request to /api/contents with credentials");
       const response = await fetch("/api/contents", {
         method: "POST",
         body: formData,
+        credentials: "include", // Include cookies for authentication
       });
 
+      console.log("- Response status:", response.status);
+      console.log(
+        "- Response headers:",
+        Object.fromEntries(response.headers.entries())
+      );
+
       const result = await response.json();
+      console.log("- API Response:", result);
 
       if (response.ok) {
         const newContent = result.data;
+        console.log("✅ Content created successfully:", newContent);
         set((state) => ({
           content: [...state.content, newContent],
           loading: false,
@@ -106,6 +125,7 @@ export const useContentStore = create<State>((set) => ({
         }));
         return newContent;
       } else {
+        console.error("❌ Content creation failed:", result);
         set({
           error: result.error || "Failed to create content",
           loading: false,
@@ -123,6 +143,9 @@ export const useContentStore = create<State>((set) => ({
   },
 
   updateContent: async (id: string, contentData: ContentUpload) => {
+    console.log("🔄 ContentStore - Updating Content:");
+    console.log("- Content ID:", id);
+    console.log("- Content data:", contentData);
     set({ loading: true, error: null });
     try {
       const formData = new FormData();
@@ -131,6 +154,7 @@ export const useContentStore = create<State>((set) => ({
       formData.append("type", contentData.type);
 
       if (contentData.existing_images) {
+        console.log("- Existing images:", contentData.existing_images);
         formData.append(
           "existing_images",
           JSON.stringify(contentData.existing_images)
@@ -142,20 +166,39 @@ export const useContentStore = create<State>((set) => ({
       }
 
       if (contentData.images) {
+        console.log(
+          "- Adding new images to FormData:",
+          contentData.images.length
+        );
         contentData.images.forEach((file, index) => {
+          console.log(`  - Image ${index}:`, {
+            name: file.name,
+            size: file.size,
+            type: file.type,
+          });
           formData.append(`image_${index}`, file);
         });
       }
 
+      console.log("- Sending PUT request to /api/contents with credentials");
       const response = await fetch("/api/contents", {
         method: "PUT",
         body: formData,
+        credentials: "include", // Include cookies for authentication
       });
 
+      console.log("- Response status:", response.status);
+      console.log(
+        "- Response headers:",
+        Object.fromEntries(response.headers.entries())
+      );
+
       const result = await response.json();
+      console.log("- API Response:", result);
 
       if (response.ok) {
         const updatedContent = result.data;
+        console.log("✅ Content updated successfully:", updatedContent);
         set((state) => ({
           content: state.content.map((item) =>
             item.id === id ? updatedContent : item
@@ -165,6 +208,7 @@ export const useContentStore = create<State>((set) => ({
         }));
         return updatedContent;
       } else {
+        console.error("❌ Content update failed:", result);
         set({
           error: result.error || "Failed to update content",
           loading: false,
@@ -244,6 +288,7 @@ export const useContentStore = create<State>((set) => ({
     try {
       const response = await fetch(`/api/contents?id=${id}`, {
         method: "DELETE",
+        credentials: "include", // Include cookies for authentication
       });
 
       const result = await response.json();

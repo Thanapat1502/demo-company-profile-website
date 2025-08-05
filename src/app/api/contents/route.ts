@@ -1,23 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/auth-middleware";
+import { supabase } from "@/lib/supabase";
 
 // Content types enum
 export type ContentType = "gallery" | "video";
 
 // Page types for content
-export type ContentPage = 
-  | "home"
-  | "about-history"
-  | "about-vision"
-  | "products-services";
+export type ContentPage = "HOME" | "HISTORY" | "SERVICE" | "VISION";
 
 // Helper to upload content image directly to Supabase Storage and return public URL
 async function uploadContentImage(
   file: File,
   page: ContentPage,
   imageIndex: number,
-  supabase: typeof import("@/lib/supabase").supabase
+  supabase: any // Accept authenticated Supabase client from withAuth
 ): Promise<string> {
+  console.log("📤 uploadContentImage - Starting upload:");
+  console.log("- File:", { name: file.name, size: file.size, type: file.type });
+  console.log("- Page:", page);
+  console.log("- Image index:", imageIndex);
+
   // Validate file type
   const allowedTypes = [
     "image/jpeg",
@@ -27,23 +29,30 @@ async function uploadContentImage(
     "image/webp",
   ];
   if (!allowedTypes.includes(file.type)) {
-    throw new Error("Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.");
+    console.error("❌ Invalid file type:", file.type);
+    throw new Error(
+      "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
+    );
   }
 
   // Validate file size (10MB limit)
   const maxSize = 10 * 1024 * 1024; // 10MB
   if (file.size > maxSize) {
+    console.error("❌ File too large:", file.size);
     throw new Error("File size too large. Maximum size is 10MB.");
   }
 
   // Generate filename
   const fileExt = file.name.split(".").pop();
   const fileName = `${page}_${imageIndex}_${Date.now()}.${fileExt}`;
+  console.log("- Generated filename:", fileName);
 
   // Create the full file path within the images bucket - upload to content_store
   const filePath = `content_store/${fileName}`;
+  console.log("- File path:", filePath);
 
   // Upload to Supabase Storage (images bucket)
+  console.log("- Uploading to Supabase storage...");
   const { error } = await supabase.storage
     .from("images")
     .upload(filePath, file, {
@@ -52,20 +61,28 @@ async function uploadContentImage(
     });
 
   if (error) {
-    console.error("Storage upload error:", error);
+    console.error("❌ Storage upload error:", error);
+    console.error("- Error details:", {
+      message: error.message,
+      statusCode: error.statusCode,
+      error: error.error,
+    });
     throw new Error(`Upload failed: ${error.message}`);
   }
+
+  console.log("✅ Upload successful, getting public URL...");
 
   // Get public URL
   const { data: publicUrlData } = supabase.storage
     .from("images")
     .getPublicUrl(filePath);
 
+  console.log("✅ Public URL generated:", publicUrlData.publicUrl);
   return publicUrlData.publicUrl;
 }
 
-// GET - Fetch content by page and type
-export const GET = withAuth(async (req: NextRequest, supabase) => {
+// GET - Fetch content by page and type (No auth required)
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const page = searchParams.get("page") as ContentPage;
@@ -79,12 +96,7 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
     }
 
     // Validate page
-    const validPages: ContentPage[] = [
-      "home",
-      "about-history",
-      "about-vision",
-      "products-services"
-    ];
+    const validPages: ContentPage[] = ["HOME", "HISTORY", "SERVICE", "VISION"];
 
     if (!validPages.includes(page)) {
       return NextResponse.json(
@@ -93,10 +105,7 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
       );
     }
 
-    let query = supabase
-      .from("contents")
-      .select("*")
-      .eq("page", page);
+    let query = supabase.from("contents").select("*").eq("page", page);
 
     if (type) {
       // Validate type
@@ -124,12 +133,15 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
       { status: 500 }
     );
   }
-});
+}
 
 // POST - Create new content
-export const POST = withAuth(async (req: NextRequest, supabase) => {
+export const POST = withAuth(async (req: NextRequest, supabase, user) => {
+  console.log("🔐 API /contents POST - Authentication successful");
+  console.log("- User:", { id: user.id, email: user.email });
   try {
     const formData = await req.formData();
+    console.log("- FormData received, processing...");
     const page = formData.get("page") as ContentPage;
     const type = formData.get("type") as ContentType;
     const videoUrl = formData.get("video_url") as string;
@@ -142,7 +154,7 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
     }
 
     // Validate page and type
-    const validPages: ContentPage[] = ["home", "about-history", "about-vision", "products-services"];
+    const validPages: ContentPage[] = ["HOME", "HISTORY", "SERVICE", "VISION"];
     const validTypes: ContentType[] = ["gallery", "video"];
 
     if (!validPages.includes(page) || !validTypes.includes(type)) {
@@ -152,7 +164,7 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
       );
     }
 
-    let imagesUrls: string[] = [];
+    const imagesUrls: string[] = [];
 
     // Handle image uploads for gallery type
     if (type === "gallery") {
@@ -167,23 +179,34 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
       }
 
       // Upload images
+      console.log("📸 Starting image uploads for POST request:");
+      console.log("- Number of images to upload:", imageFiles.length);
+      console.log("- Page:", page);
+      console.log("- Using authenticated supabase client");
+
       for (let i = 0; i < imageFiles.length; i++) {
         try {
+          console.log(
+            `📤 Uploading image ${i + 1}/${imageFiles.length}:`,
+            imageFiles[i].name
+          );
           const imageUrl = await uploadContentImage(
             imageFiles[i],
             page,
             i,
             supabase
           );
+          console.log(`✅ Image ${i + 1} uploaded successfully:`, imageUrl);
           imagesUrls.push(imageUrl);
         } catch (err) {
-          console.error("Image upload failed:", err);
+          console.error(`❌ Image ${i + 1} upload failed:`, err);
           return NextResponse.json(
             { error: `Image upload failed: ${err}` },
             { status: 500 }
           );
         }
       }
+      console.log("✅ All images uploaded successfully for POST request");
     }
 
     // Create content record
@@ -218,9 +241,12 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
 });
 
 // PUT - Update existing content
-export const PUT = withAuth(async (req: NextRequest, supabase) => {
+export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
+  console.log("🔐 API /contents PUT - Authentication successful");
+  console.log("- User:", { id: user.id, email: user.email });
   try {
     const formData = await req.formData();
+    console.log("- FormData received, processing...");
     const id = formData.get("id") as string;
     const page = formData.get("page") as ContentPage;
     const type = formData.get("type") as ContentType;
@@ -247,7 +273,7 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
     // Get existing images
     const existingImages = formData.get("existing_images");
     let imagesUrls: string[] = [];
-    
+
     if (existingImages) {
       try {
         imagesUrls = JSON.parse(existingImages as string);
@@ -271,17 +297,28 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
       }
 
       // Upload new images
+      console.log("📸 Starting image uploads for PUT request:");
+      console.log("- Number of new images to upload:", newImageFiles.length);
+      console.log("- Page:", page || existingContent.page);
+      console.log("- Current images count:", imagesUrls.length);
+      console.log("- Using authenticated supabase client");
+
       for (let i = 0; i < newImageFiles.length; i++) {
         try {
+          console.log(
+            `📤 Uploading new image ${i + 1}/${newImageFiles.length}:`,
+            newImageFiles[i].name
+          );
           const imageUrl = await uploadContentImage(
             newImageFiles[i],
             page || existingContent.page,
             imagesUrls.length + i,
             supabase
           );
+          console.log(`✅ New image ${i + 1} uploaded successfully:`, imageUrl);
           imagesUrls.push(imageUrl);
         } catch (err) {
-          console.error("Image upload failed:", err);
+          console.error(`❌ New image ${i + 1} upload failed:`, err);
           return NextResponse.json(
             { error: `Image upload failed: ${err}` },
             { status: 500 }
@@ -325,7 +362,9 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
 });
 
 // DELETE - Delete content
-export const DELETE = withAuth(async (req: NextRequest, supabase) => {
+export const DELETE = withAuth(async (req: NextRequest, supabase, user) => {
+  console.log("🔐 API /contents DELETE - Authentication successful");
+  console.log("- User:", { id: user.id, email: user.email });
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -337,10 +376,7 @@ export const DELETE = withAuth(async (req: NextRequest, supabase) => {
       );
     }
 
-    const { error } = await supabase
-      .from("contents")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("contents").delete().eq("id", id);
 
     if (error) {
       console.error("Delete content error:", error);
