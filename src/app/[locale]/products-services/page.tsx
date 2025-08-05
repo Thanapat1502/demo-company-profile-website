@@ -158,30 +158,35 @@ export default function ProductsServicesPage() {
       </ImageCarouselHero>
 
       {/* Service Sections */}
+      {/**งานก่อสร้างสถานีบริการน้ำมัน gallery*/}
       <ConstructionServiceSection
         service={constructionService}
         content={constructionContent}
         locale={locale}
         loading={servicesLoading || contentLoading}
       />
+      {/**ถังน้ำมันใต้ดิน PERMATANK video*/}
       <PermatankSection
         service={permatankService}
         content={permatankContent}
         locale={locale}
         loading={servicesLoading || contentLoading}
       />
+      {/**จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น gallery*/}
       <PipeInstallationSection
         service={pipeInstallationService}
         content={pipeInstallationContent}
         locale={locale}
         loading={servicesLoading || contentLoading}
       />
+      {/**ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน video*/}
       <ATGSystemSection
         service={atgSystemService}
         content={atgSystemContent}
         locale={locale}
         loading={servicesLoading || contentLoading}
       />
+      {/**บริการต่าง ๆ เกี่ยวกับถังน้ำมัน  gallery*/}
       <TankServicesSection
         service={tankServicesService}
         content={tankServicesContent}

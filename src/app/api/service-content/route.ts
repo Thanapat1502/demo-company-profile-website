@@ -3,7 +3,13 @@ import { withAuth } from "@/lib/auth-middleware";
 import { supabase } from "@/lib/supabase";
 
 // Valid service IDs
-const VALID_SERVICE_IDS = ["SERVICE_1", "SERVICE_2", "SERVICE_3", "SERVICE_4"];
+const VALID_SERVICE_IDS = [
+  "SERVICE_1",
+  "SERVICE_2",
+  "SERVICE_3",
+  "SERVICE_4",
+  "SERVICE_5",
+];
 
 // Helper to upload service content image directly to Supabase Storage and return public URL
 async function uploadServiceImage(

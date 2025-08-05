@@ -1,12 +1,11 @@
 "use client";
 
-import { Building2, ArrowRight } from "lucide-react";
+import { Building2, ArrowRight, Factory } from "lucide-react";
 import { useLocale } from "next-intl";
-import Image from "next/image";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
-import ImageCarousel from "@/components/ui/ImageCarousel";
+import MinimalCarousel from "@/components/ui/MinimalCarousel";
 
 interface ConstructionServiceSectionProps {
   service?: ServiceType;
@@ -53,12 +52,9 @@ export default function ConstructionServiceSection({
     ? "บริการก่อสร้างสถานีบริการน้ำมันครบวงจร ตั้งแต่การออกแบบ ติดตั้ง จนถึงการบำรุงรักษา"
     : "Complete gas station construction services from design and installation to maintenance";
 
-  // Get gallery images from content
-  const galleryImages = content.length > 0 ? content[0]?.images_url || [] : [];
-
-  // Get video URL from content
-  const videoContent = content.find((c) => c.type === "video");
-  const videoUrl = videoContent?.video_url;
+  // Get gallery images from content (SERVICE_1 should have gallery type)
+  const galleryContent = content.find((c) => c.type === "gallery");
+  const galleryImages = galleryContent?.images_url || [];
 
   return (
     <section className="section-minimal bg-white">
@@ -147,31 +143,31 @@ export default function ConstructionServiceSection({
             </div>
           </div>
 
-          {/* Content Display - Gallery or Video */}
+          {/* Content Display - Gallery */}
           <div className="relative">
-            {videoUrl ? (
-              // Display video if available
-              <div className="relative h-96 overflow-hidden shadow-lg">
-                <iframe
-                  src={videoUrl}
-                  title={serviceName}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ) : galleryImages.length > 0 ? (
-              // Display image carousel if gallery images available
-              <ImageCarousel images={galleryImages} title={serviceName} />
+            {galleryImages.length > 0 ? (
+              // Display image carousel gallery
+              <MinimalCarousel
+                images={galleryImages}
+                alt={serviceName}
+                aspectRatio="4/3"
+                showNavigation={true}
+                showIndicators={true}
+                autoPlay={true}
+                interval={5000}
+                className="shadow-lg"
+              />
             ) : (
-              // Fallback to default image
-              <div className="relative h-96 overflow-hidden shadow-lg">
-                <Image
-                  src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt={serviceName}
-                  fill
-                  className="object-cover"
-                />
+              // Fallback placeholder for construction services
+              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+                <div className="text-center text-gray-500">
+                  <Factory className="w-16 h-16 mx-auto mb-4" />
+                  <p className="text-sm">
+                    {locale === "th"
+                      ? "รูปภาพงานก่อสร้างสถานีบริการน้ำมัน"
+                      : "Gas Station Construction Images"}
+                  </p>
+                </div>
               </div>
             )}
           </div>

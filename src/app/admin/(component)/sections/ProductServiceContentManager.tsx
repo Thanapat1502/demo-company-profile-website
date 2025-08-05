@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Save, Upload, X, Image as ImageIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useContentStore } from "@/store/zustand/contentStore";
@@ -190,13 +190,18 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
   // Fetch current images and videos from database
   const fetchCurrentImages = async () => {
     try {
+      console.log("🔄 Fetching current service content...");
       const response = await fetch("/api/service-content");
       if (response.ok) {
         const data = await response.json();
+        console.log("📡 Raw service content response:", data);
+
         const imageMap: Record<string, string[]> = {};
         const videoMap: Record<string, string> = {};
 
         if (data.success && Array.isArray(data.data)) {
+          console.log("📊 Processing content items:", data.data.length);
+
           data.data.forEach(
             (item: {
               id: string;
@@ -204,10 +209,29 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
               video_url: string;
               type: string;
             }) => {
+              console.log(`📝 Processing item:`, {
+                id: item.id,
+                type: item.type,
+                hasImages: !!item.images_url,
+                imageCount: item.images_url?.length || 0,
+                hasVideo: !!item.video_url,
+              });
+
               if (item.id) {
                 // Handle images
                 if (item.images_url && Array.isArray(item.images_url)) {
                   imageMap[item.id] = item.images_url;
+
+                  // Special logging for SERVICE_5
+                  if (item.id === "SERVICE_5") {
+                    console.log("🔍 SERVICE_5 Content Found:", {
+                      id: item.id,
+                      type: item.type,
+                      imageCount: item.images_url.length,
+                      images: item.images_url,
+                      fullItem: item,
+                    });
+                  }
                 }
                 // Handle videos
                 if (item.video_url && item.type === "video") {
@@ -216,15 +240,34 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
               }
             }
           );
+        } else {
+          console.log("⚠️ No content found in response or invalid format");
+        }
+
+        console.log("📊 Final image map:", imageMap);
+        console.log("📊 Final video map:", videoMap);
+
+        // Special check for SERVICE_5
+        if (imageMap["SERVICE_5"]) {
+          console.log(
+            "✅ SERVICE_5 images loaded successfully:",
+            imageMap["SERVICE_5"]
+          );
+        } else {
+          console.log("❌ SERVICE_5 images not found in imageMap");
         }
 
         setCurrentImages(imageMap);
         setCurrentVideos(videoMap);
-        console.log("Fetched current images:", imageMap);
-        console.log("Fetched current videos:", videoMap);
+      } else {
+        console.error(
+          "❌ Failed to fetch service content:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
-      console.error("Error fetching current content:", error);
+      console.error("❌ Error fetching current content:", error);
     }
   };
 
@@ -636,7 +679,7 @@ export const ProductServiceContentManager: React.FC<
   const [productServiceSlots, setProductServiceSlots] = useState<
     ProductServiceSlot[]
   >([]);
-  const { updateServiceContent } = useContentStore();
+  const { updateServiceContent, content, fetchContent } = useContentStore();
 
   // Reset function to clear all unsaved changes
   const handleReset = () => {
@@ -698,11 +741,80 @@ export const ProductServiceContentManager: React.FC<
       }));
     }, []);
 
+  // Load existing service content
+  const loadExistingServiceContent = useCallback(async () => {
+    try {
+      console.log("🔄 Loading existing service content...");
+
+      const serviceIds = [
+        "SERVICE_1",
+        "SERVICE_2",
+        "SERVICE_3",
+        "SERVICE_4",
+        "SERVICE_5",
+      ];
+      const slots = initializeProductServiceSlots();
+
+      for (let i = 0; i < serviceIds.length; i++) {
+        const serviceId = serviceIds[i];
+        console.log(`📡 Fetching content for ${serviceId}...`);
+
+        try {
+          await fetchContent(serviceId);
+
+          // Find content for this service
+          const serviceContent = content.find(
+            (c) => c.page === serviceId && c.type === "gallery"
+          );
+
+          if (serviceContent && serviceContent.images_url) {
+            console.log(`✅ Found existing content for ${serviceId}:`, {
+              imageCount: serviceContent.images_url.length,
+              images: serviceContent.images_url,
+            });
+
+            slots[i].existingImages = serviceContent.images_url;
+
+            // Special logging for SERVICE_5
+            if (serviceId === "SERVICE_5") {
+              console.log("🔍 SERVICE_5 Existing Content Debug:", {
+                serviceId,
+                contentFound: !!serviceContent,
+                imageCount: serviceContent.images_url.length,
+                imageUrls: serviceContent.images_url,
+                contentData: serviceContent,
+              });
+            }
+          } else {
+            console.log(`ℹ️ No existing content found for ${serviceId}`);
+
+            if (serviceId === "SERVICE_5") {
+              console.log("🔍 SERVICE_5 No Content Debug:", {
+                serviceId,
+                contentFound: false,
+                allContent: content,
+                filteredContent: content.filter((c) => c.page === serviceId),
+              });
+            }
+          }
+        } catch (error) {
+          console.error(`❌ Error fetching content for ${serviceId}:`, error);
+        }
+      }
+
+      console.log("📊 Final slots with existing content:", slots);
+      setProductServiceSlots(slots);
+    } catch (error) {
+      console.error("❌ Error loading existing service content:", error);
+      setProductServiceSlots(initializeProductServiceSlots());
+    }
+  }, [content, fetchContent, initializeProductServiceSlots]);
+
   // Load existing content
   useEffect(() => {
     loadHeroSection();
-    setProductServiceSlots(initializeProductServiceSlots());
-  }, [initializeProductServiceSlots]);
+    loadExistingServiceContent();
+  }, [initializeProductServiceSlots, loadExistingServiceContent]);
 
   const loadHeroSection = async () => {
     try {
@@ -722,6 +834,9 @@ export const ProductServiceContentManager: React.FC<
 
   const onSubmit = async (data: ProductServiceContentFormData) => {
     try {
+      console.log("🚀 ProductServiceContentManager - Starting submission...");
+      console.log("📊 Product Service Slots:", productServiceSlots);
+
       // Update hero section
       const heroFormData = new FormData();
       heroFormData.append("id", "PRODUCTS_SERVICE");
@@ -734,6 +849,7 @@ export const ProductServiceContentManager: React.FC<
         heroFormData.append(`hero_image_${index}`, file);
       });
 
+      console.log("🖼️ Updating hero section...");
       const heroResponse = await fetch("/api/hero", {
         method: "PUT",
         body: heroFormData,
@@ -743,27 +859,81 @@ export const ProductServiceContentManager: React.FC<
         const heroResult = await heroResponse.json();
         throw new Error(`Hero section error: ${heroResult.error}`);
       }
+      console.log("✅ Hero section updated successfully");
 
       // Handle Product & Service content updates
+      console.log("🔄 Processing product service slots...");
       for (const slot of productServiceSlots) {
+        console.log(`📝 Processing slot: ${slot.serviceId}`, {
+          hasImages: !!(slot.images && slot.images.length > 0),
+          imageCount: slot.images?.length || 0,
+          hasVideoUrl: !!slot.videoUrl,
+          contentType: slot.contentType,
+          existingImagesCount: slot.existingImages?.length || 0,
+        });
+
         if (slot.images && slot.images.length > 0) {
           // Update gallery content
+          console.log(`🖼️ Updating gallery content for ${slot.serviceId}...`);
           const contentData = {
             page: "SERVICE",
             type: "gallery" as const,
             images: slot.images,
             existing_images: slot.existingImages || [],
           };
+
+          console.log(`📤 Sending content data for ${slot.serviceId}:`, {
+            page: contentData.page,
+            type: contentData.type,
+            imageCount: contentData.images.length,
+            existingImageCount: contentData.existing_images.length,
+          });
+
           await updateServiceContent(slot.serviceId, contentData);
+          console.log(`✅ Gallery content updated for ${slot.serviceId}`);
         } else if (slot.videoUrl && slot.contentType === "video") {
           // Update video content
+          console.log(`🎥 Updating video content for ${slot.serviceId}...`);
           const contentData = {
             page: "SERVICE",
             type: "video" as const,
             video_url: slot.videoUrl,
             existing_images: slot.existingImages || [],
           };
+
+          console.log(`📤 Sending video data for ${slot.serviceId}:`, {
+            page: contentData.page,
+            type: contentData.type,
+            video_url: contentData.video_url,
+          });
+
           await updateServiceContent(slot.serviceId, contentData);
+          console.log(`✅ Video content updated for ${slot.serviceId}`);
+        } else {
+          console.log(`⏭️ Skipping ${slot.serviceId} - no content to update`);
+        }
+
+        // Special logging for SERVICE_5
+        if (slot.serviceId === "SERVICE_5") {
+          console.log("🔍 SERVICE_5 Debug Info:", {
+            serviceId: slot.serviceId,
+            title: slot.title,
+            hasImages: !!(slot.images && slot.images.length > 0),
+            imageCount: slot.images?.length || 0,
+            imageFiles:
+              slot.images?.map((f) => ({
+                name: f.name,
+                size: f.size,
+                type: f.type,
+              })) || [],
+            hasExistingImages: !!(
+              slot.existingImages && slot.existingImages.length > 0
+            ),
+            existingImageCount: slot.existingImages?.length || 0,
+            existingImageUrls: slot.existingImages || [],
+            contentType: slot.contentType,
+            updateMode: slot.updateMode,
+          });
         }
       }
 

@@ -82,7 +82,7 @@ const AdminDashboard = () => {
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
-              <h1 className="text-xl font-bold text-gray-900">แผงควบคุม</h1>
+              <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}

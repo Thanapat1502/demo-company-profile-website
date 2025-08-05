@@ -1,11 +1,11 @@
 "use client";
 
-import { Wrench, ArrowRight } from "lucide-react";
+import { Wrench, ArrowRight, Settings } from "lucide-react";
 import { useLocale } from "next-intl";
-import Image from "next/image";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
+import MinimalCarousel from "@/components/ui/MinimalCarousel";
 
 interface PipeInstallationSectionProps {
   service?: ServiceType;
@@ -52,14 +52,9 @@ export default function PipeInstallationSection({
     ? "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์"
     : "Underground fuel piping system that prevents leaks with real-time leak detection system";
 
-  // Get gallery images from content
-  const galleryImages = content
-    .filter((c) => c.type === "gallery")
-    .flatMap((c) => c.images_url || []);
-
-  // Get video URL from content
-  const videoContent = content.find((c) => c.type === "video");
-  const videoUrl = videoContent?.video_url;
+  // Get gallery images from content (SERVICE_3 should have gallery type)
+  const galleryContent = content.find((c) => c.type === "gallery");
+  const galleryImages = galleryContent?.images_url || [];
 
   return (
     <section className="section-minimal bg-white">
@@ -148,16 +143,33 @@ export default function PipeInstallationSection({
             </div>
           </div>
 
-          {/* Image Gallery - Minimal design without rounded corners */}
+          {/* Content Display - Gallery */}
           <div className="relative">
-            <div className="relative h-96 overflow-hidden shadow-lg">
-              <Image
-                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น"
-                fill
-                className="object-cover"
+            {galleryImages.length > 0 ? (
+              // Display image carousel gallery
+              <MinimalCarousel
+                images={galleryImages}
+                alt={serviceName}
+                aspectRatio="4/3"
+                showNavigation={true}
+                showIndicators={true}
+                autoPlay={true}
+                interval={5000}
+                className="shadow-lg"
               />
-            </div>
+            ) : (
+              // Fallback placeholder for pipe installation
+              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+                <div className="text-center text-gray-500">
+                  <Settings className="w-16 h-16 mx-auto mb-4" />
+                  <p className="text-sm">
+                    {locale === "th"
+                      ? "รูปภาพท่อน้ำมันใต้ดินผนัง 2 ชั้น"
+                      : "Double-Wall Underground Piping Images"}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

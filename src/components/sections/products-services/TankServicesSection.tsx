@@ -1,11 +1,11 @@
 "use client";
 
-import { Cog, ArrowRight } from "lucide-react";
+import { Cog, ArrowRight, Wrench } from "lucide-react";
 import { useLocale } from "next-intl";
-import Image from "next/image";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
+import MinimalCarousel from "@/components/ui/MinimalCarousel";
 
 interface TankServicesSectionProps {
   service?: ServiceType;
@@ -52,29 +52,41 @@ export default function TankServicesSection({
     ? "บริการครบวงจรสำหรับถังน้ำมัน ตั้งแต่การติดตั้ง บำรุงรักษา จนถึงการซ่อมแซม"
     : "Complete tank services from installation, maintenance to repair";
 
-  // Get gallery images from content
-  const galleryImages = content
-    .filter((c) => c.type === "gallery")
-    .flatMap((c) => c.images_url || []);
-
-  // Get video URL from content
-  const videoContent = content.find((c) => c.type === "video");
-  const videoUrl = videoContent?.video_url;
+  // Get gallery images from content (SERVICE_5 should have gallery type)
+  const galleryContent = content.find((c) => c.type === "gallery");
+  const galleryImages = galleryContent?.images_url || [];
 
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Image Gallery - Minimal design without rounded corners */}
+          {/* Content Display - Gallery */}
           <div className="relative">
-            <div className="relative h-96 overflow-hidden shadow-lg">
-              <Image
-                src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="บริการต่าง ๆ เกี่ยวกับถังน้ำมัน"
-                fill
-                className="object-cover"
+            {galleryImages.length > 0 ? (
+              // Display image carousel gallery
+              <MinimalCarousel
+                images={galleryImages}
+                alt={serviceName}
+                aspectRatio="4/3"
+                showNavigation={true}
+                showIndicators={true}
+                autoPlay={true}
+                interval={5000}
+                className="shadow-lg"
               />
-            </div>
+            ) : (
+              // Fallback placeholder for tank services
+              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+                <div className="text-center text-gray-500">
+                  <Wrench className="w-16 h-16 mx-auto mb-4" />
+                  <p className="text-sm">
+                    {locale === "th"
+                      ? "รูปภาพบริการถังน้ำมัน"
+                      : "Tank Services Images"}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-8">
