@@ -105,7 +105,7 @@ export default function ContactUsPage() {
       <div className="min-h-screen bg-white">
         {/* Hero Section - Using DynamicHeroSection for consistency */}
         <DynamicHeroSection
-          pageId="contact"
+          pageId="CONTACT"
           title="ติดต่อเรา"
           subtitle="พร้อมให้คำปรึกษา"
           description="และข้อเสนอที่ดีที่สุดสำหรับโครงการของคุณ"

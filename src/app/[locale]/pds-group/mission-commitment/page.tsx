@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   History,
-  Calendar,
   Award,
   Building,
-  ArrowRight,
   Users2,
   Target,
   Eye,
@@ -19,13 +17,65 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import MinimalButton from "@/components/ui/MinimalButton";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import HeroButtons from "@/components/ui/HeroButtons";
 import PolicySection from "@/components/sections/pds-group/PolicySection";
 
 export default function MissionCommitmentPage() {
   const t = useTranslations();
   const locale = useLocale();
+
+  // Content store state for VISION_1 and VISION_2 images
+  const [visionImages, setVisionImages] = useState<{
+    vision1: string | null;
+    vision2: string | null;
+  }>({
+    vision1: null,
+    vision2: null,
+  });
+
+  // Fetch content images on component mount
+  useEffect(() => {
+    const fetchContentImages = async () => {
+      try {
+        // Fetch VISION_1 content
+        const response1 = await fetch("/api/contents?id=VISION_1");
+        if (response1.ok) {
+          const data1 = await response1.json();
+          if (
+            data1.content &&
+            data1.content.images_url &&
+            data1.content.images_url.length > 0
+          ) {
+            setVisionImages((prev) => ({
+              ...prev,
+              vision1: data1.content.images_url[0],
+            }));
+          }
+        }
+
+        // Fetch VISION_2 content
+        const response2 = await fetch("/api/contents?id=VISION_2");
+        if (response2.ok) {
+          const data2 = await response2.json();
+          if (
+            data2.content &&
+            data2.content.images_url &&
+            data2.content.images_url.length > 0
+          ) {
+            setVisionImages((prev) => ({
+              ...prev,
+              vision2: data2.content.images_url[0],
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch content images:", error);
+      }
+    };
+
+    fetchContentImages();
+  }, []);
 
   const subPages = [
     {
@@ -60,50 +110,50 @@ export default function MissionCommitmentPage() {
       title: "ความปลอดภัย",
       description:
         "มุ่งมั่นในการรักษามาตรฐานความปลอดภัยสูงสุดในทุกโครงการ เพื่อปกป้องพนักงาน ลูกค้า และชุมชน",
-      color: "bg-red-100 text-red-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Leaf,
       title: "ความยั่งยืน",
       description:
         "ดำเนินธุรกิจอย่างรับผิดชอบต่อสิ่งแวดล้อม และสนับสนุนการพัฒนาที่ยั่งยืน",
-      color: "bg-green-100 text-green-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Heart,
       title: "ความซื่อสัตย์",
       description:
         "ยึดมั่นในความโปร่งใส ความจริงใจ และการดำเนินธุรกิจด้วยจริยธรรม",
-      color: "bg-pink-100 text-pink-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Lightbulb,
       title: "นวัตกรรม",
       description:
         "พัฒนาเทคโนโลยีและนวัตกรรมใหม่ๆ เพื่อตอบสนองความต้องการของลูกค้าอย่างต่อเนื่อง",
-      color: "bg-yellow-100 text-yellow-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Users2,
       title: "การทำงานเป็นทีม",
       description:
         "ส่งเสริมการทำงานร่วมกันอย่างมีประสิทธิภาพ และการพัฒนาศักยภาพของทีมงาน",
-      color: "bg-purple-100 text-purple-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Award,
       title: "ความเป็นเลิศ",
       description:
         "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน และการให้บริการที่เหนือความคาดหมาย",
-      color: "bg-blue-100 text-blue-600",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
   ];
 
   return (
     <MainLayout>
       {/* Hero Section */}
-      <ImageCarouselHero
-        images={["/images/hero-sections/hero-banner-4.jpg"]}
+      <DynamicHeroSection
+        pageId="ABOUT_VISION"
         title={locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision"}
         subtitle={locale === "th" ? "หลักการและค่านิยม" : "Principles & Values"}
         description={
@@ -111,14 +161,10 @@ export default function MissionCommitmentPage() {
             ? "มุ่งมั่นสู่ความเป็นเลิศ\nด้วยความรับผิดชอบต่อสังคม"
             : "Striving for Excellence\nwith Social Responsibility"
         }
+        fallbackImages={["/images/hero-sections/hero-banner-4.jpg"]}
         autoSlideDelay={6000}>
-        <MinimalButton
-          href={`/${locale}/contact-us`}
-          variant="white"
-          icon={<ArrowRight className="w-5 h-5" />}>
-          {locale === "th" ? "ติดต่อเรา" : "Contact Us"}
-        </MinimalButton>
-      </ImageCarouselHero>
+        <HeroButtons />
+      </DynamicHeroSection>
 
       {/* Sub Navigation - Minimal design without rounded corners */}
       <section className="py-16 bg-white border-b border-gray-200">
@@ -166,8 +212,12 @@ export default function MissionCommitmentPage() {
                 และการบริการที่เหนือความคาดหมาย
                 เพื่อสร้างความพึงพอใจสูงสุดให้กับลูกค้าและผู้มีส่วนได้ส่วนเสีย
               </p>
+              {/* Mission Image from VISION_1 content */}
               <Image
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src={
+                  visionImages.vision1 ||
+                  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                }
                 alt="Mission"
                 width={600}
                 height={400}
@@ -178,14 +228,14 @@ export default function MissionCommitmentPage() {
             {/* Vision */}
             <div className="text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start mb-8">
-                <div className="w-20 h-20 bg-green-100 flex items-center justify-center mr-6">
-                  <Eye size={40} className="text-green-600" />
+                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
+                  <Eye size={40} className="text-[var(--primary-blue)]" />
                 </div>
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
                     วิสัยทัศน์
                   </h2>
-                  <div className="w-20 h-px bg-green-600"></div>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
@@ -194,8 +244,13 @@ export default function MissionCommitmentPage() {
                 ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน
                 พร้อมขยายธุรกิจสู่เทคโนโลยีพลังงานสะอาดในอนาคต
               </p>
+
+              {/* Vision Image from VISION_2 content */}
               <Image
-                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src={
+                  visionImages.vision2 ||
+                  "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                }
                 alt="Vision"
                 width={600}
                 height={400}

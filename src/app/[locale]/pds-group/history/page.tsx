@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import {
   History,
   Building,
-  ArrowRight,
   Users2,
   Target,
   Factory,
@@ -14,7 +13,8 @@ import {
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import HeroButtons from "@/components/ui/HeroButtons";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
 import { useContentStore } from "@/store/zustand/contentStore";
 
@@ -64,8 +64,8 @@ export default function CompanyHistoryPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <ImageCarouselHero
-        images={["/images/hero-sections/hero-banner-1.jpg"]}
+      <DynamicHeroSection
+        pageId="ABOUT_HISTORY"
         title={locale === "th" ? "ประวัติความเป็นมา" : "Company History"}
         subtitle={
           locale === "th" ? "เส้นทางแห่งความสำเร็จ" : "Journey of Success"
@@ -75,23 +75,10 @@ export default function CompanyHistoryPage() {
             ? "มากกว่า 50 ปีแห่งประสบการณ์\nในอุตสาหกรรมการก่อสร้างสถานีบริการน้ำมัน"
             : "Over 50 years of experience\nin fuel station construction industry"
         }
+        fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
         autoSlideDelay={6000}>
-        {/* Luxury Hero Buttons */}
-        <div className="luxury-hero-btn-container">
-          <button
-            className="luxury-hero-btn luxury-hero-btn-primary group"
-            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">
-                {locale === "th" ? "ติดต่อเรา" : "Contact Us"}
-              </span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-            </span>
-            <div className="luxury-btn-shimmer"></div>
-            <div className="luxury-btn-glow"></div>
-          </button>
-        </div>
-      </ImageCarouselHero>
+        <HeroButtons />
+      </DynamicHeroSection>
 
       {/* Sub Navigation - Minimal design without rounded corners */}
       <section className="py-16 bg-white border-b border-gray-200">

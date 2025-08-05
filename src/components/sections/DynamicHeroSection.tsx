@@ -78,19 +78,19 @@ export default function DynamicHeroSection({
   }, [pageId, fallbackImages]);
 
   // Show loading state with fallback images
-  if (isLoading) {
-    return (
-      <ImageCarouselHero
-        images={fallbackImages}
-        title={title}
-        subtitle={subtitle}
-        description={description}
-        autoSlideDelay={autoSlideDelay}
-        className={className}>
-        {children}
-      </ImageCarouselHero>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <ImageCarouselHero
+  //       images={fallbackImages}
+  //       title={title}
+  //       subtitle={subtitle}
+  //       description={description}
+  //       autoSlideDelay={autoSlideDelay}
+  //       className={className}>
+  //       {children}
+  //     </ImageCarouselHero>
+  //   );
+  // }
 
   return (
     <ImageCarouselHero

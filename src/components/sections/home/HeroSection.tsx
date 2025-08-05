@@ -12,7 +12,7 @@ export default function HeroSection() {
 
   return (
     <DynamicHeroSection
-      pageId="home"
+      pageId="HOME"
       title={t("home.hero.title")}
       subtitle={t("home.hero.subtitle")}
       description={t("home.hero.description")}

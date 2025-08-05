@@ -14,6 +14,8 @@ interface MinimalCarouselProps {
   showNavigation?: boolean;
   alt?: string;
   height?: string;
+  enableModal?: boolean;
+  onImageClick?: (index: number) => void;
 }
 
 export default function MinimalCarousel({
@@ -26,6 +28,8 @@ export default function MinimalCarousel({
   showNavigation = false,
   alt = "Image",
   height,
+  enableModal = false,
+  onImageClick,
 }: MinimalCarouselProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -62,10 +66,17 @@ export default function MinimalCarousel({
 
   return (
     <div
-      className={`relative w-full overflow-hidden shadow-lg ${className}`}
+      className={`relative w-full overflow-hidden shadow-lg ${
+        enableModal || onImageClick ? "cursor-pointer" : ""
+      } ${className}`}
       style={{
         aspectRatio: height ? undefined : aspectRatio,
         height: height || undefined,
+      }}
+      onClick={() => {
+        if (onImageClick) {
+          onImageClick(currentImageIndex);
+        }
       }}>
       {images.map((image, index) => (
         <div
@@ -88,14 +99,20 @@ export default function MinimalCarousel({
       {showNavigation && images.length > 1 && (
         <>
           <button
-            onClick={goToPrevious}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300 group"
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrevious();
+            }}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300 group z-10"
             aria-label="Previous image">
             <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
           </button>
           <button
-            onClick={goToNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300 group"
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all duration-300 group z-10"
             aria-label="Next image">
             <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
           </button>
@@ -108,7 +125,10 @@ export default function MinimalCarousel({
           {images.map((_, index) => (
             <button
               key={index}
-              onClick={() => handleImageSelect(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleImageSelect(index);
+              }}
               className={`relative w-12 h-1 transition-all duration-500 ease-out ${
                 index === currentImageIndex
                   ? "bg-white shadow-lg"

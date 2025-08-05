@@ -1,11 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   Users,
   Award,
   Target,
   Heart,
-  ArrowRight,
   Building,
   History,
   Users2,
@@ -14,11 +14,39 @@ import { useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import HeroButtons from "@/components/ui/HeroButtons";
 
 export default function CompanyProfilePage() {
   // const t = useTranslations();
   const locale = useLocale();
+
+  // Content store state for ABOUT content image
+  const [aboutImage, setAboutImage] = useState<string | null>(null);
+
+  // Fetch content images on component mount
+  useEffect(() => {
+    const fetchContentImages = async () => {
+      try {
+        // Fetch ABOUT content
+        const response = await fetch("/api/contents?id=ABOUT");
+        if (response.ok) {
+          const data = await response.json();
+          if (
+            data.content &&
+            data.content.images_url &&
+            data.content.images_url.length > 0
+          ) {
+            setAboutImage(data.content.images_url[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch content images:", error);
+      }
+    };
+
+    fetchContentImages();
+  }, []);
 
   const subPages = [
     {
@@ -49,40 +77,18 @@ export default function CompanyProfilePage() {
 
   return (
     <MainLayout>
-      {/* Hero Section - Using ImageCarouselHero for consistency */}
-      <ImageCarouselHero
-        images={[
-          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-        ]}
+      {/* Hero Section - Using DynamicHeroSection for consistency */}
+      <DynamicHeroSection
+        pageId="ABOUT_MAIN"
         title="กลุ่มบริษัท ผดุงศิลป์"
         subtitle="ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน"
         description="ด้วยประสบการณ์กว่า 50 ปี เราให้บริการก่อสร้าง วิศวกรรม และบำรุงรักษาสถานีบริการน้ำมันครบวงจรทั่วประเทศไทย"
+        fallbackImages={[
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+        ]}
         autoSlideDelay={6000}>
-        {/* Luxury Hero Buttons */}
-        <div className="luxury-hero-btn-container">
-          <button
-            className="luxury-hero-btn luxury-hero-btn-primary group"
-            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">ติดต่อเรา</span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-            </span>
-            <div className="luxury-btn-shimmer"></div>
-            <div className="luxury-btn-glow"></div>
-          </button>
-
-          <button
-            className="luxury-hero-btn luxury-hero-btn-secondary group"
-            onClick={() => (window.location.href = `/${locale}/reference`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">ผลงานของเรา</span>
-              <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
-            </span>
-            <div className="luxury-btn-border"></div>
-            <div className="luxury-btn-glow-secondary"></div>
-          </button>
-        </div>
-      </ImageCarouselHero>
+        <HeroButtons />
+      </DynamicHeroSection>
 
       {/* Sub Navigation - Minimal design without rounded corners */}
       <section className="py-16 bg-white border-b border-gray-200">
@@ -150,9 +156,13 @@ export default function CompanyProfilePage() {
                 </p>
               </div>
             </div>
+            {/* About Image from ABOUT content */}
             <div>
               <Image
-                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src={
+                  aboutImage ||
+                  "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                }
                 alt="Padungsilpa Group Office"
                 className="w-full h-96 object-cover shadow-lg"
                 width={600}
@@ -247,33 +257,7 @@ export default function CompanyProfilePage() {
           </p>
 
           <div className="flex justify-center">
-            <div className="luxury-hero-btn-container">
-              <button
-                className="luxury-hero-btn luxury-hero-btn-primary group"
-                onClick={() =>
-                  (window.location.href = `/${locale}/contact-us`)
-                }>
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="font-semibold tracking-wide">ติดต่อเรา</span>
-                  <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-                </span>
-                <div className="luxury-btn-shimmer"></div>
-                <div className="luxury-btn-glow"></div>
-              </button>
-
-              <button
-                className="luxury-hero-btn luxury-hero-btn-secondary group"
-                onClick={() => (window.location.href = `/${locale}/reference`)}>
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="font-semibold tracking-wide">
-                    ดูผลงานของเรา
-                  </span>
-                  <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
-                </span>
-                <div className="luxury-btn-border"></div>
-                <div className="luxury-btn-glow-secondary"></div>
-              </button>
-            </div>
+            <HeroButtons />
           </div>
         </div>
       </section>

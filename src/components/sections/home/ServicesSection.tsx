@@ -27,70 +27,6 @@ export default function ServicesSection({
   const locale = propLocale || hookLocale;
   const router = useRouter();
 
-  // const products = [
-  //   {
-  //     id: 1,
-  //     title: "PERMATANK และถังน้ำมันแบบต่างๆ",
-  //     shortTitle: "PERMATANK",
-  //     description:
-  //       "ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของ บริษัท ผดุงศิลป์วิศวการ จำกัด ผลิตตามมาตรฐานของ UL และ STEEL TANK INSTITUTE Technology ถังมีความแข็งแรง ทนทาน มีคุณภาพ มีอายุใช้งานยาวนานถึงกว่า 30 ปี",
-  //     image: "/images/services/pds-product-2.webp",
-  //     color: "from-emerald-600 to-emerald-800",
-  //     accent: "#059669",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "งานก่อสร้างสถานีบริการน้ำมัน",
-  //     shortTitle: "ก่อสร้างสถานี",
-  //     description:
-  //       "บริษัท ผดุงศิลป์โยธาการ จำกัด (PCW) เป็นบริษัทฯก่อสร้างชั้นนำที่เชี่ยวชาญและมากด้วยประสบการณ์ในงานก่อสร้างสถานีบริการน้ำมัน และก๊าซ ตลอดจนงานอื่นๆที่เกี่ยวข้อง เนื่องจากมีผลงานเป็นที่เชื่อถือ และได้รับความไว้วางใจ จากบริษัทน้ำมันชั้นนำ",
-  //     image: "/images/services/pds-product-1.webp",
-  //     color: "from-blue-600 to-blue-800",
-  //     accent: "#1e40af",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "จำหน่ายและติดตั้งท่อน้ำมัน",
-  //     shortTitle: "ท่อน้ำมัน 2 ชั้น",
-  //     description:
-  //       "บริษัทฯ ยังได้ทำการขายและติดตั้งท่อน้ำมันผนัง 2 ชั้น ที่ได้รับการรับรองจากกรมธุรกิจพลังงาน",
-  //     image: "/images/services/pds-product-3.webp",
-  //     color: "from-purple-600 to-purple-800",
-  //     accent: "#7c3aed",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
-  //     shortTitle: "ระบบวัดอัตโนมัติ",
-  //     description:
-  //       "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) เป็นตัวแทนจำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน",
-  //     image: "/images/services/pds-product-4.webp",
-  //     color: "from-orange-600 to-orange-800",
-  //     accent: "#ea580c",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "อุปกรณ์เกี่ยวกับถังน้ำมัน",
-  //     shortTitle: "อุปกรณ์ถังน้ำมัน",
-  //     description:
-  //       "บริษัท ผดุงศิลป์วิศวการ จำกัด (PSE) พัฒนาแบบถังน้ำมันใต้ดิน และอุปกรณ์ที่เกี่ยวข้องต่างๆ อย่างต่อเนื่อง",
-  //     image: "/images/services/pds-product-5.webp",
-  //     color: "from-red-600 to-red-800",
-  //     accent: "#dc2626",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "ให้บริการต่างๆเกี่ยวกับถังน้ำมัน",
-  //     shortTitle: "บริการถังน้ำมัน",
-  //     description:
-  //       "• งานฝังถังน้ำมันใต้ดินผนัง 2 ชั้น PERMATANK®\n• งานติดตั้งท่อน้ำมัน 2 ชั้น ยี่ห้อ NUPI ในสถานีบริการน้ำมัน\n• งานตรวจเช็คระบบท่อ และการรั่วซึมของท่อจ่ายน้ำมัน",
-  //     image: "/images/services/pds-product-6.webp",
-  //     color: "from-teal-600 to-teal-800",
-  //     accent: "#0d9488",
-  //   },
-  // ];
-
-  // Auto-play functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
 
@@ -131,7 +67,7 @@ export default function ServicesSection({
   return (
     <section
       id="services"
-      className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap"
+      className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap "
       style={{
         transform: `translateY(${-scrollY * 0.3}px)`,
       }}>
@@ -148,7 +84,7 @@ export default function ServicesSection({
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 py-16">
+      <div className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           {/* Header */}
           {/* Ultra Minimal Luxury Header */}
@@ -182,9 +118,9 @@ export default function ServicesSection({
           {/* Main Content Area */}
           <div className="space-y-12">
             {/* Featured Products Grid - Desktop / Carousel - Mobile */}
-            <div className="space-y-6">
-              {/* Desktop Grid - Hidden on Mobile */}
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="space-y-8">
+              {/* Desktop Grid - Enhanced spacing and sizing */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {products.map((product, index) => (
                   <ProductCard
                     key={product.id}

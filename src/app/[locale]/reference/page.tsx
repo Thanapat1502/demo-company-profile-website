@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import ReferenceCard from "@/components/share/ReferenceCard";
 import {
   useReferenceStore,
   Reference,
@@ -81,34 +83,16 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           {references.map((project) => (
-            <Link
+            <ReferenceCard
               key={project.id}
-              href={`/${locale}/reference/${project.id}`}
-              className="group cursor-pointer block">
-              <div className="card-minimal p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="relative h-48 mb-4 overflow-hidden bg-gray-100">
-                  <Image
-                    src={project.thumbnail || "/images/placeholder-project.jpg"}
-                    alt={getBilingualName(project, locale)}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[var(--primary-blue)] transition-colors tracking-tight">
-                  {getBilingualName(project, locale)}
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  {getBilingualContent(project, "location", locale)}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  {new Date(project.open_at).toLocaleDateString(
-                    locale === "th" ? "th-TH" : "en-US"
-                  )}
-                </p>
-              </div>
-            </Link>
+              reference={project}
+              handleReferenceClick={() => {
+                window.location.href = `/${locale}/reference/${project.id}`;
+              }}
+              locale={locale}
+            />
           ))}
         </div>
 
@@ -169,29 +153,17 @@ const PermatankSection: React.FC<PermatankSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           {references.map((card) => (
-            <div
+            <ReferenceCard
               key={card.id}
-              className="card-minimal p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="relative h-48 mb-4 overflow-hidden bg-gray-100">
-                <Image
-                  src={card.thumbnail || "/images/placeholder-permatank.jpg"}
-                  alt={getBilingualName(card, locale)}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 tracking-tight">
-                {getBilingualName(card, locale)}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {getBilingualContent(card, "type", locale)}
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                {getBilingualContent(card, "location", locale)}
-              </p>
-            </div>
+              reference={card}
+              handleReferenceClick={() => {
+                // For Permatank products, we might want different behavior
+                console.log("Permatank product clicked:", card.id);
+              }}
+              locale={locale}
+            />
           ))}
         </div>
 

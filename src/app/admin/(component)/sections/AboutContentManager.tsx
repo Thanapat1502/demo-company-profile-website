@@ -449,7 +449,11 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
       heroId: "ABOUT_MAIN" as HeroSectionId,
       title: "About Main",
       maxHeroImages: 1,
-      hasCustomSlots: false,
+      hasCustomSlots: true,
+      slotsCount: 1,
+      slotsTitle: "About Main Content Image",
+      contentId: "ABOUT",
+      maxImagesPerSlot: 1,
     },
     "about-history": {
       heroId: "ABOUT_HISTORY" as HeroSectionId,
@@ -467,7 +471,9 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
       maxHeroImages: 1,
       hasCustomSlots: true,
       slotsCount: 2,
-      slotsTitle: "Vision Gallery (2 slots)",
+      slotsTitle: "Vision Images (2 slots, max 1 image each)",
+      contentIds: ["VISION_1", "VISION_2"],
+      maxImagesPerSlot: 1,
     },
     "about-executive": {
       heroId: "ABOUT_EXECUTIVE" as HeroSectionId,
@@ -483,13 +489,16 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
   const initializeCustomSlots = React.useCallback(
     (pageType: string): CustomImageSlot[] => {
       const slotInstructions: { [key: string]: string[] } = {
+        "about-main": [
+          "Upload main about content image (max 1 image) - POST to content ID 'ABOUT'",
+        ],
         "about-history": [
           "Company Origin Gallery (1964-1980): Upload up to 20 images showing the early days and founding of the company",
           "Business Expansion Gallery (1980-present): Upload up to 20 images showing business growth, technology adoption, and modern operations",
         ],
         "about-vision": [
-          "Upload vision statement image",
-          "Upload mission statement image",
+          "Upload vision image (max 1 image) - POST to content ID 'VISION_1'",
+          "Upload mission image (max 1 image) - POST to content ID 'VISION_2'",
         ],
       };
 
@@ -568,6 +577,59 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
             console.log(
               "✅ Loaded HISTORY_2 images:",
               data2.content.images_url.length
+            );
+          }
+        }
+      } else if (pageId === "about-main") {
+        // For about-main, load from contents table with ABOUT ID
+        console.log("📄 Loading about main content from contents table...");
+
+        const response = await fetch("/api/contents?id=ABOUT");
+        if (response.ok) {
+          const data = await response.json();
+          if (
+            data.content &&
+            data.content.images_url &&
+            data.content.images_url.length > 0
+          ) {
+            slots[0].imageUrl = data.content.images_url[0];
+            console.log("✅ Loaded ABOUT image:", data.content.images_url[0]);
+          }
+        }
+      } else if (pageId === "about-vision") {
+        // For about-vision, load from contents table with VISION_1 and VISION_2 IDs
+        console.log("🎯 Loading vision content from contents table...");
+
+        // Load VISION_1 content
+        const response1 = await fetch("/api/contents?id=VISION_1");
+        if (response1.ok) {
+          const data1 = await response1.json();
+          if (
+            data1.content &&
+            data1.content.images_url &&
+            data1.content.images_url.length > 0
+          ) {
+            slots[0].imageUrl = data1.content.images_url[0];
+            console.log(
+              "✅ Loaded VISION_1 image:",
+              data1.content.images_url[0]
+            );
+          }
+        }
+
+        // Load VISION_2 content
+        const response2 = await fetch("/api/contents?id=VISION_2");
+        if (response2.ok) {
+          const data2 = await response2.json();
+          if (
+            data2.content &&
+            data2.content.images_url &&
+            data2.content.images_url.length > 0
+          ) {
+            slots[1].imageUrl = data2.content.images_url[0];
+            console.log(
+              "✅ Loaded VISION_2 image:",
+              data2.content.images_url[0]
             );
           }
         }
@@ -676,6 +738,83 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
               throw new Error("Failed to update HISTORY_2 content");
             }
             console.log("✅ Updated HISTORY_2 content");
+          }
+        } else if (pageId === "about-main") {
+          // Handle about-main page with ABOUT content upload
+          console.log("📄 Updating about main content...");
+
+          const slot = customSlots[0];
+          if (slot && slot.image) {
+            const formData = new FormData();
+            formData.append("id", "ABOUT");
+            formData.append("page", "ABOUT");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot.imageUrl ? [slot.imageUrl] : [])
+            );
+            formData.append("image_0", slot.image);
+
+            const response = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to update ABOUT content");
+            }
+            console.log("✅ Updated ABOUT content");
+          }
+        } else if (pageId === "about-vision") {
+          // Handle about-vision page with VISION_1 and VISION_2 uploads
+          console.log("🎯 Updating vision content...");
+
+          // Update VISION_1 (slot 0)
+          const slot1 = customSlots[0];
+          if (slot1 && slot1.image) {
+            const formData = new FormData();
+            formData.append("id", "VISION_1");
+            formData.append("page", "VISION");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot1.imageUrl ? [slot1.imageUrl] : [])
+            );
+            formData.append("image_0", slot1.image);
+
+            const response1 = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
+            });
+
+            if (!response1.ok) {
+              throw new Error("Failed to update VISION_1 content");
+            }
+            console.log("✅ Updated VISION_1 content");
+          }
+
+          // Update VISION_2 (slot 1)
+          const slot2 = customSlots[1];
+          if (slot2 && slot2.image) {
+            const formData = new FormData();
+            formData.append("id", "VISION_2");
+            formData.append("page", "VISION");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot2.imageUrl ? [slot2.imageUrl] : [])
+            );
+            formData.append("image_0", slot2.image);
+
+            const response2 = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
+            });
+
+            if (!response2.ok) {
+              throw new Error("Failed to update VISION_2 content");
+            }
+            console.log("✅ Updated VISION_2 content");
           }
         } else {
           // Handle other pages with existing logic

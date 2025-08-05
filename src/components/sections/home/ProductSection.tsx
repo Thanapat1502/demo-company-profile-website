@@ -91,7 +91,7 @@ export default function ProductSection({
   if (loading) {
     return (
       <section className="section-minimal bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">
@@ -149,21 +149,19 @@ export default function ProductSection({
         </div>
 
         {/* View All Button */}
-        <div className="text-center mt-12">
-          <div className="luxury-hero-btn-container max-w-xs mx-auto">
-            <button
-              className="luxury-hero-btn luxury-hero-btn-primary group"
-              onClick={() => router.push(`/${locale}/products-services`)}>
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="font-semibold tracking-wide">
-                  {locale === "th" ? "ดูผลิตภัณฑ์ทั้งหมด" : "View All Products"}
-                </span>
-                <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+        <div className="flex justify-center items-center mt-12 w-full ">
+          <button
+            className="luxury-hero-btn luxury-hero-btn-primary"
+            onClick={() => router.push(`/${locale}/products-services`)}>
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span className="font-semibold tracking-wide">
+                {locale === "th" ? "ดูผลิตภัณฑ์ทั้งหมด" : "View All Products"}
               </span>
-              <div className="luxury-btn-shimmer"></div>
-              <div className="luxury-btn-glow"></div>
-            </button>
-          </div>
+              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+            </span>
+            <div className="luxury-btn-shimmer"></div>
+            <div className="luxury-btn-glow"></div>
+          </button>
         </div>
       </div>
     </section>

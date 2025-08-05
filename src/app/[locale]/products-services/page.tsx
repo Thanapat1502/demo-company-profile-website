@@ -1,10 +1,10 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import HeroButtons from "@/components/ui/HeroButtons";
 import ConstructionServiceSection from "@/components/sections/products-services/ConstructionServiceSection";
 import PermatankSection from "@/components/sections/products-services/PermatankSection";
 import PipeInstallationSection from "@/components/sections/products-services/PipeInstallationSection";
@@ -117,8 +117,8 @@ export default function ProductsServicesPage() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <ImageCarouselHero
-        images={["/images/hero-sections/hero-banner-3.jpg"]}
+      <DynamicHeroSection
+        pageId="PRODUCTS_SERVICE"
         title={locale === "th" ? "ผลิตภัณฑ์และบริการ" : "Products & Services"}
         subtitle={locale === "th" ? "บริการครบวงจร" : "Complete Solutions"}
         description={
@@ -126,36 +126,10 @@ export default function ProductsServicesPage() {
             ? "ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
             : "High-quality products and services\nfor gas stations and energy industry"
         }
+        fallbackImages={["/images/hero-sections/hero-banner-3.jpg"]}
         autoSlideDelay={6000}>
-        {/* Luxury Hero Buttons */}
-        <div className="luxury-hero-btn-container">
-          <button
-            className="luxury-hero-btn luxury-hero-btn-primary group"
-            onClick={() => (window.location.href = `/${locale}/contact-us`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">
-                {locale === "th" ? "ขอใบเสนอราคา" : "Request Quote"}
-              </span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-            </span>
-            <div className="luxury-btn-shimmer"></div>
-            <div className="luxury-btn-glow"></div>
-          </button>
-
-          <button
-            className="luxury-hero-btn luxury-hero-btn-secondary group"
-            onClick={() => (window.location.href = `/${locale}/reference`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">
-                {locale === "th" ? "ดูผลงาน" : "View Portfolio"}
-              </span>
-              <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
-            </span>
-            <div className="luxury-btn-border"></div>
-            <div className="luxury-btn-glow-secondary"></div>
-          </button>
-        </div>
-      </ImageCarouselHero>
+        <HeroButtons />
+      </DynamicHeroSection>
 
       {/* Service Sections */}
       {/**งานก่อสร้างสถานีบริการน้ำมัน gallery*/}

@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, ArrowRight } from "lucide-react";
+import { Search } from "lucide-react";
 import { useLocale } from "next-intl";
 import MainLayout from "@/components/layout/MainLayout";
 import { useNewsStore } from "@/store/zustand/newsStore";
 import NewsHero from "@/components/news/NewsHero";
 import NewsCard from "@/components/news/NewsCard";
 import CategoryFilter from "@/components/news/CategoryFilter";
+import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import HeroButtons from "@/components/ui/HeroButtons";
 import LoadingOverlay, {
   NewsGridSkeleton,
 } from "@/components/news/LoadingOverlay";
@@ -101,34 +103,23 @@ export default function NewsEventsPage() {
       {heroNews ? (
         <NewsHero news={heroNews} locale={locale} />
       ) : (
-        <section className="relative h-[70vh] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-          <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="max-w-4xl text-center">
-                <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  {locale === "th" ? "ข่าวสารและกิจกรรม" : "News & Events"}
-                </h1>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-                  {locale === "th"
-                    ? "อัพเดทข่าวสารและความเคลื่อนไหวของบริษัทอย่างต่อเนื่อง"
-                    : "Stay updated with our latest news and company activities"}
-                </p>
-                <button
-                  onClick={() =>
-                    document
-                      .getElementById("news-grid")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl group">
-                  <span>
-                    {locale === "th" ? "ดูข่าวสารทั้งหมด" : "View All News"}
-                  </span>
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <DynamicHeroSection
+          pageId="NEWS"
+          title={
+            locale === "th"
+              ? "ติดตามข่าวสารล่าสุด"
+              : "Stay Updated with Latest News"
+          }
+          subtitle={locale === "th" ? "ข่าวสารและกิจกรรม" : "News & Events"}
+          description={
+            locale === "th"
+              ? "อัพเดทข่าวสารและความเคลื่อนไหวของบริษัทอย่างต่อเนื่อง พร้อมข้อมูลโครงการและนวัตกรรมใหม่ๆ"
+              : "Stay updated with our latest news, company activities, and innovative projects"
+          }
+          fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
+          autoSlideDelay={6000}>
+          <HeroButtons />
+        </DynamicHeroSection>
       )}
 
       {/* Search and Filter */}

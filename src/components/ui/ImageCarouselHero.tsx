@@ -113,7 +113,7 @@ export default function ImageCarouselHero({
 
       {/* Luxury Content Container */}
       <div
-        className={`relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${
+        className={`relative z-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${
           isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}>
         <div className="max-w-5xl mx-auto">

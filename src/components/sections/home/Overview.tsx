@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Shield, Award, Users, Wrench, ArrowRight } from "lucide-react";
+import { useLocale } from "next-intl";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
+import ImageModal from "@/components/ui/ImageModal";
 import { Content } from "@/store/zustand/contentStore";
 
 interface OverviewProps {
@@ -15,6 +18,10 @@ export default function Overview({
   loading = false,
   locale = "th",
 }: OverviewProps) {
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
+
   const features = [
     {
       icon: Shield,
@@ -89,9 +96,9 @@ export default function Overview({
   }
 
   return (
-    <section className="section-minimal bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section className="py-12 lg:py-16 bg-white">
+      <div className=" px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8 flex flex-col justify-center">
             {/* Section Label - Matching ServicesSection style */}
@@ -191,20 +198,34 @@ export default function Overview({
           </div>
 
           {/* Right Content - Balanced Minimal Carousel */}
-          <div className="relative flex items-center justify-center">
+          <div className="relative flex items-center justify-center w-full">
             <MinimalCarousel
               images={companyImages}
               alt="Company Overview"
-              aspectRatio="3/4"
+              aspectRatio="4/5"
               showNavigation={true}
               showIndicators={true}
               autoPlay={true}
               interval={5000}
-              className="w-full max-w-md mx-auto shadow-2xl"
+              className="w-full shadow-2xl"
+              enableModal={true}
+              onImageClick={(index) => {
+                setModalImageIndex(index);
+                setIsModalOpen(true);
+              }}
             />
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        images={companyImages}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialIndex={modalImageIndex}
+        alt="Company Overview"
+      />
     </section>
   );
 }
