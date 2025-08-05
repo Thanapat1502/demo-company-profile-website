@@ -47,8 +47,8 @@ async function uploadContentImage(
   const fileName = `${page}_${imageIndex}_${Date.now()}.${fileExt}`;
   console.log("- Generated filename:", fileName);
 
-  // Create the full file path within the images bucket - upload to content_store
-  const filePath = `content_store/${fileName}`;
+  // Create the full file path within the images bucket - upload to public/home_content
+  const filePath = `public/home_content/${fileName}`;
   console.log("- File path:", filePath);
 
   // Upload to Supabase Storage (images bucket)

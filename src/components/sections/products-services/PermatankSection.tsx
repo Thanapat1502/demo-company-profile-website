@@ -3,6 +3,7 @@
 import { Fuel, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
@@ -56,26 +57,53 @@ export default function PermatankSection({
     .filter((c) => c.type === "gallery")
     .flatMap((c) => c.images_url || []);
 
-  // Get video URL from content
+  // Get video URL from content and ensure proper embed format
   const videoContent = content.find((c) => c.type === "video");
   const videoUrl =
-    videoContent?.video_url || "https://www.youtube.com/embed/HTzu3zmGk80";
+    videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
 
   return (
     <section className="section-minimal bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Video Section - Minimal design without rounded corners */}
-          <div className="relative">
-            <div className="relative h-96 overflow-hidden shadow-lg">
-              <iframe
-                src={videoUrl}
-                title={serviceName}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+          {/* Debug Info - Remove in production */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="col-span-full bg-yellow-100 p-4 rounded-lg mb-4">
+              <h4 className="font-bold text-yellow-800">🐛 Debug Info:</h4>
+              <p className="text-sm text-yellow-700">
+                <strong>Video URL:</strong> {videoUrl}
+              </p>
+              <p className="text-sm text-yellow-700">
+                <strong>Is Embed Format:</strong>{" "}
+                {videoUrl.includes("/embed/") ? "✅ Yes" : "❌ No"}
+              </p>
+              <p className="text-sm text-yellow-700">
+                <strong>Video Content Found:</strong>{" "}
+                {videoContent ? "✅ Yes" : "❌ No"}
+              </p>
+              {videoContent && (
+                <p className="text-sm text-yellow-700">
+                  <strong>Original URL:</strong> {videoContent.video_url}
+                </p>
+              )}
+              <div className="mt-2">
+                <button
+                  onClick={() => window.open(videoUrl, "_blank")}
+                  className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
+                  🔗 Test Video URL in New Tab
+                </button>
+              </div>
             </div>
+          )}
+
+          {/* Video Section - Using YouTubeEmbed component */}
+          <div className="relative">
+            <YouTubeEmbed
+              url={videoUrl}
+              title={serviceName}
+              className="shadow-lg"
+              enableDebug={process.env.NODE_ENV === "development"}
+            />
           </div>
 
           <div className="space-y-8">

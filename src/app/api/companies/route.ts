@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { supabase } from "@/lib/supabase";
 
 // Create authenticated Supabase client
 async function createAuthenticatedClient() {
@@ -47,15 +48,9 @@ async function verifyAuth(supabase: ReturnType<typeof createServerClient>) {
   }
 }
 
+// GET /api/companies (Public - No auth required)
 export async function GET() {
   try {
-    const supabase = await createAuthenticatedClient();
-    const user = await verifyAuth(supabase);
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const { data, error } = await supabase.from("companies").select("*");
     return NextResponse.json({ data, error });
   } catch (error) {

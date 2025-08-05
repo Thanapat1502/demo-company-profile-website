@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
-import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import ExecutiveGrid from "@/components/executive/ExecutiveGrid";
@@ -124,29 +123,29 @@ export default function ExecutiveTeamPage() {
             </div>
           </div>
 
-          <div className="flex justify-center mb-16">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="flex justify-start mb-16">
+            <div className="max-w-4xl space-y-8">
               <div className="prose prose-lg max-w-none">
-                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6 text-left">
                   {locale === "th"
                     ? "ในฐานะกรรมการผู้จัดการของบริษัท ผดุงศิลป์โยธาการ จำกัด ผมรู้สึกภาคภูมิใจที่ได้เป็นส่วนหนึ่งของการพัฒนาอุตสาหกรรมพลังงานของประเทศไทย มาเป็นเวลากว่า 30 ปี"
                     : "As Managing Director of Padungsilpa Engineering Co., Ltd., I am proud to be part of Thailand's energy industry development for over 30 years."}
                 </p>
 
-                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6 text-left">
                   {locale === "th"
                     ? "เราได้สร้างสรรค์โครงการสถานีบริการน้ำมันที่มีคุณภาพและปลอดภัย ด้วยเทคโนโลยี PERMATANK® ที่เป็นมาตรฐานสากล และทีมงานมืออาชีพที่มีประสบการณ์และความเชี่ยวชาญ"
                     : "We have created quality and safe fuel station projects with international standard PERMATANK® technology and professional teams with experience and expertise."}
                 </p>
 
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p className="text-lg text-gray-600 leading-relaxed text-left">
                   {locale === "th"
                     ? "เราจะยังคงมุ่งมั่นในการให้บริการที่เป็นเลิศ และสร้างสรรค์นวัตกรรมเพื่อตอบสนองความต้องการของลูกค้า และสังคมอย่างยั่งยืน"
                     : "We will continue to strive for excellent service and create innovations to meet customer and society needs sustainably."}
                 </p>
               </div>
 
-              <div className="flex items-center justify-center space-x-4 pt-6">
+              <div className="flex items-center space-x-4 pt-6">
                 <div className="w-16 h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center rounded-lg">
                   <Mail className="w-8 h-8 text-[var(--primary-blue)]" />
                 </div>

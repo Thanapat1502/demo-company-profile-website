@@ -60,8 +60,8 @@ async function uploadProductImage(
   return publicUrlData.publicUrl;
 }
 
-// GET /api/products
-export const GET = withAuth(async (req: NextRequest, supabase) => {
+// GET /api/products (Public - No auth required)
+export async function GET(req: NextRequest) {
   try {
     const { data, error } = await supabase
       .from(table)
@@ -82,7 +82,7 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
       { status: 500 }
     );
   }
-});
+}
 
 // POST /api/products
 export const POST = withAuth(async (req: NextRequest, supabase) => {

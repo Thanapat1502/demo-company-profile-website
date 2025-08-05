@@ -21,6 +21,7 @@ import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
 import MinimalButton from "@/components/ui/MinimalButton";
+import PolicySection from "@/components/sections/pds-group/PolicySection";
 
 export default function MissionCommitmentPage() {
   const t = useTranslations();
@@ -29,25 +30,25 @@ export default function MissionCommitmentPage() {
   const subPages = [
     {
       id: "overview",
-      title: "ภาพรวมบริษัท",
+      title: locale === "th" ? "ภาพรวมบริษัท" : "Company Overview",
       icon: Building,
       href: `/pds-group`,
     },
     {
       id: "history",
-      title: "ประวัติความเป็นมา",
+      title: locale === "th" ? "ประวัติความเป็นมา" : "Company History",
       icon: History,
       href: `/pds-group/history`,
     },
     {
       id: "team",
-      title: "ทีมผู้บริหาร",
+      title: locale === "th" ? "ทีมผู้บริหาร" : "Executive Team",
       icon: Users2,
       href: `/pds-group/executive-team`,
     },
     {
       id: "mission",
-      title: "วิสัยทัศน์และพันธกิจ",
+      title: locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision",
       icon: Target,
       href: `/pds-group/mission-commitment`,
     },
@@ -103,15 +104,19 @@ export default function MissionCommitmentPage() {
       {/* Hero Section */}
       <ImageCarouselHero
         images={["/images/hero-sections/hero-banner-4.jpg"]}
-        title={`วิสัยทัศน์และพันธกิจ`}
-        subtitle="หลักการและค่านิยม"
-        description={`มุ่งมั่นสู่ความเป็นเลิศ\nด้วยความรับผิดชอบต่อสังคม`}
+        title={locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision"}
+        subtitle={locale === "th" ? "หลักการและค่านิยม" : "Principles & Values"}
+        description={
+          locale === "th"
+            ? "มุ่งมั่นสู่ความเป็นเลิศ\nด้วยความรับผิดชอบต่อสังคม"
+            : "Striving for Excellence\nwith Social Responsibility"
+        }
         autoSlideDelay={6000}>
         <MinimalButton
           href={`/${locale}/contact-us`}
           variant="white"
           icon={<ArrowRight className="w-5 h-5" />}>
-          ติดต่อเรา
+          {locale === "th" ? "ติดต่อเรา" : "Contact Us"}
         </MinimalButton>
       </ImageCarouselHero>
 
@@ -251,56 +256,8 @@ export default function MissionCommitmentPage() {
         </div>
       </section>
 
-      {/* Call to Action - Using primary color and luxury buttons */}
-      <section
-        className="section-minimal"
-        style={{ background: "var(--primary-blue)" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            ร่วมสร้างอนาคตที่ยั่งยืน
-          </h2>
-
-          {/* Enhanced Elegant Line with Glow */}
-          <div className="relative flex items-center justify-center mb-8">
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80"></div>
-            <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent blur-sm"></div>
-          </div>
-
-          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
-            มาร่วมเป็นส่วนหนึ่งในการสร้างสรรค์โครงการที่มีคุณค่าไปกับเรา
-          </p>
-
-          <div className="flex justify-center">
-            <div className="luxury-hero-btn-container">
-              <button
-                className="luxury-hero-btn luxury-hero-btn-primary group"
-                onClick={() =>
-                  (window.location.href = `/${locale}/contact-us`)
-                }>
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="font-semibold tracking-wide">ติดต่อเรา</span>
-                  <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-                </span>
-                <div className="luxury-btn-shimmer"></div>
-                <div className="luxury-btn-glow"></div>
-              </button>
-
-              <button
-                className="luxury-hero-btn luxury-hero-btn-secondary group"
-                onClick={() => (window.location.href = `/${locale}/reference`)}>
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="font-semibold tracking-wide">
-                    ดูผลงานของเรา
-                  </span>
-                  <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
-                </span>
-                <div className="luxury-btn-border"></div>
-                <div className="luxury-btn-glow-secondary"></div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Policy Section - Company Operating Policy */}
+      <PolicySection />
     </MainLayout>
   );
 }

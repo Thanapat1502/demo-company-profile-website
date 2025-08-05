@@ -190,17 +190,17 @@ export default function Overview({
             </div>
           </div>
 
-          {/* Right Content - Minimal Carousel */}
-          <div className="relative flex items-center">
+          {/* Right Content - Balanced Minimal Carousel */}
+          <div className="relative flex items-center justify-center">
             <MinimalCarousel
               images={companyImages}
               alt="Company Overview"
-              aspectRatio="4/5"
+              aspectRatio="3/4"
               showNavigation={true}
               showIndicators={true}
               autoPlay={true}
               interval={5000}
-              className="w-full max-w-lg mx-auto"
+              className="w-full max-w-md mx-auto shadow-2xl"
             />
           </div>
         </div>

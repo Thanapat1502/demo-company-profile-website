@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/auth-middleware";
+import { supabase } from "@/lib/supabase";
 
 // Hero section IDs enum
 export type HeroSectionId =
@@ -67,8 +68,8 @@ async function uploadHeroImage(
   return publicUrlData.publicUrl;
 }
 
-// GET - Fetch hero section by ID
-export const GET = withAuth(async (req: NextRequest, supabase) => {
+// GET - Fetch hero section by ID (Public - No auth required)
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id") as HeroSectionId;
@@ -126,7 +127,7 @@ export const GET = withAuth(async (req: NextRequest, supabase) => {
       { status: 500 }
     );
   }
-});
+}
 
 // PUT - Create or Update hero section
 export const PUT = withAuth(async (req: NextRequest, supabase) => {

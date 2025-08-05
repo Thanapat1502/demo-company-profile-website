@@ -3,6 +3,7 @@
 import { Cog, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
+import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
@@ -56,25 +57,23 @@ export default function ATGSystemSection({
     .filter((c) => c.type === "gallery")
     .flatMap((c) => c.images_url || []);
 
-  // Get video URL from content
+  // Get video URL from content and ensure proper embed format
   const videoContent = content.find((c) => c.type === "video");
-  const videoUrl = videoContent?.video_url;
+  const videoUrl =
+    videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
 
   return (
     <section className="section-minimal bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Video Section - Minimal design without rounded corners */}
+          {/* Video Section - Using YouTubeEmbed component */}
           <div className="relative">
-            <div className="relative h-96 overflow-hidden shadow-lg">
-              <iframe
-                src="https://www.youtube.com/embed/udq5UVLwpds"
-                title="ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <YouTubeEmbed
+              url={videoUrl}
+              title={serviceName}
+              className="shadow-lg"
+              enableDebug={process.env.NODE_ENV === "development"}
+            />
           </div>
 
           <div className="space-y-8">
