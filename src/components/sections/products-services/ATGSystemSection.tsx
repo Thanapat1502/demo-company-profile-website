@@ -72,7 +72,6 @@ export default function ATGSystemSection({
               url={videoUrl}
               title={serviceName}
               className="shadow-lg"
-              enableDebug={process.env.NODE_ENV === "development"}
             />
           </div>
 

@@ -56,23 +56,6 @@ export default function ContactUsPage() {
     },
   ];
 
-  const offices = [
-    {
-      name: "สำนักงานใหญ่",
-      address: "123 ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพมหานคร 10400",
-      phone: "+66 2 573 3533",
-      email: "bangkok@padungsilpa.group",
-      hours: "จันทร์ - ศุกร์: 8:00 - 17:00 น.",
-    },
-    {
-      name: "สำนักงานภูมิภาค",
-      address: "456 ถนนศรีจันทร์ ตำบลท่าข้าม อำเภอเมือง จังหวัดกาญจนบุรี 71000",
-      phone: "+66 34 567 890",
-      email: "regional@padungsilpa.group",
-      hours: "จันทร์ - ศุกร์: 8:00 - 17:00 น.",
-    },
-  ];
-
   const inquiryTypes = [
     { key: "general", label: "สอบถามทั่วไป" },
     { key: "quote", label: "ขอใบเสนอราคา" },

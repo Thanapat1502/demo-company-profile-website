@@ -66,43 +66,12 @@ export default function PermatankSection({
     <section className="section-minimal bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Debug Info - Remove in production */}
-          {process.env.NODE_ENV === "development" && (
-            <div className="col-span-full bg-yellow-100 p-4 rounded-lg mb-4">
-              <h4 className="font-bold text-yellow-800">🐛 Debug Info:</h4>
-              <p className="text-sm text-yellow-700">
-                <strong>Video URL:</strong> {videoUrl}
-              </p>
-              <p className="text-sm text-yellow-700">
-                <strong>Is Embed Format:</strong>{" "}
-                {videoUrl.includes("/embed/") ? "✅ Yes" : "❌ No"}
-              </p>
-              <p className="text-sm text-yellow-700">
-                <strong>Video Content Found:</strong>{" "}
-                {videoContent ? "✅ Yes" : "❌ No"}
-              </p>
-              {videoContent && (
-                <p className="text-sm text-yellow-700">
-                  <strong>Original URL:</strong> {videoContent.video_url}
-                </p>
-              )}
-              <div className="mt-2">
-                <button
-                  onClick={() => window.open(videoUrl, "_blank")}
-                  className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
-                  🔗 Test Video URL in New Tab
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Video Section - Using YouTubeEmbed component */}
           <div className="relative">
             <YouTubeEmbed
               url={videoUrl}
               title={serviceName}
               className="shadow-lg"
-              enableDebug={process.env.NODE_ENV === "development"}
             />
           </div>
 

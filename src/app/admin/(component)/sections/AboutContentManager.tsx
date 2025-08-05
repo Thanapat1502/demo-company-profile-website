@@ -19,8 +19,12 @@ interface CustomImageSlot {
   id: string;
   image?: File;
   imageUrl?: string;
+  images?: File[]; // For gallery mode (multiple images)
+  imageUrls?: string[]; // For gallery mode (existing images)
   instruction: string;
   order: number;
+  isGalleryMode?: boolean;
+  maxImages?: number;
 }
 
 // Hero Image Upload Component (reused from main)
@@ -170,14 +174,15 @@ interface IndividualSlotsUploadProps {
   loading: boolean;
   maxSlots: number;
   title: string;
+  isGalleryMode?: boolean;
 }
 
 const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
   slots,
   onSlotsChange,
   loading,
-  maxSlots,
   title,
+  isGalleryMode = false,
 }) => {
   const handleImageUpload = (slotIndex: number, file: File) => {
     const newSlots = [...slots];
@@ -185,6 +190,24 @@ const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
       ...newSlots[slotIndex],
       image: file,
       imageUrl: URL.createObjectURL(file),
+    };
+    onSlotsChange(newSlots);
+  };
+
+  const handleMultipleImageUpload = (slotIndex: number, files: File[]) => {
+    const newSlots = [...slots];
+    const currentImages = newSlots[slotIndex].images || [];
+    const currentUrls = newSlots[slotIndex].imageUrls || [];
+    const maxImages = newSlots[slotIndex].maxImages || 20;
+
+    // Calculate remaining slots
+    const totalExisting = currentImages.length + currentUrls.length;
+    const remainingSlots = maxImages - totalExisting;
+    const filesToAdd = files.slice(0, remainingSlots);
+
+    newSlots[slotIndex] = {
+      ...newSlots[slotIndex],
+      images: [...currentImages, ...filesToAdd],
     };
     onSlotsChange(newSlots);
   };
@@ -199,6 +222,30 @@ const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
     onSlotsChange(newSlots);
   };
 
+  const removeGalleryImage = (
+    slotIndex: number,
+    imageIndex: number,
+    isExisting: boolean
+  ) => {
+    const newSlots = [...slots];
+    if (isExisting) {
+      const newUrls = [...(newSlots[slotIndex].imageUrls || [])];
+      newUrls.splice(imageIndex, 1);
+      newSlots[slotIndex] = {
+        ...newSlots[slotIndex],
+        imageUrls: newUrls,
+      };
+    } else {
+      const newImages = [...(newSlots[slotIndex].images || [])];
+      newImages.splice(imageIndex, 1);
+      newSlots[slotIndex] = {
+        ...newSlots[slotIndex],
+        images: newImages,
+      };
+    }
+    onSlotsChange(newSlots);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -209,59 +256,162 @@ const IndividualSlotsUpload: React.FC<IndividualSlotsUploadProps> = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h4 className="text-lg font-medium text-gray-900">{title}</h4>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-8">
         {slots.map((slot, index) => (
           <div
             key={slot.id}
-            className="border border-gray-200 rounded-lg p-4 space-y-4">
+            className="border border-gray-200 rounded-lg p-6 space-y-6">
             {/* Slot Header */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">
-                Slot {index + 1}
-              </span>
-            </div>
-
-            {/* Image Upload Area */}
-            <div className="space-y-2">
-              {slot.imageUrl ? (
-                <div className="relative">
-                  <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={slot.imageUrl}
-                      alt={`Slot ${index + 1} image`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
-                    <X size={16} />
-                  </button>
-                </div>
-              ) : (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                  <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                  <label className="cursor-pointer">
-                    <span className="text-sm text-blue-600 hover:text-blue-700">
-                      Upload Image
-                    </span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleImageUpload(index, file);
-                      }}
-                      className="hidden"
-                    />
-                  </label>
-                </div>
+            <div className="border-b border-gray-200 pb-4">
+              <h5 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-blue-600" />
+                Gallery Slot {index + 1}
+              </h5>
+              {isGalleryMode && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {(slot.imageUrls?.length || 0) + (slot.images?.length || 0)}/
+                  {slot.maxImages || 20} images
+                </p>
               )}
             </div>
+
+            {isGalleryMode ? (
+              // Gallery Mode - Multiple Images
+              <div className="space-y-6">
+                {/* Existing Images */}
+                {slot.imageUrls && slot.imageUrls.length > 0 && (
+                  <div>
+                    <h6 className="text-sm font-medium text-gray-700 mb-3">
+                      Current Images ({slot.imageUrls.length})
+                    </h6>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {slot.imageUrls.map((imageUrl, imgIndex) => (
+                        <div
+                          key={`existing-${imgIndex}`}
+                          className="relative group">
+                          <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                            <img
+                              src={imageUrl}
+                              alt={`Slot ${index + 1} image ${imgIndex + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              removeGalleryImage(index, imgIndex, true)
+                            }
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upload Area */}
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors">
+                  <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                  <div className="space-y-2">
+                    <label className="cursor-pointer">
+                      <span className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                        Add Images
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => {
+                          const files = Array.from(e.target.files || []);
+                          if (files.length > 0)
+                            handleMultipleImageUpload(index, files);
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                    <p className="text-gray-500 text-sm">
+                      PNG, JPG up to 10MB each (max {slot.maxImages || 20}{" "}
+                      images)
+                    </p>
+                  </div>
+                </div>
+
+                {/* New Images Preview */}
+                {slot.images && slot.images.length > 0 && (
+                  <div>
+                    <h6 className="text-sm font-medium text-gray-700 mb-3">
+                      New Images to Upload ({slot.images.length})
+                    </h6>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {slot.images.map((image, imgIndex) => (
+                        <div key={`new-${imgIndex}`} className="relative group">
+                          <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                            <img
+                              src={URL.createObjectURL(image)}
+                              alt={`New slot ${index + 1} image ${
+                                imgIndex + 1
+                              }`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              removeGalleryImage(index, imgIndex, false)
+                            }
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // Single Image Mode
+              <div className="space-y-2">
+                {slot.imageUrl ? (
+                  <div className="relative">
+                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                      <img
+                        src={slot.imageUrl}
+                        alt={`Slot ${index + 1} image`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                    <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                    <label className="cursor-pointer">
+                      <span className="text-sm text-blue-600 hover:text-blue-700">
+                        Upload Image
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(index, file);
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Instruction Display */}
             <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
@@ -306,8 +456,10 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
       title: "About History",
       maxHeroImages: 1,
       hasCustomSlots: true,
-      slotsCount: 6,
-      slotsTitle: "History Timeline (6 slots)",
+      slotsCount: 2,
+      slotsTitle: "History Gallery (2 slots, max 20 images each)",
+      isGalleryMode: true,
+      maxImagesPerSlot: 20,
     },
     "about-vision": {
       heroId: "ABOUT_VISION" as HeroSectionId,
@@ -332,12 +484,8 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     (pageType: string): CustomImageSlot[] => {
       const slotInstructions: { [key: string]: string[] } = {
         "about-history": [
-          "Upload founding year image",
-          "Upload early development image",
-          "Upload expansion period image",
-          "Upload milestone achievement image",
-          "Upload recent development image",
-          "Upload current status image",
+          "Company Origin Gallery (1964-1980): Upload up to 20 images showing the early days and founding of the company",
+          "Business Expansion Gallery (1980-present): Upload up to 20 images showing business growth, technology adoption, and modern operations",
         ],
         "about-vision": [
           "Upload vision statement image",
@@ -347,15 +495,21 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
 
       const count = (currentConfig as any).slotsCount || 0;
       const instructions = slotInstructions[pageType] || [];
+      const isGalleryMode = (currentConfig as any).isGalleryMode || false;
+      const maxImagesPerSlot = (currentConfig as any).maxImagesPerSlot || 1;
 
       return Array.from({ length: count }, (_, index) => ({
         id: `${pageType}-slot-${index}`,
         instruction:
           instructions[index] || `Upload image for slot ${index + 1}`,
         order: index,
+        isGalleryMode,
+        maxImages: maxImagesPerSlot,
+        images: [],
+        imageUrls: [],
       }));
     },
-    [(currentConfig as any).slotsCount]
+    [currentConfig]
   );
 
   // Load existing content
@@ -386,19 +540,53 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     if (!currentConfig.hasCustomSlots) return;
 
     try {
-      await fetchContent(pageId, "gallery");
-
       const slots = initializeCustomSlots(pageId);
-      if (content && content.length > 0) {
-        const contentData = content[0];
-        if (contentData.images_url) {
-          contentData.images_url.forEach((url: string, index: number) => {
-            if (slots[index]) {
-              slots[index].imageUrl = url;
-            }
-          });
+
+      if (pageId === "about-history") {
+        // For about-history, load from contents table with HISTORY_1 and HISTORY_2 IDs
+        console.log("🏛️ Loading history content from contents table...");
+
+        // Load HISTORY_1 content
+        const response1 = await fetch("/api/contents?id=HISTORY_1");
+        if (response1.ok) {
+          const data1 = await response1.json();
+          if (data1.content && data1.content.images_url) {
+            slots[0].imageUrls = data1.content.images_url;
+            console.log(
+              "✅ Loaded HISTORY_1 images:",
+              data1.content.images_url.length
+            );
+          }
+        }
+
+        // Load HISTORY_2 content
+        const response2 = await fetch("/api/contents?id=HISTORY_2");
+        if (response2.ok) {
+          const data2 = await response2.json();
+          if (data2.content && data2.content.images_url) {
+            slots[1].imageUrls = data2.content.images_url;
+            console.log(
+              "✅ Loaded HISTORY_2 images:",
+              data2.content.images_url.length
+            );
+          }
+        }
+      } else {
+        // For other pages, use the existing logic
+        await fetchContent(pageId, "gallery");
+
+        if (content && content.length > 0) {
+          const contentData = content[0];
+          if (contentData.images_url) {
+            contentData.images_url.forEach((url: string, index: number) => {
+              if (slots[index]) {
+                slots[index].imageUrl = url;
+              }
+            });
+          }
         }
       }
+
       setCustomSlots(slots);
     } catch (error) {
       console.error("Failed to load custom content:", error);
@@ -432,28 +620,88 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
 
       // Handle custom content uploads
       if (currentConfig.hasCustomSlots) {
-        const slotsWithImages = customSlots.filter((slot) => slot.image);
-        if (slotsWithImages.length > 0) {
-          const existingContent = content.find(
-            (c) => c.page === pageId && c.type === "gallery"
-          );
-          const slotImages = slotsWithImages.map((slot) => slot.image!);
+        if (pageId === "about-history") {
+          // Handle about-history page with HISTORY_1 and HISTORY_2 uploads
+          console.log("🏛️ Updating history content...");
 
-          if (existingContent) {
-            await updateContent(existingContent.id, {
-              page: pageId,
-              type: "gallery",
-              images: slotImages,
-              existing_images: customSlots
-                .filter((slot) => slot.imageUrl && !slot.image)
-                .map((slot) => slot.imageUrl!),
+          // Update HISTORY_1 (slot 0)
+          const slot1 = customSlots[0];
+          if (slot1 && (slot1.images?.length || slot1.imageUrls?.length)) {
+            const formData = new FormData();
+            formData.append("id", "HISTORY_1");
+            formData.append("page", "HISTORY");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot1.imageUrls || [])
+            );
+
+            slot1.images?.forEach((file, index) => {
+              formData.append(`image_${index}`, file);
             });
-          } else {
-            await createContent({
-              page: pageId,
-              type: "gallery",
-              images: slotImages,
+
+            const response1 = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
             });
+
+            if (!response1.ok) {
+              throw new Error("Failed to update HISTORY_1 content");
+            }
+            console.log("✅ Updated HISTORY_1 content");
+          }
+
+          // Update HISTORY_2 (slot 1)
+          const slot2 = customSlots[1];
+          if (slot2 && (slot2.images?.length || slot2.imageUrls?.length)) {
+            const formData = new FormData();
+            formData.append("id", "HISTORY_2");
+            formData.append("page", "HISTORY");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot2.imageUrls || [])
+            );
+
+            slot2.images?.forEach((file, index) => {
+              formData.append(`image_${index}`, file);
+            });
+
+            const response2 = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
+            });
+
+            if (!response2.ok) {
+              throw new Error("Failed to update HISTORY_2 content");
+            }
+            console.log("✅ Updated HISTORY_2 content");
+          }
+        } else {
+          // Handle other pages with existing logic
+          const slotsWithImages = customSlots.filter((slot) => slot.image);
+          if (slotsWithImages.length > 0) {
+            const existingContent = content.find(
+              (c) => c.page === pageId && c.type === "gallery"
+            );
+            const slotImages = slotsWithImages.map((slot) => slot.image!);
+
+            if (existingContent) {
+              await updateContent(existingContent.id, {
+                page: pageId,
+                type: "gallery",
+                images: slotImages,
+                existing_images: customSlots
+                  .filter((slot) => slot.imageUrl && !slot.image)
+                  .map((slot) => slot.imageUrl!),
+              });
+            } else {
+              await createContent({
+                page: pageId,
+                type: "gallery",
+                images: slotImages,
+              });
+            }
           }
         }
       }
@@ -525,6 +773,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
             loading={loading}
             maxSlots={(currentConfig as any).slotsCount!}
             title={(currentConfig as any).slotsTitle!}
+            isGalleryMode={(currentConfig as any).isGalleryMode || false}
           />
         </div>
       )}
