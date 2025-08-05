@@ -25,12 +25,15 @@ export interface OverseaProject {
 
 type State = {
   references: Reference[] | null;
+  currentReference: Reference | null; // Add current reference state
   overseaProjects: OverseaProject[] | null;
   loading: boolean;
+  detailLoading: boolean; // Add separate loading state for detail
   error: string | null;
   success: boolean;
 
   fetchReference: () => Promise<void>;
+  fetchReferenceDetail: (id: string) => Promise<Reference | null>;
   addReference: (reference: FormData | Omit<Reference, "id">) => Promise<void>;
   deleteReference: (id: string) => Promise<void>;
   updateReference: (
@@ -50,8 +53,10 @@ type State = {
 export const useReferenceStore = create<State>((set) => ({
   //For reference
   references: null,
+  currentReference: null,
   overseaProjects: null,
   loading: false,
+  detailLoading: false,
   error: null,
   success: false,
 
@@ -72,6 +77,38 @@ export const useReferenceStore = create<State>((set) => ({
     }
   },
 
+  fetchReferenceDetail: async (id: string) => {
+    set({ detailLoading: true, error: null });
+    try {
+      const res = await fetch(`/api/references/${id}`);
+      const { data, error } = await res.json();
+
+      if (error) {
+        throw new Error(error.message || "Failed to fetch reference detail");
+      }
+
+      if (!data) {
+        throw new Error("Reference not found");
+      }
+
+      set({
+        currentReference: data,
+        detailLoading: false,
+        error: null,
+      });
+
+      return data;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch reference detail";
+      set({
+        currentReference: null,
+        detailLoading: false,
+        error: errorMessage,
+      });
+      return null;
+    }
+  },
   addReference: async (reference: FormData | Omit<Reference, "id">) => {
     set({ loading: true, error: null, success: false });
     console.log("Reference Store I");

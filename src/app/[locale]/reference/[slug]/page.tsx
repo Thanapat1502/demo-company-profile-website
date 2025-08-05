@@ -1,102 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, X, Eye } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  X,
+  Eye,
+  MapPin,
+  Calendar,
+  Building2,
+  Layers,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
-
-interface ProjectImage {
-  id: number;
-  url: string;
-  caption: string;
-}
-
-interface ProjectData {
-  slug: string;
-  title: string;
-  thumnail: string;
-  category: string;
-  client: string;
-  location: string;
-  completionDate: string;
-  projectValue: string;
-  description: string;
-  features: string[];
-  images: ProjectImage[];
-  specifications: {
-    area: string;
-    duration: string;
-    contractor: string;
-    engineer: string;
-  };
-}
-
-// Simplified project data - only title, images, and opened date
-const getProjectData = (
-  slug: string
-): { title: string; openedDate: string; images: ProjectImage[] } | null => {
-  const projects = [
-    {
-      slug: "ptt-station-bangkok",
-      title: "สถานีบริการน้ำมัน PTT สาขาใหม่",
-      openedDate: "ธันวาคม 2566",
-      images: [
-        {
-          id: 1,
-          url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "ภาพรวมสถานีบริการน้ำมันที่เสร็จสมบูรณ์",
-        },
-        {
-          id: 2,
-          url: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "การติดตั้งถังน้ำมันใต้ดิน PERMATANK",
-        },
-        {
-          id: 3,
-          url: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "ระบบวัดน้ำมันอัตโนมัติ",
-        },
-        {
-          id: 4,
-          url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "หัวจ่ายน้ำมันที่ทันสมัย",
-        },
-        {
-          id: 5,
-          url: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "พื้นที่ก่อนการก่อสร้าง",
-        },
-        {
-          id: 6,
-          url: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "ระบบดับเพลิงอัตโนมัติ",
-        },
-      ],
-    },
-    {
-      slug: "shell-v-power-pattaya",
-      title: "สถานีบริการน้ำมัน Shell V-Power",
-      openedDate: "สิงหาคม 2566",
-      images: [
-        {
-          id: 1,
-          url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "ภาพรวมสถานีบริการ",
-        },
-        {
-          id: 2,
-          url: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          caption: "ระบบถังน้ำมัน",
-        },
-      ],
-    },
-    // Add more projects as needed
-  ];
-
-  return projects.find((p) => p.slug === slug) || null;
-};
+import { useReferenceStore } from "@/store/zustand/referenceStore";
+import {
+  getBilingualName,
+  getBilingualContent,
+  getLoadingText,
+} from "@/utils/bilingual";
 
 export default function ProjectDetailPage({
   params,
@@ -105,43 +29,77 @@ export default function ProjectDetailPage({
 }) {
   const locale = useLocale();
   const router = useRouter();
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [resolvedParams, setResolvedParams] = useState<{
     slug: string;
     locale: string;
   } | null>(null);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  const {
+    currentReference,
+    detailLoading,
+    error: storeError,
+    fetchReferenceDetail,
+  } = useReferenceStore();
 
   useEffect(() => {
     params.then(setResolvedParams);
   }, [params]);
 
-  if (!resolvedParams) {
+  useEffect(() => {
+    const loadProject = async () => {
+      if (!resolvedParams?.slug) return;
+
+      try {
+        // Fetch reference detail by ID
+        await fetchReferenceDetail(resolvedParams.slug);
+      } catch (error) {
+        console.error("Error loading project:", error);
+      }
+    };
+
+    loadProject();
+  }, [resolvedParams, fetchReferenceDetail]);
+
+  // Loading state
+  if (detailLoading || !resolvedParams) {
     return (
       <MainLayout>
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">กำลังโหลด...</p>
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600 text-lg">
+              {getLoadingText(locale, "content")}
+            </p>
           </div>
         </div>
       </MainLayout>
     );
   }
 
-  const project = getProjectData(resolvedParams.slug);
-
-  if (!project) {
+  // Project not found or error
+  if (!currentReference || storeError) {
     return (
       <MainLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-light text-gray-900 mb-4">
-              ไม่พบโครงการที่ต้องการ
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center max-w-md mx-auto px-6">
+            <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Building2 className="w-12 h-12 text-gray-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              {locale === "th" ? "ไม่พบโครงการที่ต้องการ" : "Project Not Found"}
             </h1>
+            <p className="text-gray-600 mb-8">
+              {storeError ||
+                (locale === "th"
+                  ? "โครงการที่คุณกำลังมองหาอาจถูกลบหรือไม่มีอยู่ในระบบ"
+                  : "The project you're looking for may have been removed or doesn't exist.")}
+            </p>
             <button
               onClick={() => router.push(`/${locale}/reference`)}
-              className="px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors duration-200">
-              กลับไปหน้าผลงาน
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+              <ArrowLeft className="w-4 h-4" />
+              {locale === "th" ? "กลับไปหน้าผลงาน" : "Back to Portfolio"}
             </button>
           </div>
         </div>
@@ -149,152 +107,191 @@ export default function ProjectDetailPage({
     );
   }
 
-  const openLightbox = (imageId: number) => {
-    setSelectedImage(imageId);
-  };
+  // Get project data with proper bilingual support
+  const projectName = getBilingualName(currentReference, locale);
+  const projectType = getBilingualContent(currentReference, "type", locale);
+  const projectImages = currentReference.galleries || [];
 
-  const closeLightbox = () => {
-    setSelectedImage(null);
-  };
-
-  const navigateImage = (direction: "prev" | "next") => {
-    if (selectedImage === null) return;
-
-    const currentIndex = project.images.findIndex(
-      (img) => img.id === selectedImage
-    );
-    let newIndex;
-
-    if (direction === "prev") {
-      newIndex =
-        currentIndex > 0 ? currentIndex - 1 : project.images.length - 1;
-    } else {
-      newIndex =
-        currentIndex < project.images.length - 1 ? currentIndex + 1 : 0;
+  // Fix date conversion with error handling
+  const openDate = (() => {
+    try {
+      const date = new Date(currentReference.open_at);
+      if (isNaN(date.getTime())) {
+        return locale === "th" ? "ไม่ระบุวันที่" : "Date not specified";
+      }
+      return date.toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return locale === "th" ? "ไม่ระบุวันที่" : "Date not specified";
     }
-
-    setSelectedImage(project.images[newIndex].id);
-  };
-
-  const selectedImageData = selectedImage
-    ? project.images.find((img) => img.id === selectedImage)
-    : null;
+  })();
 
   return (
     <MainLayout>
-      {/* Simplified Header */}
-      <section className="section-minimal bg-white pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {/* Back Button */}
-            <div className="mb-8">
-              <button
-                onClick={() => router.push(`/${locale}/reference`)}
-                className="inline-flex items-center gap-2 text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] transition-colors">
-                <ArrowLeft className="w-4 h-4" />
-                <span>กลับไปหน้าผลงาน</span>
-              </button>
-            </div>
+      <div>
+        {/* Simple Header - Reduced gaps */}
+        <section className="bg-white pt-12 pb-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              {/* Back Button */}
+              <div className="mb-4">
+                <button
+                  onClick={() => router.push(`/${locale}/reference`)}
+                  className="inline-flex items-center gap-2 text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] transition-colors">
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>
+                    {locale === "th" ? "กลับไปหน้าผลงาน" : "Back to Portfolio"}
+                  </span>
+                </button>
+              </div>
 
-            {/* Project Title */}
-            <h1 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-              {project.title}
-            </h1>
+              {/* Project Title */}
+              <h1 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-1 tracking-[0.02em] !leading-normal drop-shadow-sm">
+                {projectName}
+              </h1>
 
-            {/* Enhanced Elegant Line */}
-            <div className="relative flex items-center justify-center mb-8">
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
-              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
-            </div>
+              {/* Enhanced Elegant Line */}
+              <div className="relative flex items-center justify-center mb-2">
+                <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+                <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+              </div>
 
-            {/* Officially Opened Date */}
-            <div className="inline-flex items-center gap-3 mb-12">
-              <span className="text-gray-600">
-                เปิดให้บริการอย่างเป็นทางการ:
-              </span>
-              <span className="font-semibold text-[var(--primary-blue)]">
-                {project.openedDate}
-              </span>
+              {/* Project Info */}
+              <div className="flex flex-wrap justify-center gap-6 text-gray-600 mt-0">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[var(--primary-blue)]" />
+                  <span>
+                    {locale === "th"
+                      ? currentReference.location_th
+                      : currentReference.location_en}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-[var(--primary-blue)]" />
+                  <span>{openDate}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-[var(--primary-blue)]" />
+                  <span>{projectType}</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Simplified Gallery */}
-      <section className="section-minimal bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {project.images.map((image, index) => (
-              <div
-                key={image.id}
-                className="group cursor-pointer relative overflow-hidden bg-gray-100 aspect-square hover:shadow-lg transition-all duration-300"
-                onClick={() => openLightbox(image.id)}>
+        {/* Simple Gallery - Reduced gaps */}
+        <section className="bg-gray-50 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {projectImages.length > 0 ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {projectImages.map((image: string, index: number) => (
+                  <div
+                    key={index}
+                    className="group cursor-pointer relative overflow-hidden bg-gray-100 aspect-square hover:shadow-lg transition-all duration-300 rounded-lg"
+                    onClick={() => setSelectedImage(index)}>
+                    <Image
+                      src={image}
+                      alt={`${projectName} - ${
+                        locale === "th" ? "รูปที่" : "Image"
+                      } ${index + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    {/* View Icon */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-gray-900" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Building2 className="w-10 h-10 text-gray-400" />
+                </div>
+                <p className="text-gray-500">
+                  {locale === "th"
+                    ? "ไม่มีรูปภาพสำหรับโครงการนี้"
+                    : "No images available for this project"}
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Simple Lightbox Modal */}
+        {selectedImage !== null && (
+          <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center">
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-8 right-8 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
+                <X className="w-6 h-6" />
+              </button>
+
+              {/* Navigation Buttons */}
+              {projectImages.length > 1 && (
+                <>
+                  <button
+                    onClick={() => {
+                      const newIndex =
+                        selectedImage > 0
+                          ? selectedImage - 1
+                          : projectImages.length - 1;
+                      setSelectedImage(newIndex);
+                    }}
+                    className="absolute left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
+                    <ArrowLeft className="w-6 h-6" />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const newIndex =
+                        selectedImage < projectImages.length - 1
+                          ? selectedImage + 1
+                          : 0;
+                      setSelectedImage(newIndex);
+                    }}
+                    className="absolute right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
+                    <ArrowRight className="w-6 h-6" />
+                  </button>
+                </>
+              )}
+
+              {/* Full-Screen Image */}
+              <div className="relative max-w-[95vw] max-h-[95vh]">
                 <Image
-                  src={image.url}
-                  alt={image.caption}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  src={projectImages[selectedImage]}
+                  alt={`${projectName} - ${
+                    locale === "th" ? "รูปที่" : "Image"
+                  } ${selectedImage + 1}`}
+                  width={1600}
+                  height={1200}
+                  className="max-w-full max-h-full object-contain"
                 />
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-
-                {/* View Icon */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="w-12 h-12 bg-white/90 backdrop-blur-sm flex items-center justify-center">
-                    <Eye className="w-5 h-5 text-gray-900" />
+                {/* Image Caption */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                  <div className="text-center text-white">
+                    <p className="text-sm opacity-75 mb-1">{projectName}</p>
+                    <p className="text-xs opacity-60">
+                      {selectedImage + 1} / {projectImages.length}
+                    </p>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Bold Lightbox Modal */}
-      {selectedImage && selectedImageData && (
-        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Close Button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-8 right-8 z-10 w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-              <X className="w-8 h-8" />
-            </button>
-
-            {/* Navigation Buttons */}
-            <button
-              onClick={() => navigateImage("prev")}
-              className="absolute left-8 top-1/2 -translate-y-1/2 z-10 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-              <ArrowLeft className="w-10 h-10" />
-            </button>
-
-            <button
-              onClick={() => navigateImage("next")}
-              className="absolute right-8 top-1/2 -translate-y-1/2 z-10 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-              <ArrowRight className="w-10 h-10" />
-            </button>
-
-            {/* Full-Screen Image */}
-            <div className="relative max-w-[95vw] max-h-[95vh]">
-              <Image
-                src={selectedImageData.url}
-                alt={selectedImageData.caption}
-                width={1600}
-                height={1200}
-                className="max-w-full max-h-full object-contain"
-              />
-
-              {/* Minimal Caption */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-8">
-                <p className="text-white text-xl font-light leading-relaxed text-center">
-                  {selectedImageData.caption}
-                </p>
-              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </MainLayout>
   );
 }
