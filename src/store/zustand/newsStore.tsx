@@ -49,6 +49,7 @@ export type Category = {
 
 interface NewsStoreState {
   news: News[];
+  highlightedNews: News[];
   tags: NewsTag[];
   loading: boolean;
   success: string | boolean;
@@ -56,6 +57,7 @@ interface NewsStoreState {
   categories: Category[];
   fetchCategories: () => Promise<void>;
   fetchNews: () => Promise<void>;
+  fetchHighlightedNews: () => Promise<void>;
   addNews: (data: FormData) => Promise<void>;
   updateNews: (id: string, data: FormData) => Promise<void>;
   deleteNews: (id: string) => Promise<void>;
@@ -66,11 +68,35 @@ interface NewsStoreState {
 
 export const useNewsStore = create<NewsStoreState>((set, get) => ({
   news: [],
+  highlightedNews: [],
   tags: [],
   categories: [],
   loading: false,
   success: false,
   error: null,
+
+  fetchHighlightedNews: async () => {
+    set({ loading: true, error: null, success: false });
+    try {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("is_highlighted", true)
+        .eq("status", "published")
+        .order("updated_at", { ascending: false });
+
+      if (error) {
+        set({ error: error.message, loading: false });
+      } else {
+        set({ highlightedNews: data || [], loading: false, error: null });
+      }
+    } catch (err) {
+      set({
+        error: `Failed to fetch highlighted news: ${err}`,
+        loading: false,
+      });
+    }
+  },
 
   fetchCategories: async () => {
     set({ loading: true, error: null, success: false });
@@ -88,9 +114,24 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
   },
   fetchNews: async () => {
     set({ loading: true, error: null, success: false });
-    const { data, error } = await supabase.from("news").select("*");
-    if (error) set({ error: error.message, loading: false });
-    else set({ news: data || [], loading: false, error: null });
+    try {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("status", "published")
+        .order("updated_at", { ascending: false });
+
+      if (error) {
+        set({ error: error.message, loading: false });
+      } else {
+        set({ news: data || [], loading: false, error: null });
+      }
+    } catch (err) {
+      set({
+        error: `Failed to fetch news: ${err}`,
+        loading: false,
+      });
+    }
   },
 
   addNews: async (formData) => {

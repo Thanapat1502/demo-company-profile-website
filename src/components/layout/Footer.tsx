@@ -2,21 +2,18 @@
 
 import { Link } from "@heroui/react";
 import {
-  MapPin,
-  Phone,
-  Mail,
   Facebook,
   Instagram,
   Linkedin,
   Youtube,
-  Clock,
   Globe,
   ArrowUp,
-  ExternalLink
+  ExternalLink,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
+import ContactInfo from "@/components/contact/ContactInfo";
 
 interface FooterLink {
   label: string;
@@ -26,25 +23,49 @@ interface FooterLink {
 
 const quickLinks: FooterLink[] = [
   { label: "About Us", href: "/pds-group", labelTh: "เกี่ยวกับเรา" },
-  { label: "Products & Services", href: "/products-services", labelTh: "สินค้าและบริการ" },
+  {
+    label: "Products & Services",
+    href: "/products-services",
+    labelTh: "สินค้าและบริการ",
+  },
   { label: "References", href: "/reference", labelTh: "ผลงาน" },
-  { label: "News & Events", href: "/news-events", labelTh: "ข่าวสารและกิจกรรม" },
+  {
+    label: "News & Events",
+    href: "/news-events",
+    labelTh: "ข่าวสารและกิจกรรม",
+  },
 ];
 
 const services: FooterLink[] = [
-  { label: "Gas Station Services", href: "/products-services#gas-station", labelTh: "บริการสถานีบริการน้ำมัน" },
-  { label: "Construction", href: "/products-services#construction", labelTh: "งานก่อสร้าง" },
-  { label: "Engineering", href: "/products-services#engineering", labelTh: "งานวิศวกรรม" },
-  { label: "Consulting", href: "/products-services#consulting", labelTh: "งานที่ปรึกษา" },
+  {
+    label: "Gas Station Services",
+    href: "/products-services#gas-station",
+    labelTh: "บริการสถานีบริการน้ำมัน",
+  },
+  {
+    label: "Construction",
+    href: "/products-services#construction",
+    labelTh: "งานก่อสร้าง",
+  },
+  {
+    label: "Engineering",
+    href: "/products-services#engineering",
+    labelTh: "งานวิศวกรรม",
+  },
+  {
+    label: "Consulting",
+    href: "/products-services#consulting",
+    labelTh: "งานที่ปรึกษา",
+  },
 ];
 
 export default function Footer() {
-  const [currentLang, setCurrentLang] = useState<'en' | 'th'>('th');
+  const [currentLang, setCurrentLang] = useState<"en" | "th">("th");
   const t = useTranslations();
   const locale = useLocale();
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -78,9 +99,7 @@ export default function Footer() {
                 <span className="text-xl font-black text-white tracking-wide">
                   PADUNGSILPA
                 </span>
-                <span className="text-md  font-semibold uppercase">
-                  GROUP
-                </span>
+                <span className="text-md  font-semibold uppercase">GROUP</span>
               </div>
             </div>
 
@@ -91,15 +110,30 @@ export default function Footer() {
             {/* Compact Social Media */}
             <div className="flex space-x-2">
               {[
-                { icon: Facebook, color: "hover:bg-blue-600/20 hover:text-blue-400", href: "#" },
-                { icon: Instagram, color: "hover:bg-pink-600/20 hover:text-pink-400", href: "#" },
-                { icon: Linkedin, color: "hover:bg-blue-700/20 hover:text-blue-500", href: "#" },
-                { icon: Youtube, color: "hover:bg-red-600/20 hover:text-red-400", href: "#" },
+                {
+                  icon: Facebook,
+                  color: "hover:bg-blue-600/20 hover:text-blue-400",
+                  href: "#",
+                },
+                {
+                  icon: Instagram,
+                  color: "hover:bg-pink-600/20 hover:text-pink-400",
+                  href: "#",
+                },
+                {
+                  icon: Linkedin,
+                  color: "hover:bg-blue-700/20 hover:text-blue-500",
+                  href: "#",
+                },
+                {
+                  icon: Youtube,
+                  color: "hover:bg-red-600/20 hover:text-red-400",
+                  href: "#",
+                },
               ].map((social, index) => (
                 <button
                   key={index}
-                  className={`relative w-10 h-10 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}
-                >
+                  className={`relative w-10 h-10 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}>
                   <social.icon size={16} className="relative z-10 mx-auto" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
                 </button>
@@ -120,10 +154,14 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={`/${locale}${link.href}`}
-                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md"
-                  >
-                    <span className="relative z-10">{currentLang === 'en' ? link.label : link.labelTh}</span>
-                    <ExternalLink size={12} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md">
+                    <span className="relative z-10">
+                      {currentLang === "en" ? link.label : link.labelTh}
+                    </span>
+                    <ExternalLink
+                      size={12}
+                      className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
@@ -144,10 +182,14 @@ export default function Footer() {
                 <li key={service.href}>
                   <Link
                     href={`/${locale}${service.href}`}
-                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md"
-                  >
-                    <span className="relative z-10">{currentLang === 'en' ? service.label : service.labelTh}</span>
-                    <ExternalLink size={12} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md">
+                    <span className="relative z-10">
+                      {currentLang === "en" ? service.label : service.labelTh}
+                    </span>
+                    <ExternalLink
+                      size={12}
+                      className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
@@ -164,50 +206,7 @@ export default function Footer() {
               <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
             </div>
 
-            <div className="space-y-3">
-              {/* Contact Details - Stacked vertically */}
-              <div className="group flex items-start space-x-3  border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
-                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
-                  <MapPin size={14} className="text-blue-400" />
-                </div>
-                <div className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-                  <p className="text-md leading-relaxed">
-                    {t("contact.offices.headquarters.address")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="group flex items-center space-x-3 border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
-                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
-                  <Phone size={14} className="text-blue-400" />
-                </div>
-                <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md">+66 2 573 3533</span>
-              </div>
-
-              <div className="group flex items-center space-x-3 border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
-                <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
-                  <Mail size={14} className="text-blue-400" />
-                </div>
-                <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md">sales@padungsilpa.com</span>
-              </div>
-
-              {/* Working Hours */}
-              <div className="group  border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/30">
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center group-hover:bg-blue-600/30 transition-colors duration-300">
-                    <Clock size={14} className="text-blue-400" />
-                  </div>
-                  <span className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-md"> <div className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 space-y-1">
-                    <p className="text-md">
-                      {t("footer.workingHours.weekdays")}
-                    </p>
-                    <p className="text-md">
-                      {t("footer.workingHours.saturday")}
-                    </p>
-                  </div></span>
-                </div>
-              </div>
-            </div>
+            <ContactInfo locale={locale} variant="footer" />
           </div>
         </div>
       </div>
@@ -228,22 +227,19 @@ export default function Footer() {
           <div className="flex items-center space-x-6 text-md">
             <Link
               href={`/${locale}/privacy`}
-              className="group text-gray-400 hover:text-white transition-all duration-300 relative"
-            >
+              className="group text-gray-400 hover:text-white transition-all duration-300 relative">
               <span className="relative z-10">{t("footer.privacy")}</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
             </Link>
             <Link
               href={`/${locale}/terms`}
-              className="group text-gray-400 hover:text-white transition-all duration-300 relative"
-            >
+              className="group text-gray-400 hover:text-white transition-all duration-300 relative">
               <span className="relative z-10">{t("footer.terms")}</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
             </Link>
             <button
-              onClick={() => setCurrentLang(currentLang === 'en' ? 'th' : 'en')}
-              className="group w-8 h-8 rounded-full border border-gray-600/50 text-gray-400 hover:text-white hover:border-gray-400/50 transition-all duration-300 hover:scale-110 hover:shadow-lg overflow-hidden relative"
-            >
+              onClick={() => setCurrentLang(currentLang === "en" ? "th" : "en")}
+              className="group w-8 h-8 rounded-full border border-gray-600/50 text-gray-400 hover:text-white hover:border-gray-400/50 transition-all duration-300 hover:scale-110 hover:shadow-lg overflow-hidden relative">
               <Globe size={14} className="relative z-10 mx-auto" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
             </button>
@@ -254,9 +250,11 @@ export default function Footer() {
       {/* Compact Luxury Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-6 right-6 z-50 group w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 hover:scale-110 hover:-translate-y-1 overflow-hidden"
-      >
-        <ArrowUp size={18} className="relative z-10 mx-auto transition-transform duration-300 group-hover:-translate-y-0.5" />
+        className="fixed bottom-6 right-6 z-50 group w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 hover:scale-110 hover:-translate-y-1 overflow-hidden">
+        <ArrowUp
+          size={18}
+          className="relative z-10 mx-auto transition-transform duration-300 group-hover:-translate-y-0.5"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       </button>

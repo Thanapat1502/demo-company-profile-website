@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "next-intl";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
+import ContactInfo from "@/components/contact/ContactInfo";
+import CompanyList from "@/components/contact/CompanyList";
 import {
   MapPin,
   Phone,
@@ -18,6 +21,7 @@ import {
 } from "lucide-react";
 
 export default function ContactUsPage() {
+  const locale = useLocale();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,8 +31,6 @@ export default function ContactUsPage() {
     inquiryType: "",
     message: "",
   });
-
-  const [activeSection, setActiveSection] = useState("contact");
 
   const contactMethods = [
     {
@@ -211,6 +213,43 @@ export default function ContactUsPage() {
                   </a>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Main Contact Information */}
+        <section className="section-minimal bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              {/* Section Label */}
+              <div className="inline-flex items-center gap-3 mb-8">
+                <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+                <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                  {locale === "th" ? "ข้อมูลติดต่อ" : "Contact Information"}
+                </span>
+                <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              </div>
+
+              {/* Main Heading */}
+              <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
+                {locale === "th" ? "ข้อมูลการติดต่อ" : "Contact Details"}
+              </h2>
+
+              {/* Enhanced Elegant Line */}
+              <div className="relative flex items-center justify-center mb-8">
+                <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+                <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+              </div>
+
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                {locale === "th"
+                  ? "ข้อมูลการติดต่อหลักของบริษัท พร้อมช่องทางการติดต่อที่หลากหลาย"
+                  : "Main company contact information with various communication channels"}
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <ContactInfo locale={locale} variant="full" />
             </div>
           </div>
         </section>
@@ -405,62 +444,8 @@ export default function ContactUsPage() {
                   </div>
                 </div>
 
-                {/* Office Cards */}
-                <div className="space-y-8">
-                  {offices.map((office, index) => (
-                    <div key={index} className="card-minimal p-8">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-6 tracking-tight">
-                        {office.name}
-                      </h3>
-
-                      <div className="space-y-6">
-                        <div className="flex items-start space-x-4">
-                          <MapPin
-                            size={20}
-                            className="text-gray-900 mt-1 flex-shrink-0"
-                          />
-                          <span className="text-gray-600 leading-relaxed font-light">
-                            {office.address}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center space-x-4">
-                          <Phone
-                            size={20}
-                            className="text-gray-900 flex-shrink-0"
-                          />
-                          <a
-                            href={`tel:${office.phone}`}
-                            className="text-gray-600 hover:text-gray-900 transition-colors font-light">
-                            {office.phone}
-                          </a>
-                        </div>
-
-                        <div className="flex items-center space-x-4">
-                          <Mail
-                            size={20}
-                            className="text-gray-900 flex-shrink-0"
-                          />
-                          <a
-                            href={`mailto:${office.email}`}
-                            className="text-gray-600 hover:text-gray-900 transition-colors font-light">
-                            {office.email}
-                          </a>
-                        </div>
-
-                        <div className="flex items-start space-x-4">
-                          <Clock
-                            size={20}
-                            className="text-gray-900 mt-1 flex-shrink-0"
-                          />
-                          <span className="text-gray-600 font-light">
-                            {office.hours}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {/* Company List from Store */}
+                <CompanyList locale={locale} variant="list" />
               </div>
             </div>
           </div>

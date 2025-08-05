@@ -11,22 +11,22 @@ export default function StatsSection() {
   const stats = [
     {
       icon: Building,
-      labelKey: "references.stats.build",
+      label: "ก่อสร้างสถานีบริการน้ำมัน (สถานีบริการน้ำมัน)",
       targetValue: 300,
     },
     {
       icon: Users,
-      labelKey: "references.stats.permatank",
+      label: "ผลิตถังน้ำมันใต้ดินผนัง2ชั้น PERMATANK® (ใบ)",
       targetValue: 20000,
     },
     {
       icon: Award,
-      labelKey: "references.stats.pipe",
+      label: "จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น (สถานีบริการน้ำมัน)",
       targetValue: 300,
     },
     {
       icon: Shield,
-      labelKey: "references.stats.atg",
+      label: "จำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน (ATG)",
       targetValue: 50,
     },
   ];
@@ -138,7 +138,7 @@ export default function StatsSection() {
 
               {/* Label - Clean typography */}
               <div className="text-lg text-white/90 font-medium tracking-wide">
-                {t(stat.labelKey)}
+                {stat.label}
               </div>
             </div>
           ))}
