@@ -183,13 +183,13 @@ export default function ProductSection({
         {/* Navigate to Products Page Button */}
         <div className="flex justify-center items-center mt-6 w-full">
           <button
-            className="luxury-hero-btn luxury-hero-btn-secondary group"
+            className="luxury-hero-btn luxury-hero-btn-secondary"
             onClick={() => router.push(`/${locale}/products-services`)}>
             <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">
+              <span className="font-semibold tracking-wide text-black">
                 {locale === "th" ? "ดูหน้าผลิตภัณฑ์" : "View Products Page"}
               </span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
+              <ArrowRight className="w-5 h-5 text-black transition-transform duration-500 group-hover:translate-x-1" />
             </span>
             <div className="luxury-btn-border"></div>
             <div className="luxury-btn-glow-secondary"></div>
