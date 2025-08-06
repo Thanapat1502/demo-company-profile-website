@@ -18,6 +18,7 @@ import { Badge } from "@heroui/react";
 import { Card, CardBody } from "@heroui/react";
 import { useNewsStore, News } from "@/store/zustand/newsStore";
 import { getBilingualTitle, getBilingualExcerpt } from "@/utils/bilingual";
+import QuillDisplay from "@/components/share/QuillDisplay";
 
 export default function NewsDetailPage() {
   const locale = useLocale();
@@ -152,7 +153,7 @@ export default function NewsDetailPage() {
 
   const title = getTitle(newsDetail);
   const excerpt = getExcerpt(newsDetail);
-  const body = getBody(newsDetail);
+  const body = locale === "th" ? newsDetail.body_th : newsDetail.body_en;
   const readTime = calculateReadTime(body);
   const publishDate = newsDetail.publish_at || newsDetail.created_at;
 
@@ -266,40 +267,13 @@ export default function NewsDetailPage() {
 
                 {/* Article Body */}
                 <div className="prose prose-lg max-w-none">
-                  {body && typeof body === "object" && body.ops ? (
-                    // Render Quill Delta format
-                    <div>
-                      {body.ops.map((op: any, index: number) => {
-                        if (typeof op.insert === "string") {
-                          return (
-                            <p key={index} className="mb-4">
-                              {op.insert}
-                            </p>
-                          );
-                        } else if (op.insert && op.insert.image) {
-                          return (
-                            <div key={index} className="my-8">
-                              <Image
-                                src={op.insert.image}
-                                alt="Article image"
-                                width={800}
-                                height={400}
-                                className="rounded-lg shadow-md w-full h-auto"
-                              />
-                            </div>
-                          );
-                        }
-                        return null;
-                      })}
-                    </div>
-                  ) : (
-                    // Render HTML string
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: body || excerpt,
-                      }}
+                  {body ? (
+                    <QuillDisplay
+                      content={
+                        typeof body === "string" ? JSON.parse(body) : body
+                      }
                     />
-                  )}
+                  ) : null}
                 </div>
 
                 {/* Share Actions */}
