@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import ImageCarouselHero from "@/components/ui/ImageCarouselHero";
-import { supabase } from "@/lib/supabase";
+import { useHeroStore } from "@/store/zustand/heroStore";
 
 interface DynamicHeroSectionProps {
-  pageId: string; // e.g., "about", "products-services", "news", "contact"
+  pageId: string; // e.g., "HOME", "ABOUT_MAIN", "PRODUCTS_SERVICE", "NEWS", "CONTACT"
   title: string;
   subtitle?: string;
   description?: string;
@@ -13,14 +13,6 @@ interface DynamicHeroSectionProps {
   fallbackImages?: string[]; // Fallback images if no images from Supabase
   autoSlideDelay?: number;
   className?: string;
-}
-
-interface HeroContent {
-  id: string;
-  page: string;
-  type: "gallery" | "video";
-  images_url?: string[];
-  video_url?: string;
 }
 
 export default function DynamicHeroSection({
@@ -33,52 +25,48 @@ export default function DynamicHeroSection({
   autoSlideDelay = 6000,
   className = "",
 }: DynamicHeroSectionProps) {
-  const [heroImages, setHeroImages] = useState<string[]>(fallbackImages);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [heroImages, setHeroImages] = useState<string[]>(fallbackImages);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  const { fetchHeroImageById, pageHeroImage, loading } = useHeroStore();
 
   useEffect(() => {
-    const fetchHeroContent = async () => {
+    console.log("[DynamicHeroSection] pageId:", pageId);
+    const fetchAndDebug = async () => {
+      // try {
+      //   console.log(
+      //     `[DynamicHeroSection] Fetching /api/hero?id=${pageId.toUpperCase()}`
+      //   );
+      //   const res = await fetch(`/api/hero?id=${pageId.toUpperCase()}`);
+      //   const result = await res.json();
+      //   console.log("[DynamicHeroSection] API response:", result);
+      // } catch (err) {
+      //   console.error("[DynamicHeroSection] API error:", err);
+      // }
+      // Also call zustand fetch for normal operation
       try {
-        // Fetch hero content for the specific page
-        const { data, error } = await supabase
-          .from("hero_section")
-          .select("*")
-          .eq("id", pageId.toUpperCase())
-          .single();
-
-        if (error) {
-          console.log(
-            `No hero content found for ${pageId}, using fallback images`
-          );
-          setHeroImages(fallbackImages);
-        } else if (
-          data &&
-          data.images_url &&
-          Array.isArray(data.images_url) &&
-          data.images_url.length > 0
-        ) {
-          // Use images from Supabase
-          setHeroImages(data.images_url);
-          console.log(
-            `Loaded ${data.images_url.length} hero images for ${pageId}`
-          );
-        } else {
-          // No images in database, use fallback
-          setHeroImages(fallbackImages);
-        }
-      } catch (error) {
-        console.error("Error fetching hero content:", error);
-        setHeroImages(fallbackImages);
-      } finally {
-        setIsLoading(false);
+        await fetchHeroImageById(pageId.toUpperCase());
+      } catch (err) {
+        console.error("[DynamicHeroSection] zustand error:", err);
       }
+      console.log("[DynamicHeroSection] zustand pageHeroImage:", pageHeroImage);
     };
-
-    fetchHeroContent();
-  }, [pageId, fallbackImages]);
-
+    fetchAndDebug();
+  }, [pageId]);
   // Show loading state with fallback images
-  if (isLoading) {
+  if (pageHeroImage && pageHeroImage.image_url.length > 0) {
+    return (
+      <ImageCarouselHero
+        images={pageHeroImage.image_url}
+        title={title}
+        subtitle={subtitle}
+        description={description}
+        autoSlideDelay={autoSlideDelay}
+        className={className}>
+        {children}
+      </ImageCarouselHero>
+    );
+  } else {
     return (
       <ImageCarouselHero
         images={fallbackImages}
@@ -91,16 +79,4 @@ export default function DynamicHeroSection({
       </ImageCarouselHero>
     );
   }
-
-  return (
-    <ImageCarouselHero
-      images={heroImages}
-      title={title}
-      subtitle={subtitle}
-      description={description}
-      autoSlideDelay={autoSlideDelay}
-      className={className}>
-      {children}
-    </ImageCarouselHero>
-  );
 }

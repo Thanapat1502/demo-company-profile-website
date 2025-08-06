@@ -11,7 +11,8 @@ export type HeroSectionId =
   | "ABOUT_EXECUTIVE"
   | "PRODUCTS_SERVICE"
   | "NEWS"
-  | "CONTACT";
+  | "CONTACT"
+  | "REFERENCE";
 
 // Helper to upload hero image directly to Supabase Storage and return public URL
 async function uploadHeroImage(
@@ -70,6 +71,7 @@ async function uploadHeroImage(
 
 // GET - Fetch hero section by ID (Public - No auth required)
 export async function GET(req: NextRequest) {
+  console.log("Hero GET");
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id") as HeroSectionId;
@@ -91,6 +93,7 @@ export async function GET(req: NextRequest) {
       "PRODUCTS_SERVICE",
       "NEWS",
       "CONTACT",
+      "REFERENCE",
     ];
 
     if (!validIds.includes(id)) {
@@ -118,7 +121,7 @@ export async function GET(req: NextRequest) {
       }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-
+    // console.log("Hero GET - Success:", data);
     return NextResponse.json({ data });
   } catch (err) {
     console.error("GET hero section error:", err);
@@ -152,6 +155,7 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
       "PRODUCTS_SERVICE",
       "NEWS",
       "CONTACT",
+      "REFERENCE",
     ];
 
     if (!validIds.includes(id)) {
