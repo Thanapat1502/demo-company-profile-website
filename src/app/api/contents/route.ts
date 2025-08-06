@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 export type ContentType = "gallery" | "video";
 
 // Page types for content
-export type ContentPage = "HOME" | "HISTORY" | "SERVICE" | "VISION";
+export type ContentPage = "HOME" | "ABOUT" | "HISTORY" | "SERVICE" | "VISION";
 
 // Helper to upload content image directly to Supabase Storage and return public URL
 async function uploadContentImage(
@@ -96,7 +96,13 @@ export async function GET(req: NextRequest) {
     }
 
     // Validate page
-    const validPages: ContentPage[] = ["HOME", "HISTORY", "SERVICE", "VISION"];
+    const validPages: ContentPage[] = [
+      "HOME",
+      "ABOUT",
+      "HISTORY",
+      "SERVICE",
+      "VISION",
+    ];
 
     if (!validPages.includes(page)) {
       return NextResponse.json(
@@ -122,6 +128,7 @@ export async function GET(req: NextRequest) {
     const { data, error } = await query;
 
     if (error) {
+      console.error("❌ Contents query error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -154,7 +161,13 @@ export const POST = withAuth(async (req: NextRequest, supabase, user) => {
     }
 
     // Validate page and type
-    const validPages: ContentPage[] = ["HOME", "HISTORY", "SERVICE", "VISION"];
+    const validPages: ContentPage[] = [
+      "HOME",
+      "HISTORY",
+      "SERVICE",
+      "VISION",
+      "ABOUT",
+    ];
     const validTypes: ContentType[] = ["gallery", "video"];
 
     if (!validPages.includes(page) || !validTypes.includes(type)) {

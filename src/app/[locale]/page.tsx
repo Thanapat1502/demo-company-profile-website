@@ -117,22 +117,6 @@ export default function Home() {
     fetchAllData();
   }, [fetchServices, fetchProducts, fetchPartners, fetchContent]);
 
-  // Loading state for initial page load
-  if (isInitialLoading) {
-    return (
-      <MainLayout>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-600 text-lg">
-              {locale === "th" ? "กำลังโหลด..." : "Loading..."}
-            </p>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
   // Error state (optional - you can customize this)
   const hasErrors =
     servicesError || productsError || partnersError || contentError;

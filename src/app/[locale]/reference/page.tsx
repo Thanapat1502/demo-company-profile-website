@@ -393,7 +393,7 @@ export default function ReferencePage() {
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        pageId="reference"
+        pageId="REFERENCE"
         title={locale === "th" ? "ผลงานของเรา" : "Our Portfolio"}
         subtitle={
           locale === "th"

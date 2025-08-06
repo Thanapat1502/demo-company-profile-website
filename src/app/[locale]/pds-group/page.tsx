@@ -29,7 +29,7 @@ export default function CompanyProfilePage() {
     const fetchContentImages = async () => {
       try {
         // Fetch ABOUT content
-        const response = await fetch("/api/contents?id=ABOUT");
+        const response = await fetch("/api/contents?page=ABOUT");
         if (response.ok) {
           const data = await response.json();
           if (
