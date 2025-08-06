@@ -73,7 +73,7 @@ export default function ProductsSection({
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {displayedProducts.map((product, index) => (
             <ProductCard
               key={product.id}

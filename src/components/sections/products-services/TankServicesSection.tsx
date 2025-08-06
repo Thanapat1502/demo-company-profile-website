@@ -56,6 +56,29 @@ export default function TankServicesSection({
   const galleryContent = content.find((c) => c.type === "gallery");
   const galleryImages = galleryContent?.images_url || [];
 
+  // Debug logging
+  console.log("🔍 TankServicesSection Debug:");
+  console.log("- Content received (length):", content.length);
+  console.log(
+    "- Content items:",
+    content.map((c) => ({
+      id: c.id,
+      type: c.type,
+      hasImages: !!c.images_url?.length,
+    }))
+  );
+  console.log(
+    "- Gallery content found:",
+    galleryContent
+      ? {
+          id: galleryContent.id,
+          type: galleryContent.type,
+          imageCount: galleryContent.images_url?.length,
+        }
+      : null
+  );
+  console.log("- Gallery images count:", galleryImages.length);
+
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,17 +86,19 @@ export default function TankServicesSection({
           {/* Content Display - Gallery */}
           <div className="relative">
             {galleryImages.length > 0 ? (
-              // Display image carousel gallery
-              <MinimalCarousel
-                images={galleryImages}
-                alt={serviceName}
-                aspectRatio="4/3"
-                showNavigation={true}
-                showIndicators={true}
-                autoPlay={true}
-                interval={5000}
-                className="shadow-lg"
-              />
+              <div>
+                {/* Display image carousel gallery */}
+                <MinimalCarousel
+                  images={galleryImages}
+                  alt={serviceName}
+                  aspectRatio="4/3"
+                  showNavigation={true}
+                  showIndicators={true}
+                  autoPlay={true}
+                  interval={5000}
+                  className="shadow-lg"
+                />
+              </div>
             ) : (
               // Fallback placeholder for tank services
               <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">

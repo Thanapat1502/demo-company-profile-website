@@ -119,8 +119,8 @@ export default function ServicesSection({
           <div className="space-y-12">
             {/* Featured Products Grid - Desktop / Carousel - Mobile */}
             <div className="space-y-8">
-              {/* Desktop Grid - Enhanced spacing and sizing */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Responsive Grid - 2 columns on mobile, 2 on medium, 3 on large */}
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                 {products.map((product, index) => (
                   <ProductCard
                     key={product.id}

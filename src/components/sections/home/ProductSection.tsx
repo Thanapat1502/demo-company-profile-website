@@ -66,7 +66,11 @@ export default function ProductSection({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [showAllProducts, setShowAllProducts] = useState(false);
   const t = useTranslations();
+
+  // Determine how many products to show
+  const displayedProducts = showAllProducts ? products : products.slice(0, 6);
 
   // Sample products data - in real app this would come from props or API
 
@@ -136,9 +140,9 @@ export default function ProductSection({
           </p>
         </div>
 
-        {/* Products Grid - Display exactly 6 products */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.slice(0, 6).map((product, index) => (
+        {/* Products Grid - Display products based on showAllProducts state */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+          {displayedProducts.map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -148,19 +152,47 @@ export default function ProductSection({
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="flex justify-center items-center mt-12 w-full ">
+        {/* Expand/Collapse Button - Only show if there are more than 6 products */}
+        {products.length > 6 && (
+          <div className="flex justify-center items-center mt-12 w-full">
+            <button
+              className="luxury-hero-btn luxury-hero-btn-primary group"
+              onClick={() => setShowAllProducts(!showAllProducts)}>
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <span className="font-semibold tracking-wide">
+                  {showAllProducts
+                    ? locale === "th"
+                      ? "แสดงน้อยลง"
+                      : "Show Less"
+                    : locale === "th"
+                    ? "ดูผลิตภัณฑ์ทั้งหมด"
+                    : "View All Products"}
+                </span>
+                <ArrowRight
+                  className={`w-5 h-5 transition-all duration-500 group-hover:translate-x-1 ${
+                    showAllProducts ? "rotate-90" : ""
+                  }`}
+                />
+              </span>
+              <div className="luxury-btn-shimmer"></div>
+              <div className="luxury-btn-glow"></div>
+            </button>
+          </div>
+        )}
+
+        {/* Navigate to Products Page Button */}
+        <div className="flex justify-center items-center mt-6 w-full">
           <button
-            className="luxury-hero-btn luxury-hero-btn-primary"
+            className="luxury-hero-btn luxury-hero-btn-secondary group"
             onClick={() => router.push(`/${locale}/products-services`)}>
             <span className="relative z-10 flex items-center justify-center gap-3">
               <span className="font-semibold tracking-wide">
-                {locale === "th" ? "ดูผลิตภัณฑ์ทั้งหมด" : "View All Products"}
+                {locale === "th" ? "ดูหน้าผลิตภัณฑ์" : "View Products Page"}
               </span>
               <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
             </span>
-            <div className="luxury-btn-shimmer"></div>
-            <div className="luxury-btn-glow"></div>
+            <div className="luxury-btn-border"></div>
+            <div className="luxury-btn-glow-secondary"></div>
           </button>
         </div>
       </div>
