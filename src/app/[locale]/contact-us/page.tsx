@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
@@ -19,9 +19,11 @@ import {
   CheckCircle,
   ChevronDown,
 } from "lucide-react";
+import { useContactStore } from "@/store/zustand/contactStore";
 
 export default function ContactUsPage() {
   const locale = useLocale();
+  const { fetchContactInfo, contactInfo } = useContactStore();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -32,27 +34,32 @@ export default function ContactUsPage() {
     message: "",
   });
 
+  // Fetch contact info on component mount
+  useEffect(() => {
+    fetchContactInfo();
+  }, [fetchContactInfo]);
+
   const contactMethods = [
     {
       icon: Phone,
       title: "โทรศัพท์",
       description: "ติดต่อเราโดยตรงเพื่อรับคำปรึกษาเบื้องต้น",
-      value: "+66 2 123 4567",
-      action: "tel:+6621234567",
+      value: contactInfo?.tel || "+66 2 123 4567",
+      action: `tel:${contactInfo?.tel || "+6621234567"}`,
     },
     {
       icon: Mail,
       title: "อีเมล",
       description: "ส่งข้อความหาเราเพื่อรับข้อมูลรายละเอียด",
-      value: "info@padungsilpa.group",
-      action: "mailto:info@padungsilpa.group",
+      value: contactInfo?.email || "info@padungsilpa.group",
+      action: `mailto:${contactInfo?.email}`,
     },
     {
       icon: MessageCircle,
       title: "แชทออนไลน์",
       description: "สอบถามข้อมูลแบบเรียลไทม์กับทีมงาน",
       value: "เริ่มแชท",
-      action: "#",
+      action: `https://line.me/R/ti/p/${contactInfo?.line}`,
     },
   ];
 
@@ -419,12 +426,51 @@ export default function ContactUsPage() {
                   </div>
                 </div>
 
-                {/* Map Placeholder */}
-                <div className="bg-gray-300 h-80 mb-12 flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin size={48} className="text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-600">แผนที่ตำแหน่งสำนักงาน</p>
-                  </div>
+                {/* Google Maps Integration */}
+                <div className="mb-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                    {locale === "th"
+                      ? "แผนที่ตำแหน่งสำนักงาน"
+                      : "Office Location"}
+                  </h3>
+                  {contactInfo?.google_map_url ? (
+                    <div className="relative w-full h-80 rounded-lg overflow-hidden shadow-lg">
+                      <iframe
+                        src={contactInfo.google_map_url}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={
+                          locale === "th"
+                            ? "แผนที่ตำแหน่งสำนักงาน"
+                            : "Office Location Map"
+                        }
+                        className="w-full h-full"
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-gray-300 h-80 flex items-center justify-center rounded-lg">
+                      <div className="text-center">
+                        <MapPin
+                          size={48}
+                          className="text-gray-500 mx-auto mb-4"
+                        />
+                        <p className="text-gray-600">
+                          {locale === "th"
+                            ? "แผนที่ตำแหน่งสำนักงาน"
+                            : "Office Location Map"}
+                        </p>
+                        <p className="text-gray-500 text-sm mt-2">
+                          {locale === "th"
+                            ? "กำลังโหลดแผนที่..."
+                            : "Loading map..."}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Company List from Store */}
