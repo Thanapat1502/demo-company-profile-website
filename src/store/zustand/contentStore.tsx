@@ -21,10 +21,12 @@ export interface ContentUpload {
 
 type State = {
   content: Content[];
+  contentDetail: Content | null;
   loading: boolean;
   success: boolean;
   error: string | null;
   fetchContent: (page: string, type?: "gallery" | "video") => Promise<void>;
+  fetchContentById: (id: string) => Promise<void>;
   createContent: (contentData: ContentUpload) => Promise<Content | null>;
   updateContent: (
     id: string,
@@ -41,6 +43,7 @@ type State = {
 
 export const useContentStore = create<State>((set) => ({
   content: [],
+  contentDetail: null,
   loading: false,
   success: false,
   error: null,
@@ -59,6 +62,35 @@ export const useContentStore = create<State>((set) => ({
       if (response.ok) {
         console.log("Fetch content:", result.data);
         set({ content: result.data || [], loading: false, success: true });
+      } else {
+        set({
+          error: result.error || "Failed to fetch content",
+          loading: false,
+        });
+      }
+    } catch (error) {
+      set({
+        error:
+          error instanceof Error ? error.message : "Failed to fetch content",
+        loading: false,
+      });
+    }
+  },
+  fetchContentById: async (id: string) => {
+    set({ loading: true, error: null });
+    try {
+      const url = `/api/content-detail?id=${id}`;
+
+      const response = await fetch(url);
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Fetch content detail>>>>>>>:", result.data);
+        set({
+          contentDetail: result.data || null,
+          loading: false,
+          success: true,
+        });
       } else {
         set({
           error: result.error || "Failed to fetch content",

@@ -8,7 +8,6 @@ import {
   Target,
   Factory,
   Truck,
-  Globe,
 } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
 import { useContentStore } from "@/store/zustand/contentStore";
+import Image from "next/image";
 
 export default function CompanyHistoryPage() {
   const locale = useLocale();
@@ -285,7 +285,16 @@ export default function CompanyHistoryPage() {
 
             <div className="relative">
               <div className="w-full h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shadow-lg">
-                <div className="text-center text-[var(--primary-blue)]">
+                <Image
+                  src={
+                    "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  }
+                  alt="Padungsilpa Group Office"
+                  className="w-full h-96 object-cover shadow-lg"
+                  width={600}
+                  height={400}
+                />
+                {/* <div className="text-center text-[var(--primary-blue)]">
                   <Globe className="w-16 h-16 mx-auto mb-4" />
                   <h4 className="text-xl font-semibold mb-2">
                     {locale === "th" ? "วิสัยทัศน์" : "Vision"}
@@ -295,7 +304,7 @@ export default function CompanyHistoryPage() {
                       ? "มุ่งมั่นเป็นผู้นำด้านเทคโนโลยีการจัดเก็บน้ำมันที่ปลอดภัยและเป็นมิตรต่อสิ่งแวดล้อม"
                       : "Committed to being a leader in safe and environmentally friendly fuel storage technology"}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

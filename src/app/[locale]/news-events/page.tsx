@@ -70,33 +70,6 @@ export default function NewsEventsPage() {
   // Get the first highlighted news for hero section
   const heroNews = highlightedNews[0];
 
-  // Show loading overlay during initial load
-  if (isInitialLoading) {
-    return (
-      <MainLayout>
-        <LoadingOverlay locale={locale} context="news" />
-      </MainLayout>
-    );
-  }
-
-  // Show error state
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="min-h-[400px] flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <p className="text-red-600 text-lg mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              {locale === "th" ? "ลองใหม่" : "Try Again"}
-            </button>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
   return (
     <MainLayout>
       {/* Hero Section with Highlighted News */}

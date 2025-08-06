@@ -368,27 +368,6 @@ export default function ReferencePage() {
   const permatankProjects = getPermatankReferences();
   const sortedOverseaProjects = getSortedOverseaProjects();
 
-  // Loading state for initial page load
-  if (isInitialLoading) {
-    return (
-      <MainLayout>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-600 text-lg">
-              {getLoadingText(locale, "content")}
-            </p>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  // Error state (optional)
-  if (error) {
-    console.warn("Reference page error:", error);
-  }
-
   return (
     <MainLayout>
       {/* Hero Section */}

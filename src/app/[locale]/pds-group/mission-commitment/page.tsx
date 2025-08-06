@@ -20,55 +20,21 @@ import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import PolicySection from "@/components/sections/pds-group/PolicySection";
+import { useContentStore } from "@/store/zustand/contentStore";
 
 export default function MissionCommitmentPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const { fetchContent, content } = useContentStore();
 
   // Content store state for VISION_1 and VISION_2 images
-  const [visionImages, setVisionImages] = useState<{
-    vision1: string | null;
-    vision2: string | null;
-  }>({
-    vision1: null,
-    vision2: null,
-  });
-
+  const vision1 = content.find((c) => c.id === "VISION_1")?.images_url[0];
+  const vision2 = content.find((c) => c.id === "VISION_2")?.images_url[0];
   // Fetch content images on component mount
   useEffect(() => {
     const fetchContentImages = async () => {
       try {
-        // Fetch VISION_1 content
-        const response1 = await fetch("/api/contents?id=VISION_1");
-        if (response1.ok) {
-          const data1 = await response1.json();
-          if (
-            data1.content &&
-            data1.content.images_url &&
-            data1.content.images_url.length > 0
-          ) {
-            setVisionImages((prev) => ({
-              ...prev,
-              vision1: data1.content.images_url[0],
-            }));
-          }
-        }
-
-        // Fetch VISION_2 content
-        const response2 = await fetch("/api/contents?id=VISION_2");
-        if (response2.ok) {
-          const data2 = await response2.json();
-          if (
-            data2.content &&
-            data2.content.images_url &&
-            data2.content.images_url.length > 0
-          ) {
-            setVisionImages((prev) => ({
-              ...prev,
-              vision2: data2.content.images_url[0],
-            }));
-          }
-        }
+        await fetchContent("VISION");
       } catch (error) {
         console.error("Failed to fetch content images:", error);
       }
@@ -76,6 +42,11 @@ export default function MissionCommitmentPage() {
 
     fetchContentImages();
   }, []);
+  useEffect(() => {
+    console.log("Content VISION:", content);
+    console.log("Content VISION 1:", vision1);
+    console.log("Content VISION 2:", vision2);
+  }, [content]);
 
   const subPages = [
     {
@@ -215,7 +186,7 @@ export default function MissionCommitmentPage() {
               {/* Mission Image from VISION_1 content */}
               <Image
                 src={
-                  visionImages.vision1 ||
+                  vision1 ||
                   "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 }
                 alt="Mission"
@@ -248,7 +219,7 @@ export default function MissionCommitmentPage() {
               {/* Vision Image from VISION_2 content */}
               <Image
                 src={
-                  visionImages.vision2 ||
+                  vision2 ||
                   "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 }
                 alt="Vision"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Users,
   Award,
@@ -16,30 +16,23 @@ import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
+import { useContentStore } from "@/store/zustand/contentStore";
 
 export default function CompanyProfilePage() {
   // const t = useTranslations();
   const locale = useLocale();
-
-  // Content store state for ABOUT content image
-  const [aboutImage, setAboutImage] = useState<string | null>(null);
+  const { fetchContentById, contentDetail } = useContentStore();
+  const contentImage =
+    Array.isArray(contentDetail?.images_url) &&
+    contentDetail.images_url.length > 0
+      ? contentDetail.images_url[0]
+      : undefined; // Content store state for ABOUT content image
 
   // Fetch content images on component mount
   useEffect(() => {
     const fetchContentImages = async () => {
       try {
-        // Fetch ABOUT content
-        const response = await fetch("/api/contents?page=ABOUT");
-        if (response.ok) {
-          const data = await response.json();
-          if (
-            data.content &&
-            data.content.images_url &&
-            data.content.images_url.length > 0
-          ) {
-            setAboutImage(data.content.images_url[0]);
-          }
-        }
+        await fetchContentById("ABOUT");
       } catch (error) {
         console.error("Failed to fetch content images:", error);
       }
@@ -160,7 +153,7 @@ export default function CompanyProfilePage() {
             <div>
               <Image
                 src={
-                  aboutImage ||
+                  contentImage ||
                   "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 }
                 alt="Padungsilpa Group Office"
