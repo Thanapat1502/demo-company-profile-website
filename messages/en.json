@@ -139,7 +139,28 @@
       "ohsas": "Occupational Health and Safety management for worker protection"
     },
     "experience": "Years of Excellence",
-    "viewProjects": "View Our Projects"
+    "viewProjects": "View Our Projects",
+    "navigation": {
+      "overview": "Company Overview",
+      "history": "Company History",
+      "team": "Executive Team",
+      "mission": "Vision & Mission"
+    },
+    "overview": {
+      "title": "Padungsilpa Group",
+      "subtitle": "Leader in Gas Station Construction & Engineering",
+      "description": "With over 50 years of experience, we provide comprehensive construction, engineering, and maintenance services for gas stations throughout Thailand",
+      "aboutUs": "About Us",
+      "content": {
+        "paragraph1": "Padungsilpa Group was established in 2000 with the purpose of providing comprehensive construction, engineering, and maintenance services for gas stations.",
+        "paragraph2": "With over 50 years of experience, we have developed expertise in manufacturing double-wall underground fuel tanks PERMATANK®, underground fuel piping systems, and automatic tank gauging (ATG) systems that meet international standards.",
+        "paragraph3": "We are proud to work with leading partners in the oil and energy industry and have earned the trust of customers throughout Thailand."
+      }
+    },
+    "cta": {
+      "title": "Ready to Work With Us?",
+      "description": "Contact us today to discuss your project"
+    }
   },
   "services": {
     "hero": {
@@ -247,36 +268,9 @@
       "consulting": "Engineering Consulting"
     },
     "projects": {
-      "ptt": {
-        "title": "PTT Gas Station - Sukhumvit",
-        "description": "Complete construction of a modern gas station featuring 8 fuel dispensers, convenience store, car wash facility, and solar panel installation for sustainable energy.",
-        "features": {
-          "dispensers": "8 modern fuel dispensers",
-          "store": "Full-service convenience store",
-          "carwash": "Automated car wash facility",
-          "solar": "Solar panel energy system"
-        }
-      },
-      "shell": {
-        "title": "Shell Station - Pattaya",
-        "description": "New eco-friendly gas station construction with modern design featuring sustainable technologies including solar panels and rainwater harvesting systems.",
-        "features": {
-          "eco": "Eco-friendly design and materials",
-          "modern": "Contemporary architectural design",
-          "rainwater": "Rainwater harvesting system",
-          "led": "LED lighting throughout"
-        }
-      },
-      "bangchak": {
-        "title": "Bangchak Station - Chiangmai",
-        "description": "Complete renovation and modernization of existing gas station including new pump systems, safety upgrades, and improved customer facilities.",
-        "features": {
-          "upgrade": "Complete system upgrades",
-          "safety": "Enhanced safety systems",
-          "efficiency": "Improved operational efficiency",
-          "compliance": "Full regulatory compliance"
-        }
-      }
+      "title": "Project References",
+      "sectionLabel": "Project References",
+      "noProjects": "No projects found"
     },
     "keyFeatures": "Key Features",
     "viewDetails": "View Details",
@@ -395,6 +389,7 @@
     },
     "form": {
       "title": "Send Us a Message",
+      "sectionLabel": "Form",
       "description": "Fill out the form below and our team will get back to you as soon as possible.",
       "firstName": "First Name",
       "firstNamePlaceholder": "Enter your first name",
@@ -433,6 +428,8 @@
       }
     },
     "map": {
+      "title": "Office Location",
+      "loading": "Loading map...",
       "placeholder": "Interactive map will be displayed here"
     },
     "faq": {
@@ -450,8 +447,19 @@
         "consultation": {
           "question": "Do you offer free consultations?",
           "answer": "Yes, we provide free initial consultations to discuss your project requirements and provide preliminary guidance."
+        },
+        "warranty": {
+          "question": "Do you provide warranty?",
+          "answer": "We provide 2-year warranty for construction work and 10-year warranty for PERMATANK® equipment."
         }
-      }
+      },
+      "sectionLabel": "FAQ",
+      "title": "Frequently Asked Questions",
+      "description": "Answers to the most common questions from our customers"
+    },
+    "info": {
+      "sectionLabel": "Contact Information",
+      "description": "Main company contact information with various communication channels"
     }
   }
 }

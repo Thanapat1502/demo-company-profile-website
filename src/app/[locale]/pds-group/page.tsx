@@ -10,7 +10,7 @@ import {
   History,
   Users2,
 } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
@@ -19,7 +19,7 @@ import HeroButtons from "@/components/ui/HeroButtons";
 import { useContentStore } from "@/store/zustand/contentStore";
 
 export default function CompanyProfilePage() {
-  // const t = useTranslations();
+  const t = useTranslations();
   const locale = useLocale();
   const { fetchContentById, contentDetail } = useContentStore();
   const contentImage =
@@ -44,25 +44,25 @@ export default function CompanyProfilePage() {
   const subPages = [
     {
       id: "overview",
-      title: "ภาพรวมบริษัท",
+      title: t("company.navigation.overview"),
       icon: Building,
       href: `/pds-group`,
     },
     {
       id: "history",
-      title: "ประวัติความเป็นมา",
+      title: t("company.navigation.history"),
       icon: History,
       href: `/pds-group/history`,
     },
     {
       id: "team",
-      title: "ทีมผู้บริหาร",
+      title: t("company.navigation.team"),
       icon: Users2,
       href: `/pds-group/executive-team`,
     },
     {
       id: "mission",
-      title: "วิสัยทัศน์และพันธกิจ",
+      title: t("company.navigation.mission"),
       icon: Target,
       href: `/pds-group/mission-commitment`,
     },
@@ -73,9 +73,9 @@ export default function CompanyProfilePage() {
       {/* Hero Section - Using DynamicHeroSection for consistency */}
       <DynamicHeroSection
         pageId="ABOUT_MAIN"
-        title="กลุ่มบริษัท ผดุงศิลป์"
-        subtitle="ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน"
-        description="ด้วยประสบการณ์กว่า 50 ปี เราให้บริการก่อสร้าง วิศวกรรม และบำรุงรักษาสถานีบริการน้ำมันครบวงจรทั่วประเทศไทย"
+        title={t("company.overview.title")}
+        subtitle={t("company.overview.subtitle")}
+        description={t("company.overview.description")}
         fallbackImages={[
           "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
         ]}
@@ -115,13 +115,13 @@ export default function CompanyProfilePage() {
               <div className="inline-flex items-center gap-3">
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                 <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                  เกี่ยวกับเรา
+                  {t("company.overview.aboutUs")}
                 </span>
               </div>
 
               {/* Main Heading - Strong & Minimal Style */}
               <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
-                กลุ่มบริษัท ผดุงศิลป์
+                {t("company.overview.title")}
               </h2>
 
               {/* Enhanced Elegant Line with Glow */}
@@ -132,21 +132,9 @@ export default function CompanyProfilePage() {
 
               {/* Description - Clean Typography */}
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-                <p>
-                  กลุ่มบริษัท ผดุงศิลป์ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2543
-                  โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้าง วิศวกรรม
-                  และบำรุงรักษาสถานีบริการน้ำมันอย่างครบวงจร
-                </p>
-                <p>
-                  ด้วยประสบการณ์กว่า 50 ปี
-                  เราได้พัฒนาความเชี่ยวชาญในการผลิตถังน้ำมันใต้ดินผนัง 2 ชั้น
-                  PERMATANK® ระบบท่อน้ำมันใต้ดิน และระบบวัดน้ำมันอัตโนมัติ (ATG)
-                  ที่ได้มาตรฐานสากล
-                </p>
-                <p>
-                  เราภาคภูมิใจที่ได้ร่วมงานกับพันธมิตรชั้นนำในอุตสาหกรรมน้ำมันและพลังงาน
-                  และได้รับความไว้วางใจจากลูกค้าทั่วประเทศไทย
-                </p>
+                <p>{t("company.overview.content.paragraph1")}</p>
+                <p>{t("company.overview.content.paragraph2")}</p>
+                <p>{t("company.overview.content.paragraph3")}</p>
               </div>
             </div>
             {/* About Image from ABOUT content */}
@@ -172,7 +160,7 @@ export default function CompanyProfilePage() {
           <div className="text-center mb-16">
             {/* Main Heading - Strong & Minimal Style */}
             <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-              ค่านิยมองค์กร
+              {t("company.values.title")}
             </h2>
 
             {/* Enhanced Elegant Line with Glow */}
@@ -182,7 +170,7 @@ export default function CompanyProfilePage() {
             </div>
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              หลักการและค่านิยมที่เรายึดถือในการดำเนินธุรกิจ
+              {t("company.values.description")}
             </p>
           </div>
 
@@ -190,23 +178,23 @@ export default function CompanyProfilePage() {
             {[
               {
                 icon: Target,
-                title: "ความเป็นเลิศ",
-                description: "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน",
+                title: t("company.values.excellence.title"),
+                description: t("company.values.excellence.description"),
               },
               {
                 icon: Users,
-                title: "การทำงานเป็นทีม",
-                description: "ร่วมมือกันเพื่อบรรลุเป้าหมายร่วมกัน",
+                title: t("company.values.teamwork.title"),
+                description: t("company.values.teamwork.description"),
               },
               {
                 icon: Heart,
-                title: "ความซื่อสัตย์",
-                description: "ดำเนินธุรกิจด้วยความโปร่งใสและจริงใจ",
+                title: t("company.values.integrity.title"),
+                description: t("company.values.integrity.description"),
               },
               {
                 icon: Award,
-                title: "นวัตกรรม",
-                description: "พัฒนาเทคโนโลยีและนวัตกรรมอย่างต่อเนื่อง",
+                title: t("company.values.innovation.title"),
+                description: t("company.values.innovation.description"),
               },
             ].map((value, index) => (
               <div
@@ -236,7 +224,7 @@ export default function CompanyProfilePage() {
         style={{ background: "var(--primary-blue)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            พร้อมที่จะร่วมงานกับเรา?
+            {t("company.cta.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -246,7 +234,7 @@ export default function CompanyProfilePage() {
           </div>
 
           <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
-            ติดต่อเราวันนี้เพื่อปรึกษาโครงการของคุณ
+            {t("company.cta.description")}
           </p>
 
           <div className="flex justify-center">

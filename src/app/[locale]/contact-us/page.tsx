@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import ContactInfo from "@/components/contact/ContactInfo";
@@ -22,6 +22,7 @@ import {
 import { useContactStore } from "@/store/zustand/contactStore";
 
 export default function ContactUsPage() {
+  const t = useTranslations();
   const locale = useLocale();
   const { fetchContactInfo, contactInfo } = useContactStore();
   const [formData, setFormData] = useState({
@@ -42,59 +43,55 @@ export default function ContactUsPage() {
   const contactMethods = [
     {
       icon: Phone,
-      title: "โทรศัพท์",
-      description: "ติดต่อเราโดยตรงเพื่อรับคำปรึกษาเบื้องต้น",
+      title: t("contact.methods.phone.title"),
+      description: t("contact.methods.phone.description"),
       value: contactInfo?.tel || "+66 2 123 4567",
       action: `tel:${contactInfo?.tel || "+6621234567"}`,
     },
     {
       icon: Mail,
-      title: "อีเมล",
-      description: "ส่งข้อความหาเราเพื่อรับข้อมูลรายละเอียด",
+      title: t("contact.methods.email.title"),
+      description: t("contact.methods.email.description"),
       value: contactInfo?.email || "info@padungsilpa.group",
       action: `mailto:${contactInfo?.email}`,
     },
     {
       icon: MessageCircle,
-      title: "แชทออนไลน์",
-      description: "สอบถามข้อมูลแบบเรียลไทม์กับทีมงาน",
-      value: "เริ่มแชท",
+      title: t("contact.methods.chat.title"),
+      description: t("contact.methods.chat.description"),
+      value: t("contact.methods.chat.value"),
       action: `https://line.me/R/ti/p/${contactInfo?.line}`,
     },
   ];
 
   const inquiryTypes = [
-    { key: "general", label: "สอบถามทั่วไป" },
-    { key: "quote", label: "ขอใบเสนอราคา" },
-    { key: "support", label: "บริการหลังการขาย" },
-    { key: "partnership", label: "ความร่วมมือทางธุรกิจ" },
-    { key: "career", label: "สมัครงาน" },
+    { key: "general", label: t("contact.form.inquiryTypes.general") },
+    { key: "quote", label: t("contact.form.inquiryTypes.quote") },
+    { key: "support", label: t("contact.form.inquiryTypes.support") },
+    { key: "partnership", label: t("contact.form.inquiryTypes.partnership") },
+    { key: "career", label: t("contact.form.inquiryTypes.career") },
   ];
 
   const faqs = [
     {
       icon: Building2,
-      question: "บริการของเราครอบคลุมอะไรบ้าง?",
-      answer:
-        "เราให้บริการครบวงจรตั้งแต่การออกแบบ ก่อสร้าง ติดตั้งอุปกรณ์ และบำรุงรักษาสถานีบริการน้ำมัน",
+      question: t("contact.faq.questions.services.question"),
+      answer: t("contact.faq.questions.services.answer"),
     },
     {
       icon: Clock,
-      question: "ระยะเวลาดำเนินโครงการเป็นอย่างไร?",
-      answer:
-        "ระยะเวลาขึ้นอยู่กับขนาดโครงการ โดยทั่วไปใช้เวลา 3-6 เดือน สำหรับสถานีบริการขนาดกลาง",
+      question: t("contact.faq.questions.timeline.question"),
+      answer: t("contact.faq.questions.timeline.answer"),
     },
     {
       icon: Users,
-      question: "มีบริการให้คำปรึกษาฟรีหรือไม่?",
-      answer:
-        "มีครับ เรามีทีมผู้เชี่ยวชาญพร้อมให้คำปรึกษาเบื้องต้นฟรี รวมถึงการสำรวจพื้นที่",
+      question: t("contact.faq.questions.consultation.question"),
+      answer: t("contact.faq.questions.consultation.answer"),
     },
     {
       icon: CheckCircle,
-      question: "มีการรับประกันหรือไม่?",
-      answer:
-        "เรารับประกันงานก่อสร้าง 2 ปี และอุปกรณ์ PERMATANK® รับประกัน 10 ปี",
+      question: t("contact.faq.questions.warranty.question"),
+      answer: t("contact.faq.questions.warranty.answer"),
     },
   ];
 
@@ -113,9 +110,9 @@ export default function ContactUsPage() {
         {/* Hero Section - Using DynamicHeroSection for consistency */}
         <DynamicHeroSection
           pageId="CONTACT"
-          title="ติดต่อเรา"
-          subtitle="พร้อมให้คำปรึกษา"
-          description="และข้อเสนอที่ดีที่สุดสำหรับโครงการของคุณ"
+          title={t("contact.hero.title")}
+          subtitle={t("contact.hero.subtitle")}
+          description={t("contact.hero.description")}
           fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
           autoSlideDelay={6000}>
           {/* Luxury Hero Buttons */}
@@ -129,7 +126,7 @@ export default function ContactUsPage() {
               }>
               <span className="relative z-10 flex items-center justify-center gap-3">
                 <span className="font-semibold tracking-wide">
-                  ขอใบเสนอราคา
+                  {t("contact.hero.getQuote")}
                 </span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
               </span>
@@ -141,7 +138,9 @@ export default function ContactUsPage() {
               className="luxury-hero-btn luxury-hero-btn-secondary group"
               onClick={() => (window.location.href = "tel:+6621234567")}>
               <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="font-semibold tracking-wide">โทรเลย</span>
+                <span className="font-semibold tracking-wide">
+                  {t("contact.hero.callNow")}
+                </span>
                 <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
               </span>
               <div className="luxury-btn-border"></div>
@@ -158,14 +157,14 @@ export default function ContactUsPage() {
               <div className="inline-flex items-center gap-3 mb-8">
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                 <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                  ติดต่อเรา
+                  {t("contact.methods.title")}
                 </span>
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               </div>
 
               {/* Main Heading */}
               <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-                วิธีติดต่อเรา
+                {t("contact.methods.title")}
               </h2>
 
               {/* Enhanced Elegant Line */}
@@ -175,7 +174,7 @@ export default function ContactUsPage() {
               </div>
 
               <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                เลือกช่องทางที่สะดวกสำหรับคุณ เราพร้อมให้บริการตลอด 24 ชั่วโมง
+                {t("contact.methods.description")}
               </p>
             </div>
 
@@ -215,7 +214,7 @@ export default function ContactUsPage() {
               <div className="inline-flex items-center gap-3 mb-8">
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                 <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                  {locale === "th" ? "ข้อมูลติดต่อ" : "Contact Information"}
+                  {t("contact.info.sectionLabel")}
                 </span>
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               </div>
@@ -232,9 +231,7 @@ export default function ContactUsPage() {
               </div>
 
               <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {locale === "th"
-                  ? "ข้อมูลการติดต่อหลักของบริษัท พร้อมช่องทางการติดต่อที่หลากหลาย"
-                  : "Main company contact information with various communication channels"}
+                {t("contact.info.description")}
               </p>
             </div>
 
@@ -255,12 +252,12 @@ export default function ContactUsPage() {
                   <div className="inline-flex items-center gap-3 mb-8">
                     <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                     <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                      แบบฟอร์ม
+                      {t("contact.form.sectionLabel")}
                     </span>
                   </div>
 
                   <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6 tracking-tight">
-                    ส่งข้อความหาเรา
+                    {t("contact.form.title")}
                   </h2>
 
                   <div className="relative flex items-start justify-start mb-6">
@@ -269,7 +266,7 @@ export default function ContactUsPage() {
                   </div>
 
                   <p className="text-lg text-gray-600 leading-relaxed">
-                    กรอกแบบฟอร์มด้านล่าง เราจะติดต่อกลับภายใน 24 ชั่วโมง
+                    {t("contact.form.description")}
                   </p>
                 </div>
 
@@ -277,7 +274,7 @@ export default function ContactUsPage() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                        ชื่อ *
+                        {t("contact.form.firstName")} *
                       </label>
                       <input
                         type="text"
@@ -287,12 +284,12 @@ export default function ContactUsPage() {
                           handleInputChange("firstName", e.target.value)
                         }
                         className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg"
-                        placeholder="กรอกชื่อของคุณ"
+                        placeholder={t("contact.form.firstNamePlaceholder")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                        นามสกุล *
+                        {t("contact.form.lastName")} *
                       </label>
                       <input
                         type="text"
@@ -302,7 +299,7 @@ export default function ContactUsPage() {
                           handleInputChange("lastName", e.target.value)
                         }
                         className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg"
-                        placeholder="กรอกนามสกุลของคุณ"
+                        placeholder={t("contact.form.lastNamePlaceholder")}
                       />
                     </div>
                   </div>
@@ -310,7 +307,7 @@ export default function ContactUsPage() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                        อีเมล *
+                        {t("contact.form.email")} *
                       </label>
                       <input
                         type="email"
@@ -320,12 +317,12 @@ export default function ContactUsPage() {
                           handleInputChange("email", e.target.value)
                         }
                         className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg"
-                        placeholder="example@email.com"
+                        placeholder={t("contact.form.emailPlaceholder")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                        เบอร์โทรศัพท์
+                        {t("contact.form.phone")}
                       </label>
                       <input
                         type="tel"
@@ -334,14 +331,14 @@ export default function ContactUsPage() {
                           handleInputChange("phone", e.target.value)
                         }
                         className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg"
-                        placeholder="08X-XXX-XXXX"
+                        placeholder={t("contact.form.phonePlaceholder")}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                      บริษัท/องค์กร
+                      {t("contact.form.company")}
                     </label>
                     <input
                       type="text"
@@ -350,13 +347,13 @@ export default function ContactUsPage() {
                         handleInputChange("company", e.target.value)
                       }
                       className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg"
-                      placeholder="ชื่อบริษัทหรือองค์กร"
+                      placeholder={t("contact.form.companyPlaceholder")}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                      ประเภทการสอบถาม *
+                      {t("contact.form.inquiryType")} *
                     </label>
                     <div className="relative">
                       <select
@@ -366,7 +363,9 @@ export default function ContactUsPage() {
                           handleInputChange("inquiryType", e.target.value)
                         }
                         className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg appearance-none cursor-pointer">
-                        <option value="">เลือกประเภทการสอบถาม</option>
+                        <option value="">
+                          {t("contact.form.inquiryTypePlaceholder")}
+                        </option>
                         {inquiryTypes.map((type) => (
                           <option key={type.key} value={type.key}>
                             {type.label}
@@ -379,7 +378,7 @@ export default function ContactUsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-                      ข้อความ *
+                      {t("contact.form.message")} *
                     </label>
                     <textarea
                       required
@@ -389,7 +388,7 @@ export default function ContactUsPage() {
                         handleInputChange("message", e.target.value)
                       }
                       className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 bg-transparent focus:outline-none focus:border-gray-900 transition-colors text-lg resize-none"
-                      placeholder="กรุณาระบุรายละเอียดที่ต้องการสอบถาม..."
+                      placeholder={t("contact.form.messagePlaceholder")}
                     />
                   </div>
 
@@ -400,7 +399,7 @@ export default function ContactUsPage() {
                       size={20}
                       className="mr-3 group-hover:translate-x-1 transition-transform"
                     />
-                    ส่งข้อความ
+                    {t("contact.form.submit")}
                   </button>
                 </form>
               </div>
@@ -412,12 +411,12 @@ export default function ContactUsPage() {
                   <div className="inline-flex items-center gap-3 mb-8">
                     <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                     <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                      สำนักงาน
+                      {t("contact.offices.title")}
                     </span>
                   </div>
 
                   <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6 tracking-tight">
-                    ที่ตั้งสำนักงาน
+                    {t("contact.offices.title")}
                   </h2>
 
                   <div className="relative flex items-start justify-start mb-6">
@@ -429,9 +428,7 @@ export default function ContactUsPage() {
                 {/* Google Maps Integration */}
                 <div className="mb-12">
                   <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                    {locale === "th"
-                      ? "แผนที่ตำแหน่งสำนักงาน"
-                      : "Office Location"}
+                    {t("contact.map.title")}
                   </h3>
                   {contactInfo?.google_map_url ? (
                     <div className="relative w-full h-80 rounded-lg overflow-hidden shadow-lg">
@@ -443,11 +440,7 @@ export default function ContactUsPage() {
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                        title={
-                          locale === "th"
-                            ? "แผนที่ตำแหน่งสำนักงาน"
-                            : "Office Location Map"
-                        }
+                        title={t("contact.map.title")}
                         className="w-full h-full"
                       />
                     </div>
@@ -459,14 +452,10 @@ export default function ContactUsPage() {
                           className="text-gray-500 mx-auto mb-4"
                         />
                         <p className="text-gray-600">
-                          {locale === "th"
-                            ? "แผนที่ตำแหน่งสำนักงาน"
-                            : "Office Location Map"}
+                          {t("contact.map.title")}
                         </p>
                         <p className="text-gray-500 text-sm mt-2">
-                          {locale === "th"
-                            ? "กำลังโหลดแผนที่..."
-                            : "Loading map..."}
+                          {t("contact.map.loading")}
                         </p>
                       </div>
                     </div>
@@ -488,14 +477,14 @@ export default function ContactUsPage() {
               <div className="inline-flex items-center gap-3 mb-8">
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                 <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                  คำถามที่พบบ่อย
+                  {t("contact.faq.sectionLabel")}
                 </span>
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               </div>
 
               {/* Main Heading */}
               <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-                คำถามที่พบบ่อย
+                {t("contact.faq.title")}
               </h2>
 
               {/* Enhanced Elegant Line */}
@@ -505,7 +494,7 @@ export default function ContactUsPage() {
               </div>
 
               <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                คำตอบสำหรับคำถามที่ลูกค้าสอบถามบ่อยที่สุด
+                {t("contact.faq.description")}
               </p>
             </div>
 

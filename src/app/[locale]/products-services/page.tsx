@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
@@ -15,6 +15,7 @@ import { useProductStore } from "@/store/zustand/productStore";
 import { useServiceStore } from "@/store/zustand/servicesStore";
 import { useContentStore } from "@/store/zustand/contentStore";
 export default function ProductsServicesPage() {
+  const t = useTranslations();
   const locale = useLocale();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -103,13 +104,9 @@ export default function ProductsServicesPage() {
       {/* Hero Section */}
       <DynamicHeroSection
         pageId="PRODUCTS_SERVICE"
-        title={locale === "th" ? "ผลิตภัณฑ์และบริการ" : "Products & Services"}
-        subtitle={locale === "th" ? "บริการครบวงจร" : "Complete Solutions"}
-        description={
-          locale === "th"
-            ? "ผลิตภัณฑ์และบริการคุณภาพสูง\nสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
-            : "High-quality products and services\nfor gas stations and energy industry"
-        }
+        title={t("services.hero.title")}
+        subtitle={t("services.hero.subtitle")}
+        description={t("services.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-3.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />

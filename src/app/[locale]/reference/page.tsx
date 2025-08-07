@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,18 +24,21 @@ interface ProjectSectionProps {
   references: Reference[];
   locale: string;
   loading?: boolean;
+  t: any;
 }
 
 interface PermatankSectionProps {
   references: Reference[];
   locale: string;
   loading?: boolean;
+  t: any;
 }
 
 interface OverseasSectionProps {
   references: OverseaProject[];
   locale: string;
   loading?: boolean;
+  t: any;
 }
 
 // ProjectSection Component for Service Station references
@@ -43,6 +46,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
   references,
   locale,
   loading = false,
+  t,
 }) => {
   if (loading) {
     return (
@@ -66,15 +70,13 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
           <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-              {locale === "th" ? "ผลงาน" : "PROJECTS"}
+              {t("references.projects.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
           </div>
 
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            {locale === "th"
-              ? "โครงการที่เราภาคภูมิใจ"
-              : "Projects We're Proud Of"}
+            {t("references.projects.title")}
           </h2>
 
           <div className="relative flex items-center justify-center mb-8">
@@ -99,9 +101,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
         {references.length === 0 && (
           <div className="text-center py-16">
             <p className="text-gray-500">
-              {locale === "th"
-                ? "ไม่มีโครงการในขณะนี้"
-                : "No projects available at the moment"}
+              {t("references.projects.noProjects")}
             </p>
           </div>
         )}
@@ -115,6 +115,7 @@ const PermatankSection: React.FC<PermatankSectionProps> = ({
   references,
   locale,
   loading = false,
+  t,
 }) => {
   if (loading) {
     return (
@@ -311,6 +312,7 @@ const OverseasSection: React.FC<OverseasSectionProps> = ({
 };
 
 export default function ReferencePage() {
+  const t = useTranslations();
   const locale = useLocale();
   const {
     references,
@@ -373,17 +375,9 @@ export default function ReferencePage() {
       {/* Hero Section */}
       <DynamicHeroSection
         pageId="REFERENCE"
-        title={locale === "th" ? "ผลงานของเรา" : "Our Portfolio"}
-        subtitle={
-          locale === "th"
-            ? "ความภาคภูมิใจในทุกโครงการ"
-            : "Pride in Every Project"
-        }
-        description={
-          locale === "th"
-            ? "ผลงานการก่อสร้างและติดตั้งระบบน้ำมันที่ได้รับความไว้วางใจจากลูกค้าชั้นนำ"
-            : "Construction and fuel system installation projects trusted by leading clients"
-        }
+        title={t("references.hero.title")}
+        subtitle={t("references.hero.subtitle")}
+        description={t("references.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-2.jpg"]}
         autoSlideDelay={6000}
       />
@@ -393,6 +387,7 @@ export default function ReferencePage() {
         references={serviceStationProjects}
         locale={locale}
         loading={loading}
+        t={t}
       />
 
       {/* PERMATANK Products Section */}
@@ -400,6 +395,7 @@ export default function ReferencePage() {
         references={permatankProjects}
         locale={locale}
         loading={loading}
+        t={t}
       />
 
       {/* Overseas Projects Section */}
@@ -407,6 +403,7 @@ export default function ReferencePage() {
         references={sortedOverseaProjects}
         locale={locale}
         loading={loading}
+        t={t}
       />
     </MainLayout>
   );

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import MainLayout from "@/components/layout/MainLayout";
 import { useNewsStore } from "@/store/zustand/newsStore";
 import NewsHero from "@/components/news/NewsHero";
@@ -16,6 +16,7 @@ import LoadingOverlay, {
 import { getBilingualCategory } from "@/utils/bilingual";
 
 export default function NewsEventsPage() {
+  const t = useTranslations();
   const locale = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,17 +79,9 @@ export default function NewsEventsPage() {
       ) : (
         <DynamicHeroSection
           pageId="NEWS"
-          title={
-            locale === "th"
-              ? "ติดตามข่าวสารล่าสุด"
-              : "Stay Updated with Latest News"
-          }
-          subtitle={locale === "th" ? "ข่าวสารและกิจกรรม" : "News & Events"}
-          description={
-            locale === "th"
-              ? "อัพเดทข่าวสารและความเคลื่อนไหวของบริษัทอย่างต่อเนื่อง พร้อมข้อมูลโครงการและนวัตกรรมใหม่ๆ"
-              : "Stay updated with our latest news, company activities, and innovative projects"
-          }
+          title={t("news.hero.title")}
+          subtitle={t("news.hero.subtitle")}
+          description={t("news.hero.description")}
           fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
           autoSlideDelay={6000}>
           <HeroButtons />
@@ -107,9 +100,7 @@ export default function NewsEventsPage() {
                 />
                 <input
                   type="text"
-                  placeholder={
-                    locale === "th" ? "ค้นหาข่าวสาร..." : "Search news..."
-                  }
+                  placeholder={t("news.search.placeholder")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -132,12 +123,10 @@ export default function NewsEventsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              {locale === "th" ? "ข่าวสารล่าสุด" : "Latest News"}
+              {t("news.latest.title")}
             </h2>
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-              {locale === "th"
-                ? "อัพเดทข่าวสารและความเคลื่อนไหวของบริษัทอย่างต่อเนื่อง"
-                : "Stay updated with our latest news and company activities"}
+              {t("news.latest.description")}
             </p>
           </div>
 
@@ -172,9 +161,7 @@ export default function NewsEventsPage() {
               {filteredNews.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-xl text-gray-500">
-                    {locale === "th"
-                      ? "ไม่พบข่าวสารที่ตรงกับการค้นหา"
-                      : "No news found matching your search"}
+                    {t("news.grid.noResults")}
                   </p>
                 </div>
               )}
@@ -190,7 +177,7 @@ export default function NewsEventsPage() {
         id="newsletter">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            สมัครรับข่าวสาร
+            {t("news.newsletter.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -200,7 +187,7 @@ export default function NewsEventsPage() {
           </div>
 
           <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
-            รับข่าวสารและอัพเดทล่าสุดจากเราก่อนใคร
+            {t("news.newsletter.description")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto mb-8">
@@ -213,7 +200,7 @@ export default function NewsEventsPage() {
               <button className="luxury-hero-btn luxury-hero-btn-primary group">
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   <span className="font-semibold tracking-wide">
-                    สมัครรับข่าวสาร
+                    {t("news.newsletter.subscribe")}
                   </span>
                 </span>
                 <div className="luxury-btn-shimmer"></div>
