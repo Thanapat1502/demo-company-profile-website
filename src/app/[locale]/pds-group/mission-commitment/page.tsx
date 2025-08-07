@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   History,
   Award,
@@ -21,11 +21,12 @@ import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import PolicySection from "@/components/sections/pds-group/PolicySection";
 import { useContentStore } from "@/store/zustand/contentStore";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 
 export default function MissionCommitmentPage() {
   const t = useTranslations();
   const locale = useLocale();
-  const { fetchContent, content } = useContentStore();
+  const { fetchContent, content, loading } = useContentStore();
 
   // Content store state for VISION_1 and VISION_2 images
   const vision1 = content.find((c) => c.id === "VISION_1")?.images_url[0];
@@ -184,16 +185,23 @@ export default function MissionCommitmentPage() {
                 เพื่อสร้างความพึงพอใจสูงสุดให้กับลูกค้าและผู้มีส่วนได้ส่วนเสีย
               </p>
               {/* Mission Image from VISION_1 content */}
-              <Image
-                src={
-                  vision1 ||
-                  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                }
-                alt="Mission"
-                width={600}
-                height={400}
-                className="w-full h-80 object-cover shadow-lg"
-              />
+              {loading || !vision1 ? (
+                <ImageSkeleton
+                  width="100%"
+                  height="320px"
+                  rounded="lg"
+                  animation="shimmer"
+                  className="shadow-lg"
+                />
+              ) : (
+                <Image
+                  src={vision1}
+                  alt="Mission"
+                  width={600}
+                  height={400}
+                  className="w-full h-80 object-cover shadow-lg"
+                />
+              )}
             </div>
 
             {/* Vision */}
@@ -217,16 +225,23 @@ export default function MissionCommitmentPage() {
               </p>
 
               {/* Vision Image from VISION_2 content */}
-              <Image
-                src={
-                  vision2 ||
-                  "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                }
-                alt="Vision"
-                width={600}
-                height={400}
-                className="w-full h-80 object-cover shadow-lg"
-              />
+              {loading || !vision2 ? (
+                <ImageSkeleton
+                  width="100%"
+                  height="320px"
+                  rounded="lg"
+                  animation="shimmer"
+                  className="shadow-lg"
+                />
+              ) : (
+                <Image
+                  src={vision2}
+                  alt="Vision"
+                  width={600}
+                  height={400}
+                  className="w-full h-80 object-cover shadow-lg"
+                />
+              )}
             </div>
           </div>
         </div>

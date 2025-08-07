@@ -17,11 +17,12 @@ import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import { useContentStore } from "@/store/zustand/contentStore";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 
 export default function CompanyProfilePage() {
   const t = useTranslations();
   const locale = useLocale();
-  const { fetchContentById, contentDetail } = useContentStore();
+  const { fetchContentById, contentDetail, loading } = useContentStore();
   const contentImage =
     Array.isArray(contentDetail?.images_url) &&
     contentDetail.images_url.length > 0
@@ -139,16 +140,23 @@ export default function CompanyProfilePage() {
             </div>
             {/* About Image from ABOUT content */}
             <div>
-              <Image
-                src={
-                  contentImage ||
-                  "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                }
-                alt="Padungsilpa Group Office"
-                className="w-full h-96 object-cover shadow-lg"
-                width={600}
-                height={400}
-              />
+              {loading || !contentImage ? (
+                <ImageSkeleton
+                  width="100%"
+                  height="384px"
+                  rounded="lg"
+                  animation="shimmer"
+                  className="shadow-lg"
+                />
+              ) : (
+                <Image
+                  src={contentImage}
+                  alt="Padungsilpa Group Office"
+                  className="w-full h-96 object-cover shadow-lg"
+                  width={600}
+                  height={400}
+                />
+              )}
             </div>
           </div>
         </div>

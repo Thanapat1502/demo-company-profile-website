@@ -13,12 +13,14 @@ import { Card, CardBody } from "@heroui/react";
 import { useNewsStore, News } from "@/store/zustand/newsStore";
 import { getBilingualTitle, getBilingualExcerpt } from "@/utils/bilingual";
 import QuillDisplay from "@/components/share/QuillDisplay";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 
 export default function NewsDetailPage() {
   const locale = useLocale();
   const params = useParams();
   const slug = params.slug as string;
   const { fetchNewsDetail, newsDetail, loading, error } = useNewsStore();
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   // Fetch news detail on component mount
@@ -155,14 +157,38 @@ export default function NewsDetailPage() {
       <section className="relative bg-slate-50">
         {/* Background Image */}
         <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-          <Image
-            src={
-              newsDetail.thumbnail || "/images/hero-sections/hero-banner-1.jpg"
-            }
-            alt={title}
-            fill
-            className="object-cover"
-          />
+          {isInitialLoading || !newsDetail.thumbnail ? (
+            <ImageSkeleton
+              width="100%"
+              height="100%"
+              rounded="none"
+              animation="shimmer"
+              showIcon={false}
+              className="absolute inset-0"
+            />
+          ) : (
+            <>
+              <Image
+                src={newsDetail.thumbnail}
+                alt={title}
+                fill
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
+                onLoad={() => setImageLoaded(true)}
+              />
+              {!imageLoaded && (
+                <ImageSkeleton
+                  width="100%"
+                  height="100%"
+                  rounded="none"
+                  animation="pulse"
+                  showIcon={false}
+                  className="absolute inset-0"
+                />
+              )}
+            </>
+          )}
           {/* Enhanced Gradient Overlay for Better Contrast */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-black/10 z-10" />
         </div>

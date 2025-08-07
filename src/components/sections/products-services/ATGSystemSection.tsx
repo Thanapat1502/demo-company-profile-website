@@ -63,19 +63,19 @@ export default function ATGSystemSection({
     videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
 
   return (
-    <section className="section-minimal bg-gray-50">
+    <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
-          <div className="relative">
+          <div className="relative order-2 lg:order-1">
             <YouTubeEmbed
               url={videoUrl}
               title={serviceName}
-              className="shadow-lg"
+              className="shadow-xl w-full h-[400px] lg:h-[500px]"
             />
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8 order-1 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>

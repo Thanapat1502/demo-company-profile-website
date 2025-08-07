@@ -49,8 +49,7 @@ export default function ProductsServicesPage() {
         await Promise.all([
           fetchProducts(),
           fetchServices(),
-          fetchContent("SERVICE", "gallery"),
-          fetchContent("SERVICE", "video"),
+          fetchContent("SERVICE"),
         ]);
       } catch (error) {
         console.error("Error fetching products-services data:", error);

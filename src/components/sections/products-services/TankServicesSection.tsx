@@ -80,31 +80,31 @@ export default function TankServicesSection({
   console.log("- Gallery images count:", galleryImages.length);
 
   return (
-    <section className="section-minimal bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Content Display - Gallery */}
-          <div className="relative">
+          <div className="relative order-1 lg:order-1">
             {galleryImages.length > 0 ? (
               <div>
                 {/* Display image carousel gallery */}
                 <MinimalCarousel
                   images={galleryImages}
                   alt={serviceName}
-                  aspectRatio="4/3"
+                  aspectRatio="3/2"
                   showNavigation={true}
                   showIndicators={true}
                   autoPlay={true}
                   interval={5000}
-                  className="shadow-lg"
+                  className="shadow-xl w-full h-[400px] lg:h-[500px]"
                 />
               </div>
             ) : (
               // Fallback placeholder for tank services
-              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+              <div className="w-full h-[400px] lg:h-[500px] bg-gray-100 flex items-center justify-center shadow-xl">
                 <div className="text-center text-gray-500">
-                  <Wrench className="w-16 h-16 mx-auto mb-4" />
-                  <p className="text-sm">
+                  <Wrench className="w-20 h-20 mx-auto mb-4" />
+                  <p className="text-lg">
                     {locale === "th"
                       ? "รูปภาพบริการถังน้ำมัน"
                       : "Tank Services Images"}
@@ -114,7 +114,7 @@ export default function TankServicesSection({
             )}
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8 order-2 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>

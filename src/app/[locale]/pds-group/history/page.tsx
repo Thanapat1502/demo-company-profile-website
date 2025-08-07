@@ -294,17 +294,6 @@ export default function CompanyHistoryPage() {
                   width={600}
                   height={400}
                 />
-                {/* <div className="text-center text-[var(--primary-blue)]">
-                  <Globe className="w-16 h-16 mx-auto mb-4" />
-                  <h4 className="text-xl font-semibold mb-2">
-                    {locale === "th" ? "วิสัยทัศน์" : "Vision"}
-                  </h4>
-                  <p className="text-sm max-w-xs">
-                    {locale === "th"
-                      ? "มุ่งมั่นเป็นผู้นำด้านเทคโนโลยีการจัดเก็บน้ำมันที่ปลอดภัยและเป็นมิตรต่อสิ่งแวดล้อม"
-                      : "Committed to being a leader in safe and environmentally friendly fuel storage technology"}
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>

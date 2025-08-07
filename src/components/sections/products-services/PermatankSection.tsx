@@ -63,19 +63,19 @@ export default function PermatankSection({
     videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
 
   return (
-    <section className="section-minimal bg-gray-50">
+    <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
-          <div className="relative">
+          <div className="relative order-2 lg:order-1">
             <YouTubeEmbed
               url={videoUrl}
               title={serviceName}
-              className="shadow-lg"
+              className="shadow-xl w-full h-[400px] lg:h-[500px]"
             />
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-8 order-1 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
@@ -107,14 +107,8 @@ export default function PermatankSection({
                 <>
                   <p>
                     ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของบริษัท ผดุงศิลป์วิศวการ
-                    จำกัด ในชื่อผลิตภัณฑ์
-                    <strong className="text-gray-900">
-                      &apos;PERMATANK&apos;
-                    </strong>{" "}
-                    ได้รับการผลิตตามมาตรฐาน
-                    <strong className="text-[var(--primary-blue)]">
-                      UL 58 & UL 1746
-                    </strong>{" "}
+                    จำกัด ในชื่อผลิตภัณฑ์ &apos;PERMATANK&apos;
+                    ได้รับการผลิตตามมาตรฐาน UL 58 & UL 1746
                     โดยใช้เทคโนโลยีจากสถาบัน Steel Tank Institute Technology,
                     USA
                   </p>
@@ -132,16 +126,9 @@ export default function PermatankSection({
                 <>
                   <p>
                     Double-wall underground fuel tanks by Padung Sin Engineering
-                    Co., Ltd. under the product name
-                    <strong className="text-gray-900">
-                      &apos;PERMATANK&apos;
-                    </strong>{" "}
-                    are manufactured according to
-                    <strong className="text-[var(--primary-blue)]">
-                      UL 58 & UL 1746
-                    </strong>{" "}
-                    standards using technology from Steel Tank Institute
-                    Technology, USA
+                    Co., Ltd. under the product name &apos;PERMATANK&apos; are
+                    manufactured according to UL 58 & UL 1746 standards using
+                    technology from Steel Tank Institute Technology, USA
                   </p>
 
                   <div className="bg-[var(--primary-blue)]/10 p-6 border-l-4 border-[var(--primary-blue)]">
@@ -161,7 +148,7 @@ export default function PermatankSection({
 
               <p>
                 เพื่อให้มั่นใจว่าลูกค้าได้รับสินค้าที่มีคุณภาพและมีอายุการใช้งานยาวนานกว่า
-                <strong className="text-[var(--primary-blue)]">30 ปี</strong>{" "}
+                30 ปี
                 ผดุงศิลป์ให้ความสำคัญกับทุกขั้นตอนของกระบวนการผลิตและจัดส่ง
                 PERMATANK®
               </p>

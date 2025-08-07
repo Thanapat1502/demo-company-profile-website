@@ -57,10 +57,10 @@ export default function ConstructionServiceSection({
   const galleryImages = galleryContent?.images_url || [];
 
   return (
-    <section className="section-minimal bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="space-y-8 order-2 lg:order-1">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
@@ -91,19 +91,10 @@ export default function ConstructionServiceSection({
 
               <p>
                 {locale === "th" ? (
-                  <>
-                    ด้วยประสบการณ์ในการก่อสร้างสถานีบริการน้ำมันมากกว่า{" "}
-                    <strong className="text-[var(--primary-blue)]">
-                      50 ปี
-                    </strong>
-                  </>
+                  <>ด้วยประสบการณ์ในการก่อสร้างสถานีบริการน้ำมันมากกว่า 50 ปี</>
                 ) : (
                   <>
-                    With over{" "}
-                    <strong className="text-[var(--primary-blue)]">
-                      50 years
-                    </strong>{" "}
-                    of experience in gas station construction
+                    With over 50 years of experience in gas station construction
                   </>
                 )}
                 ทำให้เราเข้าใจถึงความต้องการและข้อกำหนดเฉพาะของอุตสาหกรรมนี้เป็นอย่างดี
@@ -144,25 +135,25 @@ export default function ConstructionServiceSection({
           </div>
 
           {/* Content Display - Gallery */}
-          <div className="relative">
+          <div className="relative order-1 lg:order-2">
             {galleryImages.length > 0 ? (
               // Display image carousel gallery
               <MinimalCarousel
                 images={galleryImages}
                 alt={serviceName}
-                aspectRatio="4/3"
+                aspectRatio="3/2"
                 showNavigation={true}
                 showIndicators={true}
                 autoPlay={true}
                 interval={5000}
-                className="shadow-lg"
+                className="shadow-xl w-full h-[400px] lg:h-[500px]"
               />
             ) : (
               // Fallback placeholder for construction services
-              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+              <div className="w-full h-[400px] lg:h-[500px] bg-gray-100 flex items-center justify-center shadow-xl">
                 <div className="text-center text-gray-500">
-                  <Factory className="w-16 h-16 mx-auto mb-4" />
-                  <p className="text-sm">
+                  <Factory className="w-20 h-20 mx-auto mb-4" />
+                  <p className="text-lg">
                     {locale === "th"
                       ? "รูปภาพงานก่อสร้างสถานีบริการน้ำมัน"
                       : "Gas Station Construction Images"}

@@ -57,10 +57,10 @@ export default function PipeInstallationSection({
   const galleryImages = galleryContent?.images_url || [];
 
   return (
-    <section className="section-minimal bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="space-y-8 order-2 lg:order-1">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-3">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
@@ -87,38 +87,27 @@ export default function PipeInstallationSection({
 
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
               <p>
-                ด้วยประสบการณ์การติดตั้งท่อน้ำมันแบบผนัง 2 ชั้นมากกว่า{" "}
-                <strong className="text-[var(--primary-blue)]">20 ปี</strong>
+                ด้วยประสบการณ์การติดตั้งท่อน้ำมันแบบผนัง 2 ชั้นมากกว่า 20 ปี
                 บริษัท ผดุงศิลป์วิศวการ จำกัด
-                เป็นตัวแทนจำหน่ายและติดตั้งท่อน้ำมันยี่ห้อ
-                <strong className="text-gray-900">NUPIGECO S.P.A.</strong> รุ่น
+                เป็นตัวแทนจำหน่ายและติดตั้งท่อน้ำมันยี่ห้อ NUPIGECO S.P.A. รุ่น
                 Smartflex และ Ecoflex ซึ่งผลิตในประเทศอิตาลี
               </p>
 
               <p>
-                ผลิตจากวัสดุ{" "}
-                <strong className="text-[var(--primary-blue)]">
-                  Polyethylene (PE) และ Polyamide (PA)
-                </strong>{" "}
+                ผลิตจากวัสดุ Polyethylene (PE) และ Polyamide (PA)
                 ที่มีคุณสมบัติพิเศษในการป้องกันการรั่วไหลของน้ำมัน
                 และสามารถตรวจจับการรั่วไหลได้แบบ Real-Time
               </p>
 
               <p>
-                ระบบท่อนี้ได้รับการรับรองมาตรฐานจาก{" "}
-                <strong className="text-gray-900">
-                  European Standard EN 14125
-                </strong>{" "}
+                ระบบท่อนี้ได้รับการรับรองมาตรฐานจาก European Standard EN 14125
                 และผ่านการทดสอบในสภาพแวดล้อมที่หลากหลาย
                 รับประกันความทนทานและความปลอดภัยสูงสุด
               </p>
 
               <p>
                 โดยมีทีมงานติดตั้งที่ได้รับการฝึกอบรมจากเจ้าของผลิตภัณฑ์โดยตรง
-                ด้วยประสบการณ์มากกว่า{" "}
-                <strong className="text-[var(--primary-blue)]">
-                  300 โครงการ
-                </strong>
+                ด้วยประสบการณ์มากกว่า 300 โครงการ
               </p>
             </div>
 
@@ -144,25 +133,25 @@ export default function PipeInstallationSection({
           </div>
 
           {/* Content Display - Gallery */}
-          <div className="relative">
+          <div className="relative order-1 lg:order-2">
             {galleryImages.length > 0 ? (
               // Display image carousel gallery
               <MinimalCarousel
                 images={galleryImages}
                 alt={serviceName}
-                aspectRatio="4/3"
+                aspectRatio="3/2"
                 showNavigation={true}
                 showIndicators={true}
                 autoPlay={true}
                 interval={5000}
-                className="shadow-lg"
+                className="shadow-xl w-full h-[400px] lg:h-[500px]"
               />
             ) : (
               // Fallback placeholder for pipe installation
-              <div className="w-full h-96 bg-gray-100 flex items-center justify-center shadow-lg">
+              <div className="w-full h-[400px] lg:h-[500px] bg-gray-100 flex items-center justify-center shadow-xl">
                 <div className="text-center text-gray-500">
-                  <Settings className="w-16 h-16 mx-auto mb-4" />
-                  <p className="text-sm">
+                  <Settings className="w-20 h-20 mx-auto mb-4" />
+                  <p className="text-lg">
                     {locale === "th"
                       ? "รูปภาพท่อน้ำมันใต้ดินผนัง 2 ชั้น"
                       : "Double-Wall Underground Piping Images"}

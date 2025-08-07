@@ -23,6 +23,20 @@ const config: Config = {
         ],
         mono: ["var(--font-geist-mono)", "monospace"],
       },
+      animation: {
+        shimmer: "shimmer 2s infinite",
+        wave: "wave 1.5s ease-in-out infinite",
+      },
+      keyframes: {
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        wave: {
+          "0%, 100%": { transform: "translateX(-100%)" },
+          "50%": { transform: "translateX(100%)" },
+        },
+      },
     },
   },
 
