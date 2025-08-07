@@ -1,5 +1,11 @@
 import React from "react";
-import { Controller, Control, FieldError } from "react-hook-form";
+import {
+  Controller,
+  Control,
+  FieldError,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 import { X, Check, RotateCcw } from "lucide-react";
 
 /**
@@ -24,9 +30,9 @@ import { X, Check, RotateCcw } from "lucide-react";
  * />
  */
 
-interface TextContentEditorProps {
-  control: Control<any>;
-  name: string;
+interface TextContentEditorProps<T extends FieldValues = FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   label?: string;
   placeholder?: string;
   rows?: number;
@@ -42,7 +48,7 @@ interface TextContentEditorProps {
   className?: string;
 }
 
-export const TextContentEditor: React.FC<TextContentEditorProps> = ({
+export const TextContentEditor = <T extends FieldValues = FieldValues>({
   control,
   name,
   label = "Text Content",
@@ -58,7 +64,7 @@ export const TextContentEditor: React.FC<TextContentEditorProps> = ({
   loading = false,
   showActions = true,
   className = "",
-}) => {
+}: TextContentEditorProps<T>) => {
   return (
     <div className={`space-y-3 ${className}`}>
       {/* Text Content Field */}

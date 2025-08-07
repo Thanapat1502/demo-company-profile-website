@@ -310,7 +310,7 @@ export const TextManager = () => {
                                         </div>
 
                                         {/* Text Content */}
-                                        <TextContentEditor
+                                        <TextContentEditor<FormValues>
                                           control={control}
                                           name="text"
                                           label="Text Content"
