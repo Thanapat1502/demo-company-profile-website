@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 import {
   ArrowLeft,
-  ArrowRight,
-  X,
   Eye,
   MapPin,
   Calendar,
@@ -21,6 +19,8 @@ import {
   getBilingualContent,
   getLoadingText,
 } from "@/utils/bilingual";
+import ImageModal from "@/components/ui/ImageModal";
+import StatsSection from "@/components/sections/home/StatsSection";
 
 export default function ProjectDetailPage({
   params,
@@ -132,50 +132,102 @@ export default function ProjectDetailPage({
   return (
     <MainLayout>
       <div>
-        {/* Simple Header - Reduced gaps */}
-        <section className="bg-white pt-12 pb-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              {/* Back Button */}
-              <div className="mb-4">
+        {/* Hero Section with Thumbnail Background */}
+        <section className="relative bg-slate-50">
+          {/* Background Image */}
+          <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
+            {currentReference.thumbnail ? (
+              <Image
+                src={currentReference.thumbnail}
+                alt={projectName}
+                fill
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+            )}
+            {/* Enhanced Gradient Overlay for Better Contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/10 z-10" />
+          </div>
+
+          {/* Content Overlay - Positioned Absolutely */}
+          <div className="absolute inset-0 z-20 flex flex-col justify-between">
+            {/* Top Section - Back Button */}
+            <div className="pt-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <button
                   onClick={() => router.push(`/${locale}/reference`)}
-                  className="inline-flex items-center gap-2 text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] transition-colors">
+                  className="inline-flex items-center gap-2 text-white/90 hover:text-white bg-black/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-300 hover:bg-black/30">
                   <ArrowLeft className="w-4 h-4" />
                   <span>
                     {locale === "th" ? "กลับไปหน้าผลงาน" : "Back to Portfolio"}
                   </span>
                 </button>
               </div>
+            </div>
 
-              {/* Project Title */}
-              <h1 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-1 tracking-[0.02em] !leading-normal drop-shadow-sm">
-                {projectName}
-              </h1>
+            {/* Bottom Section - Main Content */}
+            <div className="pb-12">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="">
+                  {/* Project Title */}
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+                    {projectName}
+                  </h1>
 
-              {/* Enhanced Elegant Line */}
-              <div className="relative flex items-center justify-center mb-2">
-                <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
-                <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+                  {/* Project Type Badge */}
+                  <div className="mb-6">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium backdrop-blur-sm border border-blue-400/30">
+                      <Layers className="w-4 h-4" />
+                      <span>{projectType}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+        </section>
 
-              {/* Project Info */}
-              <div className="flex flex-wrap justify-center gap-6 text-gray-600 mt-0">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[var(--primary-blue)]" />
-                  <span>
+        {/* Project Information Section */}
+        <section className="bg-white py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap justify-center gap-8 text-gray-600">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[var(--primary-blue)]" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 font-medium">
+                    {locale === "th" ? "สถานที่" : "Location"}
+                  </p>
+                  <p className="text-gray-900 font-semibold">
                     {locale === "th"
                       ? currentReference.location_th
                       : currentReference.location_en}
-                  </span>
+                  </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[var(--primary-blue)]" />
-                  <span>{openDate}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-[var(--primary-blue)]" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[var(--primary-blue)]" />
-                  <span>{projectType}</span>
+                <div>
+                  <p className="text-sm text-gray-500 font-medium">
+                    {locale === "th" ? "วันที่เปิด" : "Opening Date"}
+                  </p>
+                  <p className="text-gray-900 font-semibold">{openDate}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-[var(--primary-blue)]" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 font-medium">
+                    {locale === "th" ? "ประเภทโครงการ" : "Project Type"}
+                  </p>
+                  <p className="text-gray-900 font-semibold">{projectType}</p>
                 </div>
               </div>
             </div>
@@ -225,72 +277,16 @@ export default function ProjectDetailPage({
             )}
           </div>
         </section>
+        <StatsSection />
 
-        {/* Simple Lightbox Modal */}
-        {selectedImage !== null && (
-          <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center">
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-8 right-8 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-                <X className="w-6 h-6" />
-              </button>
-
-              {/* Navigation Buttons */}
-              {projectImages.length > 1 && (
-                <>
-                  <button
-                    onClick={() => {
-                      const newIndex =
-                        selectedImage > 0
-                          ? selectedImage - 1
-                          : projectImages.length - 1;
-                      setSelectedImage(newIndex);
-                    }}
-                    className="absolute left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-                    <ArrowLeft className="w-6 h-6" />
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      const newIndex =
-                        selectedImage < projectImages.length - 1
-                          ? selectedImage + 1
-                          : 0;
-                      setSelectedImage(newIndex);
-                    }}
-                    className="absolute right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300">
-                    <ArrowRight className="w-6 h-6" />
-                  </button>
-                </>
-              )}
-
-              {/* Full-Screen Image */}
-              <div className="relative max-w-[95vw] max-h-[95vh]">
-                <Image
-                  src={projectImages[selectedImage]}
-                  alt={`${projectName} - ${
-                    locale === "th" ? "รูปที่" : "Image"
-                  } ${selectedImage + 1}`}
-                  width={1600}
-                  height={1200}
-                  className="max-w-full max-h-full object-contain"
-                />
-
-                {/* Image Caption */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <div className="text-center text-white">
-                    <p className="text-sm opacity-75 mb-1">{projectName}</p>
-                    <p className="text-xs opacity-60">
-                      {selectedImage + 1} / {projectImages.length}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Image Modal */}
+        <ImageModal
+          images={projectImages}
+          isOpen={selectedImage !== null}
+          onClose={() => setSelectedImage(null)}
+          initialIndex={selectedImage || 0}
+          alt={projectName}
+        />
       </div>
     </MainLayout>
   );
