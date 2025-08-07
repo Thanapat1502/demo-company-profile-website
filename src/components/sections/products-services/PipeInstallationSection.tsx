@@ -5,8 +5,7 @@ import { useLocale } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
-import MinimalCarousel from "@/components/ui/MinimalCarousel";
-
+import ServiceGallery from "@/components/gallery/ServiceGallery";
 interface PipeInstallationSectionProps {
   service?: ServiceType;
   content?: Content[];
@@ -141,7 +140,7 @@ export default function PipeInstallationSection({
               // Display image carousel gallery
               <div className="w-full max-w-full overflow-hidden">
                 <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] max-w-full overflow-hidden">
-                  <MinimalCarousel
+                  <ServiceGallery
                     images={galleryImages}
                     alt={serviceName}
                     aspectRatio="16/9"

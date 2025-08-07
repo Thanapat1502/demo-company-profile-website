@@ -5,8 +5,7 @@ import { useLocale } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
-import MinimalCarousel from "@/components/ui/MinimalCarousel";
-
+import ServiceGallery from "@/components/gallery/ServiceGallery";
 interface TankServicesSectionProps {
   service?: ServiceType;
   content?: Content[];
@@ -84,12 +83,12 @@ export default function TankServicesSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Content Display - Gallery */}
-          <div className="relative order-1 lg:order-2">
+          <div className="relative order-2 lg:order-1">
             {galleryImages.length > 0 ? (
               <div className="w-full max-w-full overflow-hidden">
                 {/* Display image carousel gallery */}
                 <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] max-w-full overflow-hidden">
-                  <MinimalCarousel
+                  <ServiceGallery
                     images={galleryImages}
                     alt={serviceName}
                     aspectRatio="16/9"
@@ -118,7 +117,7 @@ export default function TankServicesSection({
             )}
           </div>
 
-          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-2 lg:order-1">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-1 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
             <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>

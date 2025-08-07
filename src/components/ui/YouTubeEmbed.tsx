@@ -135,8 +135,7 @@ export default function YouTubeEmbed({
   }
 
   return (
-    <div
-      className={`relative w-full max-w-full overflow-hidden ${getAspectRatioClass()} ${className}`}>
+    <div className={`relative w-full max-w-full overflow-hidden ${className}`}>
       {/* Debug info overlay */}
       {enableDebug && process.env.NODE_ENV === "development" && (
         <div className="absolute top-2 left-2 z-10 bg-black/80 text-white text-xs p-2 rounded max-w-xs">
