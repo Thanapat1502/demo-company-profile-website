@@ -66,36 +66,34 @@ export default function MinimalCarousel({
 
   return (
     <div
-      className={`relative w-full max-w-full overflow-hidden shadow-lg ${
+      className={`relative overflow-hidden shadow-lg ${
         enableModal || onImageClick ? "cursor-pointer" : ""
       } ${className}`}
-      style={{
-        aspectRatio: height ? undefined : aspectRatio,
-        height: height || undefined,
-        maxWidth: "100%",
-        maxHeight: "100%",
-      }}
       onClick={() => {
         if (onImageClick) {
           onImageClick(currentImageIndex);
         }
       }}>
-      {images.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentImageIndex ? "opacity-100" : "opacity-0"
-          }`}>
-          <Image
-            src={image}
-            alt={`${alt} ${index + 1}`}
-            fill
-            className="object-cover w-full h-full"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-        </div>
-      ))}
+      <div
+        className="relative w-full h-full"
+        style={{ minHeight: height || undefined }}>
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex ? "opacity-100" : "opacity-0"
+            }`}>
+            <Image
+              src={image}
+              alt={`${alt} ${index + 1}`}
+              fill
+              className="object-cover w-full h-full"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          </div>
+        ))}
+      </div>
 
       {/* Navigation Arrows */}
       {showNavigation && images.length > 1 && (

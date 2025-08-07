@@ -135,23 +135,7 @@ export default function YouTubeEmbed({
   }
 
   return (
-    <div
-      className={`relative w-full max-w-full overflow-hidden ${getAspectRatioClass()} ${className}`}>
-      {/* Debug info overlay */}
-      {enableDebug && process.env.NODE_ENV === "development" && (
-        <div className="absolute top-2 left-2 z-10 bg-black/80 text-white text-xs p-2 rounded max-w-xs">
-          <div>
-            <strong>Video ID:</strong> {videoId}
-          </div>
-          <div>
-            <strong>Embed URL:</strong> {embedUrl.substring(0, 50)}...
-          </div>
-          <div>
-            <strong>Status:</strong> {isLoaded ? "✅ Loaded" : "⏳ Loading"}
-          </div>
-        </div>
-      )}
-
+    <div className={`relative w-full max-w-full overflow-hidden ${className}`}>
       {/* Loading placeholder */}
       {!isLoaded && (
         <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
