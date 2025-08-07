@@ -3,9 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { withAuth } from "@/lib/auth-middleware";
 export async function GET() {
   try {
-    // For now, return mock data
-    // Later you can uncomment this to use real database:
-    const { data, error } = await supabase.from("web_labels").select("*");
+    // Fetch web labels ordered by id for consistent ordering
+    const { data, error } = await supabase
+      .from("web_labels")
+      .select("*")
+      .order("id", { ascending: true });
+
     console.log("Fetch label:", data);
     return NextResponse.json({ data, error });
   } catch (error) {
