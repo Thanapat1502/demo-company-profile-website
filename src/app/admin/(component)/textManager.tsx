@@ -12,7 +12,7 @@ import {
 import { useWebLabelStore, WebLabels } from "@/store/zustand/useWebLabelStore";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { AdminNotification, useAdminNotification } from "./AdminNotification";
-import { TextContentEditor, TextContentDisplay } from "./TextContentEditor";
+import { TextContentEditor } from "./TextContentEditor";
 interface FormValues {
   text: string;
 }
@@ -25,8 +25,6 @@ export const TextManager = () => {
   const [selectedPage, setSelectedPage] = useState("all");
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [originalValues, setOriginalValues] = useState<string | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-
   const { notification, hideNotification, showSuccess, showError } =
     useAdminNotification();
 
@@ -48,13 +46,13 @@ export const TextManager = () => {
   useEffect(() => {
     if (editingKey && webLabels.length > 0) {
       const currentLabel = webLabels.find((label) => label.key === editingKey);
-      if (currentLabel && currentLabel.value !== watchedValues.text) {
+      if (currentLabel && currentLabel.text !== watchedValues.text) {
         // Update form if the label data has changed (e.g., after save)
-        setValue("text", currentLabel.value || "", {
+        setValue("text", currentLabel.text || "", {
           shouldValidate: false,
           shouldDirty: false,
         });
-        setOriginalValues(currentLabel.value || "");
+        setOriginalValues(currentLabel.text || "");
       }
     }
   }, [webLabels, editingKey, setValue, watchedValues.text]);
@@ -79,7 +77,7 @@ export const TextManager = () => {
   const filteredLabels = webLabels.filter((label) => {
     const matchesSearch =
       label.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      label.value.toLowerCase().includes(searchTerm.toLowerCase());
+      label.text.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesPage =
       selectedPage === "all" || label.key.startsWith(selectedPage + ".");
@@ -100,10 +98,10 @@ export const TextManager = () => {
   // Start editing a label with improved prefilling
   const startEditing = (label: WebLabels) => {
     setEditingKey(label.key);
-    setOriginalValues(label.value || ""); // Ensure we have a fallback for empty text
+    setOriginalValues(label.text || ""); // Ensure we have a fallback for empty text
 
     // Prefill the form with current values from webLabels
-    setValue("text", label.value || "", {
+    setValue("text", label.text || "", {
       shouldValidate: false,
       shouldDirty: false,
     });
@@ -140,19 +138,11 @@ export const TextManager = () => {
   // Reset to original values with fallback to current label
   const resetToOriginal = () => {
     const currentLabel = getCurrentLabel();
-    const resetValue = originalValues || currentLabel?.value || "";
+    const resetValue = originalValues || currentLabel?.text || "";
     setValue("text", resetValue, {
       shouldValidate: false,
       shouldDirty: false,
     });
-  };
-
-  // Toggle edit mode for all labels
-  const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
-    if (editingKey) {
-      cancelEditing();
-    }
   };
 
   return (
@@ -164,7 +154,7 @@ export const TextManager = () => {
             Manage website text labels and content
           </p>
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <button
             onClick={toggleEditMode}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
@@ -183,7 +173,7 @@ export const TextManager = () => {
             <Upload size={16} />
             Import
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Filters */}
@@ -241,114 +231,138 @@ export const TextManager = () => {
                 </div>
 
                 {/* Labels for this page */}
-                <div className="space-y-3">
-                  {labels.map((label, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                      {editingKey === label.key ? (
-                        /* Edit Mode */
-                        <form
-                          onSubmit={handleSubmit(onSubmit)}
-                          className="space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Key (Read-only) */}
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Key
-                              </label>
-                              <input
-                                type="text"
-                                value={label.key}
-                                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm text-gray-600"
-                                readOnly
-                              />
-                            </div>
+                <div className="overflow-hidden border border-gray-200 rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Key
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Text Content
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {labels.map((label, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-50 transition-colors">
+                          {editingKey === label.key ? (
+                            /* Edit Mode - Full width form */
+                            <>
+                              <td colSpan={3} className="px-6 py-4">
+                                <form
+                                  onSubmit={handleSubmit(onSubmit)}
+                                  className="space-y-4">
+                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    {/* Key (Read-only) */}
+                                    <div>
+                                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Key
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={label.key}
+                                        className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm text-gray-600 font-mono"
+                                        readOnly
+                                      />
+                                    </div>
 
-                            {/* Text Content */}
-                            <TextContentEditor
-                              control={control}
-                              name="text"
-                              label="Text Content"
-                              placeholder="Enter text content"
-                              rows={3}
-                              disabled={!isEditMode}
-                              required={true}
-                              showActions={false}
-                            />
-                          </div>
+                                    {/* Text Content */}
+                                    <TextContentEditor
+                                      control={control}
+                                      name="text"
+                                      label="Text Content"
+                                      placeholder="Enter text content"
+                                      rows={3}
+                                      disabled={false}
+                                      required={true}
+                                      showActions={false}
+                                    />
+                                  </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {hasChanges() && (
-                                <span className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
-                                  Unsaved changes
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex gap-2">
-                              {hasChanges() && (
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                                    <div className="flex items-center gap-2">
+                                      {hasChanges() && (
+                                        <span className="text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                                          Unsaved changes
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="flex gap-2">
+                                      {hasChanges() && (
+                                        <button
+                                          type="button"
+                                          onClick={resetToOriginal}
+                                          className="px-3 py-1.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded text-sm flex items-center gap-1 transition-colors">
+                                          <RotateCcw size={14} />
+                                          Reset
+                                        </button>
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={cancelEditing}
+                                        className="px-3 py-1.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded text-sm flex items-center gap-1 transition-colors">
+                                        <X size={14} />
+                                        Cancel
+                                      </button>
+                                      <button
+                                        type="submit"
+                                        disabled={loading || !hasChanges()}
+                                        className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-colors">
+                                        <Check size={14} />
+                                        {loading ? "Saving..." : "Save"}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </td>
+                            </>
+                          ) : (
+                            /* View Mode - Table cells */
+                            <>
+                              {/* Key Cell */}
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm font-mono text-gray-900 bg-gray-50 px-2 py-1 rounded border">
+                                  {label.key}
+                                </div>
+                              </td>
+
+                              {/* Text Content Cell */}
+                              <td className="px-6 py-4">
+                                <div className="text-sm text-gray-900 max-w-md">
+                                  {label.text ? (
+                                    <div className="break-words">
+                                      {label.text}
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400 italic">
+                                      No text content
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+
+                              {/* Actions Cell */}
+                              <td className="px-6 py-4 whitespace-nowrap text-right">
                                 <button
-                                  type="button"
-                                  onClick={resetToOriginal}
-                                  className="px-3 py-1.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded text-sm flex items-center gap-1 transition-colors">
-                                  <RotateCcw size={14} />
-                                  Reset
+                                  onClick={() => startEditing(label)}
+                                  className="px-3 py-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded text-sm flex items-center gap-1 transition-colors ml-auto">
+                                  <Edit size={14} />
+                                  Edit
                                 </button>
-                              )}
-                              <button
-                                type="button"
-                                onClick={cancelEditing}
-                                className="px-3 py-1.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded text-sm flex items-center gap-1 transition-colors">
-                                <X size={14} />
-                                Cancel
-                              </button>
-                              <button
-                                type="submit"
-                                disabled={loading || !hasChanges()}
-                                className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-colors">
-                                <Check size={14} />
-                                {loading ? "Saving..." : "Save"}
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      ) : (
-                        /* View Mode */
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {/* Key */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Key
-                            </label>
-                            <div className="text-sm text-gray-900 font-mono bg-gray-50 px-3 py-2 rounded border">
-                              {label.key}
-                            </div>
-                          </div>
-
-                          {/* Text Content */}
-                          <TextContentDisplay
-                            label="Text Content"
-                            value={label.value}
-                            emptyText="No text content"
-                          />
-                        </div>
-                      )}
-
-                      {/* Edit Button (only show in view mode and when edit mode is enabled) */}
-                      {editingKey !== label.key && isEditMode && (
-                        <div className="mt-3 flex justify-end">
-                          <button
-                            onClick={() => startEditing(label)}
-                            className="px-3 py-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded text-sm flex items-center gap-1 transition-colors">
-                            <Edit size={14} />
-                            Edit
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             ))}

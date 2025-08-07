@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export interface WebLabels {
   key: string;
-  value: string;
+  text: string; // Main text content (mapped from database 'value' field)
   updated_at?: string;
 }
 
@@ -26,7 +26,16 @@ export const useWebLabelStore = create<State>((set, get) => ({
     const res = await fetch("/api/web-labels");
     const { data, error } = await res.json();
     if (error) set({ error: error.message, loading: false });
-    else set({ webLabels: data || [], loading: false, success: true });
+    else {
+      // Map database 'value' field to component's expected 'text' field
+      const mappedData =
+        data?.map((item: any) => ({
+          key: item.key,
+          text: item.value, // Map value to text
+          updated_at: item.updated_at,
+        })) || [];
+      set({ webLabels: mappedData, loading: false, success: true });
+    }
   },
 
   editWebLabel: async (key, text) => {
