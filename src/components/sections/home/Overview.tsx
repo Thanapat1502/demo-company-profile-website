@@ -82,7 +82,7 @@ export default function Overview({
   // Loading state
   if (loading) {
     return (
-      <section className="section-minimal bg-white">
+      <section className="section-minimal bg-gradient-to-br from-gray-100 via-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -96,7 +96,7 @@ export default function Overview({
   }
 
   return (
-    <section className="py-12 lg:py-16 bg-white">
+    <section className="py-12 lg:py-16 bg-white lg:mx-20">
       <div className=" px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
@@ -202,7 +202,7 @@ export default function Overview({
             <MinimalCarousel
               images={companyImages}
               alt="Company Overview"
-              aspectRatio="4/5"
+              aspectRatio="1/1"
               showNavigation={true}
               showIndicators={true}
               autoPlay={true}

@@ -88,7 +88,7 @@ export default function MinimalCarousel({
             src={image}
             alt={`${alt} ${index + 1}`}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

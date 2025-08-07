@@ -67,7 +67,7 @@ export default function ServicesSection({
   return (
     <section
       id="services"
-      className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap "
+      className="relative min-h-screen services-elegant-texture overflow-hidden services-section-overlap bg-gradient-to-br from-gray-100 via-white to-gray-50 "
       style={{
         transform: `translateY(${-scrollY * 0.3}px)`,
       }}>
@@ -97,6 +97,13 @@ export default function ServicesSection({
 
             {/* Clean Typography Focus */}
             <div className="relative z-10">
+              <div className="inline-flex items-center gap-3 mb-8">
+                <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+                <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                  {locale === "th" ? "บริการ" : "PRODUCTS"}
+                </span>
+                <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              </div>
               {/* Luxury Title with Gradient */}
               <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
                 {t("home.services.title")}
@@ -120,7 +127,7 @@ export default function ServicesSection({
             {/* Featured Products Grid - Desktop / Carousel - Mobile */}
             <div className="space-y-8">
               {/* Responsive Grid - 2 columns on mobile, 2 on medium, 3 on large */}
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
                 {products.map((product, index) => (
                   <ProductCard
                     key={product.id}
@@ -148,53 +155,6 @@ export default function ServicesSection({
                           handleProductClick={() => handleProductClick(index)}
                           locale={locale}
                         />
-                        // <div
-                        //   key={product.id}
-                        //   className="w-full flex-shrink-0 relative h-[500px] bg-gray-100">
-                        //   {/* Product Image */}
-                        //   <Image
-                        //     src={product.image}
-                        //     alt={product.title}
-                        //     fill
-                        //     className="object-cover"
-                        //   />
-
-                        //   {/* Gradient overlay */}
-                        //   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-
-                        //   {/* Product content overlay */}
-                        //   <div className="absolute inset-0 flex flex-col justify-end p-6">
-                        //     <div className="space-y-4">
-                        //       {/* Product Title */}
-                        //       <h3 className="text-2xl font-black text-white leading-tight">
-                        //         {product.title}
-                        //       </h3>
-
-                        //       {/* Product Description */}
-                        //       <p className="text-white/90 leading-relaxed text-base">
-                        //         {product.description}
-                        //       </p>
-
-                        //       {/* Action Button */}
-                        //       <div className="pt-2">
-                        //         <button
-                        //           className="luxury-hero-btn luxury-hero-btn-primary group"
-                        //           onClick={() =>
-                        //             router.push(`/${locale}/products-services`)
-                        //           }>
-                        //           <span className="relative z-10 flex items-center justify-center gap-3">
-                        //             <span className="font-semibold tracking-wide">
-                        //               {t("common.learnMore")}
-                        //             </span>
-                        //             <ExternalLink className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
-                        //           </span>
-                        //           <div className="luxury-btn-shimmer"></div>
-                        //           <div className="luxury-btn-glow"></div>
-                        //         </button>
-                        //       </div>
-                        //     </div>
-                        //   </div>
-                        // </div>
                       ))}
                     </div>
                   </div>

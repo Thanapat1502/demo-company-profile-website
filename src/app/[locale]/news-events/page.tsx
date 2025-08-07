@@ -161,7 +161,7 @@ export default function NewsEventsPage() {
               {filteredNews.length === 0 && (
                 <div className="text-center py-12">
                   <p className="text-xl text-gray-500">
-                    {t("news.grid.noResults")}
+                    {locale === "th" ? "ไม่พบข่าวสาร" : "No News Found"}
                   </p>
                 </div>
               )}

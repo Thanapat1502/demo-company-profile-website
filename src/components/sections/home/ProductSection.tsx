@@ -110,21 +110,21 @@ export default function ProductSection({
   }
 
   return (
-    <section className="section-minimal bg-white">
+    <section className="section-minimal ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           {/* Section Label - Matching ServicesSection style */}
           <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-              {locale === "th" ? "ผลิตภัณฑ์" : "PRODUCTS"}
+              {locale === "th" ? "สินค้า" : "PRODUCTS"}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
           </div>
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            {locale === "th" ? "ผลิตภัณฑ์และบริการ" : "Products & Services"}
+            {locale === "th" ? "สินค้าของเรา" : "Products & Services"}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -141,7 +141,7 @@ export default function ProductSection({
         </div>
 
         {/* Products Grid - Display products based on showAllProducts state */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
           {displayedProducts.map((product, index) => (
             <ProductCard
               key={product.id}
