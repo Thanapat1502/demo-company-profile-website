@@ -1,12 +1,15 @@
 "use client";
 
-import { History, Building, Users2, Target, Mail } from "lucide-react";
+import { History, Building, Users2, Target } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import ExecutiveGrid from "@/components/executive/ExecutiveGrid";
+import MessageFromManagement, {
+  defaultManagementMessage,
+} from "@/components/sections/MessageFromManagement";
 
 export default function ExecutiveTeamPage() {
   const locale = useLocale();
@@ -79,72 +82,6 @@ export default function ExecutiveTeamPage() {
         </div>
       </section>
 
-      {/* Message from Management Section */}
-      <section className="section-minimal bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 mb-8">
-              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                {locale === "th"
-                  ? "สาส์นจากผู้บริหาร"
-                  : "Message from Management"}
-              </span>
-              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-            </div>
-
-            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-              {locale === "th"
-                ? "สาส์นจากผู้บริหาร"
-                : "Message from Management"}
-            </h2>
-
-            <div className="relative flex items-center justify-center mb-8">
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
-              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
-            </div>
-          </div>
-
-          <div className="flex justify-start mb-16">
-            <div className="max-w-4xl space-y-8">
-              <div className="prose prose-lg max-w-none">
-                <p className="text-lg text-gray-600 leading-relaxed mb-6 text-left">
-                  {locale === "th"
-                    ? "ในฐานะกรรมการผู้จัดการของบริษัท ผดุงศิลป์โยธาการ จำกัด ผมรู้สึกภาคภูมิใจที่ได้เป็นส่วนหนึ่งของการพัฒนาอุตสาหกรรมพลังงานของประเทศไทย มาเป็นเวลากว่า 30 ปี"
-                    : "As Managing Director of Padungsilpa Engineering Co., Ltd., I am proud to be part of Thailand's energy industry development for over 30 years."}
-                </p>
-
-                <p className="text-lg text-gray-600 leading-relaxed mb-6 text-left">
-                  {locale === "th"
-                    ? "เราได้สร้างสรรค์โครงการสถานีบริการน้ำมันที่มีคุณภาพและปลอดภัย ด้วยเทคโนโลยี PERMATANK® ที่เป็นมาตรฐานสากล และทีมงานมืออาชีพที่มีประสบการณ์และความเชี่ยวชาญ"
-                    : "We have created quality and safe fuel station projects with international standard PERMATANK® technology and professional teams with experience and expertise."}
-                </p>
-
-                <p className="text-lg text-gray-600 leading-relaxed text-left">
-                  {locale === "th"
-                    ? "เราจะยังคงมุ่งมั่นในการให้บริการที่เป็นเลิศ และสร้างสรรค์นวัตกรรมเพื่อตอบสนองความต้องการของลูกค้า และสังคมอย่างยั่งยืน"
-                    : "We will continue to strive for excellent service and create innovations to meet customer and society needs sustainably."}
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-4 pt-6">
-                <div className="w-16 h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center rounded-lg">
-                  <Mail className="w-8 h-8 text-[var(--primary-blue)]" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm text-gray-500">
-                    {locale === "th" ? "ติดต่อโดยตรง" : "Direct Contact"}
-                  </p>
-                  <p className="text-lg font-semibold text-gray-900">
-                    md@padungsilpa.com
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Executive Team Section */}
       <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -152,7 +89,7 @@ export default function ExecutiveTeamPage() {
             <div className="inline-flex items-center gap-3 mb-8">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                {locale === "th" ? "ทีมงาน" : "Our Team"}
+                {locale === "th" ? "ทีมผู้บริหาร" : "Executive Team"}
               </span>
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             </div>
@@ -176,6 +113,12 @@ export default function ExecutiveTeamPage() {
           <ExecutiveGrid locale={locale} variant="detailed" />
         </div>
       </section>
+
+      {/* Message from Management Section */}
+      <MessageFromManagement
+        locale={locale}
+        messages={defaultManagementMessage}
+      />
     </MainLayout>
   );
 }

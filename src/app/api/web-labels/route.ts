@@ -9,7 +9,6 @@ export async function GET() {
       .select("*")
       .order("id", { ascending: true });
 
-    console.log("Fetch label:", data);
     return NextResponse.json({ data, error });
   } catch (error) {
     console.log(`Failed to fetch labels: ${error}`);
@@ -28,15 +27,6 @@ export const PATCH = withAuth(async (req: NextRequest, supabase, user) => {
   try {
     const body = await req.json();
     const { id, text } = body;
-
-    console.log(
-      "PATCH web-labels - User:",
-      user.email,
-      "ID:",
-      id,
-      "Text length:",
-      text?.length
-    );
 
     // Validate required fields
     if (!id || text === undefined || text === null) {

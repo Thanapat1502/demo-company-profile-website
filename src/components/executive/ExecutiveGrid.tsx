@@ -12,12 +12,13 @@ interface ExecutiveGridProps {
   className?: string;
 }
 
-export default function ExecutiveGrid({ 
-  locale, 
-  variant = "minimal", 
-  className = "" 
+export default function ExecutiveGrid({
+  locale,
+  variant = "minimal",
+  className = "",
 }: ExecutiveGridProps) {
-  const { executiveMembers, loading, error, fetchExecutiveMembers } = useExecutiveStore();
+  const { executiveMembers, loading, error, fetchExecutiveMembers } =
+    useExecutiveStore();
 
   useEffect(() => {
     if (!executiveMembers.length) {
@@ -25,55 +26,20 @@ export default function ExecutiveGrid({
     }
   }, [executiveMembers.length, fetchExecutiveMembers]);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className={`flex items-center justify-center p-12 ${className}`}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-6"></div>
-          <p className="text-gray-600 text-lg">
-            {getLoadingText(locale, "executives")}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className={`text-center p-12 ${className}`}>
-        <div className="max-w-md mx-auto">
-          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            {locale === "th" ? "เกิดข้อผิดพลาด" : "Error Occurred"}
-          </h3>
-          <p className="text-red-600 mb-6">{error}</p>
-          <button
-            onClick={fetchExecutiveMembers}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <RefreshCw className="w-4 h-4" />
-            {locale === "th" ? "ลองใหม่" : "Try Again"}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // Empty state
   if (!executiveMembers.length) {
     return (
       <div className={`text-center p-12 ${className}`}>
         <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          {locale === "th" ? "ไม่มีข้อมูลผู้บริหาร" : "No Executive Information"}
+          {locale === "th"
+            ? "ไม่มีข้อมูลผู้บริหาร"
+            : "No Executive Information"}
         </h3>
         <p className="text-gray-500">
-          {locale === "th" 
-            ? "ยังไม่มีข้อมูลผู้บริหารในระบบ" 
-            : "No executive information available in the system"
-          }
+          {locale === "th"
+            ? "ยังไม่มีข้อมูลผู้บริหารในระบบ"
+            : "No executive information available in the system"}
         </p>
       </div>
     );
@@ -107,12 +73,12 @@ export default function ExecutiveGrid({
 }
 
 // Loading skeleton component
-export function ExecutiveGridSkeleton({ 
-  variant = "minimal", 
-  count = 6 
-}: { 
-  variant?: "minimal" | "detailed" | "compact"; 
-  count?: number; 
+export function ExecutiveGridSkeleton({
+  variant = "minimal",
+  count = 6,
+}: {
+  variant?: "minimal" | "detailed" | "compact";
+  count?: number;
 }) {
   const getGridClass = () => {
     switch (variant) {
@@ -141,8 +107,7 @@ export function ExecutiveGridSkeleton({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className={`bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 animate-pulse ${getSkeletonHeight()}`}
-        >
+          className={`bg-white border border-gray-100/50 animate-pulse ${getSkeletonHeight()}`}>
           <div className="p-6 h-full flex flex-col">
             {variant === "compact" ? (
               <div className="flex items-center space-x-4">
@@ -162,14 +127,17 @@ export function ExecutiveGridSkeleton({
 
                 {/* Image skeleton */}
                 <div className="relative mb-6">
-                  <div className={`${variant === "detailed" ? "w-32 h-32" : "w-24 h-24"} mx-auto bg-gray-200 rounded-full`}></div>
+                  <div
+                    className={`${
+                      variant === "detailed" ? "w-32 h-32" : "w-24 h-24"
+                    } mx-auto bg-gray-200 rounded-full`}></div>
                 </div>
 
                 {/* Content skeleton */}
                 <div className="text-center space-y-3 flex-1">
                   <div className="h-5 bg-gray-200 rounded w-3/4 mx-auto"></div>
                   <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
-                  
+
                   {variant === "detailed" && (
                     <div className="flex justify-center space-x-3 pt-4">
                       <div className="w-10 h-10 bg-gray-200 rounded-full"></div>

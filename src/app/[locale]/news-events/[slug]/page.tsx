@@ -1,18 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  User,
-  Share2,
-  Bookmark,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2, Bookmark } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import MainLayout from "@/components/layout/MainLayout";
 import MinimalButton from "@/components/ui/MinimalButton";
 import { Badge } from "@heroui/react";
 import { Card, CardBody } from "@heroui/react";
@@ -51,21 +45,19 @@ export default function NewsDetailPage() {
   // Helper functions for bilingual content
   const getTitle = (news: News) => getBilingualTitle(news, locale);
   const getExcerpt = (news: News) => getBilingualExcerpt(news, locale);
-  const getBody = (news: News) => {
-    return locale === "th" ? news.body_th : news.body_en;
-  };
 
   // Calculate read time
-  const calculateReadTime = (content: any) => {
-    if (!content) return "5 นาที";
+  const calculateReadTime = (content: string | object | null | undefined) => {
+    if (!content) return locale === "th" ? "5 นาที" : "5 min";
 
     let text = "";
     if (typeof content === "string") {
       text = content;
-    } else if (content.ops) {
+    } else if (content && typeof content === "object" && "ops" in content) {
       // Quill Delta format
-      text = content.ops
-        .map((op: any) => (typeof op.insert === "string" ? op.insert : ""))
+      const delta = content as { ops: Array<{ insert?: string }> };
+      text = delta.ops
+        .map((op) => (typeof op.insert === "string" ? op.insert : ""))
         .join("");
     }
 
@@ -158,11 +150,11 @@ export default function NewsDetailPage() {
   const publishDate = newsDetail.publish_at || newsDetail.created_at;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Hero Section */}
-      <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40 z-10" />
-        <div className="relative h-[60vh] min-h-[500px]">
+    <MainLayout>
+      {/* Hero Section with Content Overlay */}
+      <section className="relative bg-slate-50">
+        {/* Background Image */}
+        <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
           <Image
             src={
               newsDetail.thumbnail || "/images/hero-sections/hero-banner-1.jpg"
@@ -171,70 +163,66 @@ export default function NewsDetailPage() {
             fill
             className="object-cover"
           />
+          {/* Enhanced Gradient Overlay for Better Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-black/10 z-10" />
         </div>
 
-        {/* Content Overlay */}
-        <div className="absolute inset-0 z-20 flex items-end">
-          <div className="container mx-auto px-4 pb-16">
-            <div className="max-w-4xl">
-              {/* Breadcrumb */}
-              <nav className="mb-6">
-                <Link
-                  href={`/${locale}/news-events`}
-                  className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-                  <ArrowLeft className="w-4 h-4" />
-                  {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
-                </Link>
-              </nav>
+        {/* Content Overlay - Positioned Absolutely */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-between">
+          {/* Top Section - Breadcrumb */}
+          <div className="pt-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
+          </div>
 
-              {/* Category Badge */}
-              {(newsDetail as any).categories && (
-                <Badge
-                  color="primary"
-                  variant="flat"
-                  className="mb-4 bg-blue-500/20 text-blue-100 border-blue-400/30">
-                  {locale === "th"
-                    ? (newsDetail as any).categories.name_th
-                    : (newsDetail as any).categories.name_en}
-                </Badge>
-              )}
+          {/* Bottom Section - Main Content */}
+          <div className="pb-12 ">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="">
+                {/* Category Badge */}
+                {(newsDetail as any).categories && (
+                  <div className="mb-6">
+                    <Badge
+                      color="primary"
+                      variant="flat"
+                      className="bg-white/20 backdrop-blur-sm text-white border-white/30 px-4 py-2">
+                      {locale === "th"
+                        ? (newsDetail as any).categories.name_th
+                        : (newsDetail as any).categories.name_en}
+                    </Badge>
+                  </div>
+                )}
 
-              {/* Title */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                {title}
-              </h1>
+                {/* Title */}
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-6 leading-tight drop-shadow-sm">
+                  {title}
+                </h1>
 
-              {/* Excerpt */}
-              <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-3xl">
-                {excerpt}
-              </p>
+                {/* Excerpt */}
+                <p className="text-lg md:text-xl text-gray-900 mb-8 leading-relaxed max-w-3xl drop-shadow-sm">
+                  {excerpt}
+                </p>
 
-              {/* Meta Information */}
-              <div className="flex flex-wrap items-center gap-6 text-white/80">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  <span>
-                    {publishDate
-                      ? new Date(publishDate).toLocaleDateString(
-                          locale === "th" ? "th-TH" : "en-US",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )
-                      : ""}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  <span>{readTime}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <User className="w-5 h-5" />
-                  <span>
-                    {locale === "th" ? "ผดุงศิลป์กรุ๊ป" : "Padungsilp Group"}
-                  </span>
+                {/* Meta Information */}
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-2 text-white/90 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-sm font-medium">
+                      {publishDate
+                        ? new Date(publishDate).toLocaleDateString(
+                            locale === "th" ? "th-TH" : "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
+                        : ""}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/90 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                    <Clock className="w-4 h-4" />
+                    <span className="text-sm font-medium">{readTime}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,22 +231,22 @@ export default function NewsDetailPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="">
             {/* Article Content */}
-            <Card className="mb-12">
-              <CardBody className="p-8 md:p-12">
+            <Card className="mb-16 shadow-lg">
+              <CardBody className="p-8 md:p-12 lg:p-16">
                 {/* Tags */}
                 {(newsDetail as any).tags &&
                   (newsDetail as any).tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-3 mb-8">
                       {(newsDetail as any).tags.map((tag: any) => (
                         <Badge
                           key={tag.id}
                           color="secondary"
                           variant="flat"
-                          className="text-sm">
+                          className="text-sm px-3 py-1">
                           {locale === "th" ? tag.name_th : tag.name_en}
                         </Badge>
                       ))}
@@ -266,7 +254,7 @@ export default function NewsDetailPage() {
                   )}
 
                 {/* Article Body */}
-                <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed">
                   {body ? (
                     <QuillDisplay
                       content={
@@ -277,19 +265,15 @@ export default function NewsDetailPage() {
                 </div>
 
                 {/* Share Actions */}
-                <div className="flex items-center gap-4 mt-12 pt-8 border-t border-slate-200">
-                  <span className="text-slate-600 font-medium">
+                <div className="flex items-center gap-4 mt-16 pt-8 border-t border-gray-200">
+                  <span className="text-gray-600 font-medium">
                     {locale === "th" ? "แชร์บทความ:" : "Share article:"}
                   </span>
                   <button
                     onClick={handleShare}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                    className="flex items-center gap-2 px-6 py-3 bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)]/20 transition-colors">
                     <Share2 className="w-4 h-4" />
                     {locale === "th" ? "แชร์" : "Share"}
-                  </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors">
-                    <Bookmark className="w-4 h-4" />
-                    {locale === "th" ? "บันทึก" : "Save"}
                   </button>
                 </div>
               </CardBody>
@@ -298,8 +282,8 @@ export default function NewsDetailPage() {
             {/* Back to News Button */}
             <div className="text-center">
               <Link href={`/${locale}/news-events`}>
-                <MinimalButton className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
+                <MinimalButton className="bg-[var(--primary-blue)] hover:bg-[var(--primary-blue)]/90 text-white px-8 py-4 text-lg">
+                  <ArrowLeft className="w-5 h-5 mr-3" />
                   {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
                 </MinimalButton>
               </Link>
@@ -307,6 +291,6 @@ export default function NewsDetailPage() {
           </div>
         </div>
       </section>
-    </div>
+    </MainLayout>
   );
 }
