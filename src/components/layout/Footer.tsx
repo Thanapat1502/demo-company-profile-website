@@ -1,15 +1,7 @@
 "use client";
 
 import { Link } from "@heroui/react";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Youtube,
-  Globe,
-  ArrowUp,
-  ExternalLink,
-} from "lucide-react";
+import { Globe, ArrowUp, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
@@ -108,7 +100,7 @@ export default function Footer() {
             </p>
 
             {/* Compact Social Media */}
-            <div className="flex space-x-2">
+            {/* <div className="flex space-x-2">
               {[
                 {
                   icon: Facebook,
@@ -138,7 +130,7 @@ export default function Footer() {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
                 </button>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Quick Links */}

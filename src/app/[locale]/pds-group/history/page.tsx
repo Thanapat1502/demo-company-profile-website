@@ -247,8 +247,8 @@ export default function CompanyHistoryPage() {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="w-full h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shadow-lg">
+            <div className="w-full h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shadow-lg">
+              <div className="relative">
                 {gallery3Images.length > 0 ? (
                   <MinimalCarousel
                     images={gallery3Images}

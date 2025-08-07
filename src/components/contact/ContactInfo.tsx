@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { MapPin, Phone, Mail, Clock, Facebook, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageCircle, Music } from "lucide-react";
 import { useContactStore } from "@/store/zustand/contactStore";
-import { getBilingualAddress, getBilingualBusinessHours, getLoadingText } from "@/utils/bilingual";
+import { Facebook, Youtube } from "lucide-react";
+
+import {
+  getBilingualAddress,
+  getBilingualBusinessHours,
+  getLoadingText,
+} from "@/utils/bilingual";
 
 interface ContactInfoProps {
   locale: string;
@@ -11,10 +17,10 @@ interface ContactInfoProps {
   className?: string;
 }
 
-export default function ContactInfo({ 
-  locale, 
-  variant = "full", 
-  className = "" 
+export default function ContactInfo({
+  locale,
+  variant = "full",
+  className = "",
 }: ContactInfoProps) {
   const { contactInfo, loading, error, fetchContactInfo } = useContactStore();
 
@@ -41,12 +47,14 @@ export default function ContactInfo({
     return (
       <div className={`text-center p-4 ${className}`}>
         <p className="text-red-600 text-sm mb-2">
-          {error || (locale === "th" ? "ไม่สามารถโหลดข้อมูลติดต่อได้" : "Failed to load contact information")}
+          {error ||
+            (locale === "th"
+              ? "ไม่สามารถโหลดข้อมูลติดต่อได้"
+              : "Failed to load contact information")}
         </p>
         <button
           onClick={fetchContactInfo}
-          className="text-blue-600 hover:text-blue-700 text-sm underline"
-        >
+          className="text-blue-600 hover:text-blue-700 text-sm underline">
           {locale === "th" ? "ลองใหม่" : "Try again"}
         </button>
       </div>
@@ -62,13 +70,25 @@ export default function ContactInfo({
       icon: Facebook,
       href: contactInfo.facebook || "#",
       color: "hover:text-blue-600",
-      name: "Facebook"
+      name: "Facebook",
+    },
+    {
+      icon: MessageCircle,
+      href: contactInfo.line || "#",
+      color: "hover:text-green-600",
+      name: "Line",
     },
     {
       icon: Youtube,
       href: contactInfo.youtube || "#",
       color: "hover:text-red-600",
-      name: "YouTube"
+      name: "YouTube",
+    },
+    {
+      icon: Music,
+      href: contactInfo.tiktok || "#",
+      color: "hover:text-black",
+      name: "TikTok",
     },
   ];
 
@@ -77,19 +97,17 @@ export default function ContactInfo({
       <div className={`space-y-3 ${className}`}>
         <div className="flex items-center space-x-3">
           <Phone className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <a 
+          <a
             href={`tel:${contactInfo.tel}`}
-            className="text-gray-700 hover:text-blue-600 transition-colors"
-          >
+            className="text-gray-700 hover:text-blue-600 transition-colors">
             {contactInfo.tel}
           </a>
         </div>
         <div className="flex items-center space-x-3">
           <Mail className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <a 
+          <a
             href={`mailto:${contactInfo.email}`}
-            className="text-gray-700 hover:text-blue-600 transition-colors"
-          >
+            className="text-gray-700 hover:text-blue-600 transition-colors">
             {contactInfo.email}
           </a>
         </div>
@@ -123,10 +141,9 @@ export default function ContactInfo({
           <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
             <Phone size={14} className="text-blue-400" />
           </div>
-          <a 
+          <a
             href={`tel:${contactInfo.tel}`}
-            className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-sm"
-          >
+            className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-sm">
             {contactInfo.tel}
           </a>
         </div>
@@ -135,10 +152,9 @@ export default function ContactInfo({
           <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600/30 transition-colors duration-300">
             <Mail size={14} className="text-blue-400" />
           </div>
-          <a 
+          <a
             href={`mailto:${contactInfo.email}`}
-            className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-sm"
-          >
+            className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300 text-sm">
             {contactInfo.email}
           </a>
         </div>
@@ -165,8 +181,7 @@ export default function ContactInfo({
               target="_blank"
               rel="noopener noreferrer"
               className={`relative w-10 h-10 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}
-              title={social.name}
-            >
+              title={social.name}>
               <social.icon size={16} className="relative z-10 mx-auto mt-2" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
             </a>
@@ -188,10 +203,9 @@ export default function ContactInfo({
             <h3 className="font-semibold text-gray-900">
               {locale === "th" ? "โทรศัพท์" : "Phone"}
             </h3>
-            <a 
+            <a
               href={`tel:${contactInfo.tel}`}
-              className="text-blue-600 hover:text-blue-700 transition-colors"
-            >
+              className="text-blue-600 hover:text-blue-700 transition-colors">
               {contactInfo.tel}
             </a>
           </div>
@@ -205,10 +219,9 @@ export default function ContactInfo({
             <h3 className="font-semibold text-gray-900">
               {locale === "th" ? "อีเมล" : "Email"}
             </h3>
-            <a 
+            <a
               href={`mailto:${contactInfo.email}`}
-              className="text-blue-600 hover:text-blue-700 transition-colors"
-            >
+              className="text-blue-600 hover:text-blue-700 transition-colors">
               {contactInfo.email}
             </a>
           </div>
@@ -229,8 +242,7 @@ export default function ContactInfo({
                   href={contactInfo.google_map_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block mt-2 text-blue-600 hover:text-blue-700 text-sm underline"
-                >
+                  className="inline-block mt-2 text-blue-600 hover:text-blue-700 text-sm underline">
                   {locale === "th" ? "ดูแผนที่" : "View on Map"}
                 </a>
               )}
@@ -266,8 +278,7 @@ export default function ContactInfo({
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 ${social.color} transition-all duration-300 hover:scale-110`}
-              title={social.name}
-            >
+              title={social.name}>
               <social.icon size={20} />
             </a>
           ))}
