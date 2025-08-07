@@ -451,9 +451,10 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
       maxHeroImages: 1,
       hasCustomSlots: true,
       slotsCount: 1,
-      slotsTitle: "About Main Content Image",
+      slotsTitle: "About Main Content Gallery (max 20 images)",
       contentId: "ABOUT",
-      maxImagesPerSlot: 1,
+      maxImagesPerSlot: 20,
+      isGalleryMode: true,
     },
     "about-history": {
       heroId: "ABOUT_HISTORY" as HeroSectionId,
@@ -490,7 +491,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
     (pageType: string): CustomImageSlot[] => {
       const slotInstructions: { [key: string]: string[] } = {
         "about-main": [
-          "Upload main about content image (max 1 image) - POST to content ID 'ABOUT'",
+          "Upload main about content gallery (max 20 images) - POST to content ID 'ABOUT'. These images will be displayed in a carousel on the PDS Group main page.",
         ],
         "about-history": [
           "Company Origin Gallery (1964-1980): Upload up to 20 images showing the early days and founding of the company",
@@ -581,7 +582,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
           }
         }
       } else if (pageId === "about-main") {
-        // For about-main, load from contents table with ABOUT ID
+        // For about-main, load from contents table with ABOUT ID (gallery mode)
         console.log("📄 Loading about main content from contents table...");
 
         const response = await fetch("/api/contents?id=ABOUT");
@@ -592,8 +593,11 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
             data.content.images_url &&
             data.content.images_url.length > 0
           ) {
-            slots[0].imageUrl = data.content.images_url[0];
-            console.log("✅ Loaded ABOUT image:", data.content.images_url[0]);
+            slots[0].imageUrls = data.content.images_url;
+            console.log(
+              "✅ Loaded ABOUT images:",
+              data.content.images_url.length
+            );
           }
         }
       } else if (pageId === "about-vision") {
@@ -740,20 +744,23 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
             console.log("✅ Updated HISTORY_2 content");
           }
         } else if (pageId === "about-main") {
-          // Handle about-main page with ABOUT content upload
+          // Handle about-main page with ABOUT content upload (gallery mode)
           console.log("📄 Updating about main content...");
 
           const slot = customSlots[0];
-          if (slot && slot.image) {
+          if (slot && (slot.images?.length || slot.imageUrls?.length)) {
             const formData = new FormData();
             formData.append("id", "ABOUT");
             formData.append("page", "ABOUT");
             formData.append("type", "gallery");
             formData.append(
               "existing_images",
-              JSON.stringify(slot.imageUrl ? [slot.imageUrl] : [])
+              JSON.stringify(slot.imageUrls || [])
             );
-            formData.append("image_0", slot.image);
+
+            slot.images?.forEach((file, index) => {
+              formData.append(`image_${index}`, file);
+            });
 
             const response = await fetch("/api/contents", {
               method: "PUT",

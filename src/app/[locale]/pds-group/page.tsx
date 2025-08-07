@@ -12,12 +12,12 @@ import {
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import Image from "next/image";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import { useContentStore } from "@/store/zustand/contentStore";
 import ImageSkeleton from "@/components/ui/ImageSkeleton";
+import MinimalCarousel from "@/components/ui/MinimalCarousel";
 
 export default function CompanyProfilePage() {
   const t = useTranslations();
@@ -26,7 +26,7 @@ export default function CompanyProfilePage() {
   const contentImage =
     Array.isArray(contentDetail?.images_url) &&
     contentDetail.images_url.length > 0
-      ? contentDetail.images_url[0]
+      ? contentDetail.images_url
       : undefined; // Content store state for ABOUT content image
 
   // Fetch content images on component mount
@@ -40,7 +40,7 @@ export default function CompanyProfilePage() {
     };
 
     fetchContentImages();
-  }, []);
+  }, [fetchContentById]);
 
   const subPages = [
     {
@@ -140,7 +140,7 @@ export default function CompanyProfilePage() {
             </div>
             {/* About Image from ABOUT content */}
             <div>
-              {loading || !contentImage ? (
+              {loading || !contentImage || contentImage.length === 0 ? (
                 <ImageSkeleton
                   width="100%"
                   height="384px"
@@ -149,13 +149,20 @@ export default function CompanyProfilePage() {
                   className="shadow-lg"
                 />
               ) : (
-                <Image
-                  src={contentImage}
-                  alt="Padungsilpa Group Office"
-                  className="w-full h-96 object-cover shadow-lg"
-                  width={600}
-                  height={400}
-                />
+                <div className="w-full max-w-full overflow-hidden">
+                  <div className="w-full h-96 max-w-full overflow-hidden">
+                    <MinimalCarousel
+                      images={contentImage}
+                      alt="Padungsilpa Group Office"
+                      aspectRatio="16/9"
+                      showNavigation={true}
+                      showIndicators={true}
+                      autoPlay={true}
+                      interval={5000}
+                      className="shadow-lg w-full h-full"
+                    />
+                  </div>
+                </div>
               )}
             </div>
           </div>
