@@ -1,11 +1,12 @@
 "use client";
 
 import { Cog, ArrowRight } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 
 interface ATGSystemSectionProps {
   service?: ServiceType;
@@ -22,6 +23,7 @@ export default function ATGSystemSection({
 }: ATGSystemSectionProps) {
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
+  const t = useTranslations();
 
   // Loading state
   if (loading) {
@@ -30,9 +32,7 @@ export default function ATGSystemSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -42,15 +42,11 @@ export default function ATGSystemSection({
   // Get service data (fallback to default if not provided)
   const serviceName = service
     ? getBilingualName(service, locale)
-    : locale === "th"
-    ? "ระบบวัดน้ำมันอัตโนมัติ (ATG)"
-    : "Automatic Tank Gauging (ATG) System";
+    : t("services.atgSystem.title");
 
   const serviceDescription = service
     ? getBilingualDescription(service, locale)
-    : locale === "th"
-    ? "ระบบตรวจวัดระดับน้ำมันและการรั่วไหลแบบอัตโนมัติ เชื่อมต่อระบบคอมพิวเตอร์และ IoT"
-    : "Automatic fuel level and leak detection system connected to computer and IoT systems";
+    : t("services.atgSystem.description");
 
   // Get gallery images from content
   const galleryImages = content
@@ -59,8 +55,7 @@ export default function ATGSystemSection({
 
   // Get video URL from content and ensure proper embed format
   const videoContent = content.find((c) => c.type === "video");
-  const videoUrl =
-    videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
+  const videoUrl = videoContent?.video_url;
 
   return (
     <section className="py-8 sm:py-12 bg-gray-50">
@@ -68,14 +63,18 @@ export default function ATGSystemSection({
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
           <div className="relative order-2 lg:order-1 w-full max-w-full">
-            <div className="w-full h-[250px] sm:h-[350px] lg:h-[500px] max-w-full overflow-hidden">
-              <YouTubeEmbed
-                url={videoUrl}
-                title={serviceName}
-                className="shadow-xl w-full h-full"
-                aspectRatio="16/9"
-              />
-            </div>
+            {videoUrl ? (
+              <div className="w-full h-[250px] sm:h-[350px] lg:h-[500px] max-w-full overflow-hidden">
+                <YouTubeEmbed
+                  url={videoUrl}
+                  title={serviceName}
+                  className="shadow-xl w-full h-full"
+                  aspectRatio="16/9"
+                />
+              </div>
+            ) : (
+              <ImageSkeleton />
+            )}
           </div>
 
           <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-1 lg:order-2">
@@ -96,7 +95,7 @@ export default function ATGSystemSection({
                 />
               </div>
               <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] leading-tight break-words">
-                ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน
+                {t("services.atgSystem.sectionTitle")}
               </h2>
             </div>
 

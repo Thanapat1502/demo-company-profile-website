@@ -98,11 +98,7 @@ export default function ProductSection({
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th"
-                ? "กำลังโหลดผลิตภัณฑ์..."
-                : "Loading products..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -117,14 +113,14 @@ export default function ProductSection({
           <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-              {locale === "th" ? "สินค้า" : "PRODUCTS"}
+              {t("home.products.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
           </div>
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            {locale === "th" ? "สินค้าของเรา" : "Products & Services"}
+            {t("home.products.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -134,9 +130,7 @@ export default function ProductSection({
           </div>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {locale === "th"
-              ? "ผลิตภัณฑ์และบริการคุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
-              : "High-quality products and services for gas stations and energy industry"}
+            {t("home.products.description")}
           </p>
         </div>
 
@@ -161,12 +155,8 @@ export default function ProductSection({
               <span className="relative z-10 flex items-center justify-center gap-3">
                 <span className="font-semibold tracking-wide">
                   {showAllProducts
-                    ? locale === "th"
-                      ? "แสดงน้อยลง"
-                      : "Show Less"
-                    : locale === "th"
-                    ? "ดูผลิตภัณฑ์ทั้งหมด"
-                    : "View All Products"}
+                    ? t("home.products.showLess")
+                    : t("home.products.viewAll")}
                 </span>
                 <ArrowRight
                   className={`w-5 h-5 transition-all duration-500 group-hover:translate-x-1 ${
@@ -187,7 +177,7 @@ export default function ProductSection({
             onClick={() => router.push(`/${locale}/products-services`)}>
             <span className="relative z-10 flex items-center justify-center gap-3">
               <span className="font-semibold tracking-wide text-black">
-                {locale === "th" ? "ดูหน้าผลิตภัณฑ์" : "View Products Page"}
+                {t("home.products.viewProductsPage")}
               </span>
               <ArrowRight className="w-5 h-5 text-black transition-transform duration-500 group-hover:translate-x-1" />
             </span>

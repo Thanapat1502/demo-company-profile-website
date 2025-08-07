@@ -1,7 +1,7 @@
 "use client";
 
 import { History, Building, Users2, Target } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
@@ -13,29 +13,30 @@ import MessageFromManagement, {
 
 export default function ExecutiveTeamPage() {
   const locale = useLocale();
+  const t = useTranslations();
 
   const subPages = [
     {
       id: "overview",
-      title: locale === "th" ? "ภาพรวมบริษัท" : "Company Overview",
+      title: t("company.navigation.overview"),
       icon: Building,
       href: `/pds-group`,
     },
     {
       id: "history",
-      title: locale === "th" ? "ประวัติความเป็นมา" : "Company History",
+      title: t("company.navigation.history"),
       icon: History,
       href: `/pds-group/history`,
     },
     {
       id: "team",
-      title: locale === "th" ? "ทีมผู้บริหาร" : "Executive Team",
+      title: t("company.navigation.team"),
       icon: Users2,
       href: `/pds-group/executive-team`,
     },
     {
       id: "mission",
-      title: locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision",
+      title: t("company.navigation.mission"),
       icon: Target,
       href: `/pds-group/mission-commitment`,
     },
@@ -45,15 +46,9 @@ export default function ExecutiveTeamPage() {
     <MainLayout>
       <DynamicHeroSection
         pageId="ABOUT_EXECUTIVE"
-        title={locale === "th" ? "ทีมผู้บริหาร" : "Executive Team"}
-        subtitle={
-          locale === "th" ? "ผู้นำที่มีประสบการณ์" : "Experienced Leadership"
-        }
-        description={
-          locale === "th"
-            ? "ทีมผู้บริหารมืออาชีพ ที่มีความเชี่ยวชาญในแต่ละสาขา"
-            : "Professional executive team with expertise in each field"
-        }
+        title={t("company.executive.hero.title")}
+        subtitle={t("company.executive.hero.subtitle")}
+        description={t("company.executive.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-3.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />
@@ -104,9 +99,7 @@ export default function ExecutiveTeamPage() {
             </div>
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              {locale === "th"
-                ? "ผู้นำที่มีประสบการณ์และความเชี่ยวชาญในการขับเคลื่อนองค์กรสู่ความสำเร็จ"
-                : "Experienced leaders with expertise in driving organizational success"}
+              {t("company.executive.description")}
             </p>
           </div>
 

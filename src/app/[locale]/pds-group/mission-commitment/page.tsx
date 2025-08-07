@@ -52,25 +52,25 @@ export default function MissionCommitmentPage() {
   const subPages = [
     {
       id: "overview",
-      title: locale === "th" ? "ภาพรวมบริษัท" : "Company Overview",
+      title: t("company.navigation.overview"),
       icon: Building,
       href: `/pds-group`,
     },
     {
       id: "history",
-      title: locale === "th" ? "ประวัติความเป็นมา" : "Company History",
+      title: t("company.navigation.history"),
       icon: History,
       href: `/pds-group/history`,
     },
     {
       id: "team",
-      title: locale === "th" ? "ทีมผู้บริหาร" : "Executive Team",
+      title: t("company.navigation.team"),
       icon: Users2,
       href: `/pds-group/executive-team`,
     },
     {
       id: "mission",
-      title: locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision",
+      title: t("company.navigation.mission"),
       icon: Target,
       href: `/pds-group/mission-commitment`,
     },
@@ -126,13 +126,9 @@ export default function MissionCommitmentPage() {
       {/* Hero Section */}
       <DynamicHeroSection
         pageId="ABOUT_VISION"
-        title={locale === "th" ? "วิสัยทัศน์และพันธกิจ" : "Mission & Vision"}
-        subtitle={locale === "th" ? "หลักการและค่านิยม" : "Principles & Values"}
-        description={
-          locale === "th"
-            ? "มุ่งมั่นสู่ความเป็นเลิศ\nด้วยความรับผิดชอบต่อสังคม"
-            : "Striving for Excellence\nwith Social Responsibility"
-        }
+        title={t("company.mission.hero.title")}
+        subtitle={t("company.mission.hero.subtitle")}
+        description={t("company.mission.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-4.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />
@@ -255,14 +251,14 @@ export default function MissionCommitmentPage() {
             <div className="inline-flex items-center gap-3 mb-8">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
               <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                ความมุ่งมั่น
+                {t("company.mission.commitments.sectionLabel")}
               </span>
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             </div>
 
             {/* Main Heading */}
             <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-              ความมุ่งมั่นของเรา
+              {t("company.mission.commitments.title")}
             </h2>
 
             {/* Enhanced Elegant Line */}

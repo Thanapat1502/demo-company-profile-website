@@ -1111,6 +1111,6 @@ const enLabel = {
 export const flatTH = flattenJson(thLabel, { local: "th" });
 export const flatEN = flattenJson(enLabel, { local: "en" });
 
-console.log("TH>>", flatTH);
-console.log("EN>>", flatEN);
+// console.log("TH>>", flatTH);
+// console.log("EN>>", flatEN);
 // flat is now an array of { key, value, local } with .th or .en suffix

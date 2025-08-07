@@ -1,11 +1,12 @@
 "use client";
 
 import { Fuel, ArrowRight } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 
 interface PermatankSectionProps {
   service?: ServiceType;
@@ -22,6 +23,7 @@ export default function PermatankSection({
 }: PermatankSectionProps) {
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
+  const t = useTranslations();
 
   // Loading state
   if (loading) {
@@ -30,9 +32,7 @@ export default function PermatankSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -42,15 +42,11 @@ export default function PermatankSection({
   // Get service data (fallback to default if not provided)
   const serviceName = service
     ? getBilingualName(service, locale)
-    : locale === "th"
-    ? "ถังน้ำมันใต้ดิน PERMATANK®"
-    : "PERMATANK® Underground Fuel Tanks";
+    : t("services.permatank.title");
 
   const serviceDescription = service
     ? getBilingualDescription(service, locale)
-    : locale === "th"
-    ? "ถังน้ำมันใต้ดินผนัง 2 ชั้น ทนทาน ปลอดภัย ได้มาตรฐานสากล"
-    : "Double-wall underground fuel tanks, durable, safe, and internationally certified";
+    : t("services.permatank.description");
 
   // Get gallery images from content
   const galleryImages = content
@@ -67,7 +63,7 @@ export default function PermatankSection({
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
           <div className="relative order-2 lg:order-1 w-full max-w-full">
-            {videoUrl && (
+            {videoUrl ? (
               <div className="w-full h-[250px] sm:h-[350px] lg:h-[500px] max-w-full overflow-hidden">
                 <YouTubeEmbed
                   url={videoUrl}
@@ -76,6 +72,8 @@ export default function PermatankSection({
                   aspectRatio="16/9"
                 />
               </div>
+            ) : (
+              <ImageSkeleton />
             )}
           </div>
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ProductCard } from "@/components/share/ProductCard";
 import { ProductType } from "@/store/zustand/productStore";
+import { useTranslations } from "next-intl";
 
 interface ProductsSectionProps {
   products: ProductType[];
@@ -15,6 +16,7 @@ export default function ProductsSection({
   locale = "th",
   loading = false,
 }: ProductsSectionProps) {
+  const t = useTranslations();
   const [showAllProducts, setShowAllProducts] = useState(false);
 
   const displayedProducts = showAllProducts ? products : products.slice(0, 6);
@@ -31,11 +33,7 @@ export default function ProductsSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th"
-                ? "กำลังโหลดผลิตภัณฑ์..."
-                : "Loading products..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -50,14 +48,14 @@ export default function ProductsSection({
           <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-              {locale === "th" ? "ผลิตภัณฑ์" : "PRODUCTS"}
+              {t("services.products.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
           </div>
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            {locale === "th" ? "ผลิตภัณฑ์ของเรา" : "Our Products"}
+            {t("services.products.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -67,9 +65,7 @@ export default function ProductsSection({
           </div>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {locale === "th"
-              ? "ผลิตภัณฑ์คุณภาพสูงสำหรับสถานีบริการน้ำมันและอุตสาหกรรมพลังงาน"
-              : "High-quality products for gas stations and energy industry"}
+            {t("services.products.description")}
           </p>
         </div>
 
@@ -93,12 +89,8 @@ export default function ProductsSection({
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   <span className="font-semibold tracking-wide">
                     {showAllProducts
-                      ? locale === "th"
-                        ? "แสดงน้อยลง"
-                        : "Show Less"
-                      : locale === "th"
-                      ? "ดูผลิตภัณฑ์ทั้งหมด"
-                      : "View All Products"}
+                      ? t("services.products.showLess")
+                      : t("services.products.viewAll")}
                   </span>
                   <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
                 </span>

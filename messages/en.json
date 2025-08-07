@@ -27,10 +27,60 @@
       "contactUs": "Contact Us"
     },
     "stats": {
+      "title": "Proven Excellence",
+      "description": "Padungsilpa Group continuously develops underground fuel tanks and gas station projects, focusing on quality, safety, and the highest standards",
+      "policy": "Under the policy 'Correct, Proper, Timely, Safe'",
+      "bottomMessage": "With over 50 years of experience, we are ready to provide comprehensive services from design, construction, system installation, and maintenance",
+      "gasStationConstruction": "Gas Station Construction (Stations)",
+      "permatankProduction": "PERMATANK® Double-Wall Underground Tank Production (Units)",
+      "pipeInstallation": "Double-Wall Underground Piping Sales and Installation (Stations)",
+      "atgSystem": "Automatic Tank Gauging System Sales and Installation (ATG)",
       "experience": "Years Experience",
       "projects": "Projects Completed",
       "clients": "Happy Clients",
       "support": "Support Service"
+    },
+    "products": {
+      "sectionLabel": "PRODUCTS",
+      "title": "Products & Services",
+      "description": "High-quality products and services for gas stations and energy industry",
+      "showLess": "Show Less",
+      "viewAll": "View All Products",
+      "viewProductsPage": "View Products Page"
+    },
+    "overview": {
+      "sectionLabel": "ABOUT US",
+      "title": "Leading Company in",
+      "titleHighlight": "Gas Station Construction",
+      "description": "We are committed to maintaining the highest standards of product and service quality, providing expert consultation for continuous development, and prioritizing the safety of all employees and customers under the concept of 'Correct, Principled, Modern, Safe'",
+      "learnMore": "Learn More",
+      "viewProjects": "View Projects",
+      "features": {
+        "safety": {
+          "title": "Highest Safety Standards",
+          "description": "Safety systems certified to international UL and STI-P3® standards"
+        },
+        "expertise": {
+          "title": "Professional Expertise",
+          "description": "Expert engineering and construction team with over 50 years of experience"
+        },
+        "support": {
+          "title": "24/7 After-Sales Service",
+          "description": "Support team ready to serve around the clock for maximum safety"
+        },
+        "technology": {
+          "title": "Advanced PERMATANK® Technology",
+          "description": "Double-wall underground fuel storage tanks meeting international standards"
+        }
+      }
+    },
+    "partners": {
+      "sectionLabel": "Our Partners",
+      "title": "Trusted by",
+      "titleHighlight": "Energy Leaders",
+      "description": "We are proud to be trusted by leading oil companies in the country for construction and installation services of gas station systems",
+      "trustMessage": "Trusted by Leading Partners",
+      "additionalMessage": "And many other partners who trust in the quality of our work"
     },
     "services": {
       "title": "Products & Services",
@@ -144,7 +194,59 @@
       "overview": "Company Overview",
       "history": "Company History",
       "team": "Executive Team",
-      "mission": "Vision & Mission"
+      "mission": "Mission & Vision"
+    },
+    "history": {
+      "hero": {
+        "title": "Company History",
+        "subtitle": "Journey of Success",
+        "description": "Over 50 years of experience\nin fuel station construction industry"
+      },
+      "title": "Company Origin",
+      "sectionLabel": "History",
+      "subtitle": "Follow our development and progress over the past 5 decades",
+      "imageAlt": "Company History",
+      "placeholderText": "Company History Images",
+      "beginning": {
+        "title": "The Beginning",
+        "description1": "Padungsilpa Group started its fuel station business in 1964 under the name Padungsilpa Engineering Limited Partnership, founded by Mr. Amnuay Sinsamutphadung, who had extensive experience and expertise in construction work.",
+        "description2": "In the early days of business operations, the company focused on providing construction and installation services for various systems in fuel stations, particularly the installation of fuel tanks and fuel piping systems."
+      },
+      "expansion": {
+        "title": "Business Expansion",
+        "imageAlt": "Business Expansion",
+        "description1": "In 1977, the company expanded its scope of operations and transformed into Padungsilpa Engineering Co., Ltd. to accommodate business growth and more diverse services.",
+        "description2": "The business expansion during this period enabled the company to take on larger projects and began developing expertise in modern fuel storage technology."
+      },
+      "innovation": {
+        "title": "Innovation & Technology",
+        "imageAlt": "Innovation & Technology",
+        "description1": "The company imported PERMATANK® technology from Germany, which is a high-standard and safe underground fuel tank system, making the company a leader in fuel storage technology in Thailand.",
+        "description2": "With over 50 years of experience, we are ready to provide comprehensive services from design, construction, system installation, and maintenance to fully meet customer needs."
+      }
+    },
+    "executive": {
+      "hero": {
+        "title": "Executive Team",
+        "subtitle": "Experienced Leadership",
+        "description": "Professional executive team with expertise in each field"
+      },
+      "description": "Experienced leaders with expertise in driving organizational success",
+      "messageFromManagement": {
+        "sectionLabel": "Message from Management",
+        "title": "Message from Management"
+      }
+    },
+    "mission": {
+      "hero": {
+        "title": "Mission & Vision",
+        "subtitle": "Principles & Values",
+        "description": "Striving for Excellence\nwith Social Responsibility"
+      },
+      "commitments": {
+        "sectionLabel": "COMMITMENTS",
+        "title": "Our Commitments"
+      }
     },
     "overview": {
       "title": "Padungsilpa Group",
@@ -168,6 +270,44 @@
       "subtitle": "Comprehensive Gas Station Solutions",
       "description": "From initial design to ongoing maintenance, we provide complete gas station construction and engineering services tailored to your specific needs.",
       "viewProjects": "View Our Projects"
+    },
+    "construction": {
+      "title": "Gas Station Construction Services",
+      "description": "Complete gas station construction services from design and installation to maintenance",
+      "sectionLabel": "CONSTRUCTION",
+      "experienceText": "With over 50 years of experience in gas station construction, we understand the specific needs and requirements of this industry very well.",
+      "policyText": "Under the policy 'Correct, Proper, Timely, Safe'",
+      "comprehensiveText": "We provide comprehensive services from design, construction, equipment installation, and maintenance to ensure customers receive complete and highest quality service.",
+      "contactButton": "Contact Us",
+      "placeholderText": "Gas Station Construction Images"
+    },
+    "permatank": {
+      "title": "PERMATANK® Underground Fuel Tanks",
+      "description": "Double-wall underground fuel tanks, durable, safe, and internationally certified"
+    },
+    "pipeInstallation": {
+      "title": "Double-Wall Underground Piping",
+      "description": "Underground fuel piping system that prevents leaks with real-time leak detection system",
+      "sectionLabel": "PIPE INSTALLATION",
+      "detailedDescription": "With over 20 years of experience in double-wall fuel pipe installation, Padungsilpa Engineering Co., Ltd. is an authorized distributor and installer of NUPIGECO S.P.A. brand fuel pipes, Smartflex and Ecoflex models, manufactured in Italy. Made from Polyethylene (PE) and Polyamide (PA) materials with special properties to prevent fuel leaks and can detect leaks in real-time. This piping system is certified to European Standard EN 14125 and tested in various environments, ensuring maximum durability and safety. With installation teams trained directly by the product owner, with experience in over 300 projects.",
+      "contactButton": "Contact Us"
+    },
+    "atgSystem": {
+      "title": "Automatic Tank Gauging (ATG) System",
+      "description": "Automatic fuel level and leak detection system connected to computer and IoT systems",
+      "sectionTitle": "Automatic Tank Gauging System"
+    },
+    "tankServices": {
+      "title": "Tank Services",
+      "description": "Complete tank services from installation, maintenance to repair",
+      "companyName": "Padungsilpa Engineering Co., Ltd."
+    },
+    "products": {
+      "description": "High-quality products for gas stations and energy industry",
+      "sectionLabel": "PRODUCTS",
+      "title": "Our Products",
+      "showLess": "Show Less",
+      "viewAll": "View All Products"
     },
     "main": {
       "title": "Our Core Services",

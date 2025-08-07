@@ -1,6 +1,7 @@
 "use client";
 
 import { Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface MessageFromManagementProps {
   locale: string;
@@ -33,8 +34,11 @@ export default function MessageFromManagement({
   messages,
   className = "",
 }: MessageFromManagementProps) {
-  const currentTitle = locale === "th" ? title.th : title.en;
-  const currentSubtitle = locale === "th" ? subtitle.th : subtitle.en;
+  const t = useTranslations();
+  const currentTitle = t(
+    "company.executive.messageFromManagement.sectionLabel"
+  );
+  const currentSubtitle = t("company.executive.messageFromManagement.title");
   const currentMessages = locale === "th" ? messages.th : messages.en;
 
   return (

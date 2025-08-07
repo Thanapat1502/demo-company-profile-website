@@ -1,11 +1,12 @@
 "use client";
 
 import { Cog, ArrowRight, Wrench } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 import ServiceGallery from "@/components/gallery/ServiceGallery";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 interface TankServicesSectionProps {
   service?: ServiceType;
   content?: Content[];
@@ -21,6 +22,7 @@ export default function TankServicesSection({
 }: TankServicesSectionProps) {
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
+  const t = useTranslations();
 
   // Loading state
   if (loading) {
@@ -29,9 +31,7 @@ export default function TankServicesSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -41,15 +41,11 @@ export default function TankServicesSection({
   // Get service data (fallback to default if not provided)
   const serviceName = service
     ? getBilingualName(service, locale)
-    : locale === "th"
-    ? "บริการถังน้ำมัน"
-    : "Tank Services";
+    : t("services.tankServices.title");
 
   const serviceDescription = service
     ? getBilingualDescription(service, locale)
-    : locale === "th"
-    ? "บริการครบวงจรสำหรับถังน้ำมัน ตั้งแต่การติดตั้ง บำรุงรักษา จนถึงการซ่อมแซม"
-    : "Complete tank services from installation, maintenance to repair";
+    : t("services.tankServices.description");
 
   // Get gallery images from content (SERVICE_5 should have gallery type)
   const galleryContent = content.find((c) => c.type === "gallery");
@@ -102,18 +98,7 @@ export default function TankServicesSection({
               </div>
             ) : (
               // Fallback placeholder for tank services
-              <div className="w-full max-w-full overflow-hidden">
-                <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gray-100 flex items-center justify-center shadow-xl">
-                  <div className="text-center text-gray-500">
-                    <Wrench className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4" />
-                    <p className="text-sm sm:text-base lg:text-lg">
-                      {locale === "th"
-                        ? "รูปภาพบริการถังน้ำมัน"
-                        : "Tank Services Images"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <ImageSkeleton />
             )}
           </div>
 
@@ -149,7 +134,7 @@ export default function TankServicesSection({
             <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <div className="bg-[var(--primary-blue)]/10 p-4 sm:p-6 border-l-4 border-[var(--primary-blue)]">
                 <p className="font-semibold text-[var(--primary-blue)] text-base sm:text-lg lg:text-xl mb-3 sm:mb-4 tracking-wide break-words">
-                  บริษัท ผดุงศิลป์วิศวการ จำกัด
+                  {t("services.tankServices.companyName")}
                 </p>
                 <ol className="space-y-2 text-gray-700 text-sm sm:text-base">
                   <li>1. งานตรวจสอบการติดตั้งถัง PERMATANK</li>

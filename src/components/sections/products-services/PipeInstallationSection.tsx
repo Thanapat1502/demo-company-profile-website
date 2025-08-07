@@ -1,11 +1,12 @@
 "use client";
 
 import { Wrench, ArrowRight, Settings } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 import ServiceGallery from "@/components/gallery/ServiceGallery";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 interface PipeInstallationSectionProps {
   service?: ServiceType;
   content?: Content[];
@@ -21,6 +22,7 @@ export default function PipeInstallationSection({
 }: PipeInstallationSectionProps) {
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
+  const t = useTranslations();
 
   // Loading state
   if (loading) {
@@ -29,9 +31,7 @@ export default function PipeInstallationSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -41,15 +41,11 @@ export default function PipeInstallationSection({
   // Get service data (fallback to default if not provided)
   const serviceName = service
     ? getBilingualName(service, locale)
-    : locale === "th"
-    ? "ท่อน้ำมันใต้ดินผนัง 2 ชั้น"
-    : "Double-Wall Underground Piping";
+    : t("services.pipeInstallation.title");
 
   const serviceDescription = service
     ? getBilingualDescription(service, locale)
-    : locale === "th"
-    ? "ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์"
-    : "Underground fuel piping system that prevents leaks with real-time leak detection system";
+    : t("services.pipeInstallation.description");
 
   // Get gallery images from content (SERVICE_3 should have gallery type)
   const galleryContent = content.find((c) => c.type === "gallery");
@@ -64,7 +60,7 @@ export default function PipeInstallationSection({
             <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
               <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
-                ติดตั้งท่อ
+                {t("services.pipeInstallation.sectionLabel")}
               </span>
             </div>
 
@@ -77,7 +73,7 @@ export default function PipeInstallationSection({
                 />
               </div>
               <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] leading-tight break-words">
-                จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น
+                {serviceName}
               </h2>
             </div>
 
@@ -88,29 +84,8 @@ export default function PipeInstallationSection({
             </div>
 
             <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-              <p>
-                ด้วยประสบการณ์การติดตั้งท่อน้ำมันแบบผนัง 2 ชั้นมากกว่า 20 ปี
-                บริษัท ผดุงศิลป์วิศวการ จำกัด
-                เป็นตัวแทนจำหน่ายและติดตั้งท่อน้ำมันยี่ห้อ NUPIGECO S.P.A. รุ่น
-                Smartflex และ Ecoflex ซึ่งผลิตในประเทศอิตาลี
-              </p>
-
-              <p>
-                ผลิตจากวัสดุ Polyethylene (PE) และ Polyamide (PA)
-                ที่มีคุณสมบัติพิเศษในการป้องกันการรั่วไหลของน้ำมัน
-                และสามารถตรวจจับการรั่วไหลได้แบบ Real-Time
-              </p>
-
-              <p>
-                ระบบท่อนี้ได้รับการรับรองมาตรฐานจาก European Standard EN 14125
-                และผ่านการทดสอบในสภาพแวดล้อมที่หลากหลาย
-                รับประกันความทนทานและความปลอดภัยสูงสุด
-              </p>
-
-              <p>
-                โดยมีทีมงานติดตั้งที่ได้รับการฝึกอบรมจากเจ้าของผลิตภัณฑ์โดยตรง
-                ด้วยประสบการณ์มากกว่า 300 โครงการ
-              </p>
+              <p>{serviceDescription}</p>
+              <p>{t("services.pipeInstallation.detailedDescription")}</p>
             </div>
 
             {/* Action Button - Using luxury hero button style */}
@@ -123,7 +98,7 @@ export default function PipeInstallationSection({
                   }>
                   <span className="relative z-10 flex items-center justify-center gap-3">
                     <span className="font-semibold tracking-wide">
-                      ติดต่อสอบถาม
+                      {t("services.pipeInstallation.contactButton")}
                     </span>
                     <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
                   </span>
@@ -154,18 +129,7 @@ export default function PipeInstallationSection({
               </div>
             ) : (
               // Fallback placeholder for pipe installation
-              <div className="w-full max-w-full overflow-hidden">
-                <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gray-100 flex items-center justify-center shadow-xl">
-                  <div className="text-center text-gray-500">
-                    <Settings className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4" />
-                    <p className="text-sm sm:text-base lg:text-lg">
-                      {locale === "th"
-                        ? "รูปภาพท่อน้ำมันใต้ดินผนัง 2 ชั้น"
-                        : "Double-Wall Underground Piping Images"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <ImageSkeleton />
             )}
           </div>
         </div>

@@ -1,4 +1,4 @@
-// const { flatEN, flatTH } = require("./webLabelConverter");
+const { flatEN, flatTH } = require("./webLabelConverter");
 
 // Accepts thLabels and enLabels as arrays of { key, value, local }
 function SQLmaker(thLabels, enLabels) {

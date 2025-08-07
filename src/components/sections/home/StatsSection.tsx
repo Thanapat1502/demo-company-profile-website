@@ -11,22 +11,22 @@ export default function StatsSection() {
   const stats = [
     {
       icon: Building,
-      label: "ก่อสร้างสถานีบริการน้ำมัน (สถานีบริการน้ำมัน)",
+      label: t("home.stats.gasStationConstruction"),
       targetValue: 300,
     },
     {
       icon: Users,
-      label: "ผลิตถังน้ำมันใต้ดินผนัง2ชั้น PERMATANK® (ใบ)",
+      label: t("home.stats.permatankProduction"),
       targetValue: 20000,
     },
     {
       icon: Award,
-      label: "จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น (สถานีบริการน้ำมัน)",
+      label: t("home.stats.pipeInstallation"),
       targetValue: 300,
     },
     {
       icon: Shield,
-      label: "จำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน (ATG)",
+      label: t("home.stats.atgSystem"),
       targetValue: 50,
     },
   ];
@@ -96,7 +96,7 @@ export default function StatsSection() {
         {/* Header - Strong & Minimal Style */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            ความเป็นเลิศที่พิสูจน์แล้ว
+            {t("home.stats.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -106,12 +106,11 @@ export default function StatsSection() {
           </div>
 
           <p className="text-lg text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">
-            กลุ่มบริษัทผดุงศิลป์พัฒนาแบบถังน้ำมันใต้ดินและงานสถานีบริการน้ำมันอย่างต่อเนื่อง
-            มุ่งเน้นคุณภาพ ความปลอดภัย และมาตรฐานสูงสุด
+            {t("home.stats.description")}
           </p>
           <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 px-8 py-4 shadow-lg">
             <p className="text-lg text-white font-bold tracking-wide">
-              ภายใต้นโยบาย "ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย"
+              {t("home.stats.policy")}
             </p>
           </div>
         </div>
@@ -147,8 +146,7 @@ export default function StatsSection() {
         {/* Bottom Message - Clean typography */}
         <div className="text-center mt-16">
           <p className="text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
-            ด้วยประสบการณ์กว่า 50 ปี เราพร้อมให้บริการครบวงจร ตั้งแต่การออกแบบ
-            ก่อสร้าง ติดตั้งระบบ และบำรุงรักษา
+            {t("home.stats.bottomMessage")}
           </p>
         </div>
       </div>

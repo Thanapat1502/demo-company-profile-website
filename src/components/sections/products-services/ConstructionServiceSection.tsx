@@ -1,7 +1,7 @@
 "use client";
 
 import { Building2, ArrowRight, Factory } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
@@ -21,6 +21,7 @@ export default function ConstructionServiceSection({
 }: ConstructionServiceSectionProps) {
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
+  const t = useTranslations();
 
   // Loading state
   if (loading) {
@@ -29,9 +30,7 @@ export default function ConstructionServiceSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th" ? "กำลังโหลดบริการ..." : "Loading service..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -41,15 +40,11 @@ export default function ConstructionServiceSection({
   // Get service data (fallback to default if not provided)
   const serviceName = service
     ? getBilingualName(service, locale)
-    : locale === "th"
-    ? "งานก่อสร้างสถานีบริการน้ำมัน"
-    : "Gas Station Construction Services";
+    : t("services.construction.title");
 
   const serviceDescription = service
     ? getBilingualDescription(service, locale)
-    : locale === "th"
-    ? "บริการก่อสร้างสถานีบริการน้ำมันครบวงจร ตั้งแต่การออกแบบ ติดตั้ง จนถึงการบำรุงรักษา"
-    : "Complete gas station construction services from design and installation to maintenance";
+    : t("services.construction.description");
 
   // Get gallery images from content (SERVICE_1 should have gallery type)
   const galleryContent = content.find((c) => c.type === "gallery");
@@ -64,7 +59,7 @@ export default function ConstructionServiceSection({
             <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
               <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
-                {locale === "th" ? "งานก่อสร้าง" : "CONSTRUCTION"}
+                {t("services.construction.sectionLabel")}
               </span>
             </div>
 
@@ -91,28 +86,15 @@ export default function ConstructionServiceSection({
             <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <p>{serviceDescription}</p>
 
-              <p>
-                {locale === "th" ? (
-                  <>ด้วยประสบการณ์ในการก่อสร้างสถานีบริการน้ำมันมากกว่า 50 ปี</>
-                ) : (
-                  <>
-                    With over 50 years of experience in gas station construction
-                  </>
-                )}
-                ทำให้เราเข้าใจถึงความต้องการและข้อกำหนดเฉพาะของอุตสาหกรรมนี้เป็นอย่างดี
-              </p>
+              <p>{t("services.construction.experienceText")}</p>
 
               <div className="bg-[var(--primary-blue)]/10 p-6 border-l-4 border-[var(--primary-blue)]">
                 <p className="font-semibold text-[var(--primary-blue)] text-xl tracking-wide">
-                  ภายใต้นโยบาย &ldquo;ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย&rdquo;
+                  {t("services.construction.policyText")}
                 </p>
               </div>
 
-              <p>
-                เราให้บริการครบวงจรตั้งแต่การออกแบบ การก่อสร้าง
-                การติดตั้งอุปกรณ์ และการบำรุงรักษา
-                เพื่อให้ลูกค้าได้รับบริการที่สมบูรณ์แบบและมีคุณภาพสูงสุด
-              </p>
+              <p>{t("services.construction.comprehensiveText")}</p>
             </div>
 
             {/* Action Button - Using luxury hero button style */}
@@ -125,7 +107,7 @@ export default function ConstructionServiceSection({
                   }>
                   <span className="relative z-10 flex items-center justify-center gap-3">
                     <span className="font-semibold tracking-wide">
-                      ติดต่อสอบถาม
+                      {t("services.construction.contactButton")}
                     </span>
                     <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
                   </span>
@@ -161,9 +143,7 @@ export default function ConstructionServiceSection({
                   <div className="text-center text-gray-500">
                     <Factory className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4" />
                     <p className="text-sm sm:text-base lg:text-lg">
-                      {locale === "th"
-                        ? "รูปภาพงานก่อสร้างสถานีบริการน้ำมัน"
-                        : "Gas Station Construction Images"}
+                      {t("services.construction.placeholderText")}
                     </p>
                   </div>
                 </div>

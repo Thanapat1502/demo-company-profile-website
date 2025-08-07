@@ -3,6 +3,7 @@
 import { Star } from "lucide-react";
 import { PartnerType } from "@/store/zustand/partnerStore";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface PartnersSectionProps {
   partners: PartnerType[];
@@ -15,6 +16,7 @@ export default function PartnersSection({
   loading = false,
   locale = "th",
 }: PartnersSectionProps) {
+  const t = useTranslations();
   // Loading state
   if (loading) {
     return (
@@ -22,11 +24,7 @@ export default function PartnersSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">
-              {locale === "th"
-                ? "กำลังโหลดพาร์ทเนอร์..."
-                : "Loading partners..."}
-            </p>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
       </section>
@@ -38,25 +36,16 @@ export default function PartnersSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-base font-medium mb-4">
-            {locale === "th" ? "พันธมิตรของเรา" : "Our Partners"}
+            {t("home.partners.sectionLabel")}
           </span>
           <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            {locale === "th" ? (
-              <>
-                ความไว้วางใจจาก
-                <span className="text-blue-600 block">ผู้นำด้านพลังงาน</span>
-              </>
-            ) : (
-              <>
-                Trusted by
-                <span className="text-blue-600 block">Energy Leaders</span>
-              </>
-            )}
+            {t("home.partners.title")}
+            <span className="text-blue-600 block">
+              {t("home.partners.titleHighlight")}
+            </span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-            {locale === "th"
-              ? "เราภูมิใจที่ได้รับความไว้วางใจจากบริษัทน้ำมันชั้นนำของประเทศ ในการให้บริการก่อสร้างและติดตั้งระบบสถานีบริการน้ำมัน"
-              : "We are proud to be trusted by leading oil companies in the country for construction and installation services of gas station systems"}
+            {t("home.partners.description")}
           </p>
         </div>
 
@@ -102,14 +91,10 @@ export default function PartnersSection({
               <Star className="w-6 h-6 text-yellow-500 fill-current" />
             </div>
             <p className="text-gray-700 font-semibold text-lg mb-2">
-              {locale === "th"
-                ? "ความไว้วางใจจากพันธมิตรชั้นนำ"
-                : "Trusted by Leading Partners"}
+              {t("home.partners.trustMessage")}
             </p>
             <p className="text-gray-600">
-              {locale === "th"
-                ? "และพันธมิตรอื่น ๆ อีกมากมาย ที่ไว้วางใจในคุณภาพงานของเรา"
-                : "And many other partners who trust in the quality of our work"}
+              {t("home.partners.additionalMessage")}
             </p>
           </div>
         </div>
