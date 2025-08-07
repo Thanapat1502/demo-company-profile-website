@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Download,
-  Upload,
-  Search,
-  Edit,
-  X,
-  Check,
-  RotateCcw,
-} from "lucide-react";
+import { Search, Edit, X, Check, RotateCcw } from "lucide-react";
 import { useWebLabelStore, WebLabels } from "@/store/zustand/useWebLabelStore";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { AdminNotification, useAdminNotification } from "./AdminNotification";
@@ -23,7 +15,7 @@ export const TextManager = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPage, setSelectedPage] = useState("all");
-  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [originalValues, setOriginalValues] = useState<string | null>(null);
   const { notification, hideNotification, showSuccess, showError } =
     useAdminNotification();
@@ -43,24 +35,27 @@ export const TextManager = () => {
   }, [fetchWebLabels]);
 
   // Effect to update form when webLabels change and we're editing
+  // Only runs when webLabels or editingId changes, not when user types
   useEffect(() => {
-    if (editingKey && webLabels.length > 0) {
-      const currentLabel = webLabels.find((label) => label.key === editingKey);
-      if (currentLabel && currentLabel.text !== watchedValues.text) {
-        // Update form if the label data has changed (e.g., after save)
-        setValue("text", currentLabel.text || "", {
-          shouldValidate: false,
-          shouldDirty: false,
-        });
-        setOriginalValues(currentLabel.text || "");
+    if (editingId && webLabels.length > 0) {
+      const currentLabel = webLabels.find((label) => label.id === editingId);
+      if (currentLabel) {
+        // Only update if we don't have original values set (initial load)
+        if (originalValues === null) {
+          setValue("text", currentLabel.text || "", {
+            shouldValidate: false,
+            shouldDirty: false,
+          });
+          setOriginalValues(currentLabel.text || "");
+        }
       }
     }
-  }, [webLabels, editingKey, setValue, watchedValues.text]);
+  }, [webLabels, editingId, setValue, originalValues]);
 
   // Helper function to get current label being edited
   const getCurrentLabel = () => {
-    if (!editingKey) return null;
-    return webLabels.find((label) => label.key === editingKey) || null;
+    if (!editingId) return null;
+    return webLabels.find((label) => label.id === editingId) || null;
   };
 
   // Extract unique page names from keys
@@ -97,8 +92,14 @@ export const TextManager = () => {
 
   // Start editing a label with improved prefilling
   const startEditing = (label: WebLabels) => {
-    setEditingKey(label.key);
-    setOriginalValues(label.text || ""); // Ensure we have a fallback for empty text
+    // First cancel any existing editing to clean up state
+    if (editingId) {
+      cancelEditing();
+    }
+
+    // Set up new editing session
+    setEditingId(label.id);
+    setOriginalValues(label.text || ""); // Store original value for reset functionality
 
     // Prefill the form with current values from webLabels
     setValue("text", label.text || "", {
@@ -109,9 +110,17 @@ export const TextManager = () => {
 
   // Cancel editing with proper cleanup
   const cancelEditing = () => {
-    setEditingKey(null);
+    setEditingId(null);
     setOriginalValues(null);
-    reset({ text: "" }); // Reset form to default values
+    // Reset form to default values and clear any validation errors
+    reset(
+      { text: "" },
+      {
+        keepErrors: false,
+        keepDirty: false,
+        keepIsSubmitted: false,
+      }
+    );
   };
 
   // Check if values have changed
@@ -123,10 +132,10 @@ export const TextManager = () => {
   // Submit form with validation
   const onSubmit = async (data: FormValues) => {
     const currentLabel = getCurrentLabel();
-    if (!editingKey || !currentLabel) return;
+    if (!editingId || !currentLabel) return;
 
     try {
-      await editWebLabel(editingKey, data.text.trim());
+      await editWebLabel(currentLabel.id, data.text.trim());
       cancelEditing();
       showSuccess("อัปเดตสำเร็จ", "ข้อความได้รับการอัปเดตเรียบร้อยแล้ว");
     } catch (error) {
@@ -140,8 +149,9 @@ export const TextManager = () => {
     const currentLabel = getCurrentLabel();
     const resetValue = originalValues || currentLabel?.text || "";
     setValue("text", resetValue, {
-      shouldValidate: false,
+      shouldValidate: true,
       shouldDirty: false,
+      shouldTouch: false,
     });
   };
 
@@ -235,23 +245,23 @@ export const TextManager = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="w-1/4 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Key
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="w-1/2 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Text Content
                         </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="w-1/4 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {labels.map((label, index) => (
+                      {labels.map((label) => (
                         <tr
-                          key={index}
+                          key={label.id}
                           className="hover:bg-gray-50 transition-colors">
-                          {editingKey === label.key ? (
+                          {editingId === label.id ? (
                             /* Edit Mode - Full width form */
                             <>
                               <td colSpan={3} className="px-6 py-4">

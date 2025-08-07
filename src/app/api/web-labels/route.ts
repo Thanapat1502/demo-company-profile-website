@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { withAuth } from "@/lib/auth-middleware";
 export async function GET() {
   try {
     // For now, return mock data
@@ -19,31 +20,72 @@ export async function GET() {
   }
 }
 
-export async function PATCH(req: Request) {
+// PATCH - Update web label (Authenticated route)
+export const PATCH = withAuth(async (req: NextRequest, supabase, user) => {
   try {
     const body = await req.json();
-    const { key, text } = body;
+    const { id, text } = body;
 
-    if (!key || !text) {
+    console.log(
+      "PATCH web-labels - User:",
+      user.email,
+      "ID:",
+      id,
+      "Text length:",
+      text?.length
+    );
+
+    // Validate required fields
+    if (!id || text === undefined || text === null) {
+      console.error("Validation error: Missing id or text", { id, text });
       return NextResponse.json(
-        { error: "Missing key or text" },
+        { error: "Missing id or text" },
         { status: 400 }
       );
     }
 
-    // For now, simulate success with mock data
-    // Later you can uncomment this to use real database:
+    // Validate that the text is a string
+    if (typeof text !== "string") {
+      return NextResponse.json(
+        { error: "Text must be a string" },
+        { status: 400 }
+      );
+    }
+
+    // Update the web label by id
     const { data, error } = await supabase
       .from("web_labels")
-      .update({ value: text })
-      .eq("key", key)
+      .update({
+        value: text.trim(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
       .select();
-    return NextResponse.json({ data, error });
+
+    if (error) {
+      console.error("Database error:", error);
+      return NextResponse.json(
+        { error: "Failed to update label", details: error.message },
+        { status: 500 }
+      );
+    }
+
+    if (!data || data.length === 0) {
+      return NextResponse.json({ error: "Label not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      data: data[0],
+      message: "Label updated successfully",
+    });
   } catch (error) {
-    console.log(`Failed to update labels: ${error}`);
+    console.error("Failed to update label:", error);
     return NextResponse.json(
-      { error: "Failed to update label" },
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
-}
+});

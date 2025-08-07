@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export interface WebLabels {
+  id: string;
   key: string;
   text: string; // Main text content (mapped from database 'value' field)
   updated_at?: string;
@@ -12,7 +13,7 @@ type State = {
   success: boolean;
   error: string | null;
   fetchWebLabels: () => Promise<void>;
-  editWebLabel: (key: string, text: string) => Promise<void>;
+  editWebLabel: (id: string, text: string) => Promise<void>;
 };
 
 export const useWebLabelStore = create<State>((set, get) => ({
@@ -30,6 +31,7 @@ export const useWebLabelStore = create<State>((set, get) => ({
       // Map database 'value' field to component's expected 'text' field
       const mappedData =
         data?.map((item: any) => ({
+          id: item.id,
           key: item.key,
           text: item.value, // Map value to text
           updated_at: item.updated_at,
@@ -38,19 +40,20 @@ export const useWebLabelStore = create<State>((set, get) => ({
     }
   },
 
-  editWebLabel: async (key, text) => {
+  editWebLabel: async (id, text) => {
     set({ loading: true, error: null, success: false });
     try {
       const res = await fetch("/api/web-labels", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key, text }),
+        body: JSON.stringify({ id, text }),
       });
-      const { error } = await res.json();
+      const { data, error } = await res.json();
       if (error) {
         set({ error: error, loading: false });
       } else {
         set({ success: true, loading: false });
+        // Refresh the data to get updated values
         get().fetchWebLabels();
       }
     } catch (err) {
