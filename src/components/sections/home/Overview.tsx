@@ -202,7 +202,7 @@ export default function Overview({
             <MinimalCarousel
               images={companyImages}
               alt="Company Overview"
-              aspectRatio="1/1"
+              aspectRatio="16/9"
               showNavigation={true}
               showIndicators={true}
               autoPlay={true}
