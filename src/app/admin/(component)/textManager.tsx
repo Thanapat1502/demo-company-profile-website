@@ -212,9 +212,9 @@ export const TextManager = () => {
 
                 {/* Labels for this page */}
                 <div className="space-y-3">
-                  {labels.map((label) => (
+                  {labels.map((label, index) => (
                     <div
-                      key={label.key}
+                      key={index}
                       className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                       {editingKey === label.key ? (
                         /* Edit Mode */
