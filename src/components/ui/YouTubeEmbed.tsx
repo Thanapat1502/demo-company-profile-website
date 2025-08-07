@@ -114,7 +114,7 @@ export default function YouTubeEmbed({
   if (!embedUrl || hasError) {
     return (
       <div
-        className={`${getAspectRatioClass()} bg-gray-100 flex items-center justify-center ${className}`}>
+        className={`w-full max-w-full overflow-hidden ${getAspectRatioClass()} bg-gray-100 flex items-center justify-center ${className}`}>
         <div className="text-center text-gray-500">
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
@@ -135,7 +135,8 @@ export default function YouTubeEmbed({
   }
 
   return (
-    <div className={`relative ${getAspectRatioClass()} ${className}`}>
+    <div
+      className={`relative w-full max-w-full overflow-hidden ${getAspectRatioClass()} ${className}`}>
       {/* Debug info overlay */}
       {enableDebug && process.env.NODE_ENV === "development" && (
         <div className="absolute top-2 left-2 z-10 bg-black/80 text-white text-xs p-2 rounded max-w-xs">

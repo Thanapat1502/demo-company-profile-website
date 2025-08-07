@@ -59,98 +59,80 @@ export default function PermatankSection({
 
   // Get video URL from content and ensure proper embed format
   const videoContent = content.find((c) => c.type === "video");
-  const videoUrl =
-    videoContent?.video_url || "https://www.youtube.com/watch?v=HTzu3zmGk80";
+  const videoUrl = videoContent?.video_url || null;
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-8 sm:py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
-          <div className="relative order-2 lg:order-1">
-            <YouTubeEmbed
-              url={videoUrl}
-              title={serviceName}
-              className="shadow-xl w-full h-[400px] lg:h-[500px]"
-            />
+          <div className="relative order-2 lg:order-1 w-full max-w-full">
+            {videoUrl && (
+              <div className="w-full h-[250px] sm:h-[350px] lg:h-[500px] max-w-full overflow-hidden">
+                <YouTubeEmbed
+                  url={videoUrl}
+                  title={serviceName}
+                  className="shadow-xl w-full h-full"
+                  aspectRatio="16/9"
+                />
+              </div>
+            )}
           </div>
 
-          <div className="space-y-8 order-1 lg:order-2">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-1 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
-            <div className="inline-flex items-center gap-3">
-              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+            <div className="inline-flex items-center gap-2 sm:gap-3">
+              <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
                 {locale === "th" ? "ผลิตภัณฑ์" : "PRODUCTS"}
               </span>
             </div>
 
             {/* Main Heading - Strong & Minimal Style */}
-            <div className="flex items-start gap-6">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center flex-shrink-0">
-                <Fuel size={32} className="text-[var(--primary-blue)]" />
+            <div className="flex items-start gap-3 sm:gap-4 lg:gap-6">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center flex-shrink-0">
+                <Fuel
+                  size={24}
+                  className="sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-[var(--primary-blue)]"
+                />
               </div>
-              <h2 className="text-3xl lg:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] leading-tight break-words">
                 {serviceName}
               </h2>
             </div>
 
             {/* Enhanced Elegant Line with Glow */}
-            <div className="relative flex items-start justify-start mb-4">
-              <div className="w-24 h-px bg-gradient-to-r from-[var(--primary-blue)] via-[var(--primary-blue)] to-transparent opacity-80"></div>
-              <div className="absolute w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            <div className="relative flex items-start justify-start mb-2 sm:mb-4">
+              <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-to-r from-[var(--primary-blue)] via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-16 sm:w-20 lg:w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
             </div>
 
-            <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <p>{serviceDescription}</p>
 
-              {locale === "th" && (
-                <>
-                  <p>
-                    ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของบริษัท ผดุงศิลป์วิศวการ
-                    จำกัด ในชื่อผลิตภัณฑ์ &apos;PERMATANK&apos;
-                    ได้รับการผลิตตามมาตรฐาน UL 58 & UL 1746
-                    โดยใช้เทคโนโลยีจากสถาบัน Steel Tank Institute Technology,
-                    USA
-                  </p>
+              <p>
+                {`
+                    ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของบริษัท ผดุงศิลป์วิศวการ จำกัด 
+                    ในชื่อผลิตภัณฑ์ 'PERMATANK' ได้รับการผลิตตามมาตรฐาน UL 58 & UL 1746 
+                    โดยใช้เทคโนโลยีจากสถาบัน Steel Tank Institute Technology, USA
+                    `}
+              </p>
 
-                  <div className="bg-[var(--primary-blue)]/10 p-6 border-l-4 border-[var(--primary-blue)]">
-                    <p className="font-semibold text-[var(--primary-blue)] text-xl tracking-wide">
-                      ภายใต้นโยบาย &ldquo;ถูกต้อง ถูกตังค์ ทันเวลา
-                      ปลอดภัย&rdquo;
-                    </p>
-                  </div>
-                </>
-              )}
-
-              {locale === "en" && (
-                <>
-                  <p>
-                    Double-wall underground fuel tanks by Padung Sin Engineering
-                    Co., Ltd. under the product name &apos;PERMATANK&apos; are
-                    manufactured according to UL 58 & UL 1746 standards using
-                    technology from Steel Tank Institute Technology, USA
-                  </p>
-
-                  <div className="bg-[var(--primary-blue)]/10 p-6 border-l-4 border-[var(--primary-blue)]">
-                    <p className="font-semibold text-[var(--primary-blue)] text-xl tracking-wide">
-                      Under the policy &ldquo;Correct, Right Tank, On Time,
-                      Safe&rdquo;
-                    </p>
-                  </div>
-                </>
-              )}
+              <div className="bg-[var(--primary-blue)]/10 p-4 sm:p-6 border-l-4 border-[var(--primary-blue)]">
+                <p className="font-semibold text-[var(--primary-blue)] text-base sm:text-lg lg:text-xl tracking-wide break-words">
+                  {`ภายใต้นโยบาย 'ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย'`}
+                </p>
+              </div>
 
               <p>
+                {`
                 เราพัฒนาแบบถังน้ำมันใต้ดินและอุปกรณ์ที่เกี่ยวข้องอย่างต่อเนื่อง
                 เพื่อประโยชน์สูงสุดของลูกค้า ผู้รับเหมา และผู้ค้าอื่น ๆ
                 ที่เกี่ยวข้องกับงานสถานีบริการน้ำมัน
-              </p>
 
-              <p>
                 เพื่อให้มั่นใจว่าลูกค้าได้รับสินค้าที่มีคุณภาพและมีอายุการใช้งานยาวนานกว่า
-                30 ปี
-                ผดุงศิลป์ให้ความสำคัญกับทุกขั้นตอนของกระบวนการผลิตและจัดส่ง
-                PERMATANK®
+                30 ปี ผดุงศิลป์ให้ความสำคัญกับทุกขั้นตอนของกระบวนการผลิตและจัดส่ง PERMATANK®
+                `}
               </p>
             </div>
 
