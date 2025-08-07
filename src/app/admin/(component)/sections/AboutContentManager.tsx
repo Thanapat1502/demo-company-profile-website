@@ -496,6 +496,7 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
         "about-history": [
           "Company Origin Gallery (1964-1980): Upload up to 20 images showing the early days and founding of the company",
           "Business Expansion Gallery (1980-present): Upload up to 20 images showing business growth, technology adoption, and modern operations",
+          "Future Vision Gallery (Present-Future): Upload up to 20 images showing future plans, innovations, and company vision",
         ],
         "about-vision": [
           "Upload vision image (max 1 image) - POST to content ID 'VISION_1'",
@@ -578,6 +579,19 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
             console.log(
               "✅ Loaded HISTORY_2 images:",
               data2.content.images_url.length
+            );
+          }
+        }
+
+        // Load HISTORY_3 content
+        const response3 = await fetch("/api/contents?id=HISTORY_3");
+        if (response3.ok) {
+          const data3 = await response3.json();
+          if (data3.content && data3.content.images_url) {
+            slots[2].imageUrls = data3.content.images_url;
+            console.log(
+              "✅ Loaded HISTORY_3 images:",
+              data3.content.images_url.length
             );
           }
         }
@@ -742,6 +756,33 @@ export const AboutContentManager: React.FC<AboutContentManagerProps> = ({
               throw new Error("Failed to update HISTORY_2 content");
             }
             console.log("✅ Updated HISTORY_2 content");
+          }
+
+          // Update HISTORY_3 (slot 2)
+          const slot3 = customSlots[2];
+          if (slot3 && (slot3.images?.length || slot3.imageUrls?.length)) {
+            const formData = new FormData();
+            formData.append("id", "HISTORY_3");
+            formData.append("page", "HISTORY");
+            formData.append("type", "gallery");
+            formData.append(
+              "existing_images",
+              JSON.stringify(slot3.imageUrls || [])
+            );
+
+            slot3.images?.forEach((file, index) => {
+              formData.append(`image_${index}`, file);
+            });
+
+            const response3 = await fetch("/api/contents", {
+              method: "PUT",
+              body: formData,
+            });
+
+            if (!response3.ok) {
+              throw new Error("Failed to update HISTORY_3 content");
+            }
+            console.log("✅ Updated HISTORY_3 content");
           }
         } else if (pageId === "about-main") {
           // Handle about-main page with ABOUT content upload (gallery mode)
