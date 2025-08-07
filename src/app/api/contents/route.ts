@@ -47,8 +47,8 @@ async function uploadContentImage(
   const fileName = `${page}_${imageIndex}_${Date.now()}.${fileExt}`;
   console.log("- Generated filename:", fileName);
 
-  // Create the full file path within the images bucket - upload to public/home_content
-  const filePath = `public/home_content/${fileName}`;
+  // Create the full file path within the images bucket - upload to public/content_store
+  const filePath = `public/content_store/${fileName}`;
   console.log("- File path:", filePath);
 
   // Upload to Supabase Storage (images bucket)
@@ -81,16 +81,40 @@ async function uploadContentImage(
   return publicUrlData.publicUrl;
 }
 
-// GET - Fetch content by page and type (No auth required)
+// GET - Fetch content by page and type OR by ID (No auth required)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     const page = searchParams.get("page") as ContentPage;
     const type = searchParams.get("type") as ContentType;
 
+    // If ID is provided, fetch by ID
+    if (id) {
+      const { data, error } = await supabase
+        .from("contents")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          return NextResponse.json({
+            content: null,
+            message: "Content not found",
+          });
+        }
+        console.error("❌ Contents query by ID error:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      return NextResponse.json({ content: data });
+    }
+
+    // Otherwise, require page parameter for page/type filtering
     if (!page) {
       return NextResponse.json(
-        { error: "Page parameter is required" },
+        { error: "Page parameter or ID is required" },
         { status: 400 }
       );
     }
@@ -341,7 +365,13 @@ export const PUT = withAuth(async (req: NextRequest, supabase, user) => {
     }
 
     // Update content record
-    const updateData: any = {
+    const updateData: {
+      updated_at: string;
+      page?: ContentPage;
+      type?: ContentType;
+      images_url?: string[];
+      video_url?: string | null;
+    } = {
       updated_at: new Date().toISOString(),
     };
 
