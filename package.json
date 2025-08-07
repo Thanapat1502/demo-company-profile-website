@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate-translations": "node scripts/migrate-translations.js",
+    "clear-translation-cache": "node -e \"require('./src/lib/i18n/loadMessages.ts').clearTranslationCache()\""
   },
   "dependencies": {
     "@heroui/react": "^2.7.11",
