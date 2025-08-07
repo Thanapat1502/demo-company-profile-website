@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export interface WebLabels {
   key: string;
-  text: string;
+  value: string;
   updated_at?: string;
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Download,
   Upload,
@@ -12,7 +12,7 @@ import {
 import { useWebLabelStore, WebLabels } from "@/store/zustand/useWebLabelStore";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { AdminNotification, useAdminNotification } from "./AdminNotification";
-
+import { TextContentEditor, TextContentDisplay } from "./TextContentEditor";
 interface FormValues {
   text: string;
 }
@@ -44,6 +44,27 @@ export const TextManager = () => {
     fetchWebLabels();
   }, [fetchWebLabels]);
 
+  // Effect to update form when webLabels change and we're editing
+  useEffect(() => {
+    if (editingKey && webLabels.length > 0) {
+      const currentLabel = webLabels.find((label) => label.key === editingKey);
+      if (currentLabel && currentLabel.value !== watchedValues.text) {
+        // Update form if the label data has changed (e.g., after save)
+        setValue("text", currentLabel.value || "", {
+          shouldValidate: false,
+          shouldDirty: false,
+        });
+        setOriginalValues(currentLabel.value || "");
+      }
+    }
+  }, [webLabels, editingKey, setValue, watchedValues.text]);
+
+  // Helper function to get current label being edited
+  const getCurrentLabel = () => {
+    if (!editingKey) return null;
+    return webLabels.find((label) => label.key === editingKey) || null;
+  };
+
   // Extract unique page names from keys
   const getPageNames = () => {
     const pages = new Set<string>();
@@ -58,7 +79,7 @@ export const TextManager = () => {
   const filteredLabels = webLabels.filter((label) => {
     const matchesSearch =
       label.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      label.text.toLowerCase().includes(searchTerm.toLowerCase());
+      label.value.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesPage =
       selectedPage === "all" || label.key.startsWith(selectedPage + ".");
@@ -76,18 +97,23 @@ export const TextManager = () => {
     return acc;
   }, {} as Record<string, WebLabels[]>);
 
-  // Start editing a label
+  // Start editing a label with improved prefilling
   const startEditing = (label: WebLabels) => {
     setEditingKey(label.key);
-    setOriginalValues(label.text);
-    setValue("text", label.text);
+    setOriginalValues(label.value || ""); // Ensure we have a fallback for empty text
+
+    // Prefill the form with current values from webLabels
+    setValue("text", label.value || "", {
+      shouldValidate: false,
+      shouldDirty: false,
+    });
   };
 
-  // Cancel editing
+  // Cancel editing with proper cleanup
   const cancelEditing = () => {
     setEditingKey(null);
     setOriginalValues(null);
-    reset();
+    reset({ text: "" }); // Reset form to default values
   };
 
   // Check if values have changed
@@ -96,9 +122,10 @@ export const TextManager = () => {
     return watchedValues.text !== originalValues;
   };
 
-  // Submit form
+  // Submit form with validation
   const onSubmit = async (data: FormValues) => {
-    if (!editingKey) return;
+    const currentLabel = getCurrentLabel();
+    if (!editingKey || !currentLabel) return;
 
     try {
       await editWebLabel(editingKey, data.text.trim());
@@ -110,11 +137,14 @@ export const TextManager = () => {
     }
   };
 
-  // Reset to original values
+  // Reset to original values with fallback to current label
   const resetToOriginal = () => {
-    if (originalValues) {
-      setValue("text", originalValues);
-    }
+    const currentLabel = getCurrentLabel();
+    const resetValue = originalValues || currentLabel?.value || "";
+    setValue("text", resetValue, {
+      shouldValidate: false,
+      shouldDirty: false,
+    });
   };
 
   // Toggle edit mode for all labels
@@ -236,32 +266,16 @@ export const TextManager = () => {
                             </div>
 
                             {/* Text Content */}
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Text Content
-                              </label>
-                              <Controller
-                                name="text"
-                                control={control}
-                                rules={{ required: "Text content is required" }}
-                                render={({ field, fieldState: { error } }) => (
-                                  <>
-                                    <textarea
-                                      {...field}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                                      rows={3}
-                                      placeholder="Enter text content"
-                                      disabled={!isEditMode}
-                                    />
-                                    {error && (
-                                      <p className="text-red-600 text-xs mt-1">
-                                        {error.message}
-                                      </p>
-                                    )}
-                                  </>
-                                )}
-                              />
-                            </div>
+                            <TextContentEditor
+                              control={control}
+                              name="text"
+                              label="Text Content"
+                              placeholder="Enter text content"
+                              rows={3}
+                              disabled={!isEditMode}
+                              required={true}
+                              showActions={false}
+                            />
                           </div>
 
                           {/* Action Buttons */}
@@ -314,18 +328,11 @@ export const TextManager = () => {
                           </div>
 
                           {/* Text Content */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Text Content
-                            </label>
-                            <div className="text-sm text-gray-900 px-3 py-2 border border-gray-200 rounded bg-white min-h-[2.5rem] flex items-center">
-                              {label.text || (
-                                <span className="text-gray-400 italic">
-                                  No text content
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                          <TextContentDisplay
+                            label="Text Content"
+                            value={label.value}
+                            emptyText="No text content"
+                          />
                         </div>
                       )}
 
