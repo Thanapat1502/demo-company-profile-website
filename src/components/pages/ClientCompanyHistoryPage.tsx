@@ -241,13 +241,13 @@ export default function ClientCompanyHistoryPage({
               </div>
             </div>
 
-            <div className="w-full h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shadow-lg">
-              <div className="relative">
+            <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-100 shadow-lg">
+              <div className="relative w-full h-80">
                 {gallery3Images.length > 0 ? (
                   <MinimalCarousel
                     images={gallery3Images}
                     alt={t("company.history.innovation.imageAlt")}
-                    aspectRatio="4/3"
+                    height="320px"
                     showNavigation={true}
                     showIndicators={true}
                     autoPlay={true}
