@@ -102,7 +102,6 @@ export default function ProductsServicesPage() {
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        pageId="PRODUCTS_SERVICE"
         title={t("services.hero.title")}
         subtitle={t("services.hero.subtitle")}
         description={t("services.hero.description")}

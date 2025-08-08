@@ -73,7 +73,6 @@ export default function CompanyProfilePage() {
     <MainLayout>
       {/* Hero Section - Using DynamicHeroSection for consistency */}
       <DynamicHeroSection
-        pageId="ABOUT_MAIN"
         title={t("company.overview.title")}
         subtitle={t("company.overview.subtitle")}
         description={t("company.overview.description")}

@@ -125,7 +125,6 @@ export default function MissionCommitmentPage() {
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        pageId="ABOUT_VISION"
         title={t("company.mission.hero.title")}
         subtitle={t("company.mission.hero.subtitle")}
         description={t("company.mission.hero.description")}

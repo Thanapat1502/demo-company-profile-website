@@ -5,14 +5,18 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  heroImages?: string[];
+}
+
+export default function HeroSection({ heroImages }: HeroSectionProps) {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
 
   return (
     <DynamicHeroSection
-      pageId="HOME"
+      imageUrls={heroImages}
       title={t("home.hero.title")}
       subtitle={t("home.hero.subtitle")}
       description={t("home.hero.description")}

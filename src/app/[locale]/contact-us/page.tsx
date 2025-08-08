@@ -109,7 +109,6 @@ export default function ContactUsPage() {
       <div className="min-h-screen bg-white">
         {/* Hero Section - Using DynamicHeroSection for consistency */}
         <DynamicHeroSection
-          pageId="CONTACT"
           title={t("contact.hero.title")}
           subtitle={t("contact.hero.subtitle")}
           description={t("contact.hero.description")}

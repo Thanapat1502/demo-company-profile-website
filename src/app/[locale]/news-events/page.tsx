@@ -78,7 +78,6 @@ export default function NewsEventsPage() {
         <NewsHero news={heroNews} locale={locale} />
       ) : (
         <DynamicHeroSection
-          pageId="NEWS"
           title={t("news.hero.title")}
           subtitle={t("news.hero.subtitle")}
           description={t("news.hero.description")}

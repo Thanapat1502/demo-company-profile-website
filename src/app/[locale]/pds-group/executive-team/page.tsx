@@ -45,7 +45,6 @@ export default function ExecutiveTeamPage() {
   return (
     <MainLayout>
       <DynamicHeroSection
-        pageId="ABOUT_EXECUTIVE"
         title={t("company.executive.hero.title")}
         subtitle={t("company.executive.hero.subtitle")}
         description={t("company.executive.hero.description")}

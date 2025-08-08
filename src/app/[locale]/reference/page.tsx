@@ -374,7 +374,6 @@ export default function ReferencePage() {
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        pageId="REFERENCE"
         title={t("references.hero.title")}
         subtitle={t("references.hero.subtitle")}
         description={t("references.hero.description")}

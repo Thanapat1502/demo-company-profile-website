@@ -69,7 +69,6 @@ export default function CompanyHistoryPage() {
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        pageId="ABOUT_HISTORY"
         title={t("company.history.hero.title")}
         subtitle={t("company.history.hero.subtitle")}
         description={t("company.history.hero.description")}
