@@ -133,8 +133,15 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
         "articles"
       );
 
+      // Sort news by created_at descending (newest first) as backup
+      const sortedNews = (result.data || []).sort((a: News, b: News) => {
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+        return dateB - dateA;
+      });
+
       set({
-        news: result.data || [],
+        news: sortedNews,
         loading: false,
         error: null,
         success: true,

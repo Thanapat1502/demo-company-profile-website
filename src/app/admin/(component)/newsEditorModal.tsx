@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Save, Eye, X, Tag, Upload } from "lucide-react";
+import {
+  Plus,
+  Save,
+  Eye,
+  X,
+  Tag,
+  Upload,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 import { useForm, Controller, Control, FieldErrors } from "react-hook-form";
 import { LanguageToggle } from "./languageToggle";
 import React18QuillEditor from "@/components/admin/React18QuillEditor";
@@ -95,6 +104,17 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
 }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("th");
   const [newTag, setNewTag] = useState("");
+
+  // Image selection state (not upload state)
+  const [imageState, setImageState] = useState<{
+    selectedFile: File | null;
+    previewUrl: string | null;
+    validationError: string | null;
+  }>({
+    selectedFile: null,
+    previewUrl: null,
+    validationError: null,
+  });
 
   // Form setup
   const {
@@ -192,11 +212,65 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
     return selectedLanguage === "th" ? tag.tag_th : tag.tag_en;
   };
 
-  // Handle image upload
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle image selection with validation (no upload yet)
+  const handleImageSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (!file) return;
+
+    try {
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(
+          "Invalid file type. Please upload JPEG, PNG, GIF, or WebP images only."
+        );
+      }
+
+      // Validate file size (10MB limit)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        throw new Error("File size too large. Maximum size is 10MB.");
+      }
+
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+
+      // Set the file in form and update image state
       setValue("featuredImage", file);
+      setImageState({
+        selectedFile: file,
+        previewUrl: previewUrl,
+        validationError: null,
+      });
+    } catch (error) {
+      // Handle validation error
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Invalid file. Please try again.";
+
+      setImageState({
+        selectedFile: null,
+        previewUrl: null,
+        validationError: errorMessage,
+      });
+
+      // Clear form value
+      setValue("featuredImage", null);
+
+      // Auto-hide error message after 5 seconds
+      setTimeout(() => {
+        setImageState((prev) => ({
+          ...prev,
+          validationError: null,
+        }));
+      }, 5000);
     }
   };
 
@@ -223,6 +297,12 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
       reset();
       setSelectedLanguage("th");
       setNewTag("");
+      // Reset image state
+      setImageState({
+        selectedFile: null,
+        previewUrl: null,
+        validationError: null,
+      });
     }
   }, [isOpen, reset]);
 
@@ -325,10 +405,12 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
                 handleTagKeyDown={handleTagKeyDown}
                 addSuggestedTag={addSuggestedTag}
                 availableSuggestedTags={availableSuggestedTags}
-                handleImageUpload={handleImageUpload}
+                handleImageSelection={handleImageSelection}
                 createQuillContent={createQuillContent}
                 selectedLanguage={selectedLanguage}
                 getTagNameById={getTagNameById}
+                imageState={imageState}
+                setImageState={setImageState}
               />
             ) : (
               // English Content Page
@@ -344,10 +426,12 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
                 handleTagKeyDown={handleTagKeyDown}
                 addSuggestedTag={addSuggestedTag}
                 availableSuggestedTags={availableSuggestedTags}
-                handleImageUpload={handleImageUpload}
+                handleImageSelection={handleImageSelection}
                 createQuillContent={createQuillContent}
                 selectedLanguage={selectedLanguage}
                 getTagNameById={getTagNameById}
+                imageState={imageState}
+                setImageState={setImageState}
               />
             )}
 
@@ -390,10 +474,22 @@ interface ContentPageProps {
   handleTagKeyDown: (e: React.KeyboardEvent) => void;
   addSuggestedTag: (tagId: number) => void;
   availableSuggestedTags: NewsTag[];
-  handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   createQuillContent: (html: string) => QuillContent;
   selectedLanguage: string;
   getTagNameById: (tagId: string) => string;
+  imageState: {
+    selectedFile: File | null;
+    previewUrl: string | null;
+    validationError: string | null;
+  };
+  setImageState: React.Dispatch<
+    React.SetStateAction<{
+      selectedFile: File | null;
+      previewUrl: string | null;
+      validationError: string | null;
+    }>
+  >;
 }
 
 const ThaiContentPage: React.FC<ContentPageProps> = ({
@@ -408,10 +504,12 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
   handleTagKeyDown,
   addSuggestedTag,
   availableSuggestedTags,
-  handleImageUpload,
+  handleImageSelection,
   createQuillContent,
   selectedLanguage,
   getTagNameById,
+  imageState,
+  setImageState,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -559,7 +657,7 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           )}
         </div>
 
-        {/* Featured Image Upload - Shared */}
+        {/* Featured Image Upload - Enhanced with UX feedback */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             รูปภาพประกอบ
@@ -567,25 +665,91 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           <Controller
             name="featuredImage"
             control={control}
-            render={({ field: { onChange } }) => (
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    onChange(file);
-                    handleImageUpload(e);
-                  }}
-                  className="hidden"
-                  id="featured-image-th"
-                />
-                <label htmlFor="featured-image-th" className="cursor-pointer">
-                  <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                  <p className="text-sm text-gray-500 mt-1">
-                    คลิกเพื่ออัพโหลดรูปภาพ
-                  </p>
-                </label>
+            render={({ field: { onChange, value } }) => (
+              <div className="space-y-3">
+                <div
+                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+                    imageState.validationError
+                      ? "border-red-300 bg-red-50"
+                      : value
+                      ? "border-green-300 bg-green-50"
+                      : "border-gray-300 hover:border-gray-400"
+                  }`}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelection}
+                    className="hidden"
+                    id="featured-image-th"
+                  />
+                  <label htmlFor="featured-image-th" className="cursor-pointer">
+                    {value ? (
+                      <div className="flex flex-col items-center">
+                        <CheckCircle className="mx-auto h-8 w-8 text-green-600" />
+                        <p className="text-sm text-green-600 mt-1">
+                          เลือกรูปภาพแล้ว
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {imageState.selectedFile?.name}
+                        </p>
+                      </div>
+                    ) : imageState.validationError ? (
+                      <div className="flex flex-col items-center">
+                        <AlertCircle className="mx-auto h-8 w-8 text-red-600" />
+                        <p className="text-sm text-red-600 mt-1">
+                          เกิดข้อผิดพลาด
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="text-sm text-gray-500 mt-1">
+                          คลิกเพื่อเลือกรูปภาพ
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          รองรับ JPEG, PNG, GIF, WebP (สูงสุด 10MB)
+                        </p>
+                      </div>
+                    )}
+                  </label>
+                </div>
+
+                {/* Validation Error Message */}
+                {imageState.validationError && (
+                  <div className="flex items-center gap-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                    <AlertCircle size={16} className="text-red-600" />
+                    <span className="text-sm text-red-700">
+                      {imageState.validationError}
+                    </span>
+                  </div>
+                )}
+
+                {/* Image Preview */}
+                {value && imageState.previewUrl && (
+                  <div className="relative">
+                    <img
+                      src={imageState.previewUrl}
+                      alt="Preview"
+                      className="w-full h-32 object-cover rounded-md border"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onChange(null);
+                        if (imageState.previewUrl) {
+                          URL.revokeObjectURL(imageState.previewUrl);
+                        }
+                        setImageState({
+                          selectedFile: null,
+                          previewUrl: null,
+                          validationError: null,
+                        });
+                      }}
+                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
+                      <X size={12} />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           />
@@ -658,10 +822,12 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
   handleTagKeyDown,
   addSuggestedTag,
   availableSuggestedTags,
-  handleImageUpload,
+  handleImageSelection,
   createQuillContent,
   selectedLanguage,
   getTagNameById,
+  imageState,
+  setImageState,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -809,7 +975,7 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
           )}
         </div>
 
-        {/* Featured Image Upload - Shared */}
+        {/* Featured Image Upload - Enhanced with UX feedback */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Featured Image
@@ -817,25 +983,91 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
           <Controller
             name="featuredImage"
             control={control}
-            render={({ field: { onChange } }) => (
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    onChange(file);
-                    handleImageUpload(e);
-                  }}
-                  className="hidden"
-                  id="featured-image-en"
-                />
-                <label htmlFor="featured-image-en" className="cursor-pointer">
-                  <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                  <p className="text-sm text-gray-500 mt-1">
-                    Click to upload featured image
-                  </p>
-                </label>
+            render={({ field: { onChange, value } }) => (
+              <div className="space-y-3">
+                <div
+                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+                    imageState.validationError
+                      ? "border-red-300 bg-red-50"
+                      : value
+                      ? "border-green-300 bg-green-50"
+                      : "border-gray-300 hover:border-gray-400"
+                  }`}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelection}
+                    className="hidden"
+                    id="featured-image-en"
+                  />
+                  <label htmlFor="featured-image-en" className="cursor-pointer">
+                    {value ? (
+                      <div className="flex flex-col items-center">
+                        <CheckCircle className="mx-auto h-8 w-8 text-green-600" />
+                        <p className="text-sm text-green-600 mt-1">
+                          Image selected
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {imageState.selectedFile?.name}
+                        </p>
+                      </div>
+                    ) : imageState.validationError ? (
+                      <div className="flex flex-col items-center">
+                        <AlertCircle className="mx-auto h-8 w-8 text-red-600" />
+                        <p className="text-sm text-red-600 mt-1">
+                          Error occurred
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="text-sm text-gray-500 mt-1">
+                          Click to select featured image
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Supports JPEG, PNG, GIF, WebP (max 10MB)
+                        </p>
+                      </div>
+                    )}
+                  </label>
+                </div>
+
+                {/* Validation Error Message */}
+                {imageState.validationError && (
+                  <div className="flex items-center gap-2 p-2 bg-red-50 border border-red-200 rounded-md">
+                    <AlertCircle size={16} className="text-red-600" />
+                    <span className="text-sm text-red-700">
+                      {imageState.validationError}
+                    </span>
+                  </div>
+                )}
+
+                {/* Image Preview */}
+                {value && imageState.previewUrl && (
+                  <div className="relative">
+                    <img
+                      src={imageState.previewUrl}
+                      alt="Preview"
+                      className="w-full h-32 object-cover rounded-md border"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onChange(null);
+                        if (imageState.previewUrl) {
+                          URL.revokeObjectURL(imageState.previewUrl);
+                        }
+                        setImageState({
+                          selectedFile: null,
+                          previewUrl: null,
+                          validationError: null,
+                        });
+                      }}
+                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700">
+                      <X size={12} />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           />

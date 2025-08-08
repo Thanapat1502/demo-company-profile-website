@@ -394,8 +394,11 @@ export async function GET(req: Request) {
       .single();
     return NextResponse.json({ data, error });
   } else {
-    // Get all news
-    const { data, error } = await supabase.from("news").select("*");
+    // Get all news ordered by newest first
+    const { data, error } = await supabase
+      .from("news")
+      .select("*")
+      .order("created_at", { ascending: false });
     return NextResponse.json({ data, error });
   }
 }

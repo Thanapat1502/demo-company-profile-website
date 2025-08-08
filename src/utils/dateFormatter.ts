@@ -14,34 +14,29 @@ export const formatSupabaseDate = (
   locale: string = "en-US"
 ): string => {
   try {
-    // Handle Supabase timestamp format: "2025-08-04 00:00:00+00"
+    // Only handle YYYY-MM-DDTHH:mm:ss+00:00 format
+    // If not matching, fallback gracefully
+    const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z)$/;
     let isoString = dateString;
 
-    // Convert Supabase format to ISO format if needed
-    if (dateString.includes(" ") && !dateString.includes("T")) {
-      // Replace space with T and ensure proper timezone format
-      isoString = dateString.replace(" ", "T");
-      if (!isoString.includes("Z") && !isoString.includes("+")) {
-        isoString += "Z";
+    if (!isoRegex.test(dateString)) {
+      // Try to convert from Supabase format "YYYY-MM-DD HH:mm:ss+00"
+      if (dateString.includes(" ") && !dateString.includes("T")) {
+        isoString = dateString.replace(" ", "T");
       }
     }
 
     const date = new Date(isoString);
-
-    // Check if date is valid
     if (isNaN(date.getTime())) {
-      // Try parsing just the date part as fallback
-      const datePart = dateString.split(" ")[0];
+      // Fallback: try just the date part
+      const datePart = dateString.split(/[ T]/)[0];
       const fallbackDate = new Date(datePart);
-      
       if (isNaN(fallbackDate.getTime())) {
         console.warn("Invalid date:", dateString);
         return "--:--";
       }
-      
       return fallbackDate.toLocaleDateString(locale);
     }
-
     return date.toLocaleDateString(locale);
   } catch (error) {
     console.error("Error formatting date:", dateString, error);

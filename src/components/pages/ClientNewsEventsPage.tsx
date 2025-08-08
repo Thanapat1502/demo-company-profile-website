@@ -71,13 +71,8 @@ export default function ClientNewsEventsPage({
     return matchesCategory && matchesSearch;
   });
 
-  // Get unique categories for filter
-  const allCategory = {
-    id: "all",
-    cat_th: "ทั้งหมด",
-    cat_en: "All",
-  };
-  const uniqueCategories = [allCategory, ...categories];
+  // Categories will be handled by CategoryFilter component
+  const uniqueCategories = categories;
 
   const isLoading = isInitialLoading || loading;
 
@@ -159,18 +154,15 @@ export default function ClientNewsEventsPage({
                     <Search className="w-12 h-12 text-gray-400" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {t("news.noResults.title")}
+                    {"No Results Found"}
                   </h3>
-                  <p className="text-gray-600 max-w-md mx-auto">
-                    {t("news.noResults.description")}
-                  </p>
                   <button
                     onClick={() => {
                       setSelectedCategory("all");
                       setSearchTerm("");
                     }}
                     className="mt-6 px-6 py-3 bg-[var(--primary-blue)] text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    {t("news.noResults.clearFilters")}
+                    {"Clear Filters"}
                   </button>
                 </div>
               )}

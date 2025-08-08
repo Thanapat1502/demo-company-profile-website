@@ -93,6 +93,8 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
     const name_en = formData.get("name_en") as string;
     const type_th = formData.get("type_th") as string;
     const type_en = formData.get("type_en") as string;
+    const location_th = formData.get("location_th") as string;
+    const location_en = formData.get("location_en") as string;
     const opened_at = formData.get("opened_at") as string;
     let thumbnail = formData.get("thumbnail") as string;
     let galleries: string[] = [];
@@ -151,6 +153,8 @@ export const POST = withAuth(async (req: NextRequest, supabase) => {
           name_en,
           type_th,
           type_en,
+          location_th,
+          location_en,
           thumbnail,
           galleries,
           opened_at,
@@ -184,6 +188,8 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
     const name_en = formData.get("name_en") as string;
     const type_th = formData.get("type_th") as string;
     const type_en = formData.get("type_en") as string;
+    const location_th = formData.get("location_th") as string;
+    const location_en = formData.get("location_en") as string;
     const opened_at = formData.get("opened_at") as string;
     let thumbnail = formData.get("thumbnail") as string;
     let galleries: string[] = [];
@@ -243,6 +249,8 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
         name_en,
         type_th,
         type_en,
+        location_th,
+        location_en,
         thumbnail,
         galleries,
         opened_at,

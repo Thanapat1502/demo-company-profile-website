@@ -16,23 +16,27 @@ export default function CategoryFilter({
   onCategoryChange,
   locale,
 }: CategoryFilterProps) {
-  // Add "All" category
-  const allCategories = [
-    {
-      id: "all",
-      cat_th: "ทั้งหมด",
-      cat_en: "All",
-    },
-    ...categories,
-  ];
+  // Add "All" category and ensure no duplicates
+  const allCategory = {
+    id: "all",
+    cat_th: "ทั้งหมด",
+    cat_en: "All",
+  };
+
+  // Filter out any existing "all" categories to prevent duplicates
+  const filteredCategories = categories.filter((cat) => cat.id !== "all");
+  const allCategories = [allCategory, ...filteredCategories];
 
   return (
     <div className="flex gap-2 flex-wrap justify-center lg:justify-end">
       {allCategories.map((category) => {
-        const categoryName = category.id === "all" 
-          ? (locale === "th" ? "ทั้งหมด" : "All")
-          : getBilingualCategory(category, locale);
-        
+        const categoryName =
+          category.id === "all"
+            ? locale === "th"
+              ? "ทั้งหมด"
+              : "All"
+            : getBilingualCategory(category, locale);
+
         return (
           <button
             key={category.id}
@@ -41,8 +45,7 @@ export default function CategoryFilter({
               selectedCategory === category.id
                 ? "bg-blue-600 text-white shadow-lg transform scale-105"
                 : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-sm hover:shadow-md"
-            }`}
-          >
+            }`}>
             {categoryName}
           </button>
         );

@@ -4,8 +4,6 @@ import {
   Plus,
   Edit,
   Trash2,
-  MapPin,
-  Calendar,
   Image as ImageIcon,
   Building,
   Globe,
@@ -13,6 +11,7 @@ import {
   Upload,
   AlertCircle,
 } from "lucide-react";
+import ReferenceList from "@/components/admin/ReferenceList";
 import { useForm, Controller } from "react-hook-form";
 import {
   useReferenceStore,
@@ -45,39 +44,6 @@ interface OverseaFormData {
   country_en: string;
 }
 
-// Helper function to format Supabase date
-const formatSupabaseDate = (dateString: string): string => {
-  try {
-    // Handle Supabase timestamp format: "2025-08-04 00:00:00+00"
-    // Convert to ISO format if needed
-    let isoString = dateString;
-    if (dateString.includes(" ") && !dateString.includes("T")) {
-      // Replace space with T and ensure proper timezone format
-      isoString = dateString.replace(" ", "T");
-      if (!isoString.includes("Z") && !isoString.includes("+")) {
-        isoString += "Z";
-      }
-    }
-
-    const date = new Date(isoString);
-    if (isNaN(date.getTime())) {
-      // If still invalid, try parsing just the date part
-      const datePart = dateString.split(" ")[0];
-      const fallbackDate = new Date(datePart);
-      if (isNaN(fallbackDate.getTime())) {
-        console.warn("Invalid date:", dateString);
-        return "--:--";
-      }
-      return fallbackDate.toLocaleDateString();
-    }
-
-    return date.toLocaleDateString();
-  } catch (error) {
-    console.error("Error formatting date:", dateString, error);
-    return "--:--";
-  }
-};
-
 export const ReferenceManager = () => {
   // Store
   const {
@@ -106,6 +72,9 @@ export const ReferenceManager = () => {
 
   const { notification, hideNotification, showSuccess, showError } =
     useAdminNotification();
+  useEffect(() => {
+    console.log("referenc =>", references);
+  }, [references]);
 
   // Fetch data on mount
   useEffect(() => {
@@ -340,74 +309,12 @@ export const ReferenceManager = () => {
         <div className="p-6">
           {activeTab === "reference" ? (
             /* Reference Tab */
-            <div className="space-y-6">
-              {/* Reference Items List */}
-              {loading && (
-                <div className="text-center py-8">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                  <p className="mt-2 text-gray-600">Loading references...</p>
-                </div>
-              )}
-              {!loading && references && references.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {references.map((item) => (
-                    <div
-                      key={item.id}
-                      className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="aspect-video bg-gray-100">
-                        {item.thumbnail && (
-                          <img
-                            src={item.thumbnail}
-                            alt={item.name_en}
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-gray-900 mb-1">
-                          {item.name_en}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-2">
-                          {item.name_th}
-                        </p>
-                        <div className="flex items-center text-gray-500 text-xs mb-2">
-                          <MapPin size={12} className="mr-1" />
-                          <span className="truncate">{item.type_en}</span>
-                        </div>
-                        <div className="flex items-center text-gray-500 text-xs mb-3">
-                          <Calendar size={12} className="mr-1" />
-                          <span>{formatSupabaseDate(item.open_at)}</span>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => startEditingReference(item)}
-                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition-colors flex items-center justify-center gap-1">
-                            <Edit size={14} />
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteReference(item.id)}
-                            className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700 transition-colors">
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {!loading && references && references.length === 0 && (
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No references found
-                  </h3>
-                  <p className="text-gray-500">
-                    Start by adding your first reference project.
-                  </p>
-                </div>
-              )}
-            </div>
+            <ReferenceList
+              references={references || []}
+              loading={loading}
+              onEdit={startEditingReference}
+              onDelete={handleDeleteReference}
+            />
           ) : (
             /* Oversea Tab */
             <div className="space-y-6">

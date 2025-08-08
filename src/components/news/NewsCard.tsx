@@ -13,22 +13,24 @@ interface NewsCardProps {
   category?: string;
 }
 
-export default function NewsCard({ news, locale, index = 0, category }: NewsCardProps) {
+export default function NewsCard({
+  news,
+  locale,
+  index = 0,
+  category,
+}: NewsCardProps) {
   const title = getBilingualTitle(news, locale);
   const excerpt = getBilingualExcerpt(news, locale);
-  
+
   // Format date
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString(
-        locale === "th" ? "th-TH" : "en-US",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }
-      );
+      return date.toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     } catch {
       return locale === "th" ? "ไม่ระบุวันที่" : "Date not specified";
     }
@@ -42,7 +44,8 @@ export default function NewsCard({ news, locale, index = 0, category }: NewsCard
     return locale === "th" ? `${readTime} นาที` : `${readTime} min`;
   };
 
-  const displayDate = news.publish_at || news.updated_at || news.created_at || "";
+  const displayDate =
+    news.publish_at || news.updated_at || news.created_at || "";
   const readTime = calculateReadTime(excerpt);
 
   return (
@@ -52,8 +55,7 @@ export default function NewsCard({ news, locale, index = 0, category }: NewsCard
       style={{
         animationDelay: `${index * 100}ms`,
         animation: "scaleIn 0.6s ease-out forwards",
-      }}
-    >
+      }}>
       <article className="relative bg-white/70 backdrop-blur-sm border border-gray-100/50 hover:border-gray-200/70 transition-all duration-600 ease-out hover:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.08)] hover:-translate-y-2 overflow-hidden group-hover:bg-white/90 rounded-lg">
         {/* Minimal top accent */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-600 origin-left"></div>
@@ -66,9 +68,6 @@ export default function NewsCard({ news, locale, index = 0, category }: NewsCard
           <div className="flex items-center justify-between mb-6">
             <div className="text-xs text-gray-500 font-light tracking-widest uppercase">
               {category || (locale === "th" ? "ข่าวสาร" : "News")}
-            </div>
-            <div className="w-6 h-6 bg-gray-100/80 flex items-center justify-center text-xs font-light text-gray-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-500">
-              {String(index + 1).padStart(2, "0")}
             </div>
           </div>
 
@@ -95,22 +94,16 @@ export default function NewsCard({ news, locale, index = 0, category }: NewsCard
 
             {/* Minimal metadata */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100/80 group-hover:border-gray-200/80 transition-colors duration-500">
-              <div className="flex items-center space-x-4 text-xs text-gray-500 font-light">
+              <div className="flex items-center justify-between w-full text-xs text-gray-500 font-light">
                 <div className="flex items-center">
                   <User size={12} className="mr-1.5" />
-                  {locale === "th" ? "ผู้ดูแล" : "Admin"}
+                  {"PADUNGSILPA"}
                 </div>
                 <div className="w-px h-3 bg-gray-300"></div>
                 <div className="flex items-center">
                   <Calendar size={12} className="mr-1.5" />
                   {formatDate(displayDate)}
                 </div>
-              </div>
-
-              {/* Elegant read indicator */}
-              <div className="flex items-center text-xs text-gray-500 font-light">
-                <Clock size={12} className="mr-1.5" />
-                {readTime}
               </div>
             </div>
 
