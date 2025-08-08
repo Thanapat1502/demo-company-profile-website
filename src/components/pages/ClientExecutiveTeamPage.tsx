@@ -70,7 +70,9 @@ export default function ClientExecutiveTeamPage({
       </section>
 
       {/* Executive Team Grid */}
-      <ExecutiveGrid locale={locale} />
+      <section className="section-minimal mx-20 ">
+        <ExecutiveGrid locale={locale} />
+      </section>
 
       {/* Message from Management */}
       <MessageFromManagement

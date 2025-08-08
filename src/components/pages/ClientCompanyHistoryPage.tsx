@@ -40,6 +40,10 @@ export default function ClientCompanyHistoryPage({
   const gallery2Images = galleryContent2?.images_url || [];
   const gallery3Images = galleryContent3?.images_url || [];
 
+  useEffect(() => {
+    console.log("Content:", gallery3Images);
+  }, [gallery3Images]);
+
   const subPages = [
     {
       id: "overview",
@@ -69,7 +73,6 @@ export default function ClientCompanyHistoryPage({
 
   return (
     <>
-      {/* Sub Navigation */}
       <section className="py-16 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
@@ -79,8 +82,8 @@ export default function ClientCompanyHistoryPage({
                 href={`/${locale}${page.href}`}
                 className={`flex items-center px-8 py-4 transition-all duration-300 border ${
                   page.id === "history"
-                    ? "bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]"
-                    : "bg-white text-gray-700 border-gray-300 hover:border-[var(--primary-blue)] hover:text-[var(--primary-blue)]"
+                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
                 }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium tracking-wide">
@@ -92,181 +95,169 @@ export default function ClientCompanyHistoryPage({
         </div>
       </section>
 
-      {/* Company History Timeline */}
-      <section className="py-20 bg-white">
+      {/* Company Origin Section */}
+      <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {t("company.history.timeline.title")}
+            {/* Section Label */}
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                {t("company.history.sectionLabel")}
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+            </div>
+
+            {/* Main Heading */}
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
+              {t("company.history.title")}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("company.history.timeline.description")}
+
+            {/* Enhanced Elegant Line */}
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              {t("company.history.subtitle")}
             </p>
           </div>
-
-          {/* Timeline */}
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-[var(--primary-blue)]/20"></div>
-
-            {/* Timeline items */}
-            <div className="space-y-16">
-              {/* 2003 - Foundation */}
-              <div className="relative flex items-center">
-                <div className="flex-1 text-right pr-8">
-                  <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <h3 className="text-2xl font-bold text-[var(--primary-blue)] mb-2">
-                      2003
-                    </h3>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-3">
-                      {t("company.history.milestones.foundation.title")}
-                    </h4>
-                    <p className="text-gray-600">
-                      {t("company.history.milestones.foundation.description")}
-                    </p>
-                  </div>
+          {/* Company Origin Content */}
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
+            <div className="space-y-8">
+              <div className="flex items-center mb-6">
+                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                  2507
                 </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[var(--primary-blue)] rounded-full border-4 border-white shadow-lg"></div>
-                <div className="flex-1 pl-8">
-                  {gallery1Images.length > 0 ? (
-                    <MinimalCarousel
-                      images={gallery1Images}
-                      className="w-full h-48 rounded-lg shadow-lg"
-                      showIndicators={true}
-                      autoPlay={true}
-                      interval={4000}
-                    />
-                  ) : (
-                    <ImageSkeleton className="w-full h-48 rounded-lg" />
-                  )}
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    {t("company.history.beginning.title")}
+                  </h3>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  {t("company.history.beginning.description1")}
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {t("company.history.beginning.description2")}
+                </p>
+              </div>
+            </div>
 
-              {/* 2010 - Expansion */}
-              <div className="relative flex items-center">
-                <div className="flex-1 pr-8">
-                  {gallery2Images.length > 0 ? (
-                    <MinimalCarousel
-                      images={gallery2Images}
-                      className="w-full h-48 rounded-lg shadow-lg"
-                      showIndicators={true}
-                      autoPlay={true}
-                      interval={4000}
-                    />
-                  ) : (
-                    <ImageSkeleton className="w-full h-48 rounded-lg" />
-                  )}
+            {/* First Carousel Gallery */}
+            <div className="relative">
+              {gallery1Images.length > 0 ? (
+                <MinimalCarousel
+                  images={gallery1Images}
+                  alt={t("company.history.imageAlt")}
+                  aspectRatio="4/3"
+                  showNavigation={true}
+                  showIndicators={true}
+                  autoPlay={true}
+                  interval={5000}
+                  className="shadow-lg"
+                />
+              ) : (
+                <ImageSkeleton />
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Expansion and Development Section */}
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
+            {/* Second Carousel Gallery */}
+            <div className="relative order-2 lg:order-1">
+              {gallery2Images.length > 0 ? (
+                <MinimalCarousel
+                  images={gallery2Images}
+                  alt={t("company.history.expansion.imageAlt")}
+                  aspectRatio="4/3"
+                  showNavigation={true}
+                  showIndicators={true}
+                  autoPlay={true}
+                  interval={5000}
+                  className="shadow-lg"
+                />
+              ) : (
+                <ImageSkeleton />
+              )}
+            </div>
+
+            <div className="space-y-8 order-1 lg:order-2">
+              <div className="flex items-center mb-6">
+                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                  2520
                 </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[var(--primary-blue)] rounded-full border-4 border-white shadow-lg"></div>
-                <div className="flex-1 pl-8">
-                  <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <h3 className="text-2xl font-bold text-[var(--primary-blue)] mb-2">
-                      2010
-                    </h3>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-3">
-                      {t("company.history.milestones.expansion.title")}
-                    </h4>
-                    <p className="text-gray-600">
-                      {t("company.history.milestones.expansion.description")}
-                    </p>
-                  </div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    {t("company.history.expansion.title")}
+                  </h3>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
-
-              {/* 2020 - Innovation */}
-              <div className="relative flex items-center">
-                <div className="flex-1 text-right pr-8">
-                  <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <h3 className="text-2xl font-bold text-[var(--primary-blue)] mb-2">
-                      2020
-                    </h3>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-3">
-                      {t("company.history.milestones.innovation.title")}
-                    </h4>
-                    <p className="text-gray-600">
-                      {t("company.history.milestones.innovation.description")}
-                    </p>
-                  </div>
-                </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[var(--primary-blue)] rounded-full border-4 border-white shadow-lg"></div>
-                <div className="flex-1 pl-8">
-                  {gallery3Images.length > 0 ? (
-                    <MinimalCarousel
-                      images={gallery3Images}
-                      className="w-full h-48 rounded-lg shadow-lg"
-                      showIndicators={true}
-                      autoPlay={true}
-                      interval={4000}
-                    />
-                  ) : (
-                    <ImageSkeleton className="w-full h-48 rounded-lg" />
-                  )}
-                </div>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  {t("company.history.expansion.description1")}
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {t("company.history.expansion.description2")}
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Key Achievements */}
-      <section className="py-20 bg-gray-50">
+      {/* Product Development and Vision Section */}
+      <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {t("company.history.achievements.title")}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("company.history.achievements.description")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center p-6 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Factory className="w-8 h-8 text-[var(--primary-blue)]" />
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <div className="space-y-8">
+              <div className="flex items-center mb-6">
+                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                  2540
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    {t("company.history.innovation.title")}
+                  </h3>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
+                </div>
               </div>
-              <h3 className="text-3xl font-bold text-[var(--primary-blue)] mb-2">
-                500+
-              </h3>
-              <p className="text-gray-600">
-                {t("company.history.achievements.projects")}
-              </p>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  {t("company.history.innovation.description1")}
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {t("company.history.innovation.description2")}
+                </p>
+              </div>
             </div>
 
-            <div className="text-center p-6 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users2 className="w-8 h-8 text-[var(--primary-blue)]" />
+            <div className="w-full h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shadow-lg">
+              <div className="relative">
+                {gallery3Images.length > 0 ? (
+                  <MinimalCarousel
+                    images={gallery3Images}
+                    alt={t("company.history.innovation.imageAlt")}
+                    aspectRatio="4/3"
+                    showNavigation={true}
+                    showIndicators={true}
+                    autoPlay={true}
+                    interval={5000}
+                    className="shadow-lg"
+                  />
+                ) : (
+                  <ImageSkeleton />
+                )}
               </div>
-              <h3 className="text-3xl font-bold text-[var(--primary-blue)] mb-2">
-                50+
-              </h3>
-              <p className="text-gray-600">
-                {t("company.history.achievements.employees")}
-              </p>
-            </div>
-
-            <div className="text-center p-6 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-3xl font-bold text-[var(--primary-blue)] mb-2">
-                20+
-              </h3>
-              <p className="text-gray-600">
-                {t("company.history.achievements.years")}
-              </p>
-            </div>
-
-            <div className="text-center p-6 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-3xl font-bold text-[var(--primary-blue)] mb-2">
-                100%
-              </h3>
-              <p className="text-gray-600">
-                {t("company.history.achievements.satisfaction")}
-              </p>
             </div>
           </div>
         </div>
