@@ -36,13 +36,8 @@ export default function ClientMissionCommitmentPage({
   }, [fetchContent]);
 
   // Get gallery images from content with VISION_1, VISION_2, VISION_3 IDs
-  const visionContent1 = content.find((c) => c.id === "VISION_1");
-  const visionContent2 = content.find((c) => c.id === "VISION_2");
-  const visionContent3 = content.find((c) => c.id === "VISION_3");
-
-  const vision1Images = visionContent1?.images_url || [];
-  const vision2Images = visionContent2?.images_url || [];
-  const vision3Images = visionContent3?.images_url || [];
+  const vision1 = content.find((c) => c.id === "VISION_1")?.images_url[0];
+  const vision2 = content.find((c) => c.id === "VISION_2")?.images_url[0];
 
   const subPages = [
     {
@@ -71,6 +66,51 @@ export default function ClientMissionCommitmentPage({
     },
   ];
 
+  const commitments = [
+    {
+      icon: Shield,
+      title: "ความปลอดภัย",
+      description:
+        "มุ่งมั่นในการรักษามาตรฐานความปลอดภัยสูงสุดในทุกโครงการ เพื่อปกป้องพนักงาน ลูกค้า และชุมชน",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+    {
+      icon: Leaf,
+      title: "ความยั่งยืน",
+      description:
+        "ดำเนินธุรกิจอย่างรับผิดชอบต่อสิ่งแวดล้อม และสนับสนุนการพัฒนาที่ยั่งยืน",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+    {
+      icon: Heart,
+      title: "ความซื่อสัตย์",
+      description:
+        "ยึดมั่นในความโปร่งใส ความจริงใจ และการดำเนินธุรกิจด้วยจริยธรรม",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+    {
+      icon: Lightbulb,
+      title: "นวัตกรรม",
+      description:
+        "พัฒนาเทคโนโลยีและนวัตกรรมใหม่ๆ เพื่อตอบสนองความต้องการของลูกค้าอย่างต่อเนื่อง",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+    {
+      icon: Users2,
+      title: "การทำงานเป็นทีม",
+      description:
+        "ส่งเสริมการทำงานร่วมกันอย่างมีประสิทธิภาพ และการพัฒนาศักยภาพของทีมงาน",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+    {
+      icon: Award,
+      title: "ความเป็นเลิศ",
+      description:
+        "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน และการให้บริการที่เหนือความคาดหมาย",
+      color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
+    },
+  ];
+
   return (
     <>
       {/* Sub Navigation */}
@@ -83,8 +123,8 @@ export default function ClientMissionCommitmentPage({
                 href={`/${locale}${page.href}`}
                 className={`flex items-center px-8 py-4 transition-all duration-300 border ${
                   page.id === "mission"
-                    ? "bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]"
-                    : "bg-white text-gray-700 border-gray-300 hover:border-[var(--primary-blue)] hover:text-[var(--primary-blue)]"
+                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
                 }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium tracking-wide">
@@ -96,248 +136,144 @@ export default function ClientMissionCommitmentPage({
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
-      <section className="py-20 bg-white">
+      {/* Mission & Vision */}
+      <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="grid lg:grid-cols-2 gap-16">
             {/* Mission */}
-            <div className="space-y-8">
-              <div className="text-center lg:text-left">
-                <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto lg:mx-0 mb-6">
-                  <Target className="w-8 h-8 text-[var(--primary-blue)]" />
+            <div className="text-center lg:text-left">
+              <div className="flex items-center justify-center lg:justify-start mb-8">
+                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
+                  <Target size={40} className="text-[var(--primary-blue)]" />
                 </div>
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                  {t("company.mission.section.title")}
-                </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
-                  {t("company.mission.section.description")}
-                </p>
+                <div>
+                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    พันธกิจ
+                  </h2>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
+                </div>
               </div>
-
-              {/* Mission Image */}
-              <div className="relative">
-                {loading ? (
-                  <ImageSkeleton className="w-full h-64 rounded-lg" />
-                ) : vision1Images.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    {vision1Images.slice(0, 4).map((image, index) => (
-                      <div key={index} className="relative h-32 rounded-lg overflow-hidden">
-                        <Image
-                          src={image}
-                          alt={`Mission ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-500">
-                      {t("common.noImagesAvailable")}
-                    </p>
-                  </div>
-                )}
-              </div>
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                เป็นผู้นำในการให้บริการด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่มีคุณภาพสูง
+                ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ
+                และการบริการที่เหนือความคาดหมาย
+                เพื่อสร้างความพึงพอใจสูงสุดให้กับลูกค้าและผู้มีส่วนได้ส่วนเสีย
+              </p>
+              {/* Mission Image from VISION_1 content */}
+              {loading || !vision1 ? (
+                <ImageSkeleton
+                  width="100%"
+                  height="320px"
+                  rounded="lg"
+                  animation="shimmer"
+                  className="shadow-lg"
+                />
+              ) : (
+                <Image
+                  src={vision1}
+                  alt="Mission"
+                  width={600}
+                  height={400}
+                  className="w-full h-80 object-cover shadow-lg"
+                />
+              )}
             </div>
 
             {/* Vision */}
-            <div className="space-y-8">
-              <div className="text-center lg:text-left">
-                <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto lg:mx-0 mb-6">
-                  <Eye className="w-8 h-8 text-[var(--primary-blue)]" />
-                </div>
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                  {t("company.vision.section.title")}
-                </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
-                  {t("company.vision.section.description")}
-                </p>
-              </div>
-
-              {/* Vision Image */}
-              <div className="relative">
-                {loading ? (
-                  <ImageSkeleton className="w-full h-64 rounded-lg" />
-                ) : vision2Images.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    {vision2Images.slice(0, 4).map((image, index) => (
-                      <div key={index} className="relative h-32 rounded-lg overflow-hidden">
-                        <Image
-                          src={image}
-                          alt={`Vision ${index + 1}`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-500">
-                      {t("common.noImagesAvailable")}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {t("company.values.title")}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("company.values.description")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Award className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                {t("company.values.excellence.title")}
-              </h3>
-              <p className="text-gray-600">
-                {t("company.values.excellence.description")}
-              </p>
-            </div>
-
-            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Heart className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                {t("company.values.integrity.title")}
-              </h3>
-              <p className="text-gray-600">
-                {t("company.values.integrity.description")}
-              </p>
-            </div>
-
-            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                {t("company.values.safety.title")}
-              </h3>
-              <p className="text-gray-600">
-                {t("company.values.safety.description")}
-              </p>
-            </div>
-
-            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-              <div className="w-16 h-16 bg-[var(--primary-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Lightbulb className="w-8 h-8 text-[var(--primary-blue)]" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                {t("company.values.innovation.title")}
-              </h3>
-              <p className="text-gray-600">
-                {t("company.values.innovation.description")}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Policy Section */}
-      <PolicySection />
-
-      {/* Commitment Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {t("company.commitment.title")}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("company.commitment.description")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Content */}
-            <div className="space-y-8">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <Leaf className="w-8 h-8 text-green-600" />
+            <div className="text-center lg:text-left">
+              <div className="flex items-center justify-center lg:justify-start mb-8">
+                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
+                  <Eye size={40} className="text-[var(--primary-blue)]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {t("company.commitment.environment.title")}
-                  </h3>
-                  <p className="text-gray-600">
-                    {t("company.commitment.environment.description")}
-                  </p>
+                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    วิสัยทัศน์
+                  </h2>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                เป็นบริษัทชั้นนำในภูมิภาคเอเชียตะวันออกเฉียงใต้
+                ด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันและพลังงาน
+                ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน
+                พร้อมขยายธุรกิจสู่เทคโนโลยีพลังงานสะอาดในอนาคต
+              </p>
 
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <Shield className="w-8 h-8 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {t("company.commitment.safety.title")}
-                  </h3>
-                  <p className="text-gray-600">
-                    {t("company.commitment.safety.description")}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <Heart className="w-8 h-8 text-red-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {t("company.commitment.community.title")}
-                  </h3>
-                  <p className="text-gray-600">
-                    {t("company.commitment.community.description")}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Images */}
-            <div className="relative">
-              {loading ? (
-                <ImageSkeleton className="w-full h-96 rounded-lg" />
-              ) : vision3Images.length > 0 ? (
-                <div className="grid grid-cols-2 gap-4">
-                  {vision3Images.slice(0, 4).map((image, index) => (
-                    <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                      <Image
-                        src={image}
-                        alt={`Commitment ${index + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
+              {/* Vision Image from VISION_2 content */}
+              {loading || !vision2 ? (
+                <ImageSkeleton
+                  width="100%"
+                  height="320px"
+                  rounded="lg"
+                  animation="shimmer"
+                  className="shadow-lg"
+                />
               ) : (
-                <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <p className="text-gray-500">
-                    {t("common.noImagesAvailable")}
-                  </p>
-                </div>
+                <Image
+                  src={vision2}
+                  alt="Vision"
+                  width={600}
+                  height={400}
+                  className="w-full h-80 object-cover shadow-lg"
+                />
               )}
             </div>
           </div>
         </div>
       </section>
+
+      {/* Commitments */}
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            {/* Section Label */}
+            <div className="inline-flex items-center gap-3 mb-8">
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                {t("company.mission.commitments.sectionLabel")}
+              </span>
+              <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+            </div>
+
+            {/* Main Heading */}
+            <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
+              {t("company.mission.commitments.title")}
+            </h2>
+
+            {/* Enhanced Elegant Line */}
+            <div className="relative flex items-center justify-center mb-8">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)] to-transparent opacity-80"></div>
+              <div className="absolute w-24 h-px bg-gradient-to-r from-transparent via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+            </div>
+
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              หลักการและค่านิยมที่เรายึดถือในการดำเนินธุรกิจอย่างยั่งยืน
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {commitments.map((commitment, index) => (
+              <div
+                key={index}
+                className="text-center p-8 card-minimal hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div
+                  className={`w-20 h-20 ${commitment.color} flex items-center justify-center mx-auto mb-6`}>
+                  <commitment.icon size={40} />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4 tracking-tight">
+                  {commitment.title}
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
+                  {commitment.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Policy Section - Company Operating Policy */}
+      <PolicySection />
     </>
   );
 }
