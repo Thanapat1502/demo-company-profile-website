@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Save, Upload, X, Image as ImageIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useContentStore } from "@/store/zustand/contentStore";
-import { ServiceContentToggle } from "../ServiceContentToggle";
 
 interface ProductServiceContentFormData {
   heroImages: File[];
@@ -320,6 +319,12 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
     const currentImages = newSlots[slotIndex].images || [];
     const currentImageUrls = newSlots[slotIndex].imageUrls || [];
 
+    // Only allow image upload for gallery slots
+    if (newSlots[slotIndex].contentType !== "gallery") {
+      alert("This slot is configured for video content only.");
+      return;
+    }
+
     // Limit to max 20 images total
     const totalImages = currentImages.length + fileArray.length;
     const filesToAdd =
@@ -342,6 +347,13 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
 
   const handleVideoUrlChange = (slotIndex: number, videoUrl: string) => {
     const newSlots = [...slots];
+
+    // Only allow video URL for video slots
+    if (newSlots[slotIndex].contentType !== "video") {
+      alert("This slot is configured for gallery content only.");
+      return;
+    }
+
     newSlots[slotIndex] = {
       ...newSlots[slotIndex],
       videoUrl,
@@ -360,7 +372,7 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
       images: undefined,
       imageUrls: undefined,
       videoUrl: undefined,
-      type: "image",
+      type: newSlots[slotIndex].contentType === "gallery" ? "image" : "video",
     };
     onSlotsChange(newSlots);
   };
@@ -406,77 +418,25 @@ const ProductServiceUpload: React.FC<ProductServiceUploadProps> = ({
             {/* Slot Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                {/**WATCH */}
                 <span className="text-sm font-medium text-gray-700">
                   Slot {index + 1} ({slot.title})
                 </span>
 
-                {/* Independent Content Type Toggle */}
-                <ServiceContentToggle
-                  serviceId={slot.serviceId}
-                  currentType={slot.contentType}
-                  onTypeChange={(newType) => {
-                    const newSlots = [...slots];
-                    newSlots[index] = {
-                      ...newSlots[index],
-                      contentType: newType,
-                      type: newType === "gallery" ? "image" : "video",
-                    };
-                    onSlotsChange(newSlots);
-                  }}
-                />
+                {/* Fixed Media Type Display */}
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    slot.contentType === "gallery"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-purple-100 text-purple-800"
+                  }`}>
+                  {slot.contentType === "gallery" ? "📷 Gallery" : "🎥 Video"}
+                </span>
               </div>
-            </div>
-
-            {/* Content Type Tabs */}
-            <div className="flex border-b border-gray-200">
-              <button
-                type="button"
-                onClick={() => {
-                  if (slot.type !== "image") {
-                    const newSlots = [...slots];
-                    newSlots[index] = {
-                      ...newSlots[index],
-                      type: "image",
-                      videoUrl: undefined,
-                    };
-                    onSlotsChange(newSlots);
-                  }
-                }}
-                className={`px-4 py-2 text-sm font-medium border-b-2 ${
-                  slot.type === "image"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
-                }`}>
-                Image
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (slot.type !== "video") {
-                    const newSlots = [...slots];
-                    newSlots[index] = {
-                      ...newSlots[index],
-                      type: "video",
-                      contentType: "video",
-                      images: undefined,
-                      imageUrls: undefined,
-                    };
-                    onSlotsChange(newSlots);
-                  }
-                }}
-                className={`px-4 py-2 text-sm font-medium border-b-2 ${
-                  slot.type === "video"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
-                }`}>
-                Video
-              </button>
             </div>
 
             {/* Content Upload Area */}
             <div className="space-y-6">
-              {slot.type === "image" ? (
+              {slot.contentType === "gallery" ? (
                 // Image Upload
                 <div className="space-y-6">
                   {/* Current Images from Database */}
@@ -700,15 +660,15 @@ export const ProductServiceContentManager: React.FC<
       },
     });
 
-  // Initialize Product & Service slots
+  // Initialize Product & Service slots with fixed media types
   const initializeProductServiceSlots =
     React.useCallback((): ProductServiceSlot[] => {
       const instructions = [
-        "Upload main product/service showcase",
-        "Upload secondary offering highlight",
-        "Upload process or workflow demonstration",
-        "Upload customer testimonial or result",
-        "Upload additional service content",
+        "Upload main product/service showcase (Gallery)",
+        "Upload secondary offering highlight (Video)",
+        "Upload process or workflow demonstration (Gallery)",
+        "Upload customer testimonial or result (Video)",
+        "Upload additional service content (Gallery)",
       ];
 
       const serviceIds = [
@@ -727,12 +687,15 @@ export const ProductServiceContentManager: React.FC<
         "บริการต่าง ๆ เกี่ยวกับถังน้ำมัน",
       ];
 
+      // Fixed media types: slot 1,3,5 = gallery, slot 2,4 = video
+      const mediaTypes = ["gallery", "video", "gallery", "video", "gallery"];
+
       return Array.from({ length: 5 }, (_, index) => ({
         id: `products-services-slot-${index}`,
         serviceId: serviceIds[index],
         title: serviceTitles[index],
-        type: "image" as const,
-        contentType: "gallery" as const,
+        type: mediaTypes[index] === "gallery" ? "image" : "video",
+        contentType: mediaTypes[index] as "gallery" | "video",
         instruction:
           instructions[index] || `Upload content for slot ${index + 1}`,
         order: index,
