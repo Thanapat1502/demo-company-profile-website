@@ -82,22 +82,19 @@ export default function ProductsSection({
 
         {products.length > 6 && (
           <div className="text-center mt-12">
-            <div className="luxury-hero-btn-container max-w-xs mx-auto">
-              <button
-                className="luxury-hero-btn luxury-hero-btn-secondary group"
-                onClick={() => setShowAllProducts(!showAllProducts)}>
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="font-semibold tracking-wide">
-                    {showAllProducts
-                      ? t("services.products.showLess")
-                      : t("services.products.viewAll")}
-                  </span>
-                  <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
+            <button
+              className="luxury-hero-btn luxury-hero-btn-secondary"
+              onClick={() => setShowAllProducts(!showAllProducts)}>
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <span className="font-semibold tracking-wide text-blue-950">
+                  {showAllProducts
+                    ? t("services.products.showLess")
+                    : t("services.products.viewAll")}
                 </span>
-                <div className="luxury-btn-border"></div>
-                <div className="luxury-btn-glow-secondary"></div>
-              </button>
-            </div>
+              </span>
+              <div className="luxury-btn-border"></div>
+              <div className="luxury-btn-glow-secondary"></div>
+            </button>
           </div>
         )}
       </div>

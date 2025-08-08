@@ -44,6 +44,33 @@ export default function ClientProductsServicesPage({
     fetchContent,
   } = useContentStore();
 
+  const getServiceById = (serviceId: string) => {
+    return services.find((service) => service.id === serviceId);
+  };
+
+  // Get content for a specific service
+  const getServiceContent = (serviceId: string) => {
+    console.log("Waht is content:", content);
+    return content.filter(
+      (c) =>
+        c.page === "SERVICE" && (c.id === serviceId || c.id.includes(serviceId))
+    );
+  };
+
+  // Service section data
+  const constructionService = getServiceById("SERVICE_1");
+  const permatankService = getServiceById("SERVICE_2");
+  const pipeInstallationService = getServiceById("SERVICE_3");
+  const atgSystemService = getServiceById("SERVICE_4");
+  const tankServicesService = getServiceById("SERVICE_5");
+
+  // Content for each service
+  const constructionContent = getServiceContent("SERVICE_1");
+  const permatankContent = getServiceContent("SERVICE_2");
+  const pipeInstallationContent = getServiceContent("SERVICE_3");
+  const atgSystemContent = getServiceContent("SERVICE_4");
+  const tankServicesContent = getServiceContent("SERVICE_5");
+
   // Fetch all data on component mount
   useEffect(() => {
     const fetchAllData = async () => {
@@ -52,7 +79,7 @@ export default function ClientProductsServicesPage({
         await Promise.all([
           fetchProducts(),
           fetchServices(),
-          fetchContent("PRODUCTS_SERVICE"),
+          fetchContent("SERVICE"),
         ]);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -73,66 +100,58 @@ export default function ClientProductsServicesPage({
   if (hasError) {
     console.error("Failed to fetch data:", hasError);
   }
-  // if (hasError) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="text-center">
-  //         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-  //           {t("common.error")}
-  //         </h2>
-  //         <p className="text-gray-600">{t("common.error.description")}</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <>
-      {/* Construction Services Section */}
+      {/* Service Sections */}
+      {/**งานก่อสร้างสถานีบริการน้ำมัน gallery*/}
       <ConstructionServiceSection
-        service={services[0]}
-        content={content}
-        loading={isLoading}
+        service={constructionService}
+        content={constructionContent}
         locale={locale}
+        loading={servicesLoading || contentLoading}
       />
 
-      {/* Permatank Section */}
+      {/**ถังน้ำมันใต้ดิน PERMATANK video*/}
       <PermatankSection
-        service={services[1]}
-        content={content}
-        loading={isLoading}
+        service={permatankService}
+        content={permatankContent}
         locale={locale}
+        loading={servicesLoading || contentLoading}
       />
 
-      {/* Pipe Installation Section */}
+      {/**จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น gallery*/}
+
       <PipeInstallationSection
-        service={services[2]}
-        content={content}
-        loading={isLoading}
+        service={pipeInstallationService}
+        content={pipeInstallationContent}
         locale={locale}
+        loading={servicesLoading || contentLoading}
       />
 
-      {/* ATG System Section */}
+      {/**ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน video*/}
+
       <ATGSystemSection
-        service={services[3]}
-        content={content}
-        loading={isLoading}
+        service={atgSystemService}
+        content={atgSystemContent}
         locale={locale}
+        loading={servicesLoading || contentLoading}
       />
 
-      {/* Tank Services Section */}
+      {/**บริการต่าง ๆ เกี่ยวกับถังน้ำมัน  gallery*/}
+
       <TankServicesSection
-        service={services[4]}
-        content={content}
-        loading={isLoading}
+        service={tankServicesService}
+        content={tankServicesContent}
         locale={locale}
+        loading={servicesLoading || contentLoading}
       />
 
       {/* Products Section */}
       <ProductsSection
         products={products}
-        loading={isLoading}
         locale={locale}
+        loading={productsLoading}
       />
     </>
   );
