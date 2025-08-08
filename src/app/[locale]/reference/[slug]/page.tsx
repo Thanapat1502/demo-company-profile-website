@@ -155,16 +155,7 @@ export default function ProjectDetailPage({
           <div className="absolute inset-0 z-20 flex flex-col justify-between">
             {/* Top Section - Back Button */}
             <div className="pt-8">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <button
-                  onClick={() => router.push(`/${locale}/reference`)}
-                  className="inline-flex items-center gap-2 text-white/90 hover:text-white bg-black/20 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-300 hover:bg-black/30">
-                  <ArrowLeft className="w-4 h-4" />
-                  <span>
-                    {locale === "th" ? "กลับไปหน้าผลงาน" : "Back to Portfolio"}
-                  </span>
-                </button>
-              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
             </div>
 
             {/* Bottom Section - Main Content */}

@@ -68,19 +68,19 @@ export default function ImageModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/90 backdrop-blur-sm cursor-pointer"
         onClick={onClose}
       />
 
       {/* Modal Content */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center p-4">
+      <div className="relative z-10 w-full h-full flex items-center justify-center p-4 pointer-events-none">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors">
+          className="absolute top-4 right-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors pointer-events-auto">
           <X className="w-6 h-6" />
         </button>
 
@@ -89,19 +89,19 @@ export default function ImageModal({
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors">
+              className="absolute left-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors pointer-events-auto">
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors">
+              className="absolute right-4 z-20 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors pointer-events-auto">
               <ChevronRight className="w-6 h-6" />
             </button>
           </>
         )}
 
         {/* Image Container */}
-        <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center pointer-events-none">
+        <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
           <div className="relative w-full h-full max-w-4xl max-h-[90vh] pointer-events-auto">
             <Image
               src={images[currentIndex]}
@@ -116,19 +116,19 @@ export default function ImageModal({
 
         {/* Image Counter */}
         {images.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 bg-black/50 text-white rounded-full text-sm">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 bg-black/50 text-white rounded-full text-sm pointer-events-auto">
             {currentIndex + 1} / {images.length}
           </div>
         )}
 
         {/* Thumbnail Navigation */}
         {images.length > 1 && images.length <= 10 && (
-          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-20 flex gap-2 pointer-events-auto">
             {images.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-12 h-12 relative overflow-hidden rounded border-2 transition-all ${
+                className={`w-12 h-12 relative overflow-hidden rounded border-2 transition-all pointer-events-auto ${
                   index === currentIndex
                     ? "border-white scale-110"
                     : "border-white/50 hover:border-white/80"
