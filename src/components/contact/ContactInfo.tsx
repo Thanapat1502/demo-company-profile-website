@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { MapPin, Phone, Mail, Clock, MessageCircle, Music } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useContactStore } from "@/store/zustand/contactStore";
 import { Facebook, Youtube } from "lucide-react";
+import { LineIcon } from "@/components/icons/LineIcon";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 
 import {
   getBilingualAddress,
@@ -73,7 +75,7 @@ export default function ContactInfo({
       name: "Facebook",
     },
     {
-      icon: MessageCircle,
+      icon: LineIcon,
       href: contactInfo.line || "#",
       color: "hover:text-green-600",
       name: "Line",
@@ -85,7 +87,7 @@ export default function ContactInfo({
       name: "YouTube",
     },
     {
-      icon: Music,
+      icon: TikTokIcon,
       href: contactInfo.tiktok || "#",
       color: "hover:text-black",
       name: "TikTok",

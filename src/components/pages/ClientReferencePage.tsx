@@ -87,7 +87,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
           {references.map((project) => (
             <ReferenceCard
               key={project.id}
@@ -156,7 +156,7 @@ const PermatankSection: React.FC<PermatankSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
           {references.map((card) => (
             <ReferenceCard
               key={card.id}

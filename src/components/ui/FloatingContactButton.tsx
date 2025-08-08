@@ -77,10 +77,10 @@ export default function FloatingContactButton() {
   });
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center justify-center">
       {/* Contact Options */}
       <div
-        className={`flex flex-col gap-3 mb-4 transition-all duration-300 ${
+        className={`flex flex-col justify-center items-center gap-3 mb-4 transition-all duration-300 ${
           isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
@@ -106,15 +106,11 @@ export default function FloatingContactButton() {
       {/* Main Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 ${
-          isOpen
-            ? "bg-red-500 hover:bg-red-600 rotate-45"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
+        className={`flex items-center justify-center w-14 h-14 rounded-full text-white shadow-lg transition-all duration-300 hover:scale-110 bg-blue-600 hover:bg-blue-700`}
         aria-label="ติดต่อเรา">
         <MessageCircle
           className={`w-6 h-6 transition-transform duration-300 ${
-            isOpen ? "rotate-45" : ""
+            isOpen ? "" : ""
           }`}
         />
       </button>
