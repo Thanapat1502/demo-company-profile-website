@@ -25,8 +25,8 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <StructuredData type="Organization" />
-      <StructuredData type="WebSite" />
+      <StructuredData type="Organization" locale={locale as "th" | "en"} />
+      <StructuredData type="WebSite" locale={locale as "th" | "en"} />
       {children}
     </NextIntlClientProvider>
   );

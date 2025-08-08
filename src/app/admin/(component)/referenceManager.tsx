@@ -804,6 +804,7 @@ export const ReferenceManager = () => {
                         />
                       </div>
 
+                      {/**Convert this to select option with Service Station and Permatank as option  */}
                       {/* Type Thai */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
