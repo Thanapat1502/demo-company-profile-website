@@ -102,72 +102,30 @@ export default function ClientCompanyProfilePage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
             <div className="space-y-8">
-              <div>
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                  {t("company.overview.title")}
-                </h2>
-                <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                  {t("company.overview.subtitle")}
-                </p>
+              {/* Section Label - Matching ServicesSection style */}
+              <div className="inline-flex items-center gap-3">
+                <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
+                <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+                  {t("company.overview.aboutUs")}
+                </span>
               </div>
 
-              {/* Key Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <Award className="w-8 h-8 text-[var(--primary-blue)]" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {t("company.overview.features.experience.title")}
-                    </h3>
-                    <p className="text-gray-600">
-                      {t("company.overview.features.experience.description")}
-                    </p>
-                  </div>
-                </div>
+              {/* Main Heading - Strong & Minimal Style */}
+              <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
+                {t("company.overview.title")}
+              </h2>
 
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <Target className="w-8 h-8 text-[var(--primary-blue)]" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {t("company.overview.features.quality.title")}
-                    </h3>
-                    <p className="text-gray-600">
-                      {t("company.overview.features.quality.description")}
-                    </p>
-                  </div>
-                </div>
+              {/* Enhanced Elegant Line with Glow */}
+              <div className="relative flex items-start justify-start mb-4">
+                <div className="w-24 h-px bg-gradient-to-r from-[var(--primary-blue)] via-[var(--primary-blue)] to-transparent opacity-80"></div>
+                <div className="absolute w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+              </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <Users className="w-8 h-8 text-[var(--primary-blue)]" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {t("company.overview.features.team.title")}
-                    </h3>
-                    <p className="text-gray-600">
-                      {t("company.overview.features.team.description")}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <Heart className="w-8 h-8 text-[var(--primary-blue)]" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {t("company.overview.features.commitment.title")}
-                    </h3>
-                    <p className="text-gray-600">
-                      {t("company.overview.features.commitment.description")}
-                    </p>
-                  </div>
-                </div>
+              {/* Description - Clean Typography */}
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>{t("company.overview.content.paragraph1")}</p>
+                <p>{t("company.overview.content.paragraph2")}</p>
+                <p>{t("company.overview.content.paragraph3")}</p>
               </div>
             </div>
 
