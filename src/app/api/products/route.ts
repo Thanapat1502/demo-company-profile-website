@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     const { data, error } = await supabase
       .from(table)
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.log("GET /api/products - Database error:", error);

@@ -91,11 +91,6 @@ export default function ClientNewsEventsPage({
 
   return (
     <>
-      {/* Hero Section with Highlighted News */}
-      {highlightedNews.length > 0 && (
-        <NewsHero news={highlightedNews[0]} locale={locale} />
-      )}
-
       {/* News Content Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,6 +103,11 @@ export default function ClientNewsEventsPage({
               {t("news.hero.subtitle")}
             </p>
           </div>
+
+          {/* Hero Section with Highlighted News */}
+          {highlightedNews.length > 0 && (
+            <NewsHero news={highlightedNews} locale={locale} />
+          )}
 
           {/* Filters and Search */}
           <div className="flex flex-col lg:flex-row gap-6 mb-12">
