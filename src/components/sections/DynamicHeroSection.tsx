@@ -25,17 +25,15 @@ export default function DynamicHeroSection({
   const imagesToUse =
     imageUrls && imageUrls.length > 0 ? imageUrls : fallbackImages;
 
-  if (!!imagesToUse) {
-    return (
-      <ImageCarouselHero
-        images={imagesToUse}
-        title={title}
-        subtitle={subtitle}
-        description={description}
-        autoSlideDelay={autoSlideDelay}
-        className={className}>
-        {children}
-      </ImageCarouselHero>
-    );
-  }
+  return (
+    <ImageCarouselHero
+      images={imagesToUse}
+      title={title}
+      subtitle={subtitle}
+      description={description}
+      autoSlideDelay={autoSlideDelay}
+      className={className}>
+      {children}
+    </ImageCarouselHero>
+  );
 }

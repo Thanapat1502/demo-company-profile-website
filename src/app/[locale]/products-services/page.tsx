@@ -1,165 +1,36 @@
-"use client";
-
-import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { getTranslations } from "next-intl/server";
 import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
-import ConstructionServiceSection from "@/components/sections/products-services/ConstructionServiceSection";
-import PermatankSection from "@/components/sections/products-services/PermatankSection";
-import PipeInstallationSection from "@/components/sections/products-services/PipeInstallationSection";
-import ATGSystemSection from "@/components/sections/products-services/ATGSystemSection";
-import TankServicesSection from "@/components/sections/products-services/TankServicesSection";
-import ProductsSection from "@/components/sections/products-services/ProductsSection";
-import { useProductStore } from "@/store/zustand/productStore";
-import { useServiceStore } from "@/store/zustand/servicesStore";
-import { useContentStore } from "@/store/zustand/contentStore";
-export default function ProductsServicesPage() {
-  const t = useTranslations();
-  const locale = useLocale();
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+import { getHeroImageById } from "@/lib/hero-utils";
+import ClientProductsServicesPage from "@/components/pages/ClientProductsServicesPage";
 
-  // Zustand stores
-  const {
-    products,
-    loading: productsLoading,
-    error: productsError,
-    fetchProducts,
-  } = useProductStore();
+type Props = {
+  params: Promise<{ locale: string }>;
+};
 
-  const {
-    services,
-    loading: servicesLoading,
-    error: servicesError,
-    fetchServices,
-  } = useServiceStore();
+export default async function ProductsServicesPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations();
 
-  const {
-    content,
-    loading: contentLoading,
-    error: contentError,
-    fetchContent,
-  } = useContentStore();
-
-  // Fetch all data on component mount
-  useEffect(() => {
-    const fetchAllData = async () => {
-      setIsInitialLoading(true);
-      try {
-        await Promise.all([
-          fetchProducts(),
-          fetchServices(),
-          fetchContent("SERVICE"),
-        ]);
-      } catch (error) {
-        console.error("Error fetching products-services data:", error);
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
-
-    fetchAllData();
-  }, [fetchProducts, fetchServices, fetchContent]);
-
-  // Filter services by ID for each section
-  const getServiceById = (serviceId: string) => {
-    return services.find((service) => service.id === serviceId);
-  };
-
-  // Get content for a specific service
-  const getServiceContent = (serviceId: string) => {
-    return content.filter(
-      (c) =>
-        c.page === "SERVICE" && (c.id === serviceId || c.id.includes(serviceId))
-    );
-  };
-
-  // Service section data
-  const constructionService = getServiceById("SERVICE_1");
-  const permatankService = getServiceById("SERVICE_2");
-  const pipeInstallationService = getServiceById("SERVICE_3");
-  const atgSystemService = getServiceById("SERVICE_4");
-  const tankServicesService = getServiceById("SERVICE_5");
-
-  // Content for each service
-  const constructionContent = getServiceContent("SERVICE_1");
-  const permatankContent = getServiceContent("SERVICE_2");
-  const pipeInstallationContent = getServiceContent("SERVICE_3");
-  const atgSystemContent = getServiceContent("SERVICE_4");
-  const tankServicesContent = getServiceContent("SERVICE_5");
-
-  // Error state (optional - you can customize this)
-  const hasErrors = servicesError || productsError || contentError;
-  if (hasErrors) {
-    console.warn("Products-Services page errors:", {
-      servicesError,
-      productsError,
-      contentError,
-    });
-  }
+  // Fetch hero images server-side
+  const heroImages = await getHeroImageById("PRODUCTS_SERVICE");
 
   return (
     <MainLayout>
       {/* Hero Section */}
       <DynamicHeroSection
-        title={t("services.hero.title")}
-        subtitle={t("services.hero.subtitle")}
-        description={t("services.hero.description")}
-        fallbackImages={["/images/hero-sections/hero-banner-3.jpg"]}
+        imageUrls={heroImages}
+        title={t("products.hero.title")}
+        subtitle={t("products.hero.subtitle")}
+        description={t("products.hero.description")}
+        fallbackImages={["/images/hero-sections/hero-banner-4.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />
       </DynamicHeroSection>
 
-      {/* Service Sections */}
-      {/**งานก่อสร้างสถานีบริการน้ำมัน gallery*/}
-      <ConstructionServiceSection
-        service={constructionService}
-        content={constructionContent}
-        locale={locale}
-        loading={servicesLoading || contentLoading}
-      />
-
-      {/**ถังน้ำมันใต้ดิน PERMATANK video*/}
-      <PermatankSection
-        service={permatankService}
-        content={permatankContent}
-        locale={locale}
-        loading={servicesLoading || contentLoading}
-      />
-
-      {/**จำหน่ายและติดตั้งท่อน้ำมันใต้ดินผนัง 2 ชั้น gallery*/}
-
-      <PipeInstallationSection
-        service={pipeInstallationService}
-        content={pipeInstallationContent}
-        locale={locale}
-        loading={servicesLoading || contentLoading}
-      />
-
-      {/**ระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน video*/}
-
-      <ATGSystemSection
-        service={atgSystemService}
-        content={atgSystemContent}
-        locale={locale}
-        loading={servicesLoading || contentLoading}
-      />
-
-      {/**บริการต่าง ๆ เกี่ยวกับถังน้ำมัน  gallery*/}
-
-      <TankServicesSection
-        service={tankServicesService}
-        content={tankServicesContent}
-        locale={locale}
-        loading={servicesLoading || contentLoading}
-      />
-
-      {/* Products Section */}
-      <ProductsSection
-        products={products}
-        locale={locale}
-        loading={productsLoading}
-      />
+      {/* Client-side content */}
+      <ClientProductsServicesPage locale={locale} />
     </MainLayout>
   );
 }
