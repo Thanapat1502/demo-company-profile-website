@@ -19,6 +19,23 @@ export const ReferenceCard: React.FC<Props> = ({
   const hookLocale = useLocale();
   const locale = propLocale || hookLocale;
 
+  // Helper function to format date with validation
+  // const openDate = (() => {
+  //   try {
+  //     const date = new Date(reference.open_at);
+  //     if (isNaN(date.getTime())) {
+  //       return locale === "th" ? "ไม่ระบุวันที่" : "Date not specified";
+  //     }
+  //     return date.toLocaleDateString(locale === "th" ? "th-TH" : "en-US", {
+  //       year: "numeric",
+  //       month: "long",
+  //       day: "numeric",
+  //     });
+  //   } catch {
+  //     return locale === "th" ? "ไม่ระบุวันที่" : "Date not specified";
+  //   }
+  // })();
+
   // Get bilingual content
   const referenceName = getBilingualName(reference, locale);
   const referenceLocation = getBilingualContent(reference, "location", locale);
@@ -56,11 +73,7 @@ export const ReferenceCard: React.FC<Props> = ({
             </p>
 
             {/* Opening Date */}
-            <p className="text-white/60 text-xs">
-              {new Date(reference.open_at).toLocaleDateString(
-                locale === "th" ? "th-TH" : "en-US"
-              )}
-            </p>
+            {/* <p className="text-white/60 text-xs">{openDate}</p> */}
           </div>
         </div>
 

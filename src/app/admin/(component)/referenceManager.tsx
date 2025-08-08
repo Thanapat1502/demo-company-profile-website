@@ -63,13 +63,18 @@ const formatSupabaseDate = (dateString: string): string => {
     if (isNaN(date.getTime())) {
       // If still invalid, try parsing just the date part
       const datePart = dateString.split(" ")[0];
-      return new Date(datePart).toLocaleDateString();
+      const fallbackDate = new Date(datePart);
+      if (isNaN(fallbackDate.getTime())) {
+        console.warn("Invalid date:", dateString);
+        return "--:--";
+      }
+      return fallbackDate.toLocaleDateString();
     }
 
     return date.toLocaleDateString();
   } catch (error) {
     console.error("Error formatting date:", dateString, error);
-    return "Invalid Date";
+    return "--:--";
   }
 };
 
