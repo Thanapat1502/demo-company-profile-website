@@ -69,44 +69,38 @@ export default function ClientMissionCommitmentPage({
   const commitments = [
     {
       icon: Shield,
-      title: "ความปลอดภัย",
-      description:
-        "มุ่งมั่นในการรักษามาตรฐานความปลอดภัยสูงสุดในทุกโครงการ เพื่อปกป้องพนักงาน ลูกค้า และชุมชน",
+      title: t("company.mission.commitments.safety.title"),
+      description: t("company.mission.commitments.safety.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Leaf,
-      title: "ความยั่งยืน",
-      description:
-        "ดำเนินธุรกิจอย่างรับผิดชอบต่อสิ่งแวดล้อม และสนับสนุนการพัฒนาที่ยั่งยืน",
+      title: t("company.mission.commitments.sustainability.title"),
+      description: t("company.mission.commitments.sustainability.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Heart,
-      title: "ความซื่อสัตย์",
-      description:
-        "ยึดมั่นในความโปร่งใส ความจริงใจ และการดำเนินธุรกิจด้วยจริยธรรม",
+      title: t("company.mission.commitments.integrity.title"),
+      description: t("company.mission.commitments.integrity.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Lightbulb,
-      title: "นวัตกรรม",
-      description:
-        "พัฒนาเทคโนโลยีและนวัตกรรมใหม่ๆ เพื่อตอบสนองความต้องการของลูกค้าอย่างต่อเนื่อง",
+      title: t("company.mission.commitments.innovation.title"),
+      description: t("company.mission.commitments.innovation.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Users2,
-      title: "การทำงานเป็นทีม",
-      description:
-        "ส่งเสริมการทำงานร่วมกันอย่างมีประสิทธิภาพ และการพัฒนาศักยภาพของทีมงาน",
+      title: t("company.mission.commitments.teamwork.title"),
+      description: t("company.mission.commitments.teamwork.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
     {
       icon: Award,
-      title: "ความเป็นเลิศ",
-      description:
-        "มุ่งมั่นสู่ความเป็นเลิศในทุกด้านของการดำเนินงาน และการให้บริการที่เหนือความคาดหมาย",
+      title: t("company.mission.commitments.excellence.title"),
+      description: t("company.mission.commitments.excellence.description"),
       color: "bg-[var(--primary-blue)]/10 text-[var(--primary-blue)]",
     },
   ];
@@ -148,16 +142,13 @@ export default function ClientMissionCommitmentPage({
                 </div>
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
-                    พันธกิจ
+                    {t("company.mission.missionTitle")}
                   </h2>
                   <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                เป็นผู้นำในการให้บริการด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่มีคุณภาพสูง
-                ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ
-                และการบริการที่เหนือความคาดหมาย
-                เพื่อสร้างความพึงพอใจสูงสุดให้กับลูกค้าและผู้มีส่วนได้ส่วนเสีย
+                {t("company.mission.missionDescription")}
               </p>
               {/* Mission Image from VISION_1 content */}
               {loading || !vision1 ? (
@@ -171,7 +162,7 @@ export default function ClientMissionCommitmentPage({
               ) : (
                 <Image
                   src={vision1}
-                  alt="Mission"
+                  alt={t("company.mission.missionImageAlt")}
                   width={600}
                   height={400}
                   className="w-full h-80 object-cover shadow-lg"
@@ -187,16 +178,13 @@ export default function ClientMissionCommitmentPage({
                 </div>
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
-                    วิสัยทัศน์
+                    {t("company.mission.visionTitle")}
                   </h2>
                   <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                 </div>
               </div>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                เป็นบริษัทชั้นนำในภูมิภาคเอเชียตะวันออกเฉียงใต้
-                ด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันและพลังงาน
-                ที่ได้รับการยอมรับในด้านคุณภาพ ความปลอดภัย และความยั่งยืน
-                พร้อมขยายธุรกิจสู่เทคโนโลยีพลังงานสะอาดในอนาคต
+                {t("company.mission.visionDescription")}
               </p>
 
               {/* Vision Image from VISION_2 content */}
@@ -211,7 +199,7 @@ export default function ClientMissionCommitmentPage({
               ) : (
                 <Image
                   src={vision2}
-                  alt="Vision"
+                  alt={t("company.mission.visionImageAlt")}
                   width={600}
                   height={400}
                   className="w-full h-80 object-cover shadow-lg"
@@ -247,7 +235,7 @@ export default function ClientMissionCommitmentPage({
             </div>
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              หลักการและค่านิยมที่เรายึดถือในการดำเนินธุรกิจอย่างยั่งยืน
+              {t("company.mission.commitments.description")}
             </p>
           </div>
 

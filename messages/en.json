@@ -245,8 +245,39 @@
       },
       "commitments": {
         "sectionLabel": "COMMITMENTS",
-        "title": "Our Commitments"
-      }
+        "title": "Our Commitments",
+        "description": "Principles and values we uphold in conducting sustainable business",
+        "safety": {
+          "title": "Safety",
+          "description": "Committed to maintaining the highest safety standards in every project to protect employees, customers, and communities"
+        },
+        "sustainability": {
+          "title": "Sustainability",
+          "description": "Conducting business responsibly towards the environment and supporting sustainable development"
+        },
+        "integrity": {
+          "title": "Integrity",
+          "description": "Adhering to transparency, sincerity, and conducting business with ethics"
+        },
+        "innovation": {
+          "title": "Innovation",
+          "description": "Developing new technologies and innovations to continuously meet customer needs"
+        },
+        "teamwork": {
+          "title": "Teamwork",
+          "description": "Promoting efficient collaboration and developing team potential"
+        },
+        "excellence": {
+          "title": "Excellence",
+          "description": "Striving for excellence in all aspects of operations and providing services beyond expectations"
+        }
+      },
+      "missionTitle": "Mission",
+      "missionDescription": "To be a leader in providing high-quality gas station construction and engineering services with modern technology, professional teams, and services beyond expectations to create maximum satisfaction for customers and stakeholders",
+      "missionImageAlt": "Mission",
+      "visionTitle": "Vision",
+      "visionDescription": "To be a leading company in Southeast Asia in gas station and energy construction and engineering, recognized for quality, safety, and sustainability, ready to expand business into clean energy technology in the future",
+      "visionImageAlt": "Vision"
     },
     "overview": {
       "title": "Padungsilpa Group",
