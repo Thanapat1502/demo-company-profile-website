@@ -159,7 +159,9 @@ const AdminDashboard = () => {
                 />
               </div>
               <div className="w-px h-6 bg-gray-300" />
-              <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm">
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
+                onClick={() => window.open("/", "_blank")}>
                 ดูเว็บไซต์
               </button>
               <div className="w-px h-6 bg-gray-300" />
