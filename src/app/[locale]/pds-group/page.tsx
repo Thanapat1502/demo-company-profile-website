@@ -21,9 +21,9 @@ export default async function CompanyProfilePage({ params }: Props) {
       {/* Hero Section - Using DynamicHeroSection for consistency */}
       <DynamicHeroSection
         imageUrls={heroImages}
-        title={t("company.overview.title")}
-        subtitle={t("company.overview.subtitle")}
-        description={t("company.overview.description")}
+        title={t("company.hero.title")}
+        subtitle={t("company.hero.subtitle")}
+        description={t("company.hero.description")}
         fallbackImages={[
           "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
         ]}

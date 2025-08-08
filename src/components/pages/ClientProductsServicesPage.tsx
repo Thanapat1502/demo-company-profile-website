@@ -70,19 +70,21 @@ export default function ClientProductsServicesPage({
 
   // Error state
   const hasError = productsError || servicesError || contentError;
-
   if (hasError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            {t("common.error.title")}
-          </h2>
-          <p className="text-gray-600">{t("common.error.description")}</p>
-        </div>
-      </div>
-    );
+    console.error("Failed to fetch data:", hasError);
   }
+  // if (hasError) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h2 className="text-2xl font-bold text-gray-900 mb-4">
+  //           {t("common.error")}
+  //         </h2>
+  //         <p className="text-gray-600">{t("common.error.description")}</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

@@ -104,10 +104,10 @@ export default function ClientCompanyProfilePage({
             <div className="space-y-8">
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                  {t("company.overview.section.title")}
+                  {t("company.overview.title")}
                 </h2>
                 <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                  {t("company.overview.section.description")}
+                  {t("company.overview.subtitle")}
                 </p>
               </div>
 

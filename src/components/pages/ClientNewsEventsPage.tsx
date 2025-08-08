@@ -107,10 +107,10 @@ export default function ClientNewsEventsPage({
           {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {t("news.section.title")}
+              {t("news.hero.title")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("news.section.description")}
+              {t("news.hero.subtitle")}
             </p>
           </div>
 

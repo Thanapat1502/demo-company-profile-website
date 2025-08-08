@@ -21,9 +21,9 @@ export default async function ProductsServicesPage({ params }: Props) {
       {/* Hero Section */}
       <DynamicHeroSection
         imageUrls={heroImages}
-        title={t("products.hero.title")}
-        subtitle={t("products.hero.subtitle")}
-        description={t("products.hero.description")}
+        title={t("services.hero.title")}
+        subtitle={t("services.hero.subtitle")}
+        description={t("services.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-4.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />
