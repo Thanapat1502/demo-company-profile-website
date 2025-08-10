@@ -55,10 +55,10 @@ export const ReferenceCard: React.FC<Props> = ({
       />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
 
       {/* Reference content overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-6">
+      <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-6 !pb-0">
         {/* Content container that moves up on hover to make room for learn more link */}
         <div className="transform transition-transform duration-500 ease-out group-hover:-translate-y-0 md:group-hover:-translate-y-12 ">
           <div className="md:space-y-3">
@@ -68,7 +68,7 @@ export const ReferenceCard: React.FC<Props> = ({
             </h3>
 
             {/* Reference Location */}
-            <p className="text-white/80 text-xs md:text-sm leading-relaxed line-clamp-2">
+            <p className="text-white/80 text-md leading-relaxed line-clamp-2">
               {referenceLocation}
             </p>
 
@@ -78,7 +78,7 @@ export const ReferenceCard: React.FC<Props> = ({
         </div>
 
         {/* Learn More Link - Slides up on hover */}
-        <div className="transform translate-y-full opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100 mt-4">
+        <div className="transform translate-y-full opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-hover:pb-6">
           <div className="flex items-center text-white text-sm font-medium">
             <span className="mr-2">
               {locale === "th" ? "ดูรายละเอียด" : "View Details"}

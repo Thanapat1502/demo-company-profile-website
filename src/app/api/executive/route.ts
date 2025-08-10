@@ -87,7 +87,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from("executive")
     .select("*")
-    .order("updated_at", { ascending: false });
+    .order("id", { ascending: true });
   return NextResponse.json({ data, error });
 }
 

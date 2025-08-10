@@ -3,15 +3,13 @@ import MainLayout from "@/components/layout/MainLayout";
 import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import HeroButtons from "@/components/ui/HeroButtons";
 import { getHeroImageById } from "@/lib/hero-utils";
-import ServerMissionCommitmentPage from "@/components/pages/ServerMissionCommitmentPage";
-import PolicySection from "@/components/sections/pds-group/PolicySection";
 import ServerEnvironmentHealthDrugPolicy from "@/components/pages/ServerEnvironmentHealthDrugPolicy";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
-export default async function MissionCommitmentPage({ params }: Props) {
+export default async function EnvironmentHealthDrugPolicyPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations();
 
@@ -23,19 +21,16 @@ export default async function MissionCommitmentPage({ params }: Props) {
       {/* Hero Section */}
       <DynamicHeroSection
         imageUrls={heroImages}
-        title={t("company.mission.hero.title")}
-        subtitle={t("company.mission.hero.subtitle")}
-        description={t("company.mission.hero.description")}
+        title={t("environmentHealthDrugPolicy.heroTitle")}
+        subtitle={t("environmentHealthDrugPolicy.heroSubtitle")}
+        description=""
         fallbackImages={["/images/hero-sections/hero-banner-2.jpg"]}
         autoSlideDelay={6000}>
         <HeroButtons />
       </DynamicHeroSection>
 
       {/* Server-side content */}
-      <ServerMissionCommitmentPage locale={locale} />
       <ServerEnvironmentHealthDrugPolicy locale={locale} />
-
-      <PolicySection />
     </MainLayout>
   );
 }

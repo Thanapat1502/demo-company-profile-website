@@ -119,6 +119,38 @@
       "description": "Contact us today for a free consultation and quote for your gas station construction project."
     }
   },
+  "missionPage": {
+    "heroTitle": "Mission & Commitment",
+    "heroSubtitle": "Excellence in Quality and Service, with Honesty, Sincerity, and Environmental Care",
+    "missionTitle": "Mission Statement",
+    "missionParagraph1": "We are committed to delivering the highest standards of workmanship and quality with honesty, integrity, professionalism, and punctual service.",
+    "missionParagraph2": "We market our construction projects, services, and equipment sales at fair and competitive prices to ensure reasonable profit for both our customers and our company.",
+    "missionParagraph3": "We prioritize the health and safety of our employees, customers, and all stakeholders while maintaining a strong commitment to environmental conservation.",
+    "commitmentTitle": "Commitment",
+    "commitmentParagraph1": "Padungsilpa Group is dedicated to maintaining a highly skilled workforce, both in operations and management, to provide exceptional construction services and products. Beyond delivering outstanding services, we ensure that our staff are experts in their fields—well-trained, certified by manufacturers, and experienced in industry standards.",
+    "commitmentParagraph2": "Padungsilpa Group is ready to meet our customers' needs with superior services and products, upholding our unwavering commitment to quality and reliability."
+  },
+  "policySection": {
+    "title": "Operating Policy",
+    "introText": "Padungsilpa Group started the fuel station business in 1964 and has over 50 years of experience, operating under the policy",
+    "policySlogan": "'High Quality, Reasonable Price, Deliver On Time'",
+    "qualityText": "To ensure quality standards in every step of operations",
+    "bottomText": "With over 50 years of experience, we are ready to provide comprehensive services from design, construction, system installation, and maintenance",
+    "policies": {
+      "correct": {
+        "title": "High Quality",
+        "description": "With over 50 years of experience, Padungsilpa Group is committed to continuously developing work quality and system efficiency to ensure that products and services are of high quality, 'High Quality', and meet customer requirements."
+      },
+      "rightPrice": {
+        "title": "Reasonable Price",
+        "description": "Padungsilpa Group prioritizes sourcing materials that meet industry specifications at fair prices, ensuring customers receive quality products and services at the 'Reasonable Price' and according to standards."
+      },
+      "onTime": {
+        "title": "Deliver On Time",
+        "description": "The company continuously develops and improves work quality and systems to ensure projects are completed on schedule, delivering quality products and services 'Deliver On Time' and meeting standards at every step."
+      }
+    }
+  },
   "footer": {
     "company": {
       "description": "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering."
@@ -277,7 +309,22 @@
       "missionImageAlt": "Mission",
       "visionTitle": "Vision",
       "visionDescription": "To be a leading company in Southeast Asia in gas station and energy construction and engineering, recognized for quality, safety, and sustainability, ready to expand business into clean energy technology in the future",
-      "visionImageAlt": "Vision"
+      "visionImageAlt": "Vision",
+      "newHero": {
+        "title": "Mission & Commitment",
+        "subtitle": "Excellence in Quality and Service, with Honesty, Sincerity, and Environmental Care"
+      },
+      "missionStatement": {
+        "title": "Mission Statement",
+        "paragraph1": "We are committed to delivering the highest standards of workmanship and quality with honesty, integrity, professionalism, and punctual service.",
+        "paragraph2": "We market our construction projects, services, and equipment sales at fair and competitive prices to ensure reasonable profit for both our customers and our company.",
+        "paragraph3": "We prioritize the health and safety of our employees, customers, and all stakeholders while maintaining a strong commitment to environmental conservation."
+      },
+      "commitment": {
+        "title": "Commitment",
+        "paragraph1": "Padungsilpa Group is dedicated to maintaining a highly skilled workforce, both in operations and management, to provide exceptional construction services and products. Beyond delivering outstanding services, we ensure that our staff are experts in their fields—well-trained, certified by manufacturers, and experienced in industry standards.",
+        "paragraph2": "Padungsilpa Group is ready to meet our customers' needs with superior services and products, upholding our unwavering commitment to quality and reliability."
+      }
     },
     "overview": {
       "title": "Padungsilpa Group",
@@ -631,6 +678,43 @@
     "info": {
       "sectionLabel": "Contact Information",
       "description": "Main company contact information with various communication channels"
+    }
+  },
+  "environmentHealthDrugPolicy": {
+    "heroTitle": "Environment, Health, Safety and Drug Policy PADUNGSILPA GROUP",
+    "heroSubtitle": "It is Padungsilpa Group's policy to conduct its business in a manner that protects the safety of employees, others involved in its operations, customers and the public. Our group of companies will strive to prevent all accidents, injuries and occupational illnesses through the active participation of every employee. Our group of companies are committed to continuous efforts to identify and eliminate or manage safety risks associated with its activities.",
+    "sections": {
+      "occupationalHealth": {
+        "title": "Occupational Health Policy",
+        "points": [
+          "Prevent employees from experiencing work-related illnesses under any circumstances.|",
+          "Promote employee health and prevent actions that may harm customers, contractors, or stakeholders.|",
+          "Maintain workplace hygiene and safety at all times."
+        ]
+      },
+      "safety": {
+        "title": "Safety Policy",
+        "points": [
+          "Operate in a way that ensures maximum safety for employees, stakeholders, customers, and the public.|",
+          "Prevent accidents, injuries, and illnesses through active employee engagement.|",
+          "Continuously identify, eliminate, or control any safety risks associated with business operations."
+        ]
+      },
+      "drug": {
+        "title": "Drug Policy",
+        "points": [
+          "Monitor and strictly prevent employees from using, possessing, distributing, or selling illegal substances or misusing drugs inside or outside the workplace.|",
+          "Prohibit the consumption of alcohol or any substances that impair employees' work performance, ensuring workplace safety and efficiency.|",
+          "Provide assistance to employees struggling with substance dependency, facilitating immediate access to treatment before work performance is affected."
+        ]
+      },
+      "environmental": {
+        "title": "Environmental Policy",
+        "points": [
+          "Commit to responsible environmental practices that meet or exceed industry standards while continuously improving our sustainability efforts.|",
+          "Encourage all employees to care for and respect the environment, emphasizing that environmental responsibility is a shared duty."
+        ]
+      }
     }
   }
 }

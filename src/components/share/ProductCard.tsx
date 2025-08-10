@@ -48,12 +48,12 @@ export const ProductCard: React.FC<Props> = ({
         <div className="transform transition-transform duration-500 ease-out group-hover:-translate-y-0 md:group-hover:-translate-y-12 ">
           <div className="md:space-y-3">
             {/* Product Title - Moves up on hover */}
-            <h3 className="text-xl lg:text-xl font-black text-white line-clamp-2 md:line-clamp-1 leading-tight transform transition-all duration-500 ease-out">
+            <h3 className="text-md lg:text-xl font-black text-white line-clamp-2 md:line-clamp-1 leading-tight transform transition-all duration-500 ease-out">
               {productName}
             </h3>
 
             {/* Product Description - Moves up on hover */}
-            <p className="text-white/80 text-sm md:text-lg leading-relaxed line-clamp-2 transform transition-all duration-500 ease-out">
+            <p className="hidden md:block text-white/80 text-sm md:text-lg leading-relaxed line-clamp-2 transform transition-all duration-500 ease-out">
               {productDescription}
             </p>
           </div>

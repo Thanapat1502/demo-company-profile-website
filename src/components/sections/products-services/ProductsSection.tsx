@@ -54,7 +54,7 @@ export default function ProductsSection({
           </div> */}
 
           {/* Main Heading - Strong & Minimal Style */}
-          <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
+          <h2 className="text-xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             {t("services.products.title")}
           </h2>
 

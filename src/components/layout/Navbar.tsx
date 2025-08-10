@@ -41,8 +41,13 @@ const navigationItems: NavItem[] = [
       { labelKey: "navigation.services.atgSystem", href: "/products-services#atg-system" },
     ]
   },
-  { labelKey: "navigation.references", href: "/reference" },
-  { labelKey: "navigation.news", href: "/news-events" },
+  {
+    labelKey: "navigation.references", href: "/reference",
+    submenu: [
+      { labelKey: "navigation.references", href: "/reference" },
+      { labelKey: "navigation.news", href: "/news-events" },
+    ]
+  },
   // { labelKey: "navigation.contact", href: "/contact-us" },
 ];
 
@@ -137,7 +142,7 @@ export default function MainNavbar() {
           ? "bg-transparent py-6"
           : "bg-white shadow-md border-b border-gray-200"
           }`}
-        maxWidth="xl"
+        maxWidth='2xl'
         height={isAtTop ? "100px" : "80px"}
         isBlurred={false}
         style={{
@@ -197,7 +202,7 @@ export default function MainNavbar() {
                   PADUNGSILPA
                 </span>
                 <span
-                  className={`text-md font-bold  transition-all duration-700 ease-out group-hover:tracking-[0.3em] ${isAtTop ? "text-white/80" : "text-gray-500"
+                  className={`text-md font-bold transition-all duration-700 ease-out group-hover:tracking-[0.3em] ${isAtTop ? "text-white/80" : "text-gray-500"
                     }`}>
                   GROUP
                 </span>
@@ -328,12 +333,17 @@ export default function MainNavbar() {
               as={Link}
               href={`/${locale}/contact-us`}
               className={`font-semibold transition-all duration-700 ease-out hover:scale-105 hover:shadow-xl relative group overflow-hidden ${isAtTop
-                ? "bg-white/20 hover:bg-blue-600 text-white border border-white/30 hover:border-blue-600 backdrop-blur-sm px-4 py-2 text-sm lg:px-8 lg:py-3 lg:text-lg"
-                : "bg-blue-600 hover:bg-blue-700 text-white border border-blue-600 hover:border-blue-700 px-4 py-2 text-sm lg:px-6 lg:text-base"
+                ? "xx-bg-white/20 bg-transparent hover:bg-blue-600 text-white x-border border-white/30-x hover:border-blue-600 backdrop-blur-sm px-2 py-6 text-sm lg:px-4 lg:py-8 lg:text-lg"
+                : "xx-bg-blue-600 bg-transparent hover:text-white hover:bg-[var(--primary-blue)] text-[var(--primary-blue)] x-border x-border-blue-600 hover:border-blue-700 px-4 py-2 text-sm lg:px-4 lg:py-8 lg:text-base"
                 }`}>
-              <span className="relative z-10 text-white">
-                {t("common.contactUs")}
-              </span>
+              <div className="flex flex-col items-start">
+                <span className="relative z-10 text-md whitespace-pre">
+                  {`${t("common.contactUs")}`}
+                </span>
+                <span className="relative z-10">
+                  {`083-999-5544`}
+                </span>
+              </div>
               <div
                 className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${isAtTop
                   ? "bg-gradient-to-r from-blue-600/80 to-blue-700/80"
@@ -556,7 +566,7 @@ export default function MainNavbar() {
                   }}>
                   <div className="text-center">
                     <div className="text-sm text-gray-500">
-                      © 2024 Padungsilpa Group
+                      © 2025 Padungsilpa Group
                     </div>
                   </div>
                 </div>

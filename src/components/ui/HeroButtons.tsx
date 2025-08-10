@@ -32,7 +32,7 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
     } else {
       return {
         primary: {
-          text: locale === "th" ? "ดูผลงาน" : "View Portfolio",
+          text: locale === "th" ? "ดูผลงาน" : "References",
           href: `/${locale}/reference`,
         },
         secondary: {

@@ -80,11 +80,10 @@ export default function ClientCompanyHistoryPage({
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
-                  page.id === "history"
-                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
-                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
-                }`}>
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${page.id === "history"
+                  ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                  : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
+                  }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium tracking-wide">
                   {page.title}
@@ -98,15 +97,15 @@ export default function ClientCompanyHistoryPage({
       {/* Company Origin Section */}
       <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             {/* Section Label */}
-            <div className="inline-flex items-center gap-3 mb-8">
+            {/* <div className="inline-flex items-center gap-3 mb-8">
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
+              <span className="font-bold tracking-wider uppercase text-md text-[var(--primary-blue)]">
                 {t("company.history.sectionLabel")}
               </span>
               <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-            </div>
+            </div> */}
 
             {/* Main Heading */}
             <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
@@ -124,7 +123,7 @@ export default function ClientCompanyHistoryPage({
             </p>
           </div>
           {/* Company Origin Content */}
-          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-0">
             <div className="space-y-8">
               <div className="flex items-center mb-6">
                 <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
@@ -171,7 +170,7 @@ export default function ClientCompanyHistoryPage({
       {/* Expansion and Development Section */}
       <section className="section-minimal bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-0">
             {/* Second Carousel Gallery */}
             <div className="relative order-2 lg:order-1">
               {gallery2Images.length > 0 ? (

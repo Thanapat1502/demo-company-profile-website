@@ -65,7 +65,7 @@ body {
 
   /* Section containers */
   .section-minimal {
-    @apply py-20 lg:py-20;
+    @apply py-10 lg:py-10;
   }
 
   .section-minimal-large {

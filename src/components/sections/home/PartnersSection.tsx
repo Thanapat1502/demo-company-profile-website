@@ -38,7 +38,7 @@ export default function PartnersSection({
           <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-base font-medium mb-4">
             {t("home.partners.sectionLabel")}
           </span>
-          <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 !leading-normal">
             {t("home.partners.title")}
             <span className="text-blue-600 block">
               {t("home.partners.titleHighlight")}
@@ -53,10 +53,10 @@ export default function PartnersSection({
           {partners.map((partner) => (
             <div
               key={partner.id}
-              className="bg-gray-50 p-6 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 group rounded-lg">
+              className="p-2 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 group rounded-lg">
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="w-24 h-24 relative flex items-center justify-center">
-                  <div className="w-full h-full bg-white rounded-lg shadow-sm flex items-center justify-center p-3 overflow-hidden">
+                  <div className="w-full h-full rounded-lg flex items-center justify-center p-3 overflow-hidden">
                     {partner.logo_url ? (
                       <Image
                         src={partner.logo_url}
@@ -73,9 +73,9 @@ export default function PartnersSection({
                   </div>
                 </div>
                 {/* Partner name as fallback/caption */}
-                <p className="text-sm text-gray-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* <p className="text-sm text-gray-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   {partner.name}
-                </p>
+                </p> */}
               </div>
             </div>
           ))}

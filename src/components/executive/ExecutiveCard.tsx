@@ -39,9 +39,9 @@ export default function ExecutiveCard({
             src={displayImage}
             alt={name}
             fill
-            className={`object-cover transition-opacity duration-500 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            quality={100}
+            className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
           />
@@ -55,7 +55,7 @@ export default function ExecutiveCard({
           <h3 className="text-sm font-semibold text-gray-900 truncate">
             {name}
           </h3>
-          <p className="text-xs text-gray-600 truncate">{position}</p>
+          <p className="text-lg text-gray-600 truncate">{position}</p>
         </div>
       </div>
     );
@@ -74,7 +74,7 @@ export default function ExecutiveCard({
       {/* Top accent line - single deep blue */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--primary-blue)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
 
-      <div className="relative p-8">
+      <div className="relative p-6">
         {/* Full-width image section */}
         <div className="relative mb-6 -mx-8">
           <div className="relative w-full h-56 bg-gray-100 overflow-hidden">
@@ -82,9 +82,9 @@ export default function ExecutiveCard({
               src={displayImage}
               alt={name}
               fill
-              className={`object-cover transition-all duration-700 group-hover:scale-105 ${
-                imageLoaded ? "opacity-100" : "opacity-0"
-              }`}
+              quality={100}
+              className={`object-cover transition-all duration-700 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
             />
@@ -104,16 +104,9 @@ export default function ExecutiveCard({
             <h3 className="text-xl font-bold text-gray-900 mb-2 tracking-tight group-hover:text-blue-900 transition-colors duration-500">
               {name}
             </h3>
-            <p className="text-blue-600 font-semibold text-sm tracking-wide uppercase">
+            <p className="text-blue-600 font-semibold text-md tracking-wide uppercase">
               {position}
             </p>
-          </div>
-
-          {/* Decorative line - single deep blue */}
-          <div className="flex items-center justify-center space-x-2 py-2">
-            <div className="w-8 h-px bg-[var(--primary-blue)]/30 group-hover:bg-[var(--primary-blue)] transition-colors duration-500"></div>
-            <div className="w-2 h-2 bg-[var(--primary-blue)]/50 group-hover:bg-[var(--primary-blue)] transition-colors duration-500 rounded-full"></div>
-            <div className="w-8 h-px bg-[var(--primary-blue)]/30 group-hover:bg-[var(--primary-blue)] transition-colors duration-500"></div>
           </div>
         </div>
       </div>

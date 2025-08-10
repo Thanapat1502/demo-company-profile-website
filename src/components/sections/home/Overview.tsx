@@ -71,7 +71,7 @@ export default function Overview({
   }
 
   return (
-    <section className="py-12 lg:py-16 bg-white lg:mx-20">
+    <section className="py-12 lg:py-12 bg-white lg:mx-20">
       <div className=" px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}

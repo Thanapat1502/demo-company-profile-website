@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   History,
   Award,
   Building,
   Users2,
   Target,
-  Eye,
   Heart,
   Shield,
   Leaf,
+  ChevronLeft,
+  ChevronRight,
   Lightbulb,
 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import PolicySection from "@/components/sections/pds-group/PolicySection";
@@ -29,6 +30,7 @@ export default function ClientMissionCommitmentPage({
 }: ClientMissionCommitmentPageProps) {
   const t = useTranslations();
   const { fetchContent, content, loading } = useContentStore();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Fetch content for VISION page
   useEffect(() => {
@@ -38,6 +40,28 @@ export default function ClientMissionCommitmentPage({
   // Get gallery images from content with VISION_1, VISION_2, VISION_3 IDs
   const vision1 = content.find((c) => c.id === "VISION_1")?.images_url[0];
   const vision2 = content.find((c) => c.id === "VISION_2")?.images_url[0];
+  const vision3 = content.find((c) => c.id === "VISION_3")?.images_url[0];
+
+  // Carousel images for the mission section
+  const carouselImages = [vision1, vision2, vision3].filter(Boolean);
+
+  // Auto-rotate carousel
+  useEffect(() => {
+    if (carouselImages.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [carouselImages.length]);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
 
   const subPages = [
     {
@@ -115,11 +139,10 @@ export default function ClientMissionCommitmentPage({
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
-                  page.id === "mission"
-                    ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
-                    : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
-                }`}>
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${page.id === "mission"
+                  ? "bg-[var(--primary-blue)] text-white shadow-lg border-[var(--primary-blue)]"
+                  : "bg-gray-100 text-gray-700 hover:bg-[var(--primary-blue)]/10 hover:text-[var(--primary-blue)] border-gray-200 hover:border-[var(--primary-blue)]/30"
+                  }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium tracking-wide">
                   {page.title}
@@ -130,81 +153,114 @@ export default function ClientMissionCommitmentPage({
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="section-minimal bg-gray-50">
+      {/* Mission & Commitment Hero Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
-            {/* Mission */}
-            <div className="text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start mb-8">
-                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
-                  <Target size={40} className="text-[var(--primary-blue)]" />
-                </div>
-                <div>
-                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
-                    {t("company.mission.missionTitle")}
+          {/* Main Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl lg:text-6xl font-bold text-[var(--primary-blue)] mb-6 tracking-tight">
+              {t("missionPage.heroTitle")}
+            </h1>
+            <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+              {t("missionPage.heroSubtitle")}
+            </p>
+            <div className="w-24 h-px bg-[var(--primary-blue)] mx-auto mt-8"></div>
+          </div>
+
+          {/* Content Grid */}
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Column - Mission Statement */}
+            <div className="space-y-12">
+              {/* Mission Statement */}
+              <div>
+                <div className="flex items-center mb-6">
+                  <h2 className="text-3xl font-bold text-[var(--primary-blue)]">
+                    {t("missionPage.missionTitle")}
                   </h2>
-                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
+                </div>
+                <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+                  <p>{t("missionPage.missionParagraph1")}</p>
+                  <p>{t("missionPage.missionParagraph2")}</p>
+                  <p>{t("missionPage.missionParagraph3")}</p>
                 </div>
               </div>
-              <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                {t("company.mission.missionDescription")}
-              </p>
-              {/* Mission Image from VISION_1 content */}
-              {loading || !vision1 ? (
-                <ImageSkeleton
-                  width="100%"
-                  height="320px"
-                  rounded="lg"
-                  animation="shimmer"
-                  className="shadow-lg"
-                />
-              ) : (
-                <Image
-                  src={vision1}
-                  alt={t("company.mission.missionImageAlt")}
-                  width={600}
-                  height={400}
-                  className="w-full h-80 object-cover shadow-lg"
-                />
-              )}
+
+              {/* Commitment */}
+              <div>
+                <div className="flex items-center mb-6">
+                  <h2 className="text-3xl font-bold text-[var(--primary-blue)]">
+                    {t("missionPage.commitmentTitle")}
+                  </h2>
+                </div>
+                <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+                  <p>{t("missionPage.commitmentParagraph1")}</p>
+                  <p>{t("missionPage.commitmentParagraph2")}</p>
+                </div>
+              </div>
             </div>
 
-            {/* Vision */}
-            <div className="text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start mb-8">
-                <div className="w-20 h-20 bg-[var(--primary-blue)]/10 flex items-center justify-center mr-6">
-                  <Eye size={40} className="text-[var(--primary-blue)]" />
-                </div>
-                <div>
-                  <h2 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
-                    {t("company.mission.visionTitle")}
-                  </h2>
-                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
-                </div>
-              </div>
-              <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                {t("company.mission.visionDescription")}
-              </p>
+            {/* Right Column - Image Carousel */}
+            <div className="relative">
+              <div className="aspect-[4/3] relative overflow-hidden shadow-2xl bg-gray-100">
+                {loading || carouselImages.length === 0 ? (
+                  <ImageSkeleton
+                    width="100%"
+                    height="100%"
+                    animation="shimmer"
+                    className="absolute inset-0"
+                  />
+                ) : (
+                  <>
+                    {carouselImages.map((image, index) => (
+                      image && (
+                        <div
+                          key={index}
+                          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                            }`}>
+                          <Image
+                            src={image}
+                            alt={`Mission image ${index + 1}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            priority={index === 0}
+                          />
+                        </div>
+                      )
+                    ))}
 
-              {/* Vision Image from VISION_2 content */}
-              {loading || !vision2 ? (
-                <ImageSkeleton
-                  width="100%"
-                  height="320px"
-                  rounded="lg"
-                  animation="shimmer"
-                  className="shadow-lg"
-                />
-              ) : (
-                <Image
-                  src={vision2}
-                  alt={t("company.mission.visionImageAlt")}
-                  width={600}
-                  height={400}
-                  className="w-full h-80 object-cover shadow-lg"
-                />
-              )}
+                    {/* Carousel Controls */}
+                    {carouselImages.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110">
+                          <ChevronLeft size={24} className="text-gray-700" />
+                        </button>
+                        <button
+                          onClick={nextImage}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110">
+                          <ChevronRight size={24} className="text-gray-700" />
+                        </button>
+
+                        {/* Dots Indicator */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                          {carouselImages.map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setCurrentImageIndex(index)}
+                              className={`w-3 h-3 transition-all duration-300 ${index === currentImageIndex
+                                ? 'bg-white scale-125'
+                                : 'bg-white/60 hover:bg-white/80'
+                                }`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

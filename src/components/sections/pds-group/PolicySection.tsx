@@ -1,32 +1,24 @@
-"use client";
-
-import { useLocale } from "next-intl";
-import { CheckCircle, Target, Clock, DollarSign } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { CheckCircle, Clock, DollarSign } from "lucide-react";
 
 export default function PolicySection() {
-  const locale = useLocale();
+  const t = useTranslations();
 
   const policies = [
     {
       icon: CheckCircle,
-      title: locale === "th" ? "ถูกต้อง" : "Correct",
-      description: locale === "th" 
-        ? "ด้วยประสบการณ์มากกว่า 50 ปี กลุ่มบริษัทผดุงศิลป์มุ่งมั่นพัฒนาคุณภาพงานและประสิทธิภาพของระบบอย่างต่อเนื่อง เพื่อให้มั่นใจว่าสินค้าและบริการมีคุณภาพสูง 'ถูกต้อง' และได้มาตรฐานที่ตรงกับความต้องการของลูกค้า"
-        : "With over 50 years of experience, Padungsilpa Group is committed to continuously developing work quality and system efficiency to ensure that products and services are of high quality, 'correct', and meet customer requirements."
+      title: t("policySection.policies.correct.title"),
+      description: t("policySection.policies.correct.description")
     },
     {
       icon: DollarSign,
-      title: locale === "th" ? "ถูกตังค์" : "Right Price",
-      description: locale === "th"
-        ? "กลุ่มบริษัทผดุงศิลป์ให้ความสำคัญกับการจัดหาวัตถุดิบที่เป็นไปตามข้อกำหนดอุตสาหกรรม ในราคาที่ยุติธรรม เพื่อให้มั่นใจว่าลูกค้าได้รับสินค้าและบริการที่มีคุณภาพ 'ถูกตังค์' และเป็นไปตามมาตรฐาน"
-        : "Padungsilpa Group prioritizes sourcing materials that meet industry specifications at fair prices, ensuring customers receive quality products and services at the 'right price' and according to standards."
+      title: t("policySection.policies.rightPrice.title"),
+      description: t("policySection.policies.rightPrice.description")
     },
     {
       icon: Clock,
-      title: locale === "th" ? "ทันเวลา" : "On Time",
-      description: locale === "th"
-        ? "บริษัทพัฒนาและปรับปรุงคุณภาพงานและระบบการทำงานอย่างต่อเนื่อง เพื่อให้สามารถดำเนินโครงการได้ตรงตามกำหนด ส่งมอบสินค้าและบริการที่มีคุณภาพ 'ทันเวลา' และเป็นไปตามมาตรฐานทุกขั้นตอน"
-        : "The company continuously develops and improves work quality and systems to ensure projects are completed on schedule, delivering quality products and services 'on time' and meeting standards at every step."
+      title: t("policySection.policies.onTime.title"),
+      description: t("policySection.policies.onTime.description")
     }
   ];
 
@@ -55,7 +47,7 @@ export default function PolicySection() {
         {/* Header - Strong & Minimal Style */}
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            {locale === "th" ? "นโยบายการดำเนินงาน" : "Operating Policy"}
+            {t("policySection.title")}
           </h2>
 
           {/* Enhanced Elegant Line with Glow */}
@@ -65,24 +57,15 @@ export default function PolicySection() {
           </div>
 
           <p className="text-lg text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">
-            {locale === "th"
-              ? "กลุ่มบริษัทผดุงศิลป์เริ่มต้นธุรกิจสถานีบริการน้ำมันในปี 2507 และมีประสบการณ์มากกว่า 50 ปี ดำเนินงานภายใต้นโยบาย"
-              : "Padungsilpa Group started the fuel station business in 1964 and has over 50 years of experience, operating under the policy"
-            }
+            {t("policySection.introText")}
           </p>
           <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 px-8 py-4 shadow-lg">
             <p className="text-lg text-white font-bold tracking-wide">
-              {locale === "th" 
-                ? "'ถูกต้อง ถูกตังค์ ทันเวลา'"
-                : "'Correct, Right Price, On Time'"
-              }
+              {t("policySection.policySlogan")}
             </p>
           </div>
           <p className="text-lg text-white/90 max-w-4xl mx-auto leading-relaxed mt-6">
-            {locale === "th"
-              ? "เพื่อรับรองมาตรฐานคุณภาพในทุกขั้นตอนของการดำเนินงาน"
-              : "To ensure quality standards in every step of operations"
-            }
+            {t("policySection.qualityText")}
           </p>
         </div>
 
@@ -111,10 +94,7 @@ export default function PolicySection() {
         {/* Bottom Message - Clean typography */}
         <div className="text-center mt-16">
           <p className="text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
-            {locale === "th"
-              ? "ด้วยประสบการณ์กว่า 50 ปี เราพร้อมให้บริการครบวงจร ตั้งแต่การออกแบบ ก่อสร้าง ติดตั้งระบบ และบำรุงรักษา"
-              : "With over 50 years of experience, we are ready to provide comprehensive services from design, construction, system installation, and maintenance"
-            }
+            {t("policySection.bottomText")}
           </p>
         </div>
       </div>

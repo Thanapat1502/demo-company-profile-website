@@ -54,11 +54,10 @@ export default function ClientExecutiveTeamPage({
               <Link
                 key={page.id}
                 href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
-                  page.id === "team"
-                    ? "bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]"
-                    : "bg-white text-gray-700 border-gray-300 hover:border-[var(--primary-blue)] hover:text-[var(--primary-blue)]"
-                }`}>
+                className={`flex items-center px-8 py-4 transition-all duration-300 border ${page.id === "team"
+                  ? "bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-[var(--primary-blue)] hover:text-[var(--primary-blue)]"
+                  }`}>
                 <page.icon className="w-5 h-5 mr-3" />
                 <span className="text-lg font-medium tracking-wide">
                   {page.title}
@@ -70,7 +69,7 @@ export default function ClientExecutiveTeamPage({
       </section>
 
       {/* Executive Team Grid */}
-      <section className="section-minimal mx-20 ">
+      <section className="section-minimal mx-8">
         <ExecutiveGrid locale={locale} />
       </section>
 

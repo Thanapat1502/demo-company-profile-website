@@ -68,7 +68,7 @@ export default function Footer() {
       </div>
 
       {/* Ultra Compact Main Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="relative z-10 mx-auto lg:mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 items-start">
           {/* Company Info */}
           <div className="lg:col-span-2">
@@ -210,7 +210,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="relative z-10 mx-auto lg:mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-gray-400 text-md font-medium">
             © 2025 Padungsilpa Group. {t("footer.rights")}

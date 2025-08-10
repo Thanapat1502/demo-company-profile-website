@@ -87,7 +87,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {references.map((project) => (
             <ReferenceCard
               key={project.id}
@@ -147,7 +147,7 @@ const PermatankSection: React.FC<PermatankSectionProps> = ({
           </div>
 
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
-            PERMATANK® Series
+            PERMATANK®
           </h2>
 
           <div className="relative flex items-center justify-center mb-8">
@@ -156,7 +156,7 @@ const PermatankSection: React.FC<PermatankSectionProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
           {references.map((card) => (
             <ReferenceCard
               key={card.id}
@@ -287,8 +287,8 @@ const OverseasSection: React.FC<OverseasSectionProps> = ({
                         ? "แสดงน้อยลง"
                         : "Show Less"
                       : locale === "th"
-                      ? "ดูเพิ่มเติม"
-                      : "View More"}
+                        ? "ดูเพิ่มเติม"
+                        : "View More"}
                   </span>
                   <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
                 </span>

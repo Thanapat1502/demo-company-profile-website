@@ -106,17 +106,17 @@ export default function ProductSection({
   }
 
   return (
-    <section className="section-minimal ">
+    <section className="section-minimal">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           {/* Section Label - Matching ServicesSection style */}
-          <div className="inline-flex items-center gap-3 mb-8">
+          {/* <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
               {t("home.products.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-          </div>
+          </div> */}
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
@@ -146,45 +146,46 @@ export default function ProductSection({
           ))}
         </div>
 
-        {/* Expand/Collapse Button - Only show if there are more than 6 products */}
-        {products.length > 6 && (
-          <div className="flex justify-center items-center mt-12 w-full">
-            <button
-              className="luxury-hero-btn luxury-hero-btn-primary group"
-              onClick={() => setShowAllProducts(!showAllProducts)}>
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="font-semibold tracking-wide">
-                  {showAllProducts
-                    ? t("home.products.showLess")
-                    : t("home.products.viewAll")}
+        <div className="flex flex-col md:flex-row align-middle justify-center gap-6 mt-12">
+          {/* Expand/Collapse Button - Only show if there are more than 6 products */}
+          {products.length > 6 && (
+            <div className="flex justify-center items-center">
+              <button
+                className="luxury-hero-btn luxury-hero-btn-primary group"
+                onClick={() => setShowAllProducts(!showAllProducts)}>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="font-semibold tracking-wide">
+                    {showAllProducts
+                      ? t("home.products.showLess")
+                      : t("home.products.viewAll")}
+                  </span>
+                  <ArrowRight
+                    className={`w-5 h-5 transition-all duration-500 group-hover:translate-x-1 ${showAllProducts ? "rotate-90" : ""
+                      }`}
+                  />
                 </span>
-                <ArrowRight
-                  className={`w-5 h-5 transition-all duration-500 group-hover:translate-x-1 ${
-                    showAllProducts ? "rotate-90" : ""
-                  }`}
-                />
+                <div className="luxury-btn-shimmer"></div>
+                <div className="luxury-btn-glow"></div>
+              </button>
+            </div>
+          )}
+          {/* Navigate to Products Page Button */}
+          <div className="flex justify-center items-center">
+            <button
+              className="luxury-hero-btn luxury-hero-btn-secondary"
+              onClick={() => router.push(`/${locale}/products-services`)}>
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <span className="font-semibold tracking-wide text-black">
+                  {t("home.products.viewProductsPage")}
+                </span>
+                <ArrowRight className="w-5 h-5 text-black transition-transform duration-500 group-hover:translate-x-1" />
               </span>
-              <div className="luxury-btn-shimmer"></div>
-              <div className="luxury-btn-glow"></div>
+              <div className="luxury-btn-border"></div>
+              <div className="luxury-btn-glow-secondary"></div>
             </button>
           </div>
-        )}
-
-        {/* Navigate to Products Page Button */}
-        <div className="flex justify-center items-center mt-6 w-full">
-          <button
-            className="luxury-hero-btn luxury-hero-btn-secondary"
-            onClick={() => router.push(`/${locale}/products-services`)}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide text-black">
-                {t("home.products.viewProductsPage")}
-              </span>
-              <ArrowRight className="w-5 h-5 text-black transition-transform duration-500 group-hover:translate-x-1" />
-            </span>
-            <div className="luxury-btn-border"></div>
-            <div className="luxury-btn-glow-secondary"></div>
-          </button>
         </div>
+
       </div>
     </section>
   );
