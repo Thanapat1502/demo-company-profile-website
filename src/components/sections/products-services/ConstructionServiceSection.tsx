@@ -51,20 +51,20 @@ export default function ConstructionServiceSection({
   const galleryImages = galleryContent?.images_url || [];
 
   return (
-    <section className=" py-8 sm:py-12 bg-white">
+    <section id='gas-station' className=" py-8 sm:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
-          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-2 lg:order-1">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-4 order-2 lg:order-1">
             {/* Section Label - Matching ServicesSection style */}
-            <div className="inline-flex items-center gap-2 sm:gap-3">
+            {/* <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
+              <span className="font-bold tracking-wider uppercase text-xl sm:text-md text-[var(--primary-blue)]">
                 {t("services.construction.sectionLabel")}
               </span>
-            </div>
+            </div> */}
 
             {/* Main Heading - Strong & Minimal Style */}
-            <div className="flex items-start gap-3 sm:gap-4 lg:gap-6">
+            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
               <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center flex-shrink-0">
                 <Building2
                   size={24}
@@ -83,7 +83,7 @@ export default function ConstructionServiceSection({
             </div>
 
             {/* Content - Clean Typography */}
-            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <p>{serviceDescription}</p>
 
               <p>{t("services.construction.experienceText")}</p>
@@ -142,7 +142,7 @@ export default function ConstructionServiceSection({
                 <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gray-100 flex items-center justify-center shadow-xl">
                   <div className="text-center text-gray-500">
                     <Factory className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4" />
-                    <p className="text-sm sm:text-base lg:text-lg">
+                    <p className="text-md sm:text-base lg:text-lg">
                       {t("services.construction.placeholderText")}
                     </p>
                   </div>

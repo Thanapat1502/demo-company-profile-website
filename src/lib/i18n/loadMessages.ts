@@ -21,7 +21,7 @@ const translationCache = new Map<string, Messages>();
  */
 async function createSupabaseClient() {
   const cookieStore = await cookies();
-  
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -54,15 +54,25 @@ function flatKeysToNested(flatObject: Record<string, string>): Messages {
   const nested: Messages = {};
 
   Object.entries(flatObject).forEach(([key, value]) => {
-    const keys = key.split('.');
+    const keys = key.split(".");
     let current = nested;
 
     // Navigate/create the nested structure
     for (let i = 0; i < keys.length - 1; i++) {
       const currentKey = keys[i];
-      if (!(currentKey in current)) {
+
+      // Check if the current key exists and is not an object
+      if (currentKey in current) {
+        // If it's a string, we need to convert it to an object
+        // but preserve the original value under a special key
+        if (typeof current[currentKey] === "string") {
+          const originalValue = current[currentKey];
+          current[currentKey] = { _value: originalValue };
+        }
+      } else {
         current[currentKey] = {};
       }
+
       current = current[currentKey];
     }
 
@@ -87,12 +97,12 @@ export async function loadMessages(locale: string): Promise<Messages> {
 
   try {
     const supabase = await createSupabaseClient();
-    
+
     // Fetch all translations for the specified locale
     const { data: labels, error } = await supabase
-      .from('web_labels')
-      .select('key, value')
-      .eq('locale', locale);
+      .from("web_labels")
+      .select("key, value")
+      .eq("locale", locale);
 
     if (error) {
       console.error(`Error fetching translations for locale ${locale}:`, error);
@@ -119,7 +129,6 @@ export async function loadMessages(locale: string): Promise<Messages> {
 
     console.log(`Loaded ${labels.length} translations for locale ${locale}`);
     return nestedTranslations;
-
   } catch (error) {
     console.error(`Failed to load translations for locale ${locale}:`, error);
     // Return empty object as fallback
@@ -143,7 +152,7 @@ export function clearTranslationCache(locale?: string) {
  * Useful for warming up the cache
  */
 export async function preloadAllTranslations(locales: string[]) {
-  const promises = locales.map(locale => loadMessages(locale));
+  const promises = locales.map((locale) => loadMessages(locale));
   await Promise.all(promises);
-  console.log(`Preloaded translations for locales: ${locales.join(', ')}`);
+  console.log(`Preloaded translations for locales: ${locales.join(", ")}`);
 }

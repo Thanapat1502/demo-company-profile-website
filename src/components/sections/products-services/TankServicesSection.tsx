@@ -66,10 +66,10 @@ export default function TankServicesSection({
     "- Gallery content found:",
     galleryContent
       ? {
-          id: galleryContent.id,
-          type: galleryContent.type,
-          imageCount: galleryContent.images_url?.length,
-        }
+        id: galleryContent.id,
+        type: galleryContent.type,
+        imageCount: galleryContent.images_url?.length,
+      }
       : null
   );
   console.log("- Gallery images count:", galleryImages.length);
@@ -102,17 +102,17 @@ export default function TankServicesSection({
             )}
           </div>
 
-          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-2 lg:order-1">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-4 order-2 lg:order-1">
             {/* Section Label - Matching ServicesSection style */}
-            <div className="inline-flex items-center gap-2 sm:gap-3">
+            {/* <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
+              <span className="font-bold tracking-wider uppercase text-md sm:text-md text-[var(--primary-blue)]">
                 บริการถังน้ำมัน
               </span>
-            </div>
+            </div> */}
 
             {/* Main Heading - Strong & Minimal Style */}
-            <div className="flex items-start gap-3 sm:gap-4 lg:gap-6">
+            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
               <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center flex-shrink-0">
                 <Cog
                   size={24}
@@ -131,12 +131,12 @@ export default function TankServicesSection({
             </div>
 
             {/* Content - Clean Typography */}
-            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <div className="bg-[var(--primary-blue)]/10 p-4 sm:p-6 border-l-4 border-[var(--primary-blue)]">
                 <p className="font-semibold text-[var(--primary-blue)] text-base sm:text-lg lg:text-xl mb-3 sm:mb-4 tracking-wide break-words">
                   {t("services.tankServices.companyName")}
                 </p>
-                <ol className="space-y-2 text-gray-700 text-sm sm:text-base">
+                <ol className="space-y-2 text-gray-700 text-md sm:text-base">
                   <li>1. งานตรวจสอบการติดตั้งถัง PERMATANK</li>
                   <li>2. งานติดตั้งระบบท่อ NUPI-UPP-KPS</li>
                   <li>3. งานติดตั้ง TANK SUMP</li>

@@ -43,15 +43,15 @@ export default function ProductsSection({
   return (
     <section className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           {/* Section Label - Matching ServicesSection style */}
-          <div className="inline-flex items-center gap-3 mb-8">
+          {/* <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
               {t("services.products.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-          </div>
+          </div> */}
 
           {/* Main Heading - Strong & Minimal Style */}
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">

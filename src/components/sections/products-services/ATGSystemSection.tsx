@@ -58,7 +58,7 @@ export default function ATGSystemSection({
   const videoUrl = videoContent?.video_url;
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50">
+    <section id='atg-system' className="py-8 sm:py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Video Section - Using YouTubeEmbed component */}
@@ -77,17 +77,17 @@ export default function ATGSystemSection({
             )}
           </div>
 
-          <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-2 lg:order-2">
+          <div className="space-y-4 sm:space-y-6 lg:space-y-4 order-2 lg:order-2">
             {/* Section Label - Matching ServicesSection style */}
-            <div className="inline-flex items-center gap-2 sm:gap-3">
+            {/* <div className="inline-flex items-center gap-2 sm:gap-3">
               <div className="w-8 sm:w-12 h-px bg-[var(--primary-blue)]"></div>
-              <span className="font-bold tracking-wider uppercase text-xs sm:text-sm text-[var(--primary-blue)]">
+              <span className="font-bold tracking-wider uppercase text-md sm:text-md text-[var(--primary-blue)]">
                 ระบบ ATG
               </span>
-            </div>
+            </div> */}
 
             {/* Main Heading - Strong & Minimal Style */}
-            <div className="flex items-start gap-3 sm:gap-4 lg:gap-6">
+            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
               <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-[var(--primary-blue)]/10 flex items-center justify-center flex-shrink-0">
                 <Cog
                   size={24}
@@ -105,7 +105,7 @@ export default function ATGSystemSection({
               <div className="absolute w-16 sm:w-20 lg:w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
             </div>
 
-            <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+            <div className="space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
               <p>
                 {`
                 เป็นตัวแทนจำหน่ายและติดตั้งระบบวัดน้ำมันอัตโนมัติภายในถังน้ำมัน
