@@ -13,6 +13,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { Globe, ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { useScrollToSection } from "@/hooks/useScrollToSection";
 
 interface NavItem {
   labelKey: string;
@@ -29,6 +30,7 @@ const navigationItems: NavItem[] = [
       { labelKey: "navigation.company.about", href: "/pds-group" },
       { labelKey: "navigation.company.history", href: "/pds-group/history" },
       { labelKey: "navigation.company.executive", href: "/pds-group/executive-team" },
+      { labelKey: "navigation.company.executiveMessage", href: "/pds-group/executive-team#executive-message" },
       { labelKey: "navigation.company.mission", href: "/pds-group/mission-commitment" },
     ]
   },
@@ -39,6 +41,8 @@ const navigationItems: NavItem[] = [
       { labelKey: "navigation.services.permatank", href: "/products-services#permatank" },
       { labelKey: "navigation.services.pipeInstallation", href: "/products-services#pipe-installation" },
       { labelKey: "navigation.services.atgSystem", href: "/products-services#atg-system" },
+      { labelKey: "navigation.services.fuelServices", href: "/products-services#fuel-services" },
+      { labelKey: "navigation.services.ourProducts", href: "/products-services#our-products" },
     ]
   },
   {
@@ -61,6 +65,7 @@ export default function MainNavbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { navigateToSection } = useScrollToSection();
 
   // Safe translation function that handles both regular and nested keys
   const getTranslation = (key: string) => {
@@ -259,10 +264,10 @@ export default function MainNavbar() {
                       }`}
                     style={{ zIndex: 9999 }}>
                     {item.submenu.map((subItem, subIndex) => (
-                      <Link
+                      <button
                         key={subItem.href}
-                        href={`/${locale}${subItem.href}`}
-                        className="submenu-item-hover block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-all duration-200 border-b border-gray-100 last:border-b-0"
+                        onClick={() => navigateToSection(`/${locale}${subItem.href}`)}
+                        className="submenu-item-hover block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-all duration-200 border-b border-gray-100 last:border-b-0"
                         style={{
                           animationDelay: `${subIndex * 50}ms`,
                           animation: activeSubmenu === item.labelKey
@@ -270,13 +275,13 @@ export default function MainNavbar() {
                             : 'none'
                         }}>
                         <span className="text-sm font-medium">{getTranslation(subItem.labelKey)}</span>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </div>
               ) : (
-                <Link
-                  href={`/${locale}${item.href}`}
+                <button
+                  onClick={() => navigateToSection(`/${locale}${item.href}`)}
                   className={`relative font-medium transition-all duration-700 ease-out rounded-full group hover:scale-105 ${isAtTop
                     ? "text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 text-base lg:px-6 lg:py-3 lg:text-lg"
                     : "text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 text-sm lg:px-4 lg:text-base"
@@ -297,7 +302,7 @@ export default function MainNavbar() {
                       ? "bg-gradient-to-r from-white/5 to-white/10 shadow-lg shadow-white/20"
                       : "bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg shadow-blue-200/50"
                       }`}></div>
-                </Link>
+                </button>
               )}
             </NavbarItem>
           ))}
@@ -451,11 +456,13 @@ export default function MainNavbar() {
                             : 'max-h-0 opacity-0'
                             }`}>
                             {item.submenu.map((subItem, subIndex) => (
-                              <Link
+                              <button
                                 key={subItem.href}
-                                href={`/${locale}${subItem.href}`}
-                                className="block pl-12 pr-6 py-3 text-gray-600 hover:text-[var(--primary-blue)] hover:bg-gray-50 transition-all duration-200 relative"
-                                onClick={handleCloseMenu}
+                                onClick={() => {
+                                  navigateToSection(`/${locale}${subItem.href}`);
+                                  handleCloseMenu();
+                                }}
+                                className="block w-full text-left pl-12 pr-6 py-3 text-gray-600 hover:text-[var(--primary-blue)] hover:bg-gray-50 transition-all duration-200 relative"
                                 style={{
                                   animationDelay: `${subIndex * 50}ms`,
                                 }}>
@@ -463,15 +470,17 @@ export default function MainNavbar() {
 
                                 {/* Submenu active indicator */}
                                 <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[var(--primary-blue)] opacity-0 hover:opacity-100 transition-all duration-300"></div>
-                              </Link>
+                              </button>
                             ))}
                           </div>
                         </div>
                       ) : (
-                        <Link
-                          href={`/${locale}${item.href}`}
-                          className="group flex items-center justify-between px-6 py-4 text-gray-700 hover:text-[var(--primary-blue)] hover:bg-gray-50 transition-all duration-300 relative"
-                          onClick={handleCloseMenu}>
+                        <button
+                          onClick={() => {
+                            navigateToSection(`/${locale}${item.href}`);
+                            handleCloseMenu();
+                          }}
+                          className="group flex items-center justify-between w-full px-6 py-4 text-gray-700 hover:text-[var(--primary-blue)] hover:bg-gray-50 transition-all duration-300 relative">
                           <span className="text-lg font-medium">
                             {getTranslation(item.labelKey)}
                           </span>
@@ -483,7 +492,7 @@ export default function MainNavbar() {
 
                           {/* Active indicator */}
                           <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--primary-blue)] opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                        </Link>
+                        </button>
                       )}
                     </div>
                   ))}

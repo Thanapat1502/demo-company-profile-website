@@ -75,7 +75,7 @@ export default function TankServicesSection({
   console.log("- Gallery images count:", galleryImages.length);
 
   return (
-    <section className="py-8 sm:py-12 bg-white">
+    <section id='fuel-services' className="py-8 sm:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Content Display - Gallery */}

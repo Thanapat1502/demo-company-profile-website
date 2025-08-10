@@ -47,7 +47,7 @@ export default function ClientExecutiveTeamPage({
   return (
     <>
       {/* Sub Navigation */}
-      <section className="py-16 bg-white border-b border-gray-200">
+      {/* <section className="py-16 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             {subPages.map((page) => (
@@ -66,7 +66,7 @@ export default function ClientExecutiveTeamPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Executive Team Grid */}
       <section className="section-minimal mx-8">

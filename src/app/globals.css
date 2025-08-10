@@ -688,9 +688,20 @@ html {
   margin-top: 0; /* No initial overlap - only when scrolling */
 }
 
-/* Smooth scroll behavior */
+/* Smooth scroll behavior with navbar offset */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 120px; /* Maximum navbar height + extra padding */
+}
+
+/* Ensure smooth scrolling for all anchor links */
+a[href*="#"]:not([href="#"]) {
+  scroll-behavior: smooth;
+}
+
+/* Custom scroll offset for sections */
+section[id], div[id], h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  scroll-margin-top: 120px;
 }
 
 /* Parallax container optimization */

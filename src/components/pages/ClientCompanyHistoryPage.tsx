@@ -1,20 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import {
-  History,
-  Building,
-  Users2,
-  Target,
-  Factory,
-  Truck,
-} from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
+import ImageSkeleton from "@/components/ui/ImageSkeleton";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
 import { useContentStore } from "@/store/zustand/contentStore";
-import Image from "next/image";
-import ImageSkeleton from "@/components/ui/ImageSkeleton";
+import {
+  Building,
+  History,
+  Target,
+  Users2
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 interface ClientCompanyHistoryPageProps {
   locale: string;
@@ -73,7 +69,7 @@ export default function ClientCompanyHistoryPage({
 
   return (
     <>
-      <section className="py-16 bg-white border-b border-gray-200">
+      {/* <section className="py-16 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             {subPages.map((page) => (
@@ -92,7 +88,7 @@ export default function ClientCompanyHistoryPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Company Origin Section */}
       <section className="section-minimal bg-gray-50">
@@ -126,9 +122,9 @@ export default function ClientCompanyHistoryPage({
           <div className="grid lg:grid-cols-2 gap-16 items-start mb-0">
             <div className="space-y-8">
               <div className="flex items-center mb-6">
-                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                {/* <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
                   2507
-                </div>
+                </div> */}
                 <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
                     {t("company.history.beginning.title")}
@@ -191,9 +187,9 @@ export default function ClientCompanyHistoryPage({
 
             <div className="space-y-8 order-1 lg:order-2">
               <div className="flex items-center mb-6">
-                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                {/* <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
                   2520
-                </div>
+                </div> */}
                 <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
                     {t("company.history.expansion.title")}
@@ -217,12 +213,12 @@ export default function ClientCompanyHistoryPage({
       {/* Product Development and Vision Section */}
       <section className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
+            <div className="space-y-8 md:col-span-2">
               <div className="flex items-center mb-6">
-                <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
+                {/* <div className="w-20 h-20 bg-[var(--primary-blue)] text-white flex items-center justify-center font-bold text-xl mr-6">
                   2540
-                </div>
+                </div> */}
                 <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
                     {t("company.history.innovation.title")}
@@ -241,12 +237,12 @@ export default function ClientCompanyHistoryPage({
             </div>
 
             <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-100 shadow-lg">
-              <div className="relative w-full h-80">
+              <div className="relative w-full">
                 {gallery3Images.length > 0 ? (
                   <MinimalCarousel
                     images={gallery3Images}
                     alt={t("company.history.innovation.imageAlt")}
-                    height="320px"
+                    aspectRatio="4/3"
                     showNavigation={true}
                     showIndicators={true}
                     autoPlay={true}
@@ -256,6 +252,50 @@ export default function ClientCompanyHistoryPage({
                 ) : (
                   <ImageSkeleton />
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Section */}
+      <section className="section-minimal bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start mb-0">
+            {/* Second Carousel Gallery */}
+            <div className="relative order-2 lg:order-1">
+              {gallery2Images.length > 0 ? (
+                <MinimalCarousel
+                  images={gallery2Images}
+                  alt={t("company.history.expansion.imageAlt")}
+                  aspectRatio="4/3"
+                  showNavigation={true}
+                  showIndicators={true}
+                  autoPlay={true}
+                  interval={5000}
+                  className="shadow-lg"
+                />
+              ) : (
+                <ImageSkeleton />
+              )}
+            </div>
+
+            <div className="space-y-8 md:col-span-2 order-1 lg:order-2">
+              <div className="flex items-center mb-6">
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                    {t("company.history.service.title")}
+                  </h3>
+                  <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
+                </div>
+              </div>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  {t("company.history.service.description1")}
+                </p>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {t("company.history.service.description2")}
+                </p>
               </div>
             </div>
           </div>

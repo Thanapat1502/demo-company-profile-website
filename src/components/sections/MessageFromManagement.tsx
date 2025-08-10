@@ -43,11 +43,11 @@ export default function MessageFromManagement({
   const currentMessages = locale === "th" ? messages.th : messages.en;
 
   return (
-    <section className={`py-8 lg:py-12 bg-gray-50 ${className}`}>
+    <section id='executive-message' className={`py-8 lg:py-12 bg-gray-50 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-gray-900 mb-6 tracking-tight">
             {currentSubtitle}
           </h2>
 
@@ -58,7 +58,7 @@ export default function MessageFromManagement({
 
         {/* Content Section */}
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white border border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-500 overflow-hidden">
+          <div className="bg-white md:border border-gray-100 md:shadow-lg hover:shadow-xl transition-shadow duration-500 overflow-hidden">
             <div className="grid md:grid-cols-5 gap-0">
               {/* Managing Director Image */}
               <div className="md:col-span-2 relative group flex items-start pt-0 lg:pt-12 xl:pt-16">
@@ -83,7 +83,7 @@ export default function MessageFromManagement({
               </div>
 
               {/* Message Content */}
-              <div className="md:col-span-3 p-8 lg:p-12 xl:p-16 flex flex-col justify-center relative">
+              <div className="md:col-span-3 p-4 lg:p-12 xl:p-16 flex flex-col justify-center relative">
                 {/* Background Pattern */}
                 <div className="absolute top-8 right-8 w-32 h-32 opacity-5">
                   <div className="w-full h-full bg-[var(--primary-blue)] transform rotate-45"></div>
@@ -126,7 +126,7 @@ export default function MessageFromManagement({
                         }
                       </p> */}
                     </div>
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="hidden md:flex flex-col items-center gap-2">
                       <div className="w-20 h-px bg-[var(--primary-blue)]"></div>
                       <div className="w-12 h-px bg-[var(--primary-blue)] opacity-50"></div>
                     </div>

@@ -41,7 +41,7 @@ export default function ProductsSection({
   }
 
   return (
-    <section className="section-minimal bg-white">
+    <section id='our-products' className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           {/* Section Label - Matching ServicesSection style */}
@@ -69,7 +69,7 @@ export default function ProductsSection({
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
           {displayedProducts.map((product, index) => (
             <ProductCard
               key={product.id}

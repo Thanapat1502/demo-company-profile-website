@@ -8,7 +8,7 @@ import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 
 interface Props {
   product: ServiceType | ProductType;
-  handleProductClick: () => void;
+  handleProductClick?: () => void; // Optional for SSR compatibility
   locale?: string; // Optional prop, will use useLocale if not provided
 }
 
@@ -27,7 +27,7 @@ export const ProductCard: React.FC<Props> = ({
 
   return (
     <div
-      className={`relative aspect-square overflow-hidden bg-gray-100 shadow-lg transition-all duration-500 cursor-pointer group`}
+      className={`relative aspect-square overflow-hidden bg-gray-100 shadow-lg transition-all duration-500 ${handleProductClick ? 'cursor-pointer' : ''} group`}
       onClick={handleProductClick}>
       {/* Product Image */}
       <Image

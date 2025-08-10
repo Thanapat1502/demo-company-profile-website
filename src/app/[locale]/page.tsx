@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import MainLayout from "@/components/layout/MainLayout";
 import HeroSection from "@/components/sections/home/HeroSection";
-import ClientHomePage from "@/components/pages/ClientHomePage";
+import ServerHomePage from "@/components/pages/ServerHomePage";
 import { getHeroImageById } from "@/lib/hero-utils";
 import { generateSEOMetadata, getPageSEOConfig } from "@/lib/seo/metadata";
 import StructuredData from "@/components/seo/StructuredData";
+import { fetchHomePageDataSSR } from "@/lib/server/dataFetchers";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -29,8 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Home({ params }: Props) {
   const { locale } = await params;
 
-  // Fetch hero images server-side
-  const heroImages = await getHeroImageById("HOME");
+  // Fetch all data server-side
+  const [heroImages, homePageData] = await Promise.all([
+    getHeroImageById("HOME"),
+    fetchHomePageDataSSR(),
+  ]);
 
   return (
     <MainLayout>
@@ -51,7 +55,13 @@ export default async function Home({ params }: Props) {
         }}
       />
       <HeroSection heroImages={heroImages} />
-      <ClientHomePage locale={locale} />
+      <ServerHomePage
+        locale={locale}
+        services={homePageData.services}
+        products={homePageData.products}
+        content={homePageData.content}
+        partners={homePageData.partners}
+      />
     </MainLayout>
   );
 }

@@ -5,6 +5,7 @@ import { Users, AlertCircle, RefreshCw } from "lucide-react";
 import { useExecutiveStore } from "@/store/zustand/executiveStore";
 import { getLoadingText } from "@/utils/bilingual";
 import ExecutiveCard from "./ExecutiveCard";
+import { useTranslations } from "next-intl";
 
 interface ExecutiveGridProps {
   locale: string;
@@ -19,6 +20,7 @@ export default function ExecutiveGrid({
 }: ExecutiveGridProps) {
   const { executiveMembers, loading, error, fetchExecutiveMembers } =
     useExecutiveStore();
+  const t = useTranslations();
 
   useEffect(() => {
     if (!executiveMembers.length) {
@@ -64,55 +66,67 @@ export default function ExecutiveGrid({
     const remainingItems = executiveMembers.slice(5);
 
     return (
-      <div className={`space-y-6 ${className}`}>
-        {/* First row: 2 columns centered */}
-        {firstRowItems.length > 0 && (
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl w-full">
-              {firstRowItems.map((executive, index) => (
+      <div>
+        {/* Header Section */}
+        <div className="text-center mb-8" >
+          <h2 className="text-4xl lg:text-5xl font-semibold text-gray-900 mb-6 tracking-tight">
+            {t('company.navigation.team')}
+          </h2>
+
+          <div className="relative flex items-center justify-center mb-8">
+            <div className="w-24 h-px bg-[var(--primary-blue)]"></div>
+          </div>
+        </div>
+        <div className={`space-y-6 ${className}`}>
+          {/* First row: 2 columns centered */}
+          {firstRowItems.length > 0 && (
+            <div className="flex justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl w-full">
+                {firstRowItems.map((executive, index) => (
+                  <ExecutiveCard
+                    key={executive.id}
+                    executive={executive}
+                    locale={locale}
+                    index={index}
+                    variant={variant}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Second row: 3 columns centered */}
+          {secondRowItems.length > 0 && (
+            <div className="flex justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
+                {secondRowItems.map((executive, index) => (
+                  <ExecutiveCard
+                    key={executive.id}
+                    executive={executive}
+                    locale={locale}
+                    index={index + 2}
+                    variant={variant}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Remaining items: regular grid */}
+          {remainingItems.length > 0 && (
+            <div className={getGridClass()}>
+              {remainingItems.map((executive, index) => (
                 <ExecutiveCard
                   key={executive.id}
                   executive={executive}
                   locale={locale}
-                  index={index}
+                  index={index + 5}
                   variant={variant}
                 />
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Second row: 3 columns centered */}
-        {secondRowItems.length > 0 && (
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
-              {secondRowItems.map((executive, index) => (
-                <ExecutiveCard
-                  key={executive.id}
-                  executive={executive}
-                  locale={locale}
-                  index={index + 2}
-                  variant={variant}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Remaining items: regular grid */}
-        {remainingItems.length > 0 && (
-          <div className={getGridClass()}>
-            {remainingItems.map((executive, index) => (
-              <ExecutiveCard
-                key={executive.id}
-                executive={executive}
-                locale={locale}
-                index={index + 5}
-                variant={variant}
-              />
-            ))}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   };
