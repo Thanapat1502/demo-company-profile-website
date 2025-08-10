@@ -49,7 +49,7 @@ export default function PartnersSection({
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8">
           {partners.map((partner) => (
             <div
               key={partner.id}

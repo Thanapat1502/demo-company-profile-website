@@ -129,15 +129,27 @@ export const ReferenceManager = () => {
       // Handle thumbnail upload
       if (data.thumbnail && typeof data.thumbnail === "object") {
         formData.append("thumbnail_file", data.thumbnail);
+      } else if (data.thumbnail && typeof data.thumbnail === "string") {
+        // Preserve existing thumbnail URL when editing
+        formData.append("thumbnail", data.thumbnail);
       }
 
       // Handle gallery uploads
       if (data.galleries && data.galleries.length > 0) {
+        // Separate new files from existing URLs
+        const existingGalleries: string[] = [];
         data.galleries.forEach((file) => {
           if (typeof file === "object") {
             formData.append("galleries", file);
+          } else if (typeof file === "string") {
+            existingGalleries.push(file);
           }
         });
+
+        // Send existing gallery URLs as JSON
+        if (existingGalleries.length > 0) {
+          formData.append("galleries_json", JSON.stringify(existingGalleries));
+        }
       }
 
       if (editingId) {
@@ -199,9 +211,9 @@ export const ReferenceManager = () => {
       location_en: item.location_en,
       type_th: item.type_th,
       type_en: item.type_en,
-      open_at: item.open_at.split("T")[0], // Convert to date input format
-      thumbnail: null, // Reset for new upload
-      galleries: item.galleries || [],
+      open_at: item.open_at ? item.open_at.split("T")[0] : "", // Convert to date input format
+      thumbnail: item.thumbnail || null, // Load existing thumbnail URL
+      galleries: item.galleries || [], // Load existing gallery URLs
     });
   };
 
@@ -276,11 +288,10 @@ export const ReferenceManager = () => {
                 resetReferenceForm();
                 resetOverseaForm();
               }}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "reference"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}>
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === "reference"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}>
               <div className="flex items-center gap-2">
                 <Building size={16} />
                 Reference Projects
@@ -292,11 +303,10 @@ export const ReferenceManager = () => {
                 resetReferenceForm();
                 resetOverseaForm();
               }}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "oversea"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}>
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === "oversea"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}>
               <div className="flex items-center gap-2">
                 <Globe size={16} />
                 Oversea Projects
@@ -617,6 +627,11 @@ export const ReferenceManager = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Thumbnail Image
                 </label>
+                {isEditing && (
+                  <p className="text-sm text-gray-600 mb-3">
+                    Current thumbnail will be preserved unless you upload a new one.
+                  </p>
+                )}
                 <Controller
                   name="thumbnail"
                   control={referenceForm.control}
@@ -643,11 +658,15 @@ export const ReferenceManager = () => {
                       </div>
 
                       {/* Thumbnail Preview */}
-                      {value && typeof value === "object" && (
+                      {value && (
                         <div className="space-y-3">
                           <div className="relative">
                             <img
-                              src={URL.createObjectURL(value)}
+                              src={
+                                typeof value === "object"
+                                  ? URL.createObjectURL(value)
+                                  : value
+                              }
                               alt="Thumbnail preview"
                               className="w-full h-48 object-cover rounded-lg border"
                             />
@@ -658,16 +677,30 @@ export const ReferenceManager = () => {
                               <X size={16} />
                             </button>
                           </div>
-                          <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                            <div className="flex-1">
-                              <p className="text-sm text-blue-800 font-medium">
-                                {value.name}
-                              </p>
-                              <p className="text-xs text-blue-600">
-                                {(value.size / 1024 / 1024).toFixed(2)} MB
-                              </p>
+                          {typeof value === "object" && (
+                            <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                              <div className="flex-1">
+                                <p className="text-sm text-blue-800 font-medium">
+                                  {value.name}
+                                </p>
+                                <p className="text-xs text-blue-600">
+                                  {(value.size / 1024 / 1024).toFixed(2)} MB
+                                </p>
+                              </div>
                             </div>
-                          </div>
+                          )}
+                          {typeof value === "string" && (
+                            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                              <div className="flex-1">
+                                <p className="text-sm text-green-800 font-medium">
+                                  Current Thumbnail
+                                </p>
+                                <p className="text-xs text-green-600">
+                                  {isEditing ? "Upload new image to replace" : "Existing image"}
+                                </p>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -680,6 +713,11 @@ export const ReferenceManager = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gallery Images (Optional)
                 </label>
+                {isEditing && (
+                  <p className="text-sm text-gray-600 mb-3">
+                    Existing images will be preserved. Add new images to expand the gallery.
+                  </p>
+                )}
                 <Controller
                   name="galleries"
                   control={referenceForm.control}
@@ -734,8 +772,13 @@ export const ReferenceManager = () => {
                                 <X size={12} />
                               </button>
                               {typeof file === "object" && (
-                                <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
-                                  {(file.size / 1024 / 1024).toFixed(1)}MB
+                                <div className="absolute bottom-1 left-1 bg-blue-500 bg-opacity-90 text-white text-xs px-2 py-1 rounded">
+                                  NEW - {(file.size / 1024 / 1024).toFixed(1)}MB
+                                </div>
+                              )}
+                              {typeof file === "string" && (
+                                <div className="absolute bottom-1 left-1 bg-green-500 bg-opacity-90 text-white text-xs px-2 py-1 rounded">
+                                  EXISTING
                                 </div>
                               )}
                             </div>

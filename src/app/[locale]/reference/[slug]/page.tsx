@@ -21,6 +21,7 @@ import {
 } from "@/utils/bilingual";
 import ImageModal from "@/components/ui/ImageModal";
 import StatsSection from "@/components/sections/home/StatsSection";
+import PolicySection from "@/components/sections/pds-group/PolicySection";
 
 export default function ProjectDetailPage({
   params,
@@ -229,17 +230,16 @@ export default function ProjectDetailPage({
         <section className="bg-gray-50 py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {projectImages.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                 {projectImages.map((image: string, index: number) => (
                   <div
                     key={index}
-                    className="group cursor-pointer relative overflow-hidden bg-gray-100 aspect-square hover:shadow-lg transition-all duration-300 rounded-lg"
+                    className="group cursor-pointer relative overflow-hidden bg-gray-100 aspect-square hover:shadow-lg transition-all duration-300"
                     onClick={() => setSelectedImage(index)}>
                     <Image
                       src={image}
-                      alt={`${projectName} - ${
-                        locale === "th" ? "รูปที่" : "Image"
-                      } ${index + 1}`}
+                      alt={`${projectName} - ${locale === "th" ? "รูปที่" : "Image"
+                        } ${index + 1}`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -268,7 +268,8 @@ export default function ProjectDetailPage({
             )}
           </div>
         </section>
-        <StatsSection />
+        {/* <PolicySection /> */}
+        {/* <StatsSection /> */}
 
         {/* Image Modal */}
         <ImageModal

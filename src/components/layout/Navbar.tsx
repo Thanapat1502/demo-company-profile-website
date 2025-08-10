@@ -142,7 +142,7 @@ export default function MainNavbar() {
           ? "bg-transparent py-6"
           : "bg-white shadow-md border-b border-gray-200"
           }`}
-        maxWidth='2xl'
+        maxWidth='xl'
         height={isAtTop ? "100px" : "80px"}
         isBlurred={false}
         style={{

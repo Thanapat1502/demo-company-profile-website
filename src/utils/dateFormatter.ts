@@ -10,10 +10,16 @@
  * @returns Formatted date string or "--:--" if invalid
  */
 export const formatSupabaseDate = (
-  dateString: string,
+  dateString: string | null | undefined,
   locale: string = "en-US"
 ): string => {
   try {
+    // Check for null, undefined, or empty string
+    if (!dateString || typeof dateString !== "string") {
+      console.warn("Invalid date string:", dateString);
+      return "--:--";
+    }
+
     // Only handle YYYY-MM-DDTHH:mm:ss+00:00 format
     // If not matching, fallback gracefully
     const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\+\d{2}:\d{2}|Z)$/;
@@ -49,7 +55,9 @@ export const formatSupabaseDate = (
  * @param dateString - The date string from Supabase
  * @returns Formatted date string in Thai locale or "--:--" if invalid
  */
-export const formatDateThai = (dateString: string): string => {
+export const formatDateThai = (
+  dateString: string | null | undefined
+): string => {
   return formatSupabaseDate(dateString, "th-TH");
 };
 
@@ -58,7 +66,9 @@ export const formatDateThai = (dateString: string): string => {
  * @param dateString - The date string from Supabase
  * @returns Formatted date string in English locale or "--:--" if invalid
  */
-export const formatDateEnglish = (dateString: string): string => {
+export const formatDateEnglish = (
+  dateString: string | null | undefined
+): string => {
   return formatSupabaseDate(dateString, "en-US");
 };
 
@@ -69,7 +79,7 @@ export const formatDateEnglish = (dateString: string): string => {
  * @returns Formatted date string or "--:--" if invalid
  */
 export const formatDateByLocale = (
-  dateString: string,
+  dateString: string | null | undefined,
   locale: string
 ): string => {
   const localeCode = locale === "th" ? "th-TH" : "en-US";
@@ -81,8 +91,12 @@ export const formatDateByLocale = (
  * @param dateString - The date string to validate
  * @returns true if valid, false otherwise
  */
-export const isValidDate = (dateString: string): boolean => {
+export const isValidDate = (dateString: string | null | undefined): boolean => {
   try {
+    if (!dateString || typeof dateString !== "string") {
+      return false;
+    }
+
     let isoString = dateString;
 
     if (dateString.includes(" ") && !dateString.includes("T")) {
@@ -104,8 +118,12 @@ export const isValidDate = (dateString: string): boolean => {
  * @param dateString - The date string from Supabase
  * @returns ISO string or original string if already in ISO format
  */
-export const toISOString = (dateString: string): string => {
+export const toISOString = (dateString: string | null | undefined): string => {
   try {
+    if (!dateString || typeof dateString !== "string") {
+      return "";
+    }
+
     let isoString = dateString;
 
     if (dateString.includes(" ") && !dateString.includes("T")) {
@@ -117,6 +135,6 @@ export const toISOString = (dateString: string): string => {
 
     return isoString;
   } catch {
-    return dateString;
+    return dateString || "";
   }
 };

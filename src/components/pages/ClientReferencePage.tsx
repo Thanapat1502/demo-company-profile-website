@@ -68,14 +68,14 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
   return (
     <section id="projects-section" className="section-minimal bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-8">
+        <div className="text-center mb-8">
+          {/* <div className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
             <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
               {t("references.projects.sectionLabel")}
             </span>
             <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-          </div>
+          </div> */}
 
           <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 tracking-[0.02em] !leading-normal drop-shadow-sm">
             {t("references.projects.title")}
@@ -101,7 +101,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
         </div>
 
         {references.length === 0 && (
-          <div className="text-center py-16">
+          <div className="text-center py-8">
             <p className="text-gray-500">
               {t("references.projects.noProjects")}
             </p>

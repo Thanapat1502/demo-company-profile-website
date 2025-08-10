@@ -49,7 +49,7 @@ export default function ServicesSection({
     return (
       <section
         id="services"
-        className="relative min-h-screen bg-white services-elegant-texture overflow-hidden services-section-overlap">
+        className="relative bg-white services-elegant-texture overflow-hidden services-section-overlap">
         <div className="relative z-10 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center">
@@ -67,12 +67,12 @@ export default function ServicesSection({
   return (
     <section
       id="services"
-      className="relative min-h-screen services-elegant-texture overflow-hidden services-section-overlap bg-gradient-to-br from-gray-100 via-white to-gray-50 "
+      className="relative services-elegant-texture overflow-hidden services-section-overlap bg-gradient-to-br from-gray-100 via-white to-gray-50 "
       style={{
         transform: `translateY(${-scrollY * 0.3}px)`,
       }}>
       {/* Elegant texture background */}
-      <div className="absolute inset-0 opacity-5">
+      {/* <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-white to-gray-50"></div>
         <div
           className="absolute inset-0"
@@ -81,10 +81,10 @@ export default function ServicesSection({
                            radial-gradient(circle at 75% 75%, ${`#059669`}05 0%, transparent 50%)`,
             transition: "background-image 1s ease-in-out",
           }}></div>
-      </div>
+      </div> */}
 
       {/* Main Content */}
-      <div className="relative z-10 py-20">
+      <div className="relative z-10 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           {/* Header */}
           {/* Ultra Minimal Luxury Header */}
@@ -97,13 +97,13 @@ export default function ServicesSection({
 
             {/* Clean Typography Focus */}
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-3 mb-8">
+              {/* <div className="inline-flex items-center gap-3 mb-8">
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
                 <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
                   {locale === "th" ? "บริการ" : "PRODUCTS"}
                 </span>
                 <div className="w-12 h-px bg-[var(--primary-blue)]"></div>
-              </div>
+              </div> */}
               {/* Luxury Title with Gradient */}
               <h2 className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm">
                 {t("home.services.title")}
@@ -127,7 +127,7 @@ export default function ServicesSection({
             {/* Featured Products Grid - Desktop / Carousel - Mobile */}
             <div className="space-y-8">
               {/* Responsive Grid - 2 columns on mobile, 2 on medium, 3 on large */}
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
                 {products.map((product, index) => (
                   <ProductCard
                     key={product.id}
@@ -165,11 +165,10 @@ export default function ServicesSection({
                       <button
                         key={index}
                         onClick={() => handleProductClick(index)}
-                        className={`w - 3 h - 3 rounded - full transition - all duration - 300 ${
-                          index === activeIndex
-                            ? "scale-125"
-                            : "hover:scale-110"
-                        }`}
+                        className={`w - 3 h - 3 rounded - full transition - all duration - 300 ${index === activeIndex
+                          ? "scale-125"
+                          : "hover:scale-110"
+                          }`}
                         style={{
                           backgroundColor:
                             index === activeIndex
