@@ -5,6 +5,18 @@ import HeroButtons from "@/components/ui/HeroButtons";
 import { getHeroImageById } from "@/lib/hero-utils";
 import ClientProductsServicesPage from "@/components/pages/ClientProductsServicesPage";
 
+// Enable ISR for localized content
+export const revalidate = 3600;
+export const dynamic = 'auto';
+
+// Generate static params for all locales
+export async function generateStaticParams() {
+  return [
+    { locale: 'th' },
+    { locale: 'en' },
+  ];
+}
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

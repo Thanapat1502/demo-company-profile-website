@@ -7,6 +7,9 @@
       "maxDuration": 30
     }
   },
+  "includeFiles": [
+    "messages/**/*.json"
+  ],
   "headers": [
     {
       "source": "/(.*)",

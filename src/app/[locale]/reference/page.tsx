@@ -7,6 +7,18 @@ import ClientReferencePage from "@/components/pages/ClientReferencePage";
 import { generateSEOMetadata, getPageSEOConfig } from "@/lib/seo/metadata";
 import StructuredData from "@/components/seo/StructuredData";
 
+// Enable ISR for localized content
+export const revalidate = 3600;
+export const dynamic = 'auto';
+
+// Generate static params for all locales
+export async function generateStaticParams() {
+  return [
+    { locale: 'th' },
+    { locale: 'en' },
+  ];
+}
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

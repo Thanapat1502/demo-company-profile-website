@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
   },
   // Enable standalone output for better performance
   output: "standalone",
+  // Force proper static generation for locale routes
+  trailingSlash: false,
+  // Ensure proper route matching
+  async rewrites() {
+    return [];
+  },
+
   turbopack: {
     rules: {
       "*.svg": {

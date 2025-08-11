@@ -7,6 +7,18 @@ import ServerMissionCommitmentPage from "@/components/pages/ServerMissionCommitm
 import PolicySection from "@/components/sections/pds-group/PolicySection";
 import ServerEnvironmentHealthDrugPolicy from "@/components/pages/ServerEnvironmentHealthDrugPolicy";
 
+// Enable ISR for localized content
+export const revalidate = 3600;
+export const dynamic = 'auto';
+
+// Generate static params for all locales
+export async function generateStaticParams() {
+  return [
+    { locale: 'th' },
+    { locale: 'en' },
+  ];
+}
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

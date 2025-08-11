@@ -100,37 +100,113 @@ function flatKeysToNested(flatObject: Record<string, string>): Messages {
 }
 
 /**
- * Load translations from JSON file
+ * Load translations from JSON file using dynamic import (works better in serverless)
  * Returns flattened key-value pairs
  */
 async function loadJsonTranslations(
   locale: string
 ): Promise<Record<string, string>> {
   try {
-    const filePath = path.join(process.cwd(), "messages", `${locale}.json`);
+    // First try dynamic import (works best in Vercel)
+    try {
+      const jsonModule = await import(`../../../messages/${locale}.json`);
+      const jsonData = jsonModule.default || jsonModule;
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      console.warn(`JSON translation file not found: ${filePath}`);
+      // Flatten the nested JSON structure
+      const flattened = flattenObject(jsonData);
+
+      console.log(
+        `📄 Successfully loaded ${
+          Object.keys(flattened).length
+        } translations from JSON module for locale ${locale}`
+      );
+      return flattened;
+    } catch {
+      console.warn(
+        `📄 Dynamic import failed for ${locale}, trying file system...`
+      );
+    }
+
+    // Fallback to file system approach
+    const possiblePaths = [
+      // Development path
+      path.join(process.cwd(), "messages", `${locale}.json`),
+      // Vercel production path (standalone build)
+      path.join(
+        process.cwd(),
+        ".next",
+        "standalone",
+        "messages",
+        `${locale}.json`
+      ),
+      // Alternative Vercel path
+      path.join("/var", "task", "messages", `${locale}.json`),
+      // Next.js build path
+      path.join(process.cwd(), ".next", "server", "messages", `${locale}.json`),
+      // Relative to current file
+      path.resolve(__dirname, "..", "..", "..", "messages", `${locale}.json`),
+      // Alternative relative path
+      path.resolve(__dirname, "..", "..", "messages", `${locale}.json`),
+      // Root relative path
+      path.resolve("/", "var", "task", "messages", `${locale}.json`),
+    ];
+
+    let filePath: string | null = null;
+    let fileContent: string | null = null;
+
+    // Try each path until we find the file
+    for (const tryPath of possiblePaths) {
+      try {
+        if (fs.existsSync(tryPath)) {
+          filePath = tryPath;
+          fileContent = fs.readFileSync(tryPath, "utf8");
+          break;
+        }
+      } catch {
+        // Continue to next path
+        continue;
+      }
+    }
+
+    if (!fileContent || !filePath) {
+      console.warn(
+        `📄 JSON translation file not found for locale ${locale}. Tried paths:`,
+        possiblePaths.map((p) => `\n  - ${p}`)
+      );
+
+      // Log current working directory and available files for debugging
+      console.log(`📄 Current working directory: ${process.cwd()}`);
+      try {
+        const messagesDir = path.join(process.cwd(), "messages");
+        if (fs.existsSync(messagesDir)) {
+          const files = fs.readdirSync(messagesDir);
+          console.log(`📄 Files in messages directory: ${files.join(", ")}`);
+        } else {
+          console.log(`📄 Messages directory does not exist: ${messagesDir}`);
+        }
+      } catch {
+        console.log(`📄 Could not read messages directory for debugging`);
+      }
+
       return {};
     }
 
-    const fileContent = fs.readFileSync(filePath, "utf8");
     const jsonData = JSON.parse(fileContent);
 
     // Flatten the nested JSON structure
     const flattened = flattenObject(jsonData);
 
     console.log(
-      `Loaded ${
+      `📄 Successfully loaded ${
         Object.keys(flattened).length
-      } translations from JSON file for locale ${locale}`
+      } translations from JSON file for locale ${locale} (${filePath})`
     );
     return flattened;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(
-      `Error loading JSON translations for locale ${locale}:`,
-      error
+      `📄 Error loading JSON translations for locale ${locale}:`,
+      errorMessage
     );
     return {};
   }
@@ -146,40 +222,62 @@ async function loadSupabaseTranslations(
   try {
     const supabase = createSupabaseClientForTranslations();
 
-    // Fetch all translations for the specified locale
-    const { data: labels, error } = await supabase
+    // Add timeout for production reliability
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("Supabase request timeout")), 10000); // 10 second timeout
+    });
+
+    // Fetch all translations for the specified locale with timeout
+    const fetchPromise = supabase
       .from("web_labels")
       .select("key, value")
-      .eq("locale", locale);
+      .eq("locale", locale)
+      .order("key");
+
+    const { data: labels, error } = await Promise.race([
+      fetchPromise,
+      timeoutPromise,
+    ]);
 
     if (error) {
       console.error(
-        `Error fetching Supabase translations for locale ${locale}:`,
-        error
+        `🗄️  Error fetching Supabase translations for locale ${locale}:`,
+        error.message || error
       );
       return {};
     }
 
     if (!labels || labels.length === 0) {
-      console.warn(`No Supabase translations found for locale ${locale}`);
+      console.warn(`🗄️  No Supabase translations found for locale ${locale}`);
       return {};
     }
 
     // Convert array of labels to flat object
     const flatTranslations: Record<string, string> = {};
     labels.forEach((label: { key: string; value: string }) => {
-      flatTranslations[label.key] = label.value;
+      if (label.key && label.value) {
+        flatTranslations[label.key] = label.value;
+      }
     });
 
     console.log(
-      `Loaded ${labels.length} translations from Supabase for locale ${locale}`
+      `🗄️  Successfully loaded ${labels.length} translations from Supabase for locale ${locale}`
     );
     return flatTranslations;
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(
-      `Failed to load Supabase translations for locale ${locale}:`,
-      error
+      `🗄️  Failed to load Supabase translations for locale ${locale}:`,
+      errorMessage
     );
+
+    // In production, don't throw - return empty object to allow JSON fallback
+    if (process.env.NODE_ENV === "production") {
+      console.log(
+        `🗄️  Production mode: continuing with JSON translations only for ${locale}`
+      );
+    }
+
     return {};
   }
 }
@@ -197,17 +295,51 @@ export async function loadMessages(locale: string): Promise<Messages> {
   }
 
   try {
-    // Load translations from both sources
-    const [jsonTranslations, supabaseTranslations] = await Promise.all([
+    // Load translations from both sources with individual error handling
+    const [jsonTranslations, supabaseTranslations] = await Promise.allSettled([
       loadJsonTranslations(locale),
       loadSupabaseTranslations(locale),
     ]);
 
-    // Merge translations: JSON first, then Supabase overrides
+    // Extract successful results with fallbacks
+    const jsonData =
+      jsonTranslations.status === "fulfilled" ? jsonTranslations.value : {};
+    const supabaseData =
+      supabaseTranslations.status === "fulfilled"
+        ? supabaseTranslations.value
+        : {};
+
+    // Log any failures for debugging
+    if (jsonTranslations.status === "rejected") {
+      console.warn(
+        `Failed to load JSON translations for ${locale}:`,
+        jsonTranslations.reason
+      );
+    }
+    if (supabaseTranslations.status === "rejected") {
+      console.warn(
+        `Failed to load Supabase translations for ${locale}:`,
+        supabaseTranslations.reason
+      );
+    }
+
+    // Merge translations: JSON first, then Supabase overrides (Server-API priority)
     const mergedTranslations = {
-      ...jsonTranslations,
-      ...supabaseTranslations,
+      ...jsonData,
+      ...supabaseData, // Supabase takes priority over JSON
     };
+
+    // Ensure we have at least some translations
+    if (Object.keys(mergedTranslations).length === 0) {
+      console.error(
+        `No translations loaded for locale ${locale}, using fallback`
+      );
+      // Try to load fallback locale (English) if current locale fails
+      if (locale !== "en") {
+        return await loadMessages("en");
+      }
+      return {}; // Last resort fallback
+    }
 
     // Convert flat keys to nested structure for next-intl
     const nestedTranslations = flatKeysToNested(mergedTranslations);
@@ -216,16 +348,40 @@ export async function loadMessages(locale: string): Promise<Messages> {
     translationCache.set(cacheKey, nestedTranslations);
 
     const totalCount = Object.keys(mergedTranslations).length;
-    const jsonCount = Object.keys(jsonTranslations).length;
-    const supabaseCount = Object.keys(supabaseTranslations).length;
+    const jsonCount = Object.keys(jsonData).length;
+    const supabaseCount = Object.keys(supabaseData).length;
+    const overrideCount = Object.keys(jsonData).filter(
+      (key) => key in supabaseData
+    ).length;
 
     console.log(
-      `Loaded ${totalCount} total translations for locale ${locale} (${jsonCount} from JSON, ${supabaseCount} from Supabase)`
+      `✅ Loaded ${totalCount} total translations for locale ${locale}:`,
+      `\n  📄 JSON: ${jsonCount} keys`,
+      `\n  🗄️  Supabase: ${supabaseCount} keys`,
+      `\n  🔄 Overrides: ${overrideCount} keys (Server-API priority)`
     );
+
     return nestedTranslations;
   } catch (error) {
-    console.error(`Failed to load translations for locale ${locale}:`, error);
-    // Return empty object as fallback
+    console.error(
+      `❌ Critical error loading translations for locale ${locale}:`,
+      error
+    );
+
+    // Try fallback to English if not already English
+    if (locale !== "en") {
+      console.log(`🔄 Falling back to English translations...`);
+      try {
+        return await loadMessages("en");
+      } catch (fallbackError) {
+        console.error(`❌ Fallback to English also failed:`, fallbackError);
+      }
+    }
+
+    // Last resort: return empty object
+    console.log(
+      `⚠️  Using empty translations as last resort for locale ${locale}`
+    );
     return {};
   }
 }
