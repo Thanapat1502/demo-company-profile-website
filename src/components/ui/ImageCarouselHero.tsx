@@ -81,22 +81,20 @@ export default function ImageCarouselHero({
           return (
             <div
               key={index}
-              className={`absolute inset-0 ${
-                isActive
-                  ? isFirstTime
-                    ? "luxury-image-entrance opacity-100 scale-105"
-                    : "opacity-100 scale-105 transition-all duration-2000 ease-out"
-                  : "opacity-0 scale-100 transition-all duration-2000 ease-out"
-              }`}>
+              className={`absolute inset-0 ${isActive
+                ? isFirstTime
+                  ? "luxury-image-entrance opacity-100 scale-105"
+                  : "opacity-100 scale-105 transition-all duration-2000 ease-out"
+                : "opacity-0 scale-100 transition-all duration-2000 ease-out"
+                }`}>
               <Image
                 src={image}
                 alt={`Hero image ${index + 1}`}
                 fill
-                className={`object-cover ${
-                  isActive && isFirstTime
-                    ? "luxury-image-zoom-entrance"
-                    : "transition-transform duration-[8000ms] ease-out"
-                }`}
+                className={`object-cover ${isActive && isFirstTime
+                  ? "luxury-image-zoom-entrance"
+                  : "transition-transform duration-[8000ms] ease-out"
+                  }`}
                 priority={index === 0}
                 quality={95}
                 style={{
@@ -113,12 +111,11 @@ export default function ImageCarouselHero({
 
       {/* Luxury Content Container */}
       <div
-        className={`relative z-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}>
+        className={`relative z-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
         <div className="max-w-5xl mx-auto">
           {/* Main Title with Luxury Animation */}
-          <h1 className="luxury-title-animation text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-8 leading-[0.85] tracking-tight">
+          <h1 className="luxury-title-animation text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-8 leading-relaxed tracking-tight">
             <span
               className="inline-block luxury-text-reveal"
               style={{ animationDelay: "0.2s" }}>
@@ -168,11 +165,10 @@ export default function ImageCarouselHero({
             <button
               key={index}
               onClick={() => handleImageSelect(index)}
-              className={`relative w-12 h-1 transition-all duration-500 ease-out ${
-                index === currentImageIndex
-                  ? "bg-white shadow-lg"
-                  : "bg-white/30 hover:bg-white/60"
-              }`}
+              className={`relative w-12 h-1 transition-all duration-500 ease-out ${index === currentImageIndex
+                ? "bg-white shadow-lg"
+                : "bg-white/30 hover:bg-white/60"
+                }`}
               aria-label={`Go to slide ${index + 1}`}>
               {index === currentImageIndex && (
                 <div className="absolute inset-0 bg-white animate-pulse"></div>
