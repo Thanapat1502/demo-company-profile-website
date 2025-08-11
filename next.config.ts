@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "rmzwbozxbepjfonhmgfv.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "rmzwbozxbepjfonhmgfv.supabase.co",
+        pathname: "/storage/v1/object/public/website-assets/**",
+      },
     ],
   },
   // Optimize caching for locale-specific pages

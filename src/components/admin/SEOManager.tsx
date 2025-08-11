@@ -461,7 +461,30 @@ function SEOPageModal({ isOpen, onClose, editingPage, onSave, isSubmitting }: SE
     handleImageUpload(file, type);
   };
 
-  const removeImage = (type: 'og' | 'twitter') => {
+  const removeImage = async (type: 'og' | 'twitter') => {
+    const currentImage = type === 'og' ? formData.og_image : formData.twitter_image;
+
+    // If there's an existing image, try to delete it from storage
+    if (currentImage && currentImage.includes('supabase')) {
+      try {
+        // Extract the file path from the Supabase URL
+        const url = new URL(currentImage);
+        const pathParts = url.pathname.split('/');
+        const bucketIndex = pathParts.findIndex(part => part === 'website-assets');
+        if (bucketIndex !== -1 && bucketIndex < pathParts.length - 1) {
+          const filePath = pathParts.slice(bucketIndex + 1).join('/');
+
+          await fetch(`/api/admin/upload?path=${encodeURIComponent(filePath)}`, {
+            method: 'DELETE',
+          });
+        }
+      } catch (error) {
+        console.error('Error deleting image:', error);
+        // Continue with removal even if delete fails
+      }
+    }
+
+    // Update form data and upload state
     if (type === 'og') {
       setFormData(prev => ({ ...prev, og_image: '' }));
       setOgImageUpload({ file: null, preview: null, uploading: false, progress: 0 });
