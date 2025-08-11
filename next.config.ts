@@ -25,13 +25,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optimize caching for locale-specific pages
+  // Optimize caching for locale-specific pages with ISR
   experimental: {
     staleTimes: {
-      dynamic: 30, // 30 seconds for dynamic pages
-      static: 180, // 3 minutes for static pages
+      dynamic: 30, // Allow some caching for dynamic pages with localized content
+      static: 3600, // 1 hour for static pages
     },
   },
+  // Enable standalone output for better performance
+  output: "standalone",
   turbopack: {
     rules: {
       "*.svg": {

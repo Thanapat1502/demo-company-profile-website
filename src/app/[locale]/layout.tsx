@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import { locales } from "@/i18n/request";
 import StructuredData from "@/components/seo/StructuredData";
 
+// Enable ISR for localized content with proper caching
+export const dynamic = 'auto'; // Allow dynamic rendering for localized content
+export const revalidate = 3600; // Revalidate every hour
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }

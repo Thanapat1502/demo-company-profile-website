@@ -31,14 +31,56 @@ export default function middleware(request: NextRequest) {
     // Add locale-specific headers for Vercel caching
     newResponse.headers.set("X-Locale", locale);
 
-    // Let Vercel handle Cache-Control via vercel.json
-    // Only add cache tags for cache invalidation
-    if (pathname === `/${locale}` || pathname === `/${locale}/`) {
-      newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
-    } else if (pathname.startsWith(`/${locale}/api/`)) {
-      newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
+    // Smart caching that preserves localized content
+    const currentCacheControl = newResponse.headers.get("Cache-Control");
+
+    // Only override if Next.js set private/no-cache headers
+    if (
+      !currentCacheControl ||
+      currentCacheControl.includes("private") ||
+      currentCacheControl.includes("no-cache") ||
+      currentCacheControl.includes("no-store")
+    ) {
+      if (pathname === `/${locale}` || pathname === `/${locale}/`) {
+        // Homepage - cacheable with locale awareness
+        newResponse.headers.set(
+          "Cache-Control",
+          "public, max-age=0, s-maxage=1800, stale-while-revalidate=3600"
+        );
+        newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
+      } else if (pathname.startsWith(`/${locale}/api/`)) {
+        // API routes - shorter cache
+        newResponse.headers.set(
+          "Cache-Control",
+          "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
+        );
+        newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
+      } else {
+        // Other pages - cacheable with locale awareness
+        newResponse.headers.set(
+          "Cache-Control",
+          "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+        );
+        newResponse.headers.set("Cache-Tag", `locale-${locale}`);
+      }
     } else {
-      newResponse.headers.set("Cache-Tag", `locale-${locale}`);
+      // Preserve existing cache headers but add cache tags
+      if (pathname === `/${locale}` || pathname === `/${locale}/`) {
+        newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
+      } else if (pathname.startsWith(`/${locale}/api/`)) {
+        newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
+      } else {
+        newResponse.headers.set("Cache-Tag", `locale-${locale}`);
+      }
+    }
+
+    // Essential headers for proper internationalization
+    newResponse.headers.set("Vary", "Accept-Language");
+    newResponse.headers.set("Content-Language", locale);
+
+    // Remove problematic headers only if they exist
+    if (newResponse.headers.get("Pragma") === "no-cache") {
+      newResponse.headers.delete("Pragma");
     }
 
     return newResponse;

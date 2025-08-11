@@ -1,5 +1,4 @@
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import fs from "fs";
 import path from "path";
 
@@ -11,7 +10,7 @@ export interface WebLabel {
 }
 
 export interface Messages {
-  [key: string]: any;
+  [key: string]: string | Messages;
 }
 
 // In-memory cache for translations to improve performance
@@ -19,29 +18,20 @@ const translationCache = new Map<string, Messages>();
 
 /**
  * Create a server-side Supabase client for fetching translations
- * This ensures we can fetch data during SSR
+ * This version doesn't use cookies to avoid making pages dynamic
+ * Only for public translation data that doesn't require authentication
  */
-async function createSupabaseClient() {
-  const cookieStore = await cookies();
-
+function createSupabaseClientForTranslations() {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          return cookieStore.getAll();
+          return [];
         },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
+        setAll() {
+          // No-op for translation loading
         },
       },
     }
@@ -154,7 +144,7 @@ async function loadSupabaseTranslations(
   locale: string
 ): Promise<Record<string, string>> {
   try {
-    const supabase = await createSupabaseClient();
+    const supabase = createSupabaseClientForTranslations();
 
     // Fetch all translations for the specified locale
     const { data: labels, error } = await supabase
@@ -177,7 +167,7 @@ async function loadSupabaseTranslations(
 
     // Convert array of labels to flat object
     const flatTranslations: Record<string, string> = {};
-    labels.forEach((label) => {
+    labels.forEach((label: { key: string; value: string }) => {
       flatTranslations[label.key] = label.value;
     });
 

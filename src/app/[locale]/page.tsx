@@ -8,6 +8,18 @@ import { getSEOData, generateMetadata as generateSEOMetadataNew, SEO_DEFAULTS } 
 import PageSEO from "@/components/seo/PageSEO";
 import { fetchHomePageDataSSR } from "@/lib/server/dataFetchers";
 
+// Enable ISR (Incremental Static Regeneration) for localized content
+export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'auto'; // Allow dynamic rendering for localized content
+
+// Generate static params for all locales at build time
+export async function generateStaticParams() {
+  return [
+    { locale: 'th' },
+    { locale: 'en' },
+  ];
+}
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
@@ -53,7 +65,7 @@ export default async function Home({ params }: Props) {
           locale: locale as "th" | "en",
           title:
             locale === "th"
-              ? "กลุ่มบริษัทผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร"
+              ? "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร"
               : "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
           description:
             locale === "th"
