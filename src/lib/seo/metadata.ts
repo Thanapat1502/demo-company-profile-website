@@ -68,7 +68,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     "Petroleum Engineering",
     "Fuel Station Design",
     "Thailand Construction",
-    "Padungsilpa Group",
+    "PADUNGSILPA GROUP",
     "Oil Station Services",
     "Industrial Construction",
     "Engineering Consulting",
@@ -84,9 +84,9 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     title,
     description,
     keywords: allKeywords,
-    authors: [{ name: author || "Padungsilpa Group" }],
-    creator: "Padungsilpa Group",
-    publisher: "Padungsilpa Group",
+    authors: [{ name: author || "PADUNGSILPA GROUP" }],
+    creator: "PADUNGSILPA GROUP",
+    publisher: "PADUNGSILPA GROUP",
     robots: {
       index: true,
       follow: true,
@@ -109,7 +109,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
       url: canonical || `${baseUrl}/${locale}`,
       title,
       description,
-      siteName: "Padungsilpa Group",
+      siteName: "PADUNGSILPA GROUP",
       images: seoImages.map((img) => ({
         url: img.url,
         width: img.width || 1200,
@@ -142,17 +142,33 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 export const seoConfigs = {
   home: {
     th: {
-      title: "กลุ่มบริษัท ผดุงศิลป์ | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
+      title:
+        "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
       description:
-        "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม บริการครบวงจรตั้งแต่ออกแบบ ก่อสร้าง จนถึงบำรุงรักษา",
-      keywords: ["หน้าแรก", "บริษัทผดุงศิลป์", "สถานีบริการน้ำมัน", "ก่อสร้าง"],
+        "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร, PERMATANK® ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม บริการครบวงจรตั้งแต่ออกแบบ ก่อสร้าง จนถึงบำรุงรักษา",
+      keywords: [
+        "หน้าแรก",
+        "บริษัทผดุงศิลป์",
+        "สถานีบริการน้ำมัน",
+        "ก่อสร้าง",
+        "ถังน้ำมัน",
+        "permatank",
+        "ปั้มน้ำมัน",
+      ],
     },
     en: {
-      title:
-        "Padungsilpa Group | Leading Gas Station Construction & Engineering Services",
+      title: "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
       description:
-        "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. From design and construction to maintenance services.",
-      keywords: ["home", "padungsilpa group", "gas station", "construction"],
+        "Leading comprehensive gas station business services and PERMATANK® with over 50 years of experience in construction and engineering.",
+      keywords: [
+        "home",
+        "PADUNGSILPA GROUP",
+        "gas station",
+        "construction",
+        "permatank",
+        "oil",
+        "gas",
+      ],
     },
   },
 
@@ -165,7 +181,7 @@ export const seoConfigs = {
       section: "Products & Services",
     },
     en: {
-      title: "Products & Services | Padungsilpa Group",
+      title: "Products & Services | PADUNGSILPA GROUP",
       description:
         "Comprehensive products and services for gas stations including PERMATANK® and engineering services",
       keywords: ["products", "services", "PERMATANK", "engineering"],
@@ -182,9 +198,9 @@ export const seoConfigs = {
       section: "Contact",
     },
     en: {
-      title: "Contact Us | Padungsilpa Group",
+      title: "Contact Us | PADUNGSILPA GROUP",
       description:
-        "Contact Padungsilpa Group for more information about gas station construction services",
+        "Contact PADUNGSILPA GROUP for more information about gas station construction services",
       keywords: ["contact", "address", "phone", "email"],
       section: "Contact",
     },
@@ -199,9 +215,9 @@ export const seoConfigs = {
       section: "About",
     },
     en: {
-      title: "About Us | Padungsilpa Group",
+      title: "About Us | PADUNGSILPA GROUP",
       description:
-        "Learn about the history and vision of Padungsilpa Group, leader in gas station construction",
+        "Learn about the history and vision of PADUNGSILPA GROUP, leader in gas station construction",
       keywords: ["about", "history", "vision", "company"],
       section: "About",
     },
@@ -215,9 +231,9 @@ export const seoConfigs = {
       section: "News & Events",
     },
     en: {
-      title: "News & Events | Padungsilpa Group",
+      title: "News & Events | PADUNGSILPA GROUP",
       description:
-        "Stay updated with the latest news and events from Padungsilpa Group",
+        "Stay updated with the latest news and events from PADUNGSILPA GROUP",
       keywords: ["news", "events", "updates"],
       section: "News & Events",
     },
@@ -232,9 +248,9 @@ export const seoConfigs = {
       section: "References",
     },
     en: {
-      title: "References | Padungsilpa Group",
+      title: "References | PADUNGSILPA GROUP",
       description:
-        "View our gas station construction projects and various works by Padungsilpa Group",
+        "View our gas station construction projects and various works by PADUNGSILPA GROUP",
       keywords: ["references", "projects", "gas station", "construction"],
       section: "References",
     },

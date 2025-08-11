@@ -53,12 +53,12 @@ export default async function Home({ params }: Props) {
           locale: locale as "th" | "en",
           title:
             locale === "th"
-              ? "กลุ่มบริษัท ผดุงศิลป์ | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร"
-              : "Padungsilpa Group | Leading Gas Station Construction & Engineering Services",
+              ? "กลุ่มบริษัทผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร"
+              : "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
           description:
             locale === "th"
-              ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม"
-              : "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering",
+              ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี"
+              : "Leading comprehensive gas station business services and PERMATANK® with over 50 years of experience in construction and engineering.",
           images: ["https://padungsilpa.group/images/seo.jpg"],
         }}
       />

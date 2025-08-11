@@ -21,12 +21,17 @@ const notoSansThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
-    template: "%s | Padungsilpa Group",
+    default: "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
+    template: "%s | PADUNGSILPA GROUP",
   },
   description:
-    "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
+    "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
   keywords: [
+    "PERMATANK",
+    "PERMATANK®",
+    "ถังน้ำมัน",
+    "ทำปั้ม",
+    "ปั้มน้ำมัน",
     "Gas Station Construction",
     "Petroleum Engineering",
     "Fuel Station Design",
@@ -42,9 +47,9 @@ export const metadata: Metadata = {
     "บริการก่อสร้าง",
     "วิศวกรรมอุตสาหกรรม",
   ],
-  authors: [{ name: "Padungsilpa Group" }],
-  creator: "Padungsilpa Group",
-  publisher: "Padungsilpa Group",
+  authors: [{ name: "PADUNGSILPA GROUP" }],
+  creator: "PADUNGSILPA GROUP",
+  publisher: "PADUNGSILPA GROUP",
   metadataBase: new URL("https://www.padungsilpa.group"),
   alternates: {
     canonical: "https://www.padungsilpa.group",
@@ -58,9 +63,9 @@ export const metadata: Metadata = {
     locale: "th_TH",
     alternateLocale: ["en_US"],
     url: "https://www.padungsilpa.group",
-    title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
+    title: "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
     description:
-      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
+      "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
     siteName: "Padungsilpa Group",
     images: [
       {
@@ -76,9 +81,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@padungsilpagroup",
     creator: "@padungsilpagroup",
-    title: "Padungsilpa Group | ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร",
+    title: "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
     description:
-      "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
+      "Leading comprehensive gas station business services and PERMATANK® with over 50 years of experience in construction and engineering.",
     images: ["https://padungsilpa.group/images/seo.jpg"],
   },
   robots: {
