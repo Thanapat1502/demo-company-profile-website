@@ -148,8 +148,9 @@ export const defaultManagementMessage = {
     "กลุ่มบริษัทในเครือ ผดุงศิลป์ฯ พร้อมเผชิญกับอุปสรรคต่างๆ ในอนาคต ด้วยความมุ่งมั่นที่จะนำเสนอผลงานและบริการที่มีคุณภาพดีและโดดเด่น สมกับที่ทุกท่านได้ให้ความไว้วางใจเรา ขอขอบพระคุณอีกครั้งสำหรับการสนับสนุนและความไว้วางใจที่มีให้กับกลุ่มบริษัท ผดุงศิลป์ฯ พวกเราจะยังคงมุ่งมั่นพัฒนาต่อไปเพื่อสร้างสรรค์คุณค่าและตอบสนองต่อความต้องการของทุกท่านอย่างดีที่สุด",
   ],
   en: [
-    "As Managing Director of Padungsilpa Engineering Co., Ltd., I am proud to be part of Thailand's energy industry development for over 30 years.",
-    "We have created quality and safe fuel station projects with international standard PERMATANK® technology and professional teams with experience and expertise.",
-    "We will continue to strive for excellent service and create innovations to meet customer and society needs sustainably.",
+    "On behalf of PADUNGSILPA GROUP, I would like to extend our heartfelt gratitude for your continued trust and support. We are committed to maintaining excellence among our operational and managerial staffs, all of whom share the common goal of delivering the best construction works, products, and services, supported by highly knowledgeable and capable personnel.",
+    "Our technicians and project managers are well-trained and certified, with extensive experience in the oil and other energy industries. This ensures that our work and services are of the highest quality and can promptly meet the industry's demands.",
+    "PADUNGSILPA GROUP is ready to face future challenges with determination, striving to provide exceptional quality and standout services, worthy of the trust you have placed in us.",
+    "Thank you once again for your support and trust in PADUNGSILPA GROUP. We will continue to strive for excellence, creating value and meeting your needs to the best of our abilities."
   ],
 };
