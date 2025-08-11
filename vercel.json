@@ -1,0 +1,117 @@
+{
+  "functions": {
+    "src/app/[locale]/page.tsx": {
+      "maxDuration": 30
+    },
+    "src/app/[locale]/*/page.tsx": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/th/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
+        },
+        {
+          "key": "Cache-Tag",
+          "value": "locale-th"
+        }
+      ]
+    },
+    {
+      "source": "/en/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
+        },
+        {
+          "key": "Cache-Tag",
+          "value": "locale-en"
+        }
+      ]
+    },
+    {
+      "source": "/th",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Cache-Tag",
+          "value": "locale-th,homepage"
+        }
+      ]
+    },
+    {
+      "source": "/en",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Cache-Tag",
+          "value": "locale-en,homepage"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=300, stale-while-revalidate=600"
+        },
+        {
+          "key": "Cache-Tag",
+          "value": "api-data"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/api/robots"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/th",
+      "permanent": false
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/revalidate",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}

@@ -44,7 +44,7 @@ export default async function ReferencePage({ params }: Props) {
           page: "reference",
           title: t("references.hero.title"),
           description: t("references.hero.description"),
-          images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
+          images: ["https://padungsilpa.group/images/seo.jpg"],
         }}
       />
       <DynamicHeroSection

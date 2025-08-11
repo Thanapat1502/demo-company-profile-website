@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { getSitemapData } from "@/lib/seo-utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.padungsilpa.group";
@@ -202,7 +203,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     }
 
-    return [...staticPages, ...newsPages, ...referencePages];
+    // Get SEO-enhanced sitemap data
+    const seoPages = await getSitemapData();
+
+    // Combine all pages
+    const allPages = [
+      ...staticPages,
+      ...newsPages,
+      ...referencePages,
+      ...seoPages,
+    ];
+
+    // Remove duplicates based on URL
+    const uniquePages = allPages.filter(
+      (page, index, self) => index === self.findIndex((p) => p.url === page.url)
+    );
+
+    return uniquePages;
   } catch (error) {
     console.error("Error generating sitemap:", error);
     // Return static pages if database fetch fails

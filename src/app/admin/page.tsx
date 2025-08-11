@@ -12,6 +12,7 @@ import {
   X,
   Globe,
   FileText,
+  Search
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
 import { ProductManager } from "./(component)/productManager";
@@ -27,6 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/components/ui/ToastContainer";
 import { ReferenceManager } from "./(component)/referenceManager";
 import { SettingsMenu } from "./(component)/SettingsMenu";
+import SEOManager from "@/components/admin/SEOManager";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("content");
@@ -45,6 +47,7 @@ const AdminDashboard = () => {
     { id: "news", label: "จัดการข่าวสาร", icon: Newspaper },
     { id: "contact", label: "จัดการติดต่อ", icon: Phone },
     { id: "text", label: "จัดการข้อความ", icon: Type },
+    { id: "seo", label: "จัดการ SEO", icon: Search },
   ];
 
   const renderSection = () => {
@@ -67,6 +70,8 @@ const AdminDashboard = () => {
         return <ContactManager />;
       case "partners":
         return <PartnerManager />;
+      case "seo":
+        return <SEOManager />;
       default:
         return <ContentManager />;
     }
@@ -76,9 +81,8 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div
-        className={`${
-          sidebarOpen ? "w-64" : "w-16"
-        } bg-white shadow-lg transition-all duration-300 flex flex-col`}>
+        className={`${sidebarOpen ? "w-64" : "w-16"
+          } bg-white shadow-lg transition-all duration-300 flex flex-col`}>
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
@@ -100,11 +104,10 @@ const AdminDashboard = () => {
                 <li key={item.id}>
                   <button
                     onClick={() => setActiveSection(item.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                      activeSection === item.id
-                        ? "bg-blue-100 text-blue-700 font-medium"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                    }`}>
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${activeSection === item.id
+                      ? "bg-blue-100 text-blue-700 font-medium"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      }`}>
                     <Icon size={20} />
                     {sidebarOpen && <span>{item.label}</span>}
                   </button>

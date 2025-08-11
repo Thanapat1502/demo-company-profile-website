@@ -154,8 +154,9 @@ export default function MainNavbar() {
           backgroundColor: isAtTop ? "transparent" : "rgba(255, 255, 255, 1)",
           backdropFilter: isAtTop ? "none" : "blur(10px)",
         }}>
-        {/* Mobile Menu Button */}
-        <NavbarContent justify="start" className="sm:hidden">
+        {/* Mobile: Menu Button + Brand aligned to left */}
+        <NavbarContent justify="start" className="sm:hidden gap-3">
+          {/* Mobile Menu Button */}
           <Button
             isIconOnly
             variant="light"
@@ -179,17 +180,46 @@ export default function MainNavbar() {
                   } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
             </div>
           </Button>
+
+          {/* Brand - Mobile Layout */}
+          <NavbarBrand>
+            <Link href="/" className="flex items-center space-x-3 group">
+              <div
+                className={`w-10 h-10 rounded-md bg-white/60 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm flex items-center justify-center transition-all duration-700 ease-out group-hover:scale-110 relative overflow-hidden ${isAtTop ? "shadow-xl shadow-white/20" : "shadow-lg"
+                  }`}>
+                <Image
+                  src="/images/pds-logo.png"
+                  alt="PDS Logo"
+                  width={28}
+                  height={28}
+                  className="object-contain relative z-10"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </div>
+              <div className="flex flex-col">
+                <span
+                  className={`font-black tracking-tight transition-all duration-700 ease-out group-hover:tracking-wide ${isAtTop ? "text-lg text-white" : "text-base"
+                    }`}
+                  style={{ color: isAtTop ? "white" : "var(--primary-blue)" }}>
+                  PADUNGSILPA
+                </span>
+                <span
+                  className={`text-xs font-bold transition-all duration-700 ease-out group-hover:tracking-[0.2em] ${isAtTop ? "text-white/80" : "text-gray-500"
+                    }`}>
+                  GROUP
+                </span>
+              </div>
+            </Link>
+          </NavbarBrand>
         </NavbarContent>
 
-        {/* Brand - Modern Design */}
-        <NavbarContent justify="start" className="flex-grow-0">
+        {/* Desktop: Brand - Modern Design */}
+        <NavbarContent justify="start" className="hidden sm:flex flex-grow-0">
           <NavbarBrand>
             <Link href="/" className="flex items-center space-x-4 group">
               <div
                 className={`w-12 h-12 rounded-md bg-white/60 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm flex items-center justify-center transition-all duration-700 ease-out group-hover:scale-110  relative overflow-hidden ${isAtTop ? "shadow-xl shadow-white/20" : "shadow-lg"
-                  }`}
-              // style={{ backgroundColor: 'white' }}
-              >
+                  }`}>
                 <Image
                   src="/images/pds-logo.png"
                   alt="PDS Logo"

@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "migrate-translations": "node scripts/migrate-translations.js",
-    "clear-translation-cache": "node -e \"require('./src/lib/i18n/loadMessages.ts').clearTranslationCache()\""
+    "clear-translation-cache": "node -e \"require('./src/lib/i18n/loadMessages.ts').clearTranslationCache()\"",
+    "post-deploy": "node scripts/post-deploy.js",
+    "cache-warm": "curl -X POST \"$DEPLOYMENT_URL/api/cache-warm\" -H \"Authorization: Bearer $CACHE_WARM_SECRET\"",
+    "cache-revalidate": "curl -X POST \"$DEPLOYMENT_URL/api/revalidate\" -H \"Content-Type: application/json\" -d '{\"secret\":\"$REVALIDATION_SECRET\",\"path\":\"/\"}'"
   },
   "dependencies": {
     "@heroui/react": "^2.7.11",

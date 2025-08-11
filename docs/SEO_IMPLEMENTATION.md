@@ -87,7 +87,7 @@ Pages include relevant structured data:
     page: "contact-us",
     title: t("contact.hero.title"),
     description: t("contact.hero.description"),
-    images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
+    images: ["https://padungsilpa.group/images/seo.jpg"],
   }}
 />
 ```

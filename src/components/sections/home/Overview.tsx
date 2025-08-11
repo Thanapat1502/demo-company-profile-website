@@ -68,8 +68,8 @@ export default function Overview({
     "@type": "Organization",
     "name": "Padungsilpa Group",
     "description": t("home.overview.description"),
-    "url": `https://padungsilpa.techtoptierapp.com/${locale}`,
-    "logo": "https://padungsilpa.techtoptierapp.com/logo.png",
+    "url": `https://padungsilpa.group/${locale}`,
+    "logo": "https://padungsilpa.group/logo.png",
     "image": companyImages.length > 0 ? companyImages : undefined,
     "hasOfferCatalog": {
       "@type": "OfferCatalog",

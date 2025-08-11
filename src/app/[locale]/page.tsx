@@ -3,8 +3,9 @@ import MainLayout from "@/components/layout/MainLayout";
 import HeroSection from "@/components/sections/home/HeroSection";
 import ServerHomePage from "@/components/pages/ServerHomePage";
 import { getHeroImageById } from "@/lib/hero-utils";
-import { generateSEOMetadata, getPageSEOConfig } from "@/lib/seo/metadata";
 import StructuredData from "@/components/seo/StructuredData";
+import { getSEOData, generateMetadata as generateSEOMetadataNew, SEO_DEFAULTS } from "@/lib/seo-utils";
+import PageSEO from "@/components/seo/PageSEO";
 import { fetchHomePageDataSSR } from "@/lib/server/dataFetchers";
 
 type Props = {
@@ -13,17 +14,16 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const seoConfig = getPageSEOConfig("home", locale as "th" | "en");
 
-  return generateSEOMetadata({
-    ...seoConfig,
-    locale: locale as "th" | "en",
-    canonical: `https://www.padungsilpa.group/${locale}`,
-    alternateLocales: {
-      th: "https://www.padungsilpa.group/th",
-      en: "https://www.padungsilpa.group/en",
-    },
-    type: "website",
+  // Get SEO data from database
+  const seoData = await getSEOData('/', locale);
+
+  // Generate metadata using new SEO system
+  return generateSEOMetadataNew(seoData, {
+    title: SEO_DEFAULTS[locale as 'th' | 'en'].default_title,
+    description: SEO_DEFAULTS[locale as 'th' | 'en'].default_description,
+    locale: locale as 'th' | 'en',
+    pagePath: '/',
   });
 }
 
@@ -38,6 +38,14 @@ export default async function Home({ params }: Props) {
 
   return (
     <MainLayout>
+      <PageSEO
+        pagePath="/"
+        locale={locale}
+        fallback={{
+          title: SEO_DEFAULTS[locale as 'th' | 'en'].default_title,
+          description: SEO_DEFAULTS[locale as 'th' | 'en'].default_description,
+        }}
+      />
       <StructuredData
         type="WebPage"
         locale={locale as "th" | "en"}
@@ -51,7 +59,7 @@ export default async function Home({ params }: Props) {
             locale === "th"
               ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม"
               : "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering",
-          images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
+          images: ["https://padungsilpa.group/images/seo.jpg"],
         }}
       />
       <HeroSection heroImages={heroImages} />

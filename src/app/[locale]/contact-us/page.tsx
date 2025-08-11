@@ -44,7 +44,7 @@ export default async function ContactUsPage({ params }: Props) {
           page: "contact-us",
           title: t("contact.hero.title"),
           description: t("contact.hero.description"),
-          images: ["https://padungsilpa.techtoptierapp.com/images/seo.jpg"],
+          images: ["https://padungsilpa.group/images/seo.jpg"],
         }}
       />
       <DynamicHeroSection
