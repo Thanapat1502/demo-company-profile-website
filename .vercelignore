@@ -1,0 +1,19 @@
+# Vercel ignore file
+# Ensure messages directory is included in deployment
+
+# Don't ignore messages directory
+!messages/
+!messages/**/*.json
+
+# Standard ignores
+node_modules/
+.env.local
+.env.*.local
+.DS_Store
+*.log
+.next/
+.vercel/
+coverage/
+.nyc_output/
+dist/
+build/

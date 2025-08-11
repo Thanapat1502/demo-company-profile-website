@@ -109,7 +109,18 @@ async function loadJsonTranslations(
   try {
     // First try dynamic import (works best in Vercel)
     try {
-      const jsonModule = await import(`../../../messages/${locale}.json`);
+      let jsonModule;
+
+      // Try different import paths for different environments
+      if (locale === "th") {
+        jsonModule = await import("../../../messages/th.json");
+      } else if (locale === "en") {
+        jsonModule = await import("../../../messages/en.json");
+      } else {
+        // Fallback for other locales
+        jsonModule = await import(`../../../messages/${locale}.json`);
+      }
+
       const jsonData = jsonModule.default || jsonModule;
 
       // Flatten the nested JSON structure
@@ -121,9 +132,10 @@ async function loadJsonTranslations(
         } translations from JSON module for locale ${locale}`
       );
       return flattened;
-    } catch {
+    } catch (importError) {
       console.warn(
-        `📄 Dynamic import failed for ${locale}, trying file system...`
+        `📄 Dynamic import failed for ${locale}, trying file system...`,
+        importError instanceof Error ? importError.message : String(importError)
       );
     }
 
