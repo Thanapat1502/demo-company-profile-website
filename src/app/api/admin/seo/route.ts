@@ -6,24 +6,40 @@ export interface SEOPage {
   id?: string;
   page_path: string;
   locale: string;
+
+  // Basic SEO fields
   title?: string;
   description?: string;
   keywords?: string;
+
+  // Open Graph fields
   og_title?: string;
   og_description?: string;
   og_image?: string;
   og_type?: string;
+
+  // Twitter Card fields
   twitter_card?: string;
   twitter_title?: string;
   twitter_description?: string;
   twitter_image?: string;
+
+  // Additional SEO fields
   canonical_url?: string;
   robots?: string;
   author?: string;
-  structured_data?: any;
+
+  // Schema.org structured data
+  structured_data?: Record<string, unknown> | string;
+
+  // Meta fields
   is_active?: boolean;
   priority?: number;
   change_frequency?: string;
+
+  // Timestamps
+  created_at?: string;
+  updated_at?: string;
 }
 
 // GET - Fetch all SEO pages or specific page

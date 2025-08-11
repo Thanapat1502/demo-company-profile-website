@@ -9,11 +9,28 @@
   },
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    },
+    {
       "source": "/th/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
         },
         {
           "key": "Vary",
@@ -30,7 +47,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
         },
         {
           "key": "Vary",
@@ -47,7 +64,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+          "value": "public, max-age=0, s-maxage=1800, stale-while-revalidate=3600"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
         },
         {
           "key": "Cache-Tag",
@@ -60,7 +81,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=3600, stale-while-revalidate=86400"
+          "value": "public, max-age=0, s-maxage=1800, stale-while-revalidate=3600"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
         },
         {
           "key": "Cache-Tag",
@@ -73,7 +98,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=300, stale-while-revalidate=600"
+          "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
         },
         {
           "key": "Cache-Tag",
@@ -83,6 +108,15 @@
     },
     {
       "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/uploads/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

@@ -40,28 +40,8 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  // Add headers for better caching control
-  async headers() {
-    return [
-      {
-        source: "/:locale(th|en)/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=3600, stale-while-revalidate=86400",
-          },
-          {
-            key: "Vary",
-            value: "Accept-Language, Accept-Encoding",
-          },
-          {
-            key: "X-Locale",
-            value: ":locale",
-          },
-        ],
-      },
-    ];
-  },
+  // Remove headers function to let Vercel handle caching
+  // Headers are now managed in vercel.json for better control
 };
 
 export default withNextIntl(nextConfig);

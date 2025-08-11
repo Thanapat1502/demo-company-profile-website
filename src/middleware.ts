@@ -17,41 +17,28 @@ export default function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const locale = pathname.split("/")[1];
 
-  // Add locale-specific cache headers
+  // Only add headers for locale-specific routes
   if (locale === "th" || locale === "en") {
-    // Clone the response to modify headers
-    const newResponse = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+    // Create a new response based on the intl middleware response
+    const newResponse = response
+      ? new NextResponse(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+        })
+      : NextResponse.next();
 
-    // Copy all headers from the intl middleware response
-    if (response) {
-      response.headers.forEach((value, key) => {
-        newResponse.headers.set(key, value);
-      });
-    }
-
-    // Add locale-specific cache tags
-    newResponse.headers.set("Cache-Tag", `locale-${locale}`);
+    // Add locale-specific headers for Vercel caching
     newResponse.headers.set("X-Locale", locale);
-    newResponse.headers.set("Vary", "Accept-Language, Accept-Encoding");
 
-    // Add specific cache control for different page types
+    // Let Vercel handle Cache-Control via vercel.json
+    // Only add cache tags for cache invalidation
     if (pathname === `/${locale}` || pathname === `/${locale}/`) {
-      // Homepage gets special cache treatment
-      newResponse.headers.set(
-        "Cache-Control",
-        "public, s-maxage=1800, stale-while-revalidate=3600"
-      );
       newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
+    } else if (pathname.startsWith(`/${locale}/api/`)) {
+      newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
     } else {
-      // Other pages
-      newResponse.headers.set(
-        "Cache-Control",
-        "public, s-maxage=3600, stale-while-revalidate=86400"
-      );
+      newResponse.headers.set("Cache-Tag", `locale-${locale}`);
     }
 
     return newResponse;
