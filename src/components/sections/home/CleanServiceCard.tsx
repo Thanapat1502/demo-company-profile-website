@@ -3,6 +3,7 @@
 import { ServiceType } from "@/store/zustand/servicesStore";
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CleanServiceCardProps {
   service: ServiceType;
@@ -82,8 +83,8 @@ export default function CleanServiceCard({
 
           {/* Description with Smooth Expansion */}
           <div className="mb-4 relative overflow-hidden">
-            <div className="transition-all duration-[3000ms] ease-out group-hover:max-h-40 md:max-h-16">
-              <p className="text-sm text-gray-600 leading-relaxed line-clamp-none md:line-clamp-3 group-hover:line-clamp-6">
+            <div className="transition-all duration-[2000ms] ease-out group-hover:max-h-40 md:max-h-24">
+              <p className="text-md text-gray-600 leading-relaxed line-clamp-none md:line-clamp-3 group-hover:line-clamp-6">
                 {serviceDescription}
               </p>
             </div>
@@ -92,12 +93,12 @@ export default function CleanServiceCard({
           </div>
 
           {/* Action Link */}
-          <div className="flex items-center text-primary-600 font-medium text-sm group-hover:text-primary-400 transition-colors duration-500 ease-out">
-            <span>Learn More</span>
+          <Link href={`/${locale}/products-services`} className="flex items-center text-primary-600 font-medium text-sm group-hover:text-primary-400 transition-colors duration-500 ease-out">
+            <span>{locale === 'th' ? 'ดูรายละเอียด' : 'Learn More'}</span>
             <svg className="w-4 h-4 ml-2 transition-transform duration-500 ease-out group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </div>
+          </Link>
         </div>
       </div>
     </article>
