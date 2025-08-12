@@ -361,7 +361,7 @@ export default function MainNavbar() {
         {/* Right Side Actions - Modern Design */}
         <NavbarContent justify="end" className="gap-2 lg:gap-4 flex-grow-0">
           {/* Hotline Number - Desktop Only */}
-          <NavbarItem className="flex">
+          <NavbarItem className="hidden sm:flex">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

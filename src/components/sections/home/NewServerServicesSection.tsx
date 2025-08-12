@@ -28,13 +28,16 @@ export default function NewServerServicesSection({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target === sectionRef.current && entry.isIntersecting) {
+            setGridVisible(true)
             setIsVisible(true);
           }
           if (entry.target === headerRef.current && entry.isIntersecting) {
+            setGridVisible(true)
             setTimeout(() => setHeaderVisible(true), 200);
           }
           if (entry.target === gridRef.current && entry.isIntersecting) {
-            setTimeout(() => setGridVisible(true), 0);
+            setGridVisible(true)
+            // setTimeout(() => setGridVisible(true), 2000);
           }
         });
       },
@@ -52,7 +55,7 @@ export default function NewServerServicesSection({
     <section
       ref={sectionRef}
       id="services"
-      className="relative py-16 lg:py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50/80 overflow-hidden"
+      className="relative py-12 lg:py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50/80 overflow-hidden"
     >
       {/* Elegant Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
