@@ -46,7 +46,6 @@ export default async function MissionCommitmentPage({ params }: Props) {
       {/* Server-side content */}
       <ServerMissionCommitmentPage locale={locale} />
       <ServerEnvironmentHealthDrugPolicy locale={locale} />
-
       <PolicySection />
     </MainLayout>
   );
