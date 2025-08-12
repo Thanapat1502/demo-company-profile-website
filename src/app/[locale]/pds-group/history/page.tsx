@@ -38,7 +38,9 @@ export default async function CompanyHistoryPage({ params }: Props) {
         description={t("company.history.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
         autoSlideDelay={6000}>
-        <HeroButtons />
+        <HeroButtons
+          primaryButtonText={locale === 'th' ? 'ดูประวัติความเป็นมา' : 'View More'}
+          primaryButtonHref="/pds-group/history#company-history" />
       </DynamicHeroSection>
 
       {/* Client-side content */}

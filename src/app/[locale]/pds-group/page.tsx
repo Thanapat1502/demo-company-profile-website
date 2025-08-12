@@ -40,7 +40,9 @@ export default async function CompanyProfilePage({ params }: Props) {
           "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
         ]}
         autoSlideDelay={6000}>
-        <HeroButtons />
+        <HeroButtons
+          primaryButtonText={locale === 'th' ? 'ดูรายละเอียด' : 'View More'}
+          primaryButtonHref="/pds-group#company-overview" />
       </DynamicHeroSection>
 
       {/* Client-side content */}

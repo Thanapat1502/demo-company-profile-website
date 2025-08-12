@@ -11,10 +11,10 @@ import {
   Users2,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
 import { useContentStore } from "@/store/zustand/contentStore";
 import ImageSkeleton from "@/components/ui/ImageSkeleton";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
+import SubNavigation from "@/components/ui/SubNavigation";
 
 interface ClientCompanyProfilePageProps {
   locale: string;
@@ -27,7 +27,7 @@ export default function ClientCompanyProfilePage({
   const { fetchContentById, contentDetail, loading } = useContentStore();
   const contentImage =
     Array.isArray(contentDetail?.images_url) &&
-    contentDetail.images_url.length > 0
+      contentDetail.images_url.length > 0
       ? contentDetail.images_url
       : undefined; // Content store state for ABOUT content image
 
@@ -73,31 +73,18 @@ export default function ClientCompanyProfilePage({
 
   return (
     <>
-      {/* Sub Navigation - Minimal design without rounded corners */}
-      <section className="py-16 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4">
-            {subPages.map((page) => (
-              <Link
-                key={page.id}
-                href={`/${locale}${page.href}`}
-                className={`flex items-center px-8 py-4 transition-all duration-300 border ${
-                  page.id === "overview"
-                    ? "bg-[var(--primary-blue)] text-white border-[var(--primary-blue)]"
-                    : "bg-white text-gray-700 border-gray-300 hover:border-[var(--primary-blue)] hover:text-[var(--primary-blue)]"
-                }`}>
-                <page.icon className="w-5 h-5 mr-3" />
-                <span className="text-lg font-medium tracking-wide">
-                  {page.title}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Liquid Glass Sub Navigation */}
+      {/* <SubNavigation
+        items={subPages}
+        activeId="overview"
+        locale={locale}
+        backgroundImage="/images/hero-sections/hero-banner-1.jpg"
+        title={t("company.navigation.title")}
+        description={t("company.navigation.description")}
+      /> */}
 
       {/* Company Overview Section */}
-      <section className="py-20 bg-white">
+      <section id='company-overview' className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content */}

@@ -91,7 +91,7 @@ export default function ClientCompanyHistoryPage({
       </section> */}
 
       {/* Company Origin Section */}
-      <section className="section-minimal bg-gray-50">
+      <section id='company-history' className="section-minimal bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             {/* Section Label */}

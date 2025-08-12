@@ -69,7 +69,7 @@ export default function ClientExecutiveTeamPage({
       </section> */}
 
       {/* Executive Team Grid */}
-      <section className="section-minimal mx-8">
+      <section id='executive-team' className="section-minimal mx-8">
         <ExecutiveGrid locale={locale} />
       </section>
 

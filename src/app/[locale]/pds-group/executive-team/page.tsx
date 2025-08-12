@@ -38,7 +38,10 @@ export default async function ExecutiveTeamPage({ params }: Props) {
         description={t("company.executive.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-3.jpg"]}
         autoSlideDelay={6000}>
-        <HeroButtons />
+        <HeroButtons
+          primaryButtonText={locale === 'th' ? 'ดูทีมผู้บริหาร' : 'View More'}
+          primaryButtonHref="/pds-group/executive-team#executive-team"
+        />
       </DynamicHeroSection>
 
       {/* Client-side content */}

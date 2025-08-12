@@ -7,9 +7,11 @@ import PrimaryButton from "./PrimaryButton";
 
 interface HeroButtonsProps {
   className?: string;
+  primaryButtonHref?: string
+  primaryButtonText?: string
 }
 
-export default function HeroButtons({ className = "" }: HeroButtonsProps) {
+export default function HeroButtons({ className = "", primaryButtonHref, primaryButtonText }: HeroButtonsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
@@ -22,8 +24,8 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
     if (isReferencePage) {
       return {
         primary: {
-          text: locale === "th" ? "ดูบริการของเรา" : "View Our Services",
-          href: `/${locale}/products-services`,
+          text: primaryButtonText || locale === "th" ? "ดูบริการของเรา" : "View Our Services",
+          href: primaryButtonHref || `/${locale}/products-services`,
         },
         secondary: {
           text: locale === "th" ? "ติดต่อเรา" : "Contact Us",
@@ -33,8 +35,8 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
     } else {
       return {
         primary: {
-          text: locale === "th" ? "ดูผลงาน" : "References",
-          href: `/${locale}/reference`,
+          text: primaryButtonText || (locale === "th" ? "ดูผลงาน" : "References"),
+          href: primaryButtonHref || (`/${locale}/reference`),
         },
         secondary: {
           text: locale === "th" ? "ติดต่อเรา" : "Contact Us",
@@ -47,9 +49,10 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
   const buttonContent = getButtonContent();
 
   return (
-    <div className={`luxury-hero-btn-container items-center justify-center ${className}`}>
+    <div className={`luxury-hero-btn-container !w-auto md:w-full items-center justify-center ${className}`}>
       {/* Primary Button */}
       <PrimaryButton
+        className="flex-1"
         // className="luxury-hero-btn luxury-hero-btn-primary group"
         onClick={() => router.push(buttonContent.primary.href)}>
         <span className="relative z-10 flex items-center justify-center gap-3">
@@ -64,7 +67,7 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
 
       {/* Secondary Button */}
       <PrimaryButton
-        className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
+        className="flex-1 w-full md:w-auto bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
         onClick={() => router.push(buttonContent.secondary.href)}>
         <span className="relative z-10 flex items-center justify-center gap-3">
           <span className="font-semibold tracking-wide">
