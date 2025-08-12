@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface ImageCarouselHeroProps {
   images: string[];
@@ -110,8 +111,42 @@ export default function ImageCarouselHero({
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/50 z-10"></div>
 
       {/* Luxury Content Container */}
+      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-20 pb-20">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0, backdropFilter: 'blur(3px)' }}
+            transition={{ duration: 1 }}
+            className="max-w-5xl mx-auto text-center space-y-5 ease-in-out"
+          >
+            {/* Glass content container */}
+            <div className="x-bg-white-glass x-backdrop-blur-xs rounded-3xl p-8 md:p-12 x-shadow-glass-strong border border-white/20">
+              <div className="space-y-8">
+                {/* Company Names */}
+                <div className="text-center space-y-4">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-white tracking-tight">
+                    {title}
+                  </h1>
+                </div>
+
+                {/* Slogan */}
+                {description && (
+                  <h2 className="text-xl md:text-xl text-white/90 max-w-4xl mx-auto leading-relaxed font-normal text-center">
+                    {description}
+                  </h2>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
+                  {children}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
       <div
-        className={`relative z-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        className={`hidden relative z-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex items-center justify-center min-h-screen transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
         <div className="max-w-5xl mx-auto">
           {/* Main Title with Luxury Animation */}

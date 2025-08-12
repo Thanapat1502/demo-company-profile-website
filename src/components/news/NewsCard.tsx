@@ -66,7 +66,7 @@ export default function NewsCard({
         <div className="relative p-6">
           {/* Minimal header with category and number */}
           <div className="flex items-center justify-between mb-6">
-            <div className="text-xs text-gray-500 font-light tracking-widest uppercase">
+            <div className="text-xs text-gray-500 font-normal tracking-widest uppercase">
               {category || (locale === "th" ? "ข่าวสาร" : "News")}
             </div>
           </div>
@@ -84,17 +84,17 @@ export default function NewsCard({
 
           {/* Refined typography */}
           <div className="space-y-4">
-            <h3 className="text-lg font-light text-gray-900 leading-snug tracking-wide line-clamp-2 group-hover:text-gray-800 transition-colors duration-500">
+            <h3 className="text-lg font-normal text-gray-900 leading-snug tracking-wide line-clamp-2 group-hover:text-gray-800 transition-colors duration-500">
               {title}
             </h3>
 
-            <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 font-light">
+            <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 font-normal">
               {excerpt}
             </p>
 
             {/* Minimal metadata */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100/80 group-hover:border-gray-200/80 transition-colors duration-500">
-              <div className="flex items-center justify-between w-full text-xs text-gray-500 font-light">
+              <div className="flex items-center justify-between w-full text-xs text-gray-500 font-normal">
                 <div className="flex items-center">
                   <User size={12} className="mr-1.5" />
                   {"PADUNGSILPA"}
@@ -109,7 +109,7 @@ export default function NewsCard({
 
             {/* Minimal read more */}
             <div className="flex items-center justify-end pt-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150">
-              <div className="flex items-center text-blue-600 text-sm font-light">
+              <div className="flex items-center text-blue-600 text-sm font-normal">
                 <span className="mr-2 tracking-wide">
                   {locale === "th" ? "อ่านต่อ" : "Read more"}
                 </span>

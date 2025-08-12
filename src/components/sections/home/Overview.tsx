@@ -121,71 +121,90 @@ export default function Overview({
       />
 
       <section
-        className="py-12 lg:py-12 bg-white lg:mx-20"
+        className="relative py-12 lg:py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50/80 overflow-hidden"
         itemScope
         itemType="https://schema.org/Organization"
         aria-labelledby="overview-heading">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-8 flex flex-col justify-center">
-              {/* Section Label - Matching ServicesSection style */}
-              <div className="inline-flex items-center gap-3">
-                <div className="w-12 h-px bg-[var(--primary-blue)]" aria-hidden="true"></div>
-                <span className="font-bold tracking-wider uppercase text-sm text-[var(--primary-blue)]">
-                  {t("home.overview.sectionLabel")}
-                </span>
+
+        {/* Luxury Background Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-primary-100/15 rounded-full blur-3xl opacity-60 animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-blue-100/10 rounded-full blur-2xl opacity-40 animate-pulse"
+            style={{ animationDelay: '2s' }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+            {/* Left Content - Professional Header */}
+            <div className="space-y-8">
+
+
+              {/* Condensed Professional Title */}
+              <div className="relative">
+                <h2
+                  id="overview-heading"
+                  className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight leading-tight mb-2
+                           hover:text-primary-800 transition-colors duration-500 ease-out"
+                  itemProp="name">
+                  {t("home.overview.title")}
+                  <span className="block text-primary-400 mt-2">
+                    {t("home.overview.titleHighlight")}
+                  </span>
+                </h2>
+
+                {/* Luxury Underline Animation */}
+                <div className="absolute -bottom-1 left-0 w-0 h-0.5
+                              bg-gradient-to-r from-primary-500 to-primary-300
+                              hover:w-24 transition-all duration-700 ease-out"></div>
               </div>
 
-              {/* Main Heading - Strong & Minimal Style */}
-              <h2
-                id="overview-heading"
-                className="text-3xl lg:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-0 tracking-[0.02em] !leading-normal drop-shadow-sm"
-                itemProp="name">
-                {t("home.overview.title")}
-                <span className="block text-[var(--primary-blue)]">
-                  {t("home.overview.titleHighlight")}
-                </span>
-              </h2>
-
-              {/* Enhanced Elegant Line with Glow - Matching ServicesSection */}
-              <div className="relative flex items-start justify-start mb-4" aria-hidden="true">
-                <div className="w-24 h-px bg-gradient-to-r from-[var(--primary-blue)] via-[var(--primary-blue)] to-transparent opacity-80"></div>
-                <div className="absolute w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
+              {/* Condensed Description */}
+              <div className="max-w-xl">
+                <p
+                  className="text-gray-600 text-base leading-relaxed font-normal
+                           hover:text-gray-700 transition-colors duration-300 ease-out"
+                  itemProp="description">
+                  {t("home.overview.description")}
+                </p>
               </div>
 
-              {/* Description - Clean Typography */}
-              <p
-                className="text-lg text-gray-600 leading-relaxed max-w-3xl"
-                itemProp="description">
-                {t("home.overview.description")}
-              </p>
-
-              {/* Features Grid - Minimal Cards without rounded corners */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4" itemProp="hasOfferCatalog" itemScope itemType="https://schema.org/OfferCatalog">
+              {/* Luxury Features Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8"
+                itemProp="hasOfferCatalog" itemScope itemType="https://schema.org/OfferCatalog">
                 <meta itemProp="name" content="Construction Services" />
                 {features.map((feature, index) => (
                   <article
                     key={index}
-                    className="card-minimal p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200"
+                    className="group bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-lg p-5
+                             shadow-sm hover:shadow-lg hover:shadow-primary-100/30 hover:-translate-y-1
+                             transition-all duration-500 ease-out hover:border-primary-300/50"
                     itemProp="itemListElement"
                     itemScope
                     itemType="https://schema.org/Offer">
                     <meta itemProp="position" content={String(index + 1)} />
                     <div className="flex items-start space-x-4" itemProp="itemOffered" itemScope itemType="https://schema.org/Service">
-                      {/* <div className="flex-shrink-0" aria-hidden="true">
-                        <div className="w-8 h-8 bg-[var(--primary-blue)]/10 flex items-center justify-center">
-                          <feature.icon className="w-8 h-8 text-[var(--primary-blue)]" />
+                      {/* Luxury Icon */}
+                      <div className="flex-shrink-0 mt-1" aria-hidden="true">
+                        <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg
+                                      flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ease-out">
+                          <feature.icon className="w-5 h-5 text-primary-600" />
                         </div>
-                      </div> */}
-                      <div>
+                      </div>
+                      <div className="flex-1">
+                        {/* Luxury Accent Line */}
+                        {/* <div className="w-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-300 mb-3
+                                      group-hover:w-8 transition-all duration-500 ease-out delay-100"></div> */}
+
                         <h3
-                          className="text-xl font-bold text-gray-900 mb-3 tracking-tight"
+                          className="text-lg font-semibold text-gray-900 mb-2 tracking-tight
+                                   group-hover:text-primary-800 transition-colors duration-300 ease-out"
                           itemProp="name">
                           {feature.title}
                         </h3>
                         <p
-                          className="text-base text-gray-600 leading-relaxed"
+                          className="text-sm text-gray-600 leading-relaxed
+                                   group-hover:text-gray-700 transition-colors duration-300 ease-out"
                           itemProp="description">
                           {feature.description}
                         </p>
@@ -194,12 +213,12 @@ export default function Overview({
                   </article>
                 ))}
               </div>
-              {/* Client-side interactive components */}
-              {/* <OverviewClient companyImages={companyImages} locale={locale} /> */}
             </div>
-            <OverviewClient companyImages={companyImages} locale={locale} />
 
-            {/* Right Content - Server-side image display for SEO */}
+            {/* Right Content - Luxury Carousel */}
+            <div className="relative">
+              <OverviewClient companyImages={companyImages} locale={locale} />
+            </div>
           </div>
         </div>
       </section>

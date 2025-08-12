@@ -25,7 +25,7 @@ export default function ServerHomePage({
   return (
     <>
       <ServerServicesSection services={services} locale={locale} />
-      <ServerProductSection products={products} locale={locale} />
+      {/* <ServerProductSection products={products} locale={locale} /> */}
       <Overview gallery={content} loading={false} locale={locale} />
       <StatsSection />
       <PartnersSection

@@ -4,6 +4,8 @@ import DynamicHeroSection from "@/components/sections/DynamicHeroSection";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { Button } from "@heroui/react";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 interface HeroSectionProps {
   heroImages?: string[];
@@ -30,9 +32,8 @@ export default function HeroSection({ heroImages }: HeroSectionProps) {
       autoSlideDelay={6000}>
       {/* Luxury Hero Buttons */}
       <div className="luxury-hero-btn-container">
-        <button
-          className="luxury-hero-btn luxury-hero-btn-primary group"
-          onClick={() => {
+        <PrimaryButton
+          onPress={() => {
             const servicesSection = document.getElementById("services");
             servicesSection?.scrollIntoView({ behavior: "smooth" });
           }}>
@@ -44,11 +45,13 @@ export default function HeroSection({ heroImages }: HeroSectionProps) {
           </span>
           <div className="luxury-btn-shimmer"></div>
           <div className="luxury-btn-glow"></div>
-        </button>
+        </PrimaryButton>
 
-        <button
-          className="luxury-hero-btn luxury-hero-btn-secondary group"
-          onClick={() => router.push(`/${locale}/contact-us`)}>
+        <PrimaryButton
+          size="lg"
+          variant="light"
+          className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
+          onPress={() => router.push(`/${locale}/contact-us`)}>
           <span className="relative z-10 flex items-center justify-center gap-3">
             <span className="font-semibold tracking-wide">
               {t("home.hero.contactUs")}
@@ -57,7 +60,7 @@ export default function HeroSection({ heroImages }: HeroSectionProps) {
           </span>
           <div className="luxury-btn-border"></div>
           <div className="luxury-btn-glow-secondary"></div>
-        </button>
+        </PrimaryButton>
       </div>
     </DynamicHeroSection>
   );

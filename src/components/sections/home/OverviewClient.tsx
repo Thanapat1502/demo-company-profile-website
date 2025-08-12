@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 import MinimalCarousel from "@/components/ui/MinimalCarousel";
 import ImageModal from "@/components/ui/ImageModal";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
+import { Button } from "@heroui/react";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 interface OverviewClientProps {
   companyImages: string[];
@@ -29,57 +31,73 @@ export default function OverviewClient({ companyImages, locale }: OverviewClient
   };
 
   return (
-    <div>
-      {/* Right Content - Balanced Minimal Carousel */}
-      <div className="relative flex items-center justify-center w-full">
-        <MinimalCarousel
-          images={companyImages}
-          alt="Company Overview"
-          aspectRatio="16/9"
-          showNavigation={true}
-          showIndicators={true}
-          autoPlay={true}
-          interval={5000}
-          className="w-full shadow-2xl"
-          enableModal={true}
-          onImageClick={(index: number) => {
-            setModalImageIndex(index);
-            setIsModalOpen(true);
-          }}
-        />
+    <div className="space-y-8">
+      {/* Luxury Carousel Container */}
+      <div className="relative group">
+        {/* Luxury Background Glow */}
+        <div className="absolute -inset-4 bg-gradient-to-r from-primary-100/20 via-transparent to-blue-100/20
+                      rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out"></div>
+
+        {/* Carousel Wrapper */}
+        <div className="relative bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-xl overflow-hidden
+                      shadow-lg hover:shadow-xl hover:shadow-primary-100/30 transition-all duration-500 ease-out">
+          <MinimalCarousel
+            images={companyImages}
+            alt="Company Overview"
+            aspectRatio="16/9"
+            showNavigation={true}
+            showIndicators={true}
+            autoPlay={true}
+            interval={5000}
+            className="w-full"
+            enableModal={true}
+            onImageClick={(index: number) => {
+              setModalImageIndex(index);
+              setIsModalOpen(true);
+            }}
+          />
+
+          {/* Luxury Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent
+                        opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out pointer-events-none"></div>
+        </div>
       </div>
 
-      {/* Action Buttons - Using luxury hero button style */}
-      <div className="pt-4">
-        <div className="luxury-hero-btn-container">
-          <button
-            className="luxury-hero-btn luxury-hero-btn-primary group"
-            onClick={handleLearnMoreClick}
-            aria-label={t("home.overview.learnMore")}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide">
-                {t("home.overview.learnMore")}
-              </span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
-            </span>
-            <div className="luxury-btn-shimmer"></div>
-            <div className="luxury-btn-glow"></div>
-          </button>
+      {/* Luxury Action Buttons */}
+      <div className="flex flex-row gap-4 justify-center">
+        {/* Primary Button */}
+        <PrimaryButton
+          onClick={handleLearnMoreClick}
+          aria-label={t("home.overview.learnMore")}>
 
-          <button
-            className="luxury-hero-btn luxury-hero-btn-secondary group"
-            onClick={handleViewProjectsClick}
-            aria-label={t("home.overview.viewProjects")}>
-            <span className="relative z-10 flex items-center justify-center gap-3">
-              <span className="font-semibold tracking-wide text-black">
-                {t("home.overview.viewProjects")}
-              </span>
-              <div className="w-2 h-2 bg-current opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-150"></div>
-            </span>
-            <div className="luxury-btn-border"></div>
-            <div className="luxury-btn-glow-secondary"></div>
-          </button>
-        </div>
+          {/* Button Content */}
+          <span className="relative z-10 flex items-center justify-center gap-3">
+            <span>{t("home.overview.learnMore")}</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+
+        </PrimaryButton>
+
+        {/* Secondary Button */}
+        <PrimaryButton
+          className="group relative px-8 py-3 bg-white/90 backdrop-blur-sm border border-gray-200/60 text-gray-700
+                   rounded-lg font-medium text-md tracking-wide overflow-hidden
+                   hover:bg-white hover:border-primary-300/50 hover:text-primary-700
+                   transition-all duration-500 ease-out hover:shadow-lg hover:shadow-primary-100/30 hover:-translate-y-0.5"
+          onPress={handleViewProjectsClick}
+          aria-label={t("home.overview.viewProjects")}>
+
+          {/* Button Content */}
+          <span className="relative z-10 flex items-center justify-center gap-3">
+            <span>{t("home.overview.viewProjects")}</span>
+            <div className="w-2 h-2 bg-current rounded-full opacity-0 group-hover:opacity-100
+                          transition-all duration-300 group-hover:scale-125"></div>
+          </span>
+
+          {/* Luxury Border Glow */}
+          <div className="absolute inset-0 rounded-lg border border-primary-400/0
+                        group-hover:border-primary-400/30 transition-all duration-500 ease-out"></div>
+        </PrimaryButton>
       </div>
 
       {/* Image Modal */}

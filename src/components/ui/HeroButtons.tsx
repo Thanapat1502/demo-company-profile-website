@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
+import PrimaryButton from "./PrimaryButton";
 
 interface HeroButtonsProps {
   className?: string;
@@ -46,10 +47,10 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
   const buttonContent = getButtonContent();
 
   return (
-    <div className={`luxury-hero-btn-container ${className}`}>
+    <div className={`luxury-hero-btn-container items-center justify-center ${className}`}>
       {/* Primary Button */}
-      <button
-        className="luxury-hero-btn luxury-hero-btn-primary group"
+      <PrimaryButton
+        // className="luxury-hero-btn luxury-hero-btn-primary group"
         onClick={() => router.push(buttonContent.primary.href)}>
         <span className="relative z-10 flex items-center justify-center gap-3">
           <span className="font-semibold tracking-wide">
@@ -59,11 +60,11 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
         </span>
         <div className="luxury-btn-shimmer"></div>
         <div className="luxury-btn-glow"></div>
-      </button>
+      </PrimaryButton>
 
       {/* Secondary Button */}
-      <button
-        className="luxury-hero-btn luxury-hero-btn-secondary group"
+      <PrimaryButton
+        className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
         onClick={() => router.push(buttonContent.secondary.href)}>
         <span className="relative z-10 flex items-center justify-center gap-3">
           <span className="font-semibold tracking-wide">
@@ -73,7 +74,7 @@ export default function HeroButtons({ className = "" }: HeroButtonsProps) {
         </span>
         <div className="luxury-btn-border"></div>
         <div className="luxury-btn-glow-secondary"></div>
-      </button>
+      </PrimaryButton>
     </div>
   );
 }
