@@ -73,7 +73,7 @@ export default function Footer() {
         />
 
         {/* Refined Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/60 to-black/80"></div>
+        <div className="backdrop-blur-sm absolute inset-0 bg-gradient-to-br from-black/75 via-black/60 to-black/80"></div>
 
         {/* Subtle Glass Effects */}
         <div className="absolute inset-0">

@@ -38,7 +38,10 @@ export default async function ProductsServicesPage({ params }: Props) {
         description={t("services.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-4.jpg"]}
         autoSlideDelay={6000}>
-        <HeroButtons />
+        <HeroButtons
+          primaryButtonText={locale === 'th' ? 'ดูบริการทั้งหมด' : 'View More'}
+          primaryButtonHref="/products-services#gas-station"
+        />
       </DynamicHeroSection>
 
       {/* Client-side content */}
