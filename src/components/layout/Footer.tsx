@@ -61,10 +61,29 @@ export default function Footer() {
   };
 
   return (
-    <footer className="pt-4 relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
-      {/* Subtle Luxury Background Effects */}
-      <div className="absolute inset-0 opacity-3">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-transparent to-blue-800/5"></div>
+    <footer className="pt-4 relative text-white overflow-hidden">
+      {/* Hero Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero-sections/hero-banner-2.jpg"
+          alt="Footer background"
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+
+        {/* Refined Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/60 to-black/80"></div>
+
+        {/* Subtle Glass Effects */}
+        <div className="absolute inset-0">
+          {/* Minimal Orbs */}
+          <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-gradient-to-r from-white/3 to-blue-300/6 rounded-full blur-xl opacity-40"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-gradient-to-r from-primary-300/4 to-white/3 rounded-full blur-lg opacity-30"></div>
+
+          {/* Clean Gradient Layer */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
+        </div>
       </div>
 
       {/* Ultra Compact Main Footer Content */}
@@ -72,30 +91,28 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 items-start">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            {/* Compact Luxury Logo */}
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="relative">
-                <div className="w-12 h-12 rounded bg-white/100 hover:bg-white/30 text-white border border-white/30 hover:border-white/50 backdrop-blur-sm flex items-center justify-center relative overflow-hidden group">
-                  <Image
-                    src="/images/pds-logo.png"
-                    alt="PDS Logo"
-                    width={32}
-                    height={32}
-                    className="object-contain relative z-10"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {/* NavBar-Style Logo */}
+            <div className="flex items-center space-x-3 mb-6 group hover:scale-105 transition-transform duration-300">
+              <div className="w-12 h-12 rounded-lg overflow-hidden">
+                <Image
+                  src="/images/pds-logo.png"
+                  alt="PDS Logo"
+                  width={48}
+                  height={48}
+                  className="object-contain w-full h-full"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-black text-white tracking-wide">
-                  PADUNGSILPA
+                <span className="font-semibold text-md text-white transition-all duration-500 ease-in-out">
+                  กลุ่มบริษัท ผดุงศิลป์ ฯ
                 </span>
-                <span className="text-md  font-semibold uppercase">GROUP</span>
+                <span className="font-medium text-md text-white/80 transition-all duration-500 ease-in-out">
+                  PADUNGSILPA GROUP
+                </span>
               </div>
             </div>
 
-            <p className="text-gray-300 mb-6 leading-relaxed text-md max-w-xs">
+            <p className="text-white/85 mb-6 leading-relaxed text-md max-w-xs">
               {t("footer.company.description")}
             </p>
 
@@ -139,14 +156,14 @@ export default function Footer() {
               <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
                 {t("footer.quickLinks")}
               </h3>
-              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 via-blue-300 to-white/60"></div>
             </div>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={`/${locale}${link.href}`}
-                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md">
+                    className="group flex items-center text-white/80 hover:text-white transition-all duration-300 relative text-md">
                     <span className="relative z-10">
                       {currentLang === "en" ? link.label : link.labelTh}
                     </span>
@@ -154,7 +171,7 @@ export default function Footer() {
                       size={12}
                       className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-white/60 to-blue-300 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
               ))}
@@ -167,14 +184,14 @@ export default function Footer() {
               <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
                 {t("footer.services")}
               </h3>
-              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 via-blue-300 to-white/60"></div>
             </div>
             <ul className="space-y-2">
               {services.map((service) => (
                 <li key={service.href}>
                   <Link
                     href={`/${locale}${service.href}`}
-                    className="group flex items-center text-gray-300 hover:text-white transition-all duration-300 relative text-md">
+                    className="group flex items-center text-white/80 hover:text-white transition-all duration-300 relative text-md">
                     <span className="relative z-10">
                       {currentLang === "en" ? service.label : service.labelTh}
                     </span>
@@ -182,7 +199,7 @@ export default function Footer() {
                       size={12}
                       className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-white/60 to-blue-300 group-hover:w-full transition-all duration-300"></div>
                   </Link>
                 </li>
               ))}
@@ -195,7 +212,7 @@ export default function Footer() {
               <h3 className="text-lg font-bold text-white mb-1 tracking-wide">
                 {t("footer.contact")}
               </h3>
-              <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+              <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 via-blue-300 to-white/60"></div>
             </div>
 
             <ContactInfo locale={locale} variant="footer" />
@@ -203,52 +220,51 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Luxury Divider */}
+      {/* Refined Divider */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-600/50 to-transparent h-px"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent h-px blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent h-px"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-300/20 to-transparent h-px blur-sm"></div>
       </div>
 
       {/* Bottom Footer */}
       <div className="relative z-10 mx-auto lg:mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-gray-400 text-md font-medium">
+          <div className="text-white/70 text-md font-medium">
             © 2025 Padungsilpa Group. {t("footer.rights")}
           </div>
 
           <div className="flex items-center space-x-6 text-md">
             <Link
               href={`/${locale}/privacy`}
-              className="group text-gray-400 hover:text-white transition-all duration-300 relative">
+              className="group text-white/70 hover:text-white transition-all duration-300 relative">
               <span className="relative z-10">{t("footer.privacy")}</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-white/60 to-blue-300 group-hover:w-full transition-all duration-300"></div>
             </Link>
             <Link
               href={`/${locale}/terms`}
-              className="group text-gray-400 hover:text-white transition-all duration-300 relative">
+              className="group text-white/70 hover:text-white transition-all duration-300 relative">
               <span className="relative z-10">{t("footer.terms")}</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-white/60 to-blue-300 group-hover:w-full transition-all duration-300"></div>
             </Link>
             <button
               onClick={() => setCurrentLang(currentLang === "en" ? "th" : "en")}
-              className="group w-8 h-8 rounded-full border border-gray-600/50 text-gray-400 hover:text-white hover:border-gray-400/50 transition-all duration-300 hover:scale-110 hover:shadow-lg overflow-hidden relative">
+              className="group w-8 h-8 rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-all duration-300 hover:scale-110 overflow-hidden relative">
               <Globe size={14} className="relative z-10 mx-auto" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-out"></div>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Compact Luxury Scroll to Top Button */}
+      {/* Refined Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-6 right-6 z-50 group w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 hover:scale-110 hover:-translate-y-1 overflow-hidden">
+        className="fixed bottom-6 right-6 z-50 group w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-full shadow-xl hover:shadow-white/10 transition-all duration-300 hover:scale-110 hover:-translate-y-1 overflow-hidden">
         <ArrowUp
           size={18}
           className="relative z-10 mx-auto transition-transform duration-300 group-hover:-translate-y-0.5"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-out"></div>
       </button>
     </footer>
   );

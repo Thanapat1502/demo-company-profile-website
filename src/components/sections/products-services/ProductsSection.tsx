@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ProductCard } from "@/components/share/ProductCard";
 import { ProductType } from "@/store/zustand/productStore";
 import { useTranslations } from "next-intl";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 interface ProductsSectionProps {
   products: ProductType[];
@@ -82,19 +83,12 @@ export default function ProductsSection({
 
         {products.length > 6 && (
           <div className="text-center mt-12">
-            <button
-              className="luxury-hero-btn luxury-hero-btn-secondary"
+            <PrimaryButton
               onClick={() => setShowAllProducts(!showAllProducts)}>
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <span className="font-semibold tracking-wide text-blue-950">
-                  {showAllProducts
-                    ? t("services.products.showLess")
-                    : t("services.products.viewAll")}
-                </span>
-              </span>
-              <div className="luxury-btn-border"></div>
-              <div className="luxury-btn-glow-secondary"></div>
-            </button>
+              {showAllProducts
+                ? t("services.products.showLess")
+                : t("services.products.viewAll")}
+            </PrimaryButton>
           </div>
         )}
       </div>

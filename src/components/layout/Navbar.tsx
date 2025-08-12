@@ -369,7 +369,7 @@ export default function MainNavbar() {
               className="flex flex-col items-end"
             >
               <span className={`text-md font-medium transition-all duration-300 ${isAtTop ? "text-white/70" : "text-gray-500"}`}>
-                ติดต่อเรา
+                {locale === 'th' ? 'ติดต่อเรา' : 'Contact Us'}
               </span>
               <a
                 href="tel:083-999-5544"

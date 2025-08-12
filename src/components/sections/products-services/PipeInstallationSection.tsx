@@ -7,6 +7,7 @@ import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 import ServiceGallery from "@/components/gallery/ServiceGallery";
 import ImageSkeleton from "@/components/ui/ImageSkeleton";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 interface PipeInstallationSectionProps {
   service?: ServiceType;
   content?: Content[];
@@ -90,9 +91,8 @@ export default function PipeInstallationSection({
 
             {/* Action Button - Using luxury hero button style */}
             <div className="pt-4">
-              <div className="luxury-hero-btn-container max-w-xs">
-                <button
-                  className="luxury-hero-btn luxury-hero-btn-primary group"
+              <div className="">
+                <PrimaryButton
                   onClick={() =>
                     (window.location.href = `/${locale}/contact-us`)
                   }>
@@ -104,7 +104,7 @@ export default function PipeInstallationSection({
                   </span>
                   <div className="luxury-btn-shimmer"></div>
                   <div className="luxury-btn-glow"></div>
-                </button>
+                </PrimaryButton>
               </div>
             </div>
           </div>

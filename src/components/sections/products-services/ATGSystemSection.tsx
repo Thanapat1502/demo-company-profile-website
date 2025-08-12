@@ -7,6 +7,7 @@ import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 import { Content } from "@/store/zustand/contentStore";
 import { getBilingualName, getBilingualDescription } from "@/utils/bilingual";
 import ImageSkeleton from "@/components/ui/ImageSkeleton";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 interface ATGSystemSectionProps {
   service?: ServiceType;
@@ -125,21 +126,20 @@ export default function ATGSystemSection({
 
             {/* Action Button - Using luxury hero button style */}
             <div className="pt-4">
-              <div className="luxury-hero-btn-container max-w-xs">
-                <button
-                  className="luxury-hero-btn luxury-hero-btn-primary group"
+              <div >
+                <PrimaryButton
                   onClick={() =>
                     (window.location.href = `/${locale}/contact-us`)
                   }>
                   <span className="relative z-10 flex items-center justify-center gap-3">
                     <span className="font-semibold tracking-wide">
-                      ติดต่อสอบถาม
+                      {t("services.construction.contactButton")}
                     </span>
                     <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1" />
                   </span>
                   <div className="luxury-btn-shimmer"></div>
                   <div className="luxury-btn-glow"></div>
-                </button>
+                </PrimaryButton>
               </div>
             </div>
           </div>
