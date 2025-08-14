@@ -926,10 +926,9 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           render={({ field }) => {
             // Use watched content to ensure we get the latest value
             const currentValue = (watchedContent?.th || field.value) as QuillContent;
-            const editorKey = `th-editor-${currentValue?.html?.length || 0}`;
             return (
               <React18QuillEditor
-                key={editorKey}
+                key="th-editor-stable"
                 value={currentValue?.html || ""}
                 onChange={(html) => {
                   const quillContent = createQuillContent(html);
@@ -1281,6 +1280,7 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
             const currentValue = field.value as QuillContent;
             return (
               <React18QuillEditor
+                key="en-editor-stable"
                 value={currentValue?.html || ""}
                 onChange={(html) => {
                   const quillContent = createQuillContent(html);

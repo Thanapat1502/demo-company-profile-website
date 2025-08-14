@@ -20,6 +20,12 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
   const [isClient, setIsClient] = useState(false);
   const [quillInstance, setQuillInstance] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<HTMLDivElement>(null);
+  const onChangeRef = useRef(onChange);
+
+  // Update the onChange ref when it changes
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     setIsClient(true);
@@ -118,10 +124,10 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
         const videoHandler = () => {
           const url = prompt(
             "กรุณาใส่ URL ของวิดีโอ YouTube:\n\n" +
-              "รูปแบบที่รองรับ:\n" +
-              "• https://www.youtube.com/watch?v=VIDEO_ID\n" +
-              "• https://youtu.be/VIDEO_ID\n" +
-              "• https://www.youtube.com/embed/VIDEO_ID"
+            "รูปแบบที่รองรับ:\n" +
+            "• https://www.youtube.com/watch?v=VIDEO_ID\n" +
+            "• https://youtu.be/VIDEO_ID\n" +
+            "• https://www.youtube.com/embed/VIDEO_ID"
           );
 
           if (url && url.trim()) {
@@ -215,24 +221,39 @@ const React18QuillEditor: React.FC<React18QuillEditorProps> = ({
           quill.root.innerHTML = value;
         }
 
-        // Listen for text changes
+        // Listen for text changes using ref to prevent re-renders
         quill.on("text-change", () => {
           const content = quill.root.innerHTML;
-          onChange(content);
+          onChangeRef.current(content);
         });
 
         setQuillInstance(quill);
       });
     }
-  }, [isClient, quillInstance, value, onChange, placeholder]);
+  }, [isClient, quillInstance, placeholder]); // Removed value and onChange from dependencies
 
-  //Update content when value prop changes
+  //Update content when value prop changes (with debouncing to prevent excessive updates)
   useEffect(() => {
     if (quillInstance && value !== quillInstance.root.innerHTML) {
-      const selection = quillInstance.getSelection();
-      quillInstance.root.innerHTML = value;
-      if (selection) {
-        quillInstance.setSelection(selection);
+      // Only update if the content is significantly different to prevent cursor jumping
+      const currentContent = quillInstance.root.innerHTML;
+      const normalizedValue = value || '';
+      const normalizedCurrent = currentContent || '';
+
+      // Only update if there's a meaningful difference (not just formatting)
+      if (normalizedValue.replace(/\s+/g, ' ').trim() !== normalizedCurrent.replace(/\s+/g, ' ').trim()) {
+        const selection = quillInstance.getSelection();
+        quillInstance.root.innerHTML = value;
+        if (selection) {
+          // Restore selection after a brief delay to ensure content is updated
+          setTimeout(() => {
+            try {
+              quillInstance.setSelection(selection);
+            } catch (e) {
+              // Ignore selection errors
+            }
+          }, 0);
+        }
       }
     }
   }, [value, quillInstance]);

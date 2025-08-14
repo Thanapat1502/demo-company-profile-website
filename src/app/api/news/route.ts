@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { withAuth, createAuthenticatedClient } from "@/lib/auth-middleware";
 import { generateBilingualSlugs } from "@/utils/slugify";
+import { revalidateNewsCache } from "@/lib/cache-revalidation";
 
 // Helper to upload images using authenticated Supabase client
 async function uploadImage(file: File, newsId: string): Promise<string> {
@@ -223,6 +224,17 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
           },
         ])
         .select();
+
+      // Revalidate cache after successful creation
+      if (!error && data) {
+        await revalidateNewsCache({
+          slug_th: finalSlugTh,
+          slug_en: finalSlugEn,
+          id,
+          action: "create",
+        });
+      }
+
       return NextResponse.json({ data, error });
     } catch (err) {
       return NextResponse.json(
@@ -410,6 +422,17 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
       .update(updateData)
       .eq("id", id)
       .select();
+
+    // Revalidate cache after successful update
+    if (!error && data) {
+      await revalidateNewsCache({
+        slug_th: finalSlugTh,
+        slug_en: finalSlugEn,
+        id,
+        action: "update",
+      });
+    }
+
     return NextResponse.json({ data, error });
   } catch (err) {
     return NextResponse.json(
@@ -425,10 +448,10 @@ export const DELETE = withAuth(async (req: NextRequest, supabaseAuth) => {
     const id = searchParams.get("id");
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-    // Get the article first to retrieve the thumbnail URL
+    // Get the article first to retrieve the thumbnail URL and slugs for cache revalidation
     const { data: articleToDelete, error: fetchError } = await supabaseAuth
       .from("news")
-      .select("thumbnail")
+      .select("thumbnail, slug_th, slug_en")
       .eq("id", id)
       .single();
 
@@ -452,6 +475,14 @@ export const DELETE = withAuth(async (req: NextRequest, supabaseAuth) => {
     if (articleToDelete?.thumbnail) {
       await deleteImageFromStorage(supabaseAuth, articleToDelete.thumbnail);
     }
+
+    // Revalidate cache after successful deletion
+    await revalidateNewsCache({
+      slug_th: articleToDelete?.slug_th,
+      slug_en: articleToDelete?.slug_en,
+      id,
+      action: "delete",
+    });
 
     return NextResponse.json({
       data,
@@ -479,7 +510,13 @@ export async function GET(req: Request) {
       .select("*")
       .eq("id", id)
       .single();
-    return NextResponse.json({ data, error });
+
+    const response = NextResponse.json({ data, error });
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400"
+    );
+    return response;
   } else if (slug) {
     // Get news by slug
     const slugColumn = locale === "en" ? "slug_en" : "slug_th";
@@ -489,13 +526,25 @@ export async function GET(req: Request) {
       .eq(slugColumn, slug)
       .eq("status", "published")
       .single();
-    return NextResponse.json({ data, error });
+
+    const response = NextResponse.json({ data, error });
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400"
+    );
+    return response;
   } else {
     // Get all news ordered by newest first
     const { data, error } = await supabase
       .from("news")
       .select("*")
       .order("created_at", { ascending: false });
-    return NextResponse.json({ data, error });
+
+    const response = NextResponse.json({ data, error });
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=1800, stale-while-revalidate=3600"
+    );
+    return response;
   }
 }

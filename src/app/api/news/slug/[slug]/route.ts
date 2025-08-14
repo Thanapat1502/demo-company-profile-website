@@ -78,7 +78,7 @@ export async function GET(
 
     console.log(`✅ News article found: ${data.title_th || data.title_en}`);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       data,
       category,
       slug: {
@@ -87,6 +87,14 @@ export async function GET(
         en: data.slug_en,
       },
     });
+
+    // Add cache headers for better performance
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400"
+    );
+
+    return response;
   } catch (error) {
     console.error("❌ Unexpected error in news slug API:", error);
     return NextResponse.json(
