@@ -2,8 +2,10 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const isDev = process.env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
+  distDir: isDev ? ".next-dev" : ".next",
   images: {
     remotePatterns: [
       {
@@ -28,7 +30,7 @@ const nextConfig: NextConfig = {
   // Optimize caching for locale-specific pages with ISR
   experimental: {
     staleTimes: {
-      dynamic: 30, // Allow some caching for dynamic pages with localized content
+      dynamic: 30, // Allow some dynamic caching for locale context
       static: 3600, // 1 hour for static pages
     },
   },
@@ -36,6 +38,11 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // Force proper static generation for locale routes
   trailingSlash: false,
+  // Generate static pages for all locales
+  generateBuildId: async () => {
+    // Use a consistent build ID for better caching
+    return `build-${Date.now()}`;
+  },
   // Ensure proper route matching
   async rewrites() {
     return [];

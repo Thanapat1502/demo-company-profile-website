@@ -33,6 +33,40 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/(th|en)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
+        },
+        {
+          "key": "x-matched-path",
+          "value": "$1"
+        }
+      ]
+    },
+    {
+      "source": "/(th|en)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Language"
+        },
+        {
+          "key": "x-matched-path",
+          "value": "$1/$2"
+        }
+      ]
     }
   ],
   "rewrites": [

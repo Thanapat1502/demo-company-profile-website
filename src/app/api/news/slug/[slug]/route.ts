@@ -65,10 +65,22 @@ export async function GET(
       );
     }
 
+    // Fetch category data if cat_id exists
+    let category = null;
+    if (data.cat_id) {
+      const { data: categoryData } = await supabase
+        .from("news_categories")
+        .select("id, cat_th, cat_en")
+        .eq("id", data.cat_id)
+        .single();
+      category = categoryData;
+    }
+
     console.log(`✅ News article found: ${data.title_th || data.title_en}`);
 
     return NextResponse.json({
       data,
+      category,
       slug: {
         current: slug,
         th: data.slug_th,

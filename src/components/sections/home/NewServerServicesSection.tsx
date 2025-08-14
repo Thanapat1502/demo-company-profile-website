@@ -27,16 +27,18 @@ export default function NewServerServicesSection({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.target === sectionRef.current && entry.isIntersecting) {
+          setTimeout(() => {
             setGridVisible(true)
+          }, 100);
+          if (entry.target === sectionRef.current && entry.isIntersecting) {
             setIsVisible(true);
           }
           if (entry.target === headerRef.current && entry.isIntersecting) {
-            setGridVisible(true)
+            // setGridVisible(true)
             setTimeout(() => setHeaderVisible(true), 200);
           }
           if (entry.target === gridRef.current && entry.isIntersecting) {
-            setGridVisible(true)
+            // setGridVisible(true)
             // setTimeout(() => setGridVisible(true), 2000);
           }
         });

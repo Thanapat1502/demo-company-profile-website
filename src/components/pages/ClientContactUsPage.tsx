@@ -111,7 +111,7 @@ export default function ClientContactUsPage({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Buttons Section */}
-      <section className="py-8 bg-white">
+      <section id='contact-us-section' className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="luxury-hero-btn-container">
             <PrimaryButton

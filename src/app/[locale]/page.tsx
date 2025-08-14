@@ -8,12 +8,15 @@ import { getSEOData, generateMetadata as generateSEOMetadataNew, SEO_DEFAULTS } 
 import PageSEO from "@/components/seo/PageSEO";
 import { fetchHomePageDataSSR } from "@/lib/server/dataFetchers";
 
-// Enable ISR (Incremental Static Regeneration) for localized content
-export const revalidate = 3600; // Revalidate every hour
-export const dynamic = 'auto'; // Allow dynamic rendering for localized content
+// Enable static generation with proper locale support and ISR
+export const dynamic = 'auto'; // Allow proper locale context while enabling static generation
+export const revalidate = 3600; // ISR: Revalidate every hour (1 hour = 3600 seconds)
+export const dynamicParams = false; // Only allow pre-generated params
+export const fetchCache = 'default-cache'; // Enable caching for fetch requests
 
 // Generate static params for all locales at build time
 export async function generateStaticParams() {
+  console.log('🏗️ Generating static params for home page');
   return [
     { locale: 'th' },
     { locale: 'en' },

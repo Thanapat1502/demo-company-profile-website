@@ -80,7 +80,7 @@ export function generateMetadata(
       url: currentUrl,
       siteName:
         fallback.locale === "th"
-          ? "บริษัท ผดุงศิลป์ จำกัด"
+          ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
           : "Padungsilpa Group",
       images: seoData?.og_image
         ? [
@@ -166,7 +166,7 @@ export function generateStructuredData(
         "@type": "Organization",
         name:
           fallback.locale === "th"
-            ? "บริษัท ผดุงศิลป์ จำกัด"
+            ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
             : "Padungsilpa Group",
         description: seoData?.description || fallback.description,
         url: currentUrl,
@@ -199,7 +199,7 @@ export function generateStructuredData(
           "@type": "WebSite",
           name:
             fallback.locale === "th"
-              ? "บริษัท ผดุงศิลป์ จำกัด"
+              ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
               : "Padungsilpa Group",
           url: baseUrl,
         },
@@ -271,11 +271,11 @@ export async function getSitemapData(): Promise<
  */
 export const SEO_DEFAULTS = {
   th: {
-    site_name: "บริษัท ผดุงศิลป์ จำกัด",
-    default_title: "บริษัท ผดุงศิลป์ จำกัด - ผู้นำด้านการก่อสร้างและวิศวกรรม",
+    site_name: "กลุ่มบริษัท ผดุงศิลป์ ฯ",
+    default_title: "กลุ่มบริษัท ผดุงศิลป์ ฯ - ผู้นำด้านการก่อสร้างและวิศวกรรม",
     default_description:
-      "บริษัท ผดุงศิลป์ จำกัด ผู้เชี่ยวชาญด้านการก่อสร้าง วิศวกรรม และบริการครบวงจร มีประสบการณ์กว่า 30 ปี",
-    author: "บริษัท ผดุงศิลป์ จำกัด",
+      "กลุ่มบริษัท ผดุงศิลป์ ฯ ผู้เชี่ยวชาญด้านการก่อสร้าง วิศวกรรม และบริการครบวงจร มีประสบการณ์กว่า 30 ปี",
+    author: "กลุ่มบริษัท ผดุงศิลป์ ฯ",
   },
   en: {
     site_name: "Padungsilpa Group",

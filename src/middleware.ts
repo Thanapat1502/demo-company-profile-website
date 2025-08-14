@@ -31,6 +31,9 @@ export default function middleware(request: NextRequest) {
     // Add locale-specific headers for Vercel caching
     newResponse.headers.set("X-Locale", locale);
 
+    // Critical: Set x-matched-path to the actual localized path for proper Vercel caching
+    newResponse.headers.set("x-matched-path", pathname);
+
     // Smart caching that preserves localized content
     const currentCacheControl = newResponse.headers.get("Cache-Control");
 

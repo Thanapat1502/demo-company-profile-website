@@ -5,12 +5,14 @@ import HeroButtons from "@/components/ui/HeroButtons";
 import { getHeroImageById } from "@/lib/hero-utils";
 import ClientNewsEventsPage from "@/components/pages/ClientNewsEventsPage";
 
-// Enable ISR for localized content
-export const revalidate = 3600;
-export const dynamic = 'auto';
+// Enable static generation with proper locale support
+export const dynamic = 'auto'; // Allow proper locale context while enabling static generation
+export const revalidate = 3600; // Revalidate every hour
+export const dynamicParams = false; // Only allow pre-generated params
 
 // Generate static params for all locales
 export async function generateStaticParams() {
+  console.log('🏗️ Generating static params for news-events page');
   return [
     { locale: 'th' },
     { locale: 'en' },
@@ -38,7 +40,8 @@ export default async function NewsEventsPage({ params }: Props) {
         description={t("news.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-5.jpg"]}
         autoSlideDelay={6000}>
-        <HeroButtons />
+        <HeroButtons primaryButtonText={locale === 'th' ? 'ดูข่าวสาร' : 'View More'}
+          primaryButtonHref="/news-events#news-events" />
       </DynamicHeroSection>
 
       {/* Client-side content */}
