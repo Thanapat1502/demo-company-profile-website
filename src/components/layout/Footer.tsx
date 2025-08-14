@@ -165,7 +165,7 @@ export default function Footer() {
                     href={`/${locale}${link.href}`}
                     className="group flex items-center text-white/80 hover:text-white transition-all duration-300 relative text-md">
                     <span className="relative z-10">
-                      {currentLang === "en" ? link.label : link.labelTh}
+                      {locale === "en" ? link.label : link.labelTh}
                     </span>
                     <ExternalLink
                       size={12}
@@ -193,7 +193,7 @@ export default function Footer() {
                     href={`/${locale}${service.href}`}
                     className="group flex items-center text-white/80 hover:text-white transition-all duration-300 relative text-md">
                     <span className="relative z-10">
-                      {currentLang === "en" ? service.label : service.labelTh}
+                      {locale === "en" ? service.label : service.labelTh}
                     </span>
                     <ExternalLink
                       size={12}
@@ -230,7 +230,7 @@ export default function Footer() {
       <div className="relative z-10 mx-auto lg:mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-white/70 text-md font-medium">
-            © 2025 Padungsilpa Group. {t("footer.rights")}
+            © {new Date().getFullYear()} Padungsilpa Group. {t("footer.rights")}
           </div>
 
           <div className="flex items-center space-x-6 text-md">

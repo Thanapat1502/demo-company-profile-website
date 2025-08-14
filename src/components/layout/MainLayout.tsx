@@ -9,18 +9,20 @@ import { ScrollBehavior } from "./ScrollBehavior";
 interface MainLayoutProps {
   children: ReactNode;
   className?: string;
+  forceSolidNavBar?: boolean;
 }
 
 export default function MainLayout({
   children,
   className = "",
+  forceSolidNavBar
 }: MainLayoutProps) {
   return (
     <div className="min-h-screen relative">
       <ScrollBehavior />
       <main className={`relative ${className}`}>
-        <MainNavbar />
-        <div className="first-section-container">{children}</div>
+        <MainNavbar forceSolid={forceSolidNavBar} />
+        <div className="first-section-containers">{children}</div>
       </main>
       <Footer />
       <FloatingContactButton />

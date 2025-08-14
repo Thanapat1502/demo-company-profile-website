@@ -85,8 +85,8 @@ export default function PipeInstallationSection({
             </div>
 
             <div className="space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-              <p>{serviceDescription}</p>
-              <p>{t("services.pipeInstallation.detailedDescription")}</p>
+              <p className="whitespace-pre-wrap">{serviceDescription}</p>
+              <p className="whitespace-pre-wrap">{t("services.pipeInstallation.detailedDescription")}</p>
             </div>
 
             {/* Action Button - Using luxury hero button style */}

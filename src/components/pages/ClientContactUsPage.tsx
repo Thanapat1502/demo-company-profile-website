@@ -18,6 +18,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useContactStore } from "@/store/zustand/contactStore";
+import PrimaryButton from "../ui/PrimaryButton";
 
 interface ClientContactUsPageProps {
   locale: string;
@@ -113,8 +114,7 @@ export default function ClientContactUsPage({
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="luxury-hero-btn-container">
-            <button
-              className="luxury-hero-btn luxury-hero-btn-primary group"
+            <PrimaryButton
               onClick={() =>
                 document
                   .getElementById("contact-form")
@@ -128,10 +128,9 @@ export default function ClientContactUsPage({
               </span>
               <div className="luxury-btn-shimmer"></div>
               <div className="luxury-btn-glow"></div>
-            </button>
+            </PrimaryButton>
 
-            <button
-              className="luxury-hero-btn luxury-hero-btn-secondary group"
+            <PrimaryButton
               onClick={() => (window.location.href = "tel:+6621234567")}>
               <span className="relative z-10 flex items-center justify-center gap-3">
                 <span className="font-semibold tracking-wide">
@@ -141,7 +140,7 @@ export default function ClientContactUsPage({
               </span>
               <div className="luxury-btn-border"></div>
               <div className="luxury-btn-glow-secondary"></div>
-            </button>
+            </PrimaryButton>
           </div>
         </div>
       </section>
@@ -179,7 +178,7 @@ export default function ClientContactUsPage({
             {contactMethods.map((method, index) => (
               <div
                 key={index}
-                className="group text-center p-8 card-minimal hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                className="group text-center p-8 card-minimal rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center bg-[var(--primary-blue)]/10">
                   <method.icon
                     size={32}
@@ -192,11 +191,11 @@ export default function ClientContactUsPage({
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {method.description}
                 </p>
-                <a
+                <PrimaryButton
                   href={method.action}
                   className="inline-block px-6 py-3 bg-[var(--primary-blue)] text-white font-semibold hover:bg-[var(--primary-blue-dark)] transition-colors">
                   {method.value}
-                </a>
+                </PrimaryButton>
               </div>
             ))}
           </div>
@@ -204,7 +203,7 @@ export default function ClientContactUsPage({
       </section>
 
       {/* Main Contact Information */}
-      <section className="section-minimal bg-white">
+      <section className="hidden section-minimal bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             {/* Section Label */}
@@ -389,15 +388,14 @@ export default function ClientContactUsPage({
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="inline-flex items-center px-12 py-4 bg-gray-900 text-white font-semibold hover:bg-gray-800 transition-colors group mt-8">
+                <PrimaryButton
+                  type="submit">
                   <Send
                     size={20}
                     className="mr-3 group-hover:translate-x-1 transition-transform"
                   />
                   {t("contact.form.submit")}
-                </button>
+                </PrimaryButton>
               </form>
             </div>
 
@@ -465,7 +463,7 @@ export default function ClientContactUsPage({
       </section>
 
       {/* FAQ Section */}
-      <section className="section-minimal bg-white">
+      <section className="hidden section-minimal bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             {/* Section Label */}

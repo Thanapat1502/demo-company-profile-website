@@ -182,9 +182,9 @@ export default function ContactInfo({
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`relative w-10 h-10 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}
+              className={`relative flex items-center w-14 h-14 rounded-full border border-gray-600/50 text-gray-400 ${social.color} transition-all duration-500 hover:border-gray-400/50 hover:scale-110 hover:shadow-lg group overflow-hidden`}
               title={social.name}>
-              <social.icon size={16} className="relative z-10 mx-auto mt-2" />
+              <social.icon size={28} className="relative z-10 mx-auto" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
             </a>
           ))}

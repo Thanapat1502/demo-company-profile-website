@@ -14,6 +14,8 @@ export type News = {
   thumbnail?: string;
   title_th: string;
   title_en: string;
+  slug_th?: string;
+  slug_en?: string;
   excerpt_th?: string;
   excerpt_en?: string;
   tag_id?: number[];
@@ -59,6 +61,7 @@ interface NewsStoreState {
   fetchCategories: () => Promise<void>;
   fetchNews: () => Promise<void>;
   fetchNewsDetail: (id: string) => Promise<null>;
+  fetchNewsBySlug: (slug: string, locale?: string) => Promise<News | null>;
   fetchHighlightedNews: () => Promise<void>;
   addNews: (data: FormData) => Promise<void>;
   updateNews: (id: string, data: FormData) => Promise<void>;
@@ -195,6 +198,51 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
       return null;
     }
   },
+
+  fetchNewsBySlug: async (slug: string, locale: string = "th") => {
+    set({ loading: true, error: null, success: false });
+    try {
+      console.log("🔍 Fetching news detail for slug:", slug, "locale:", locale);
+
+      const response = await fetch(`/api/news/slug/${slug}?locale=${locale}`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          set({
+            newsDetail: null,
+            loading: false,
+            error: "News article not found",
+            success: false,
+          });
+          return null;
+        }
+        throw new Error(result.error || "Failed to fetch news detail");
+      }
+
+      console.log("✅ News detail fetched successfully:", result.data?.title_th);
+
+      set({
+        newsDetail: result.data,
+        loading: false,
+        error: null,
+        success: true,
+      });
+
+      return result.data;
+    } catch (err) {
+      console.error("❌ Error fetching news by slug:", err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to fetch news detail";
+      set({
+        error: errorMessage,
+        loading: false,
+        newsDetail: null,
+        success: false,
+      });
+      return null;
+    }
+  },
+
   addNews: async (formData) => {
     set({ loading: true, error: null, success: false });
     const res = await fetch("/api/news", {

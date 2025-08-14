@@ -50,7 +50,7 @@ export default function NewsCard({
 
   return (
     <Link
-      href={`/${locale}/news-events/${news.id}`}
+      href={`/${locale}/news-events/${locale === 'th' ? news.slug_th : news.slug_en}`}
       className="group block"
       style={{
         animationDelay: `${index * 100}ms`,

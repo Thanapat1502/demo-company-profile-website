@@ -16,6 +16,14 @@ interface FormValues {
   image: File | null;
 }
 
+interface UpdateServiceData {
+  name_th: string;
+  name_en: string;
+  description_th: string;
+  description_en: string;
+  image?: File;
+}
+
 export const ServiceManager = () => {
   // Service Store
   const {
@@ -44,19 +52,33 @@ export const ServiceManager = () => {
   // Form submission
   const handleFormSubmit = async (data: FormValues) => {
     try {
-      const submitData = {
-        name_th: data.name_th,
-        name_en: data.name_en,
-        description_th: data.description_th,
-        description_en: data.description_en,
-        image: data.image || undefined,
-      };
-
       if (editingService) {
+        // For updates, only include changed values
+        const submitData: UpdateServiceData = {
+          name_th: data.name_th,
+          name_en: data.name_en,
+          description_th: data.description_th,
+          description_en: data.description_en,
+        };
+
+        // Only include image if a new one was selected
+        if (data.image) {
+          submitData.image = data.image;
+        }
+
         await updateService(editingService.id, submitData);
         setEditingService(null);
         showSuccess("อัปเดตสำเร็จ", "ข้อมูลบริการได้รับการอัปเดตเรียบร้อยแล้ว");
       } else {
+        // For new services, include all data
+        const submitData = {
+          name_th: data.name_th,
+          name_en: data.name_en,
+          description_th: data.description_th,
+          description_en: data.description_en,
+          image: data.image || undefined,
+        };
+
         await addService(submitData);
         showSuccess("เพิ่มสำเร็จ", "เพิ่มบริการใหม่เรียบร้อยแล้ว");
       }

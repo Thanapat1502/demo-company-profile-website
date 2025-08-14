@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS news (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title_th TEXT,
     title_en TEXT,
+    slug_th TEXT UNIQUE,
+    slug_en TEXT UNIQUE,
     subtitle_th TEXT,
     subtitle_en TEXT,
     excerpt_th TEXT,
@@ -86,6 +88,16 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'news' AND column_name = 'excerpt_en') THEN
         ALTER TABLE news ADD COLUMN excerpt_en TEXT;
     END IF;
+
+    -- Add slug_th column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'news' AND column_name = 'slug_th') THEN
+        ALTER TABLE news ADD COLUMN slug_th TEXT UNIQUE;
+    END IF;
+
+    -- Add slug_en column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'news' AND column_name = 'slug_en') THEN
+        ALTER TABLE news ADD COLUMN slug_en TEXT UNIQUE;
+    END IF;
 END $$;
 
 -- Insert default categories
@@ -138,6 +150,8 @@ CREATE INDEX IF NOT EXISTS idx_news_category_id ON news(category_id);
 CREATE INDEX IF NOT EXISTS idx_news_is_highlighted ON news(is_highlighted);
 CREATE INDEX IF NOT EXISTS idx_news_status ON news(status);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_news_slug_th ON news(slug_th);
+CREATE INDEX IF NOT EXISTS idx_news_slug_en ON news(slug_en);
 
 -- Create updated_at triggers
 CREATE OR REPLACE FUNCTION update_updated_at_column()

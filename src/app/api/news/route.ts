@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { withAuth, createAuthenticatedClient } from "@/lib/auth-middleware";
+import { generateBilingualSlugs } from "@/utils/slugify";
 
 // Helper to upload images using authenticated Supabase client
 async function uploadImage(file: File, newsId: string): Promise<string> {
@@ -87,6 +88,8 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
     const id = uuidv4();
     const title_th = formData.get("title_th") as string;
     const title_en = formData.get("title_en") as string;
+    const slug_th = formData.get("slug_th") as string;
+    const slug_en = formData.get("slug_en") as string;
     const excerpt_th = formData.get("excerpt_th") as string;
     const excerpt_en = formData.get("excerpt_en") as string;
     // Get category and highlight status
@@ -98,9 +101,13 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
     // Parse JSON fields with error handling
     let tag, body_th, body_en;
     try {
-      tag = JSON.parse(formData.get("tag") as string); // number[]
-      body_th = JSON.parse(formData.get("body_th") as string); // Quill JSON
-      body_en = JSON.parse(formData.get("body_en") as string); // Quill JSON
+      const tagData = formData.get("tag") as string;
+      const bodyThData = formData.get("body_th") as string;
+      const bodyEnData = formData.get("body_en") as string;
+
+      tag = tagData ? JSON.parse(tagData) : []; // number[]
+      body_th = bodyThData ? JSON.parse(bodyThData) : null; // Quill JSON
+      body_en = bodyEnData ? JSON.parse(bodyEnData) : null; // Quill JSON
     } catch (parseError) {
       console.error("JSON parsing error:", parseError);
       return NextResponse.json(
@@ -160,6 +167,32 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
 
     const processedBodyTh = await processQuillImages(body_th);
     const processedBodyEn = await processQuillImages(body_en);
+
+    // Use provided slugs or generate from titles
+    let finalSlugTh = slug_th;
+    let finalSlugEn = slug_en;
+
+    if (!finalSlugTh || !finalSlugEn) {
+      // Generate slugs for both languages if not provided
+      const { data: existingNews } = await supabaseAuth
+        .from("news")
+        .select("slug_th, slug_en");
+
+      const existingSlugs = {
+        th: existingNews?.map((n: any) => n.slug_th).filter(Boolean) || [],
+        en: existingNews?.map((n: any) => n.slug_en).filter(Boolean) || [],
+      };
+
+      const { slugTh, slugEn } = generateBilingualSlugs(
+        title_th,
+        title_en,
+        existingSlugs
+      );
+
+      finalSlugTh = finalSlugTh || slugTh;
+      finalSlugEn = finalSlugEn || slugEn;
+    }
+
     try {
       // Prepare timestamp fields
       const now = new Date().toISOString();
@@ -174,6 +207,8 @@ export const POST = withAuth(async (req: NextRequest, supabaseAuth) => {
             thumbnail: thumbnailUrl,
             title_th,
             title_en,
+            slug_th: finalSlugTh,
+            slug_en: finalSlugEn,
             excerpt_th,
             excerpt_en,
             tag_id: tag,
@@ -210,6 +245,8 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
     const id = formData.get("id") as string;
     const title_th = formData.get("title_th") as string;
     const title_en = formData.get("title_en") as string;
+    const slug_th = formData.get("slug_th") as string;
+    const slug_en = formData.get("slug_en") as string;
     const excerpt_th = formData.get("excerpt_th") as string;
     const excerpt_en = formData.get("excerpt_en") as string;
     // Get category and highlight status
@@ -284,32 +321,79 @@ export const PUT = withAuth(async (req: NextRequest, supabaseAuth) => {
       return { ...quillBody, ops };
     }
 
-    const processedBodyTh = await processQuillImages(body_th);
-    const processedBodyEn = await processQuillImages(body_en);
-
-    // Get current article to check status change
+    // Get current article to preserve existing data
     const { data: currentArticle } = await supabaseAuth
       .from("news")
-      .select("status, publish_at")
+      .select("*")
       .eq("id", id)
       .single();
+
+    if (!currentArticle) {
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+    }
+
+    // Process content only if provided
+    const processedBodyTh = body_th
+      ? await processQuillImages(body_th)
+      : currentArticle.body_th;
+    const processedBodyEn = body_en
+      ? await processQuillImages(body_en)
+      : currentArticle.body_en;
+
+    // Handle slug updates
+    let finalSlugTh = slug_th || currentArticle.slug_th;
+    let finalSlugEn = slug_en || currentArticle.slug_en;
+
+    // If slugs are provided, use them; otherwise generate if titles changed
+    if (
+      !slug_th &&
+      !slug_en &&
+      ((title_th && title_th !== currentArticle.title_th) ||
+        (title_en && title_en !== currentArticle.title_en))
+    ) {
+      // Get existing slugs excluding current article
+      const { data: existingNews } = await supabaseAuth
+        .from("news")
+        .select("slug_th, slug_en")
+        .neq("id", id);
+
+      const existingSlugs = {
+        th: existingNews?.map((n: any) => n.slug_th).filter(Boolean) || [],
+        en: existingNews?.map((n: any) => n.slug_en).filter(Boolean) || [],
+      };
+
+      const newSlugs = generateBilingualSlugs(
+        title_th || currentArticle.title_th,
+        title_en || currentArticle.title_en,
+        existingSlugs
+      );
+
+      finalSlugTh = newSlugs.slugTh;
+      finalSlugEn = newSlugs.slugEn;
+    }
 
     // Prepare timestamp fields
     const now = new Date().toISOString();
     const updateData: Record<string, unknown> = {
-      thumbnail: thumbnailUrl,
-      title_th,
-      title_en,
-      excerpt_th,
-      excerpt_en,
+      title_th: title_th || currentArticle.title_th,
+      title_en: title_en || currentArticle.title_en,
+      slug_th: finalSlugTh,
+      slug_en: finalSlugEn,
+      excerpt_th: excerpt_th || currentArticle.excerpt_th,
+      excerpt_en: excerpt_en || currentArticle.excerpt_en,
       body_th: processedBodyTh,
       body_en: processedBodyEn,
-      tag_id: tag,
-      cat_id: category_id || null,
+      tag_id: tag.length > 0 ? tag : currentArticle.tag_id,
+      cat_id: category_id || currentArticle.cat_id,
       is_highlighted,
       status,
       updated_at: now,
     };
+
+    // Only update thumbnail if a new one was uploaded
+    if (thumbnailUrl) {
+      updateData.thumbnail = thumbnailUrl;
+    }
 
     // If status is changing from draft to published, set publish_at
     if (
@@ -385,12 +469,25 @@ export const DELETE = withAuth(async (req: NextRequest, supabaseAuth) => {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const slug = searchParams.get("slug");
+  const locale = searchParams.get("locale") || "th";
+
   if (id) {
     // Get news by id
     const { data, error } = await supabase
       .from("news")
       .select("*")
       .eq("id", id)
+      .single();
+    return NextResponse.json({ data, error });
+  } else if (slug) {
+    // Get news by slug
+    const slugColumn = locale === "en" ? "slug_en" : "slug_th";
+    const { data, error } = await supabase
+      .from("news")
+      .select("*")
+      .eq(slugColumn, slug)
+      .eq("status", "published")
       .single();
     return NextResponse.json({ data, error });
   } else {

@@ -26,6 +26,10 @@ interface NewsArticleForm {
     th: string;
     en: string;
   };
+  slug: {
+    th: string;
+    en: string;
+  };
   content: {
     th: QuillContent;
     en: QuillContent;
@@ -75,7 +79,7 @@ const NewsManagerContent = () => {
     isOpen: false,
     title: "",
     message: "",
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   // Category management state
@@ -104,10 +108,10 @@ const NewsManagerContent = () => {
           ? success.includes("created")
             ? "สร้างบทความสำเร็จ"
             : success.includes("updated")
-            ? "อัปเดตบทความสำเร็จ"
-            : success.includes("deleted")
-            ? "ลบบทความสำเร็จ"
-            : "ดำเนินการเสร็จสิ้น"
+              ? "อัปเดตบทความสำเร็จ"
+              : success.includes("deleted")
+                ? "ลบบทความสำเร็จ"
+                : "ดำเนินการเสร็จสิ้น"
           : success
       );
       // Clear success state after showing toast
@@ -349,7 +353,7 @@ const NewsManagerContent = () => {
       isOpen: false,
       title: "",
       message: "",
-      onConfirm: () => {},
+      onConfirm: () => { },
     });
   };
 
@@ -362,6 +366,8 @@ const NewsManagerContent = () => {
       // Add bilingual fields
       formData.append("title_th", data.title.th || "");
       formData.append("title_en", data.title.en || "");
+      formData.append("slug_th", data.slug.th || "");
+      formData.append("slug_en", data.slug.en || "");
       formData.append("excerpt_th", data.excerpt.th || "");
       formData.append("excerpt_en", data.excerpt.en || "");
       formData.append("body_th", JSON.stringify(data.content.th));
@@ -623,12 +629,12 @@ const NewsManagerContent = () => {
                         </h5>
                         {(category.description_th ||
                           category.description_en) && (
-                          <p className="text-sm text-gray-600 mt-1">
-                            {categoryLanguage === "th"
-                              ? category.description_th
-                              : category.description_en}
-                          </p>
-                        )}
+                            <p className="text-sm text-gray-600 mt-1">
+                              {categoryLanguage === "th"
+                                ? category.description_th
+                                : category.description_en}
+                            </p>
+                          )}
                         <div className="text-xs text-gray-500 mt-1 space-y-1">
                           <p>ID: {category.id}</p>
                           <p>TH: {category.cat_th || "Not set"}</p>

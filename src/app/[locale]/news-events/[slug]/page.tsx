@@ -1,25 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowLeft, Calendar, Clock, Share2, Bookmark } from "lucide-react";
+import MainLayout from "@/components/layout/MainLayout";
+import QuillDisplay from "@/components/share/QuillDisplay";
+import PrimaryButton from "@/components/ui/PrimaryButton";
+import { News, useNewsStore } from "@/store/zustand/newsStore";
+import { getBilingualExcerpt, getBilingualTitle } from "@/utils/bilingual";
+import { Badge, Card, CardBody } from "@heroui/react";
+import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
-import Image from "next/image";
 import { useParams } from "next/navigation";
-import MainLayout from "@/components/layout/MainLayout";
-import MinimalButton from "@/components/ui/MinimalButton";
-import { Badge } from "@heroui/react";
-import { Card, CardBody } from "@heroui/react";
-import { useNewsStore, News } from "@/store/zustand/newsStore";
-import { getBilingualTitle, getBilingualExcerpt } from "@/utils/bilingual";
-import QuillDisplay from "@/components/share/QuillDisplay";
-import ImageSkeleton from "@/components/ui/ImageSkeleton";
+import { useEffect, useState } from "react";
 
 export default function NewsDetailPage() {
   const locale = useLocale();
   const params = useParams();
   const slug = params.slug as string;
-  const { fetchNewsDetail, newsDetail, loading, error } = useNewsStore();
+  const { fetchNewsBySlug, newsDetail, loading, error } = useNewsStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -27,10 +24,10 @@ export default function NewsDetailPage() {
   useEffect(() => {
     const loadNewsDetail = async () => {
       setIsInitialLoading(true);
-      console.log("Loading news detail...>>>");
+      console.log("Loading news detail by slug...>>>");
       try {
-        console.log("Effect I");
-        await fetchNewsDetail(slug);
+        console.log("Effect I - fetching by slug:", slug, "locale:", locale);
+        await fetchNewsBySlug(slug, locale);
       } catch (error) {
         console.log("Effect xI");
         console.error("Error loading news detail:", error);
@@ -42,7 +39,7 @@ export default function NewsDetailPage() {
     if (slug) {
       loadNewsDetail();
     }
-  }, [slug, fetchNewsDetail]);
+  }, [slug, locale, fetchNewsBySlug]);
 
   // Helper functions for bilingual content
   const getTitle = (news: News) => getBilingualTitle(news, locale);
@@ -152,53 +149,14 @@ export default function NewsDetailPage() {
   const publishDate = newsDetail.publish_at || newsDetail.created_at;
 
   return (
-    <MainLayout>
+    <MainLayout forceSolidNavBar>
       {/* Hero Section with Content Overlay */}
       <section className="relative bg-slate-50">
         {/* Background Image */}
-        <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-          {isInitialLoading || !newsDetail.thumbnail ? (
-            <ImageSkeleton
-              width="100%"
-              height="100%"
-              rounded="none"
-              animation="shimmer"
-              showIcon={false}
-              className="absolute inset-0"
-            />
-          ) : (
-            <>
-              <Image
-                src={newsDetail.thumbnail}
-                alt={title}
-                fill
-                className={`object-cover transition-opacity duration-500 ${
-                  imageLoaded ? "opacity-100" : "opacity-0"
-                }`}
-                onLoad={() => setImageLoaded(true)}
-              />
-              {!imageLoaded && (
-                <ImageSkeleton
-                  width="100%"
-                  height="100%"
-                  rounded="none"
-                  animation="pulse"
-                  showIcon={false}
-                  className="absolute inset-0"
-                />
-              )}
-            </>
-          )}
-          {/* Enhanced Gradient Overlay for Better Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-black/10 z-10" />
-        </div>
+
 
         {/* Content Overlay - Positioned Absolutely */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-between">
-          {/* Top Section - Breadcrumb */}
-          <div className="pt-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
-          </div>
+        <div className="mt-[80px] pt-12 inset-0 z-20 flex flex-col justify-between">
 
           {/* Bottom Section - Main Content */}
           <div className="pb-12 ">
@@ -219,12 +177,12 @@ export default function NewsDetailPage() {
                 )}
 
                 {/* Title */}
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 mb-6 leading-tight drop-shadow-sm">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-900 mb-6 ">
                   {title}
                 </h1>
 
                 {/* Excerpt */}
-                <p className="text-lg md:text-xl text-gray-900 mb-8 leading-relaxed max-w-3xl drop-shadow-sm">
+                <p className="text-lg md:text-xl text-gray-900 mb-8 leading-relaxed ">
                   {excerpt}
                 </p>
 
@@ -235,13 +193,13 @@ export default function NewsDetailPage() {
                     <span className="text-sm font-medium">
                       {publishDate
                         ? new Date(publishDate).toLocaleDateString(
-                            locale === "th" ? "th-TH" : "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )
+                          locale === "th" ? "th-TH" : "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
                         : ""}
                     </span>
                   </div>
@@ -257,12 +215,12 @@ export default function NewsDetailPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-20 bg-gray-50">
+      <section className="pb-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="">
             {/* Article Content */}
             <Card className="mb-16 shadow-lg">
-              <CardBody className="p-8 md:p-12 lg:p-16">
+              <CardBody className="p-8 ">
                 {/* Tags */}
                 {(newsDetail as any).tags &&
                   (newsDetail as any).tags.length > 0 && (
@@ -308,10 +266,10 @@ export default function NewsDetailPage() {
             {/* Back to News Button */}
             <div className="text-center">
               <Link href={`/${locale}/news-events`}>
-                <MinimalButton className="bg-[var(--primary-blue)] hover:bg-[var(--primary-blue)]/90 text-white px-8 py-4 text-lg">
+                <PrimaryButton >
                   <ArrowLeft className="w-5 h-5 mr-3" />
                   {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
-                </MinimalButton>
+                </PrimaryButton>
               </Link>
             </div>
           </div>

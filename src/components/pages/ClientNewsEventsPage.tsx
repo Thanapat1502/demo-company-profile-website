@@ -105,9 +105,9 @@ export default function ClientNewsEventsPage({
           </div>
 
           {/* Hero Section with Highlighted News */}
-          {highlightedNews.length > 0 && (
+          {/* {highlightedNews.length > 0 && (
             <NewsHero news={highlightedNews} locale={locale} />
-          )}
+          )} */}
 
           {/* Filters and Search */}
           <div className="flex flex-col lg:flex-row gap-6 mb-12">

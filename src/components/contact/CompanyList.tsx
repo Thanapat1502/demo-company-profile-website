@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { MapPin, Phone, Mail, Clock, Building2 } from "lucide-react";
 import { useContactStore } from "@/store/zustand/contactStore";
 import { getBilingualName, getBilingualAddress, getBilingualBusinessHours, getLoadingText } from "@/utils/bilingual";
+import PrimaryButton from "../ui/PrimaryButton";
 
 interface CompanyListProps {
   locale: string;
@@ -11,10 +12,10 @@ interface CompanyListProps {
   className?: string;
 }
 
-export default function CompanyList({ 
-  locale, 
-  variant = "grid", 
-  className = "" 
+export default function CompanyList({
+  locale,
+  variant = "grid",
+  className = ""
 }: CompanyListProps) {
   const { companies, loading, error, fetchCompanies } = useContactStore();
 
@@ -43,12 +44,11 @@ export default function CompanyList({
         <p className="text-red-600 mb-4">
           {error || (locale === "th" ? "ไม่สามารถโหลดข้อมูลบริษัทได้" : "Failed to load company information")}
         </p>
-        <button
+        <PrimaryButton
           onClick={fetchCompanies}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           {locale === "th" ? "ลองใหม่" : "Try again"}
-        </button>
+        </PrimaryButton>
       </div>
     );
   }
@@ -64,8 +64,8 @@ export default function CompanyList({
     );
   }
 
-  const containerClass = variant === "grid" 
-    ? "grid md:grid-cols-2 lg:grid-cols-3 gap-6" 
+  const containerClass = variant === "grid"
+    ? "grid md:grid-cols-2 lg:grid-cols-3 gap-6"
     : "space-y-6";
 
   return (
@@ -106,7 +106,7 @@ export default function CompanyList({
 
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                <a 
+                <a
                   href={`tel:${company.tel}`}
                   className="text-blue-600 hover:text-blue-700 transition-colors text-sm"
                 >
@@ -116,7 +116,7 @@ export default function CompanyList({
 
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                <a 
+                <a
                   href={`mailto:${company.email}`}
                   className="text-blue-600 hover:text-blue-700 transition-colors text-sm"
                 >
@@ -136,18 +136,20 @@ export default function CompanyList({
 
             {/* Action Buttons */}
             <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-100">
-              <a
+              <PrimaryButton
+                as={'a'}
                 href={`tel:${company.tel}`}
-                className="flex-1 bg-blue-600 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                className="flex-1 transition-colors text-sm font-medium"
               >
                 {locale === "th" ? "โทร" : "Call"}
-              </a>
-              <a
+              </PrimaryButton>
+              <PrimaryButton
+                as={'a'}
                 href={`mailto:${company.email}`}
-                className="flex-1 bg-gray-100 text-gray-700 text-center py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                className="flex-1 bg-white text-primary-500 text-sm font-medium"
               >
                 {locale === "th" ? "อีเมล" : "Email"}
-              </a>
+              </PrimaryButton>
             </div>
           </div>
         );

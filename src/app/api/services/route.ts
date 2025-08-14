@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { withAuth } from "@/lib/auth-middleware";
+
+// Interface for service update data
+interface ServiceUpdateData {
+  name_th: string;
+  name_en: string;
+  description_th: string;
+  description_en: string;
+  updated_at: string;
+  image_url?: string;
+}
 // Helper to upload image directly to Supabase Storage and return public URL
 async function uploadServiceImage(
   file: File,
@@ -142,7 +152,6 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
     const name_en = formData.get("name_en") as string;
     const description_th = formData.get("description_th") as string;
     const description_en = formData.get("description_en") as string;
-    let image_url = formData.get("image_url") as string;
     const imageFile = formData.get("image") as File | null;
 
     if (!id) {
@@ -152,9 +161,20 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
       );
     }
 
+    // Prepare update data - only include fields that should be updated
+    const updateData: ServiceUpdateData = {
+      name_th,
+      name_en,
+      description_th,
+      description_en,
+      updated_at: new Date().toISOString(),
+    };
+
+    // Only update image_url if a new image was uploaded
     if (imageFile && typeof imageFile === "object") {
       try {
-        image_url = await uploadServiceImage(imageFile, id, supabase);
+        const new_image_url = await uploadServiceImage(imageFile, id, supabase);
+        updateData.image_url = new_image_url;
       } catch (err) {
         console.log("upload image fail:", err);
         return NextResponse.json(
@@ -166,14 +186,7 @@ export const PUT = withAuth(async (req: NextRequest, supabase) => {
 
     const { data, error } = await supabase
       .from("services")
-      .update({
-        name_th,
-        name_en,
-        description_th,
-        description_en,
-        image_url,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq("id", id)
       .select();
 

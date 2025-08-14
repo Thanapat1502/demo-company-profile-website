@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Plus,
   Save,
@@ -12,6 +12,7 @@ import {
 import { useForm, Controller, Control, FieldErrors } from "react-hook-form";
 import { LanguageToggle } from "./languageToggle";
 import React18QuillEditor from "@/components/admin/React18QuillEditor";
+import { generateSlug, previewSlug } from "@/utils/slugify";
 // Types
 interface QuillContent {
   html: string;
@@ -21,6 +22,10 @@ interface QuillContent {
 
 interface NewsArticleForm {
   title: {
+    th: string;
+    en: string;
+  };
+  slug: {
     th: string;
     en: string;
   };
@@ -46,12 +51,17 @@ interface QuillContentFromStore {
     insert?: string | { image?: string };
     attributes?: Record<string, unknown>;
   }>;
+  html?: string;
+  text?: string;
+  length?: number;
 }
 
 interface News {
   id: string;
   title_th: string;
   title_en: string;
+  slug_th?: string;
+  slug_en?: string;
   excerpt_th?: string;
   excerpt_en?: string;
   body_th?: QuillContentFromStore;
@@ -127,6 +137,7 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
   } = useForm<NewsArticleForm>({
     defaultValues: {
       title: { th: "", en: "" },
+      slug: { th: "", en: "" },
       content: {
         th: { html: "", text: "", length: 0 },
         en: { html: "", text: "", length: 0 },
@@ -140,11 +151,13 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
     },
   });
 
-  // Watch tags for real-time updates
+  // Watch tags, content, and titles for real-time updates
   const currentTags = watch("tags");
+  const watchedContent = watch("content");
+  const watchedTitle = watch("title");
 
-  // Helper function to create QuillContent
-  const createQuillContent = (html: string): QuillContent => {
+  // Helper function to create QuillContent - memoized to prevent re-creation
+  const createQuillContent = useCallback((html: string): QuillContent => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
     const text = tempDiv.textContent || tempDiv.innerText || "";
@@ -153,7 +166,7 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
       text,
       length: text.length,
     };
-  };
+  }, []);
 
   // Tag management functions - now working with tag IDs (numbers)
   const addTag = () => {
@@ -313,25 +326,97 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
         th: editingNews.title_th || editingNews.title || "",
         en: editingNews.title_en || editingNews.title || "",
       });
+
+      // Set slugs if they exist, otherwise generate from titles
+      setValue("slug", {
+        th: editingNews.slug_th || generateSlug(editingNews.title_th || editingNews.title || ""),
+        en: editingNews.slug_en || generateSlug(editingNews.title_en || editingNews.title || ""),
+      });
+
       setValue("excerpt", {
         th: editingNews.excerpt_th || editingNews.subtitle || "",
         en: editingNews.excerpt_en || editingNews.subtitle || "",
       });
 
-      // Handle content - assuming it's stored as JSON
+      // Handle content - convert from stored format to QuillContent format
       try {
-        const contentTh =
-          typeof editingNews.body_th === "string"
-            ? JSON.parse(editingNews.body_th)
-            : editingNews.body_th;
-        const contentEn =
-          typeof editingNews.body_en === "string"
-            ? JSON.parse(editingNews.body_en)
-            : editingNews.body_en;
+        let contentTh: QuillContent = { html: "", text: "", length: 0 };
+        let contentEn: QuillContent = { html: "", text: "", length: 0 };
 
+        // Handle Thai content
+        if (editingNews.body_th) {
+          if (typeof editingNews.body_th === "string") {
+            // If it's a string, try to parse as JSON first, then treat as HTML
+            try {
+              const parsed = JSON.parse(editingNews.body_th);
+              if (parsed && typeof parsed === 'object' && parsed.html) {
+                // It's already in QuillContent format
+                contentTh = {
+                  html: parsed.html,
+                  text: parsed.text || "",
+                  length: parsed.length || 0
+                };
+              } else {
+                // It's HTML string stored as JSON string, use the original string
+                contentTh = createQuillContent(editingNews.body_th);
+              }
+            } catch {
+              // It's plain HTML string
+              contentTh = createQuillContent(editingNews.body_th);
+            }
+          } else if (typeof editingNews.body_th === 'object' && editingNews.body_th.html) {
+            // It's already in QuillContent format
+            contentTh = {
+              html: editingNews.body_th.html,
+              text: editingNews.body_th.text || "",
+              length: editingNews.body_th.length || 0
+            };
+          } else if (typeof editingNews.body_th === 'object') {
+            // It might be in Quill Delta format or other object format
+            // For now, create empty content
+            contentTh = createQuillContent("");
+          }
+        }
+
+        // Handle English content
+        if (editingNews.body_en) {
+          if (typeof editingNews.body_en === "string") {
+            // If it's a string, try to parse as JSON first, then treat as HTML
+            try {
+              const parsed = JSON.parse(editingNews.body_en);
+              if (parsed && typeof parsed === 'object' && parsed.html) {
+                // It's already in QuillContent format
+                contentEn = {
+                  html: parsed.html,
+                  text: parsed.text || "",
+                  length: parsed.length || 0
+                };
+              } else {
+                // It's HTML string stored as JSON string, use the original string
+                contentEn = createQuillContent(editingNews.body_en);
+              }
+            } catch {
+              // It's plain HTML string
+              contentEn = createQuillContent(editingNews.body_en);
+            }
+          } else if (typeof editingNews.body_en === 'object' && editingNews.body_en.html) {
+            // It's already in QuillContent format
+            contentEn = {
+              html: editingNews.body_en.html,
+              text: editingNews.body_en.text || "",
+              length: editingNews.body_en.length || 0
+            };
+          } else if (typeof editingNews.body_en === 'object') {
+            // It might be in Quill Delta format or other object format
+            // For now, create empty content
+            contentEn = createQuillContent("");
+          }
+        }
+
+        // Set content immediately
         setValue("content", {
-          th: contentTh || { html: "", text: "", length: 0 },
-          en: contentEn || { html: "", text: "", length: 0 },
+          th: contentTh,
+          en: contentEn,
         });
       } catch (error) {
         console.error("Error parsing content:", error);
@@ -362,7 +447,23 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
         setValue("status", editingNews.status);
       }
     }
-  }, [editingNews, isOpen, setValue]);
+  }, [editingNews, isOpen, setValue, createQuillContent]);
+
+  // Auto-generate slugs when titles change (only for new articles)
+  useEffect(() => {
+    if (!editingNews && watchedTitle) {
+      const currentSlug = watch("slug");
+
+      // Only auto-generate if slug is empty or matches the previous title
+      if (watchedTitle.th && (!currentSlug.th || currentSlug.th === generateSlug(watchedTitle.th))) {
+        setValue("slug.th", generateSlug(watchedTitle.th));
+      }
+
+      if (watchedTitle.en && (!currentSlug.en || currentSlug.en === generateSlug(watchedTitle.en))) {
+        setValue("slug.en", generateSlug(watchedTitle.en));
+      }
+    }
+  }, [watchedTitle, editingNews, setValue, watch]);
 
   if (!isOpen) return null;
 
@@ -411,6 +512,7 @@ export const NewsEditorModal: React.FC<NewsEditorModalProps> = ({
                 getTagNameById={getTagNameById}
                 imageState={imageState}
                 setImageState={setImageState}
+                watchedContent={watchedContent}
               />
             ) : (
               // English Content Page
@@ -478,6 +580,7 @@ interface ContentPageProps {
   createQuillContent: (html: string) => QuillContent;
   selectedLanguage: string;
   getTagNameById: (tagId: string) => string;
+  watchedContent?: { th?: QuillContent; en?: QuillContent };
   imageState: {
     selectedFile: File | null;
     previewUrl: string | null;
@@ -508,6 +611,7 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
   createQuillContent,
   selectedLanguage,
   getTagNameById,
+  watchedContent,
   imageState,
   setImageState,
 }) => {
@@ -538,6 +642,40 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           {errors.title?.th && (
             <p className="text-red-500 text-sm mt-1">
               {errors.title.th?.message}
+            </p>
+          )}
+        </div>
+
+        {/* Thai Slug Input */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            URL Slug (ไทย)
+          </label>
+          <Controller
+            name="slug.th"
+            control={control}
+            render={({ field }) => (
+              <div className="space-y-2">
+                <input
+                  value={field.value || ""}
+                  onChange={(e) => {
+                    const cleanedSlug = generateSlug(e.target.value);
+                    field.onChange(cleanedSlug);
+                  }}
+                  onBlur={field.onBlur}
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  placeholder="url-slug-thai"
+                />
+                <div className="text-xs text-gray-500">
+                  URL: /news-events/{field.value || "url-slug-thai"}
+                </div>
+              </div>
+            )}
+          />
+          {errors.slug?.th && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.slug.th?.message}
             </p>
           )}
         </div>
@@ -668,13 +806,12 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
             render={({ field: { onChange, value } }) => (
               <div className="space-y-3">
                 <div
-                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
-                    imageState.validationError
-                      ? "border-red-300 bg-red-50"
-                      : value
+                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${imageState.validationError
+                    ? "border-red-300 bg-red-50"
+                    : value
                       ? "border-green-300 bg-green-50"
                       : "border-gray-300 hover:border-gray-400"
-                  }`}>
+                    }`}>
                   <input
                     type="file"
                     accept="image/*"
@@ -787,9 +924,12 @@ const ThaiContentPage: React.FC<ContentPageProps> = ({
           control={control}
           rules={{ required: "กรุณากรอกเนื้อหา" }}
           render={({ field }) => {
-            const currentValue = field.value as QuillContent;
+            // Use watched content to ensure we get the latest value
+            const currentValue = (watchedContent?.th || field.value) as QuillContent;
+            const editorKey = `th-editor-${currentValue?.html?.length || 0}`;
             return (
               <React18QuillEditor
+                key={editorKey}
                 value={currentValue?.html || ""}
                 onChange={(html) => {
                   const quillContent = createQuillContent(html);
@@ -856,6 +996,40 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
           {errors.title?.en && (
             <p className="text-red-500 text-sm mt-1">
               {errors.title.en?.message}
+            </p>
+          )}
+        </div>
+
+        {/* English Slug Input */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            URL Slug (English)
+          </label>
+          <Controller
+            name="slug.en"
+            control={control}
+            render={({ field }) => (
+              <div className="space-y-2">
+                <input
+                  value={field.value || ""}
+                  onChange={(e) => {
+                    const cleanedSlug = generateSlug(e.target.value);
+                    field.onChange(cleanedSlug);
+                  }}
+                  onBlur={field.onBlur}
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  placeholder="url-slug-english"
+                />
+                <div className="text-xs text-gray-500">
+                  URL: /news-events/{field.value || "url-slug-english"}
+                </div>
+              </div>
+            )}
+          />
+          {errors.slug?.en && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.slug.en?.message}
             </p>
           )}
         </div>
@@ -986,13 +1160,12 @@ const EnglishContentPage: React.FC<ContentPageProps> = ({
             render={({ field: { onChange, value } }) => (
               <div className="space-y-3">
                 <div
-                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
-                    imageState.validationError
-                      ? "border-red-300 bg-red-50"
-                      : value
+                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${imageState.validationError
+                    ? "border-red-300 bg-red-50"
+                    : value
                       ? "border-green-300 bg-green-50"
                       : "border-gray-300 hover:border-gray-400"
-                  }`}>
+                    }`}>
                   <input
                     type="file"
                     accept="image/*"

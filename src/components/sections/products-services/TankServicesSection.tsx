@@ -52,28 +52,20 @@ export default function TankServicesSection({
   const galleryContent = content.find((c) => c.type === "gallery");
   const galleryImages = galleryContent?.images_url || [];
 
-  // Debug logging
-  console.log("🔍 TankServicesSection Debug:");
-  console.log("- Content received (length):", content.length);
-  console.log(
-    "- Content items:",
-    content.map((c) => ({
-      id: c.id,
-      type: c.type,
-      hasImages: !!c.images_url?.length,
-    }))
-  );
-  console.log(
-    "- Gallery content found:",
-    galleryContent
-      ? {
-        id: galleryContent.id,
-        type: galleryContent.type,
-        imageCount: galleryContent.images_url?.length,
-      }
-      : null
-  );
-  console.log("- Gallery images count:", galleryImages.length);
+  const localizedInstruction: { [key: string]: string[] } = {
+    'th': [
+      'งานตรวจสอบการติดตั้งถัง PERMATANK',
+      'งานติดตั้งระบบท่อ NUPI - UPP - KPS',
+      'งานติดตั้ง TANK SUMP',
+      'งานติดตั้ง NANO ATG & ProGauge',
+      'งาน 3D SCAN'],
+    'en': [
+      'PERMATANK installation inspection work.',
+      'Installation of NUPI-UPP-KPS pipe system.',
+      'TANK SUMP installation.',
+      'NANO ATG & ProGauge installation.',
+      '3D SCAN']
+  }
 
   return (
     <section id='fuel-services' className="py-8 sm:py-12 bg-white">
@@ -138,20 +130,13 @@ export default function TankServicesSection({
                   {t("services.tankServices.companyName")}
                 </p>
                 <ol className="space-y-2 text-gray-700 text-md sm:text-base">
-                  <li>1. งานตรวจสอบการติดตั้งถัง PERMATANK</li>
-                  <li>2. งานติดตั้งระบบท่อ NUPI-UPP-KPS</li>
-                  <li>3. งานติดตั้ง TANK SUMP</li>
-                  <li>4. งานติดตั้ง NANO ATG & ProGauge</li>
-                  <li>5. งาน 3D SCAN</li>
+                  {localizedInstruction[locale].map((x, index) => <li key={index}>{`${index + 1}. ${x}`}</li>)}
                 </ol>
               </div>
 
               <p>
-                กลุ่มบริษัท ผดุงศิลป์
-                จะรักษาไว้ซึ่งพนักงานชั้นเยี่ยมในระดับปฏิบัติการ และบริหาร
-                โดยที่ทุกคนมีเป้าหมายเดียวกันในการนำเสนอลูกค้าด้วยผลงานก่อสร้าง,
-                สินค้า และบริการ ซึ่งไม่เพียงแต่ดีที่สุดเท่านั้น
-                ยังรวมไปถึงบุคลากรที่มีความรู้ ความสามารถเป็นเยี่ยม
+                {locale === 'th' ? 'กลุ่มบริษัท ผดุงศิลป์ จะรักษาไว้ซึ่งพนักงานชั้นเยี่ยมในระดับปฏิบัติการ และบริหาร โดยที่ทุกคนมีเป้าหมายเดียวกันในการนำเสนอลูกค้าด้วยผลงานก่อสร้าง, สินค้า และบริการ ซึ่งไม่เพียงแต่ดีที่สุดเท่านั้น ยังรวมไปถึงบุคลากรที่มีความรู้ ความสามารถเป็นเยี่ยม' :
+                  'Padungsilpa Group will maintain excellent employees at operational and management levels. All of whom share the same goal of presenting to customers not only the best construction work, products, and services, but also personnel with excellent knowledge and ability.'}
               </p>
             </div>
 

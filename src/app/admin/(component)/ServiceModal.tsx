@@ -226,7 +226,7 @@ export const ServiceModal: React.FC<ServiceModalProps> = ({
             {/* Image Upload */}
             <div className="mt-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Service Image
+                Service Image {editingService && "(Optional - leave empty to keep current image)"}
               </label>
               <Controller
                 name="image"

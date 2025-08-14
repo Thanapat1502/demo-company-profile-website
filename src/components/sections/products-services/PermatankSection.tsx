@@ -106,33 +106,8 @@ export default function PermatankSection({
               <div className="absolute w-16 sm:w-20 lg:w-24 h-px bg-gradient-to-r from-[var(--primary-blue)]/30 via-[var(--primary-blue)]/30 to-transparent blur-sm"></div>
             </div>
 
-            <div className="space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-              <p>{serviceDescription}</p>
-
-              <p>
-                {`
-                    ถังน้ำมันใต้ดินแบบผนัง 2 ชั้นของบริษัท ผดุงศิลป์วิศวการ จำกัด 
-                    ในชื่อผลิตภัณฑ์ 'PERMATANK' ได้รับการผลิตตามมาตรฐาน UL 58 & UL 1746 
-                    โดยใช้เทคโนโลยีจากสถาบัน Steel Tank Institute Technology, USA
-                    `}
-              </p>
-
-              <div className="bg-[var(--primary-blue)]/10 p-4 sm:p-6 border-l-4 border-[var(--primary-blue)]">
-                <p className="font-semibold text-[var(--primary-blue)] text-base sm:text-lg lg:text-xl tracking-wide break-words">
-                  {`ภายใต้นโยบาย 'ถูกต้อง ถูกตังค์ ทันเวลา ปลอดภัย'`}
-                </p>
-              </div>
-
-              <p>
-                {`
-                เราพัฒนาแบบถังน้ำมันใต้ดินและอุปกรณ์ที่เกี่ยวข้องอย่างต่อเนื่อง
-                เพื่อประโยชน์สูงสุดของลูกค้า ผู้รับเหมา และผู้ค้าอื่น ๆ
-                ที่เกี่ยวข้องกับงานสถานีบริการน้ำมัน
-
-                เพื่อให้มั่นใจว่าลูกค้าได้รับสินค้าที่มีคุณภาพและมีอายุการใช้งานยาวนานกว่า
-                30 ปี ผดุงศิลป์ให้ความสำคัญกับทุกขั้นตอนของกระบวนการผลิตและจัดส่ง PERMATANK®
-                `}
-              </p>
+            <div className=" space-y-4 sm:space-y-6 text-md sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+              <p className='whitespace-pre-wrap'>{serviceDescription}</p>
             </div>
 
             {/* Action Button - Using luxury hero button style */}

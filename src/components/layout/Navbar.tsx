@@ -58,9 +58,13 @@ const navigationItems: NavItem[] = [
   // { labelKey: "navigation.contact", href: "/contact-us" },
 ];
 
-export default function MainNavbar() {
+type Props = {
+  forceSolid?: boolean
+}
+
+export default function MainNavbar({ forceSolid = false }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(!forceSolid);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(null);
   const t = useTranslations();
@@ -120,6 +124,7 @@ export default function MainNavbar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      if (forceSolid) return;
       setIsAtTop(scrollY < 50); // More sensitive for transparency
     };
     window.addEventListener("scroll", handleScroll);
@@ -375,7 +380,7 @@ export default function MainNavbar() {
                 href="tel:083-999-5544"
                 className={`text-md font-semibold transition-all duration-300 hover:scale-105 ${isAtTop ? "text-white hover:text-white/90" : "text-primary-300 hover:text-primary-400"}`}
               >
-                083-999-5544
+                {locale === 'th' ? '083-999-5544' : '(+66) 83-999-5544'}
               </a>
             </motion.div>
           </NavbarItem>
