@@ -10,11 +10,24 @@ const intlMiddleware = createMiddleware({
 });
 
 export default function middleware(request: NextRequest) {
+  // Check if this is an API route - exclude all caching for API routes
+  const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith("/api/")) {
+    const response = NextResponse.next();
+    response.headers.set(
+      "Cache-Control",
+      "no-cache, no-store, must-revalidate, max-age=0"
+    );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
+    response.headers.set("X-Vercel-Cache", "BYPASS");
+    return response;
+  }
+
   // Get the response from next-intl middleware
   const response = intlMiddleware(request);
 
   // Extract locale from the pathname
-  const pathname = request.nextUrl.pathname;
   const locale = pathname.split("/")[1];
 
   // Only add headers for locale-specific routes
@@ -48,13 +61,6 @@ export default function middleware(request: NextRequest) {
           "public, max-age=0, s-maxage=1800, stale-while-revalidate=3600"
         );
         newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
-      } else if (pathname.startsWith(`/${locale}/api/`)) {
-        // API routes - shorter cache
-        newResponse.headers.set(
-          "Cache-Control",
-          "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
-        );
-        newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
       } else {
         // Other pages - cacheable with locale awareness
         newResponse.headers.set(
@@ -67,8 +73,6 @@ export default function middleware(request: NextRequest) {
       // Preserve existing cache headers but add cache tags
       if (pathname === `/${locale}` || pathname === `/${locale}/`) {
         newResponse.headers.set("Cache-Tag", `locale-${locale},homepage`);
-      } else if (pathname.startsWith(`/${locale}/api/`)) {
-        newResponse.headers.set("Cache-Tag", `locale-${locale},api-data`);
       } else {
         newResponse.headers.set("Cache-Tag", `locale-${locale}`);
       }
@@ -90,15 +94,16 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Match only internationalized pathnames, exclude admin routes
+  // Match internationalized pathnames AND API routes for cache control
   matcher: [
     // Match all pathnames except for
-    // - api routes
     // - _next (Next.js internals)
     // - _static (inside /public)
-    // - admin routes
+    // - admin routes (except API routes)
     // - all files inside /public (e.g. /favicon.ico)
-    // - files with extensions
-    "/((?!api|_next|_static|admin|.*\\..*).*)",
+    // - files with extensions (except API routes)
+    "/((?!_next|_static|admin(?!/api)|.*\\.[^/]*$).*)",
+    // Explicitly include API routes for cache control
+    "/api/:path*",
   ],
 };

@@ -514,8 +514,10 @@ export async function GET(req: Request) {
     const response = NextResponse.json({ data, error });
     response.headers.set(
       "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400"
+      "no-cache, no-store, must-revalidate, max-age=0"
     );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
     return response;
   } else if (slug) {
     // Get news by slug
@@ -530,8 +532,10 @@ export async function GET(req: Request) {
     const response = NextResponse.json({ data, error });
     response.headers.set(
       "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400"
+      "no-cache, no-store, must-revalidate, max-age=0"
     );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
     return response;
   } else {
     // Get all news ordered by newest first
@@ -543,8 +547,10 @@ export async function GET(req: Request) {
     const response = NextResponse.json({ data, error });
     response.headers.set(
       "Cache-Control",
-      "public, s-maxage=1800, stale-while-revalidate=3600"
+      "no-cache, no-store, must-revalidate, max-age=0"
     );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
     return response;
   }
 }

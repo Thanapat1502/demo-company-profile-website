@@ -5,6 +5,9 @@
     },
     "src/app/[locale]/*/page.tsx": {
       "maxDuration": 30
+    },
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
     }
   },
   "headers": [
@@ -22,6 +25,27 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate, max-age=0"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
+        },
+        {
+          "key": "X-Vercel-Cache",
+          "value": "BYPASS"
         }
       ]
     },

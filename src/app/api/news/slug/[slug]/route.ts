@@ -88,11 +88,13 @@ export async function GET(
       },
     });
 
-    // Add cache headers for better performance
+    // Disable caching for API routes
     response.headers.set(
       "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400"
+      "no-cache, no-store, must-revalidate, max-age=0"
     );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
 
     return response;
   } catch (error) {
