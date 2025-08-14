@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Home, ArrowLeft, Phone, Mail, Building2 } from 'lucide-react';
+import { Home, ArrowLeft, Mail, Building2, Search, FileText } from 'lucide-react';
 import ButtonWrapper from '@/components/ui/ButtonWrapper';
 import MainLayout from '@/components/layout/MainLayout';
 
@@ -33,167 +33,185 @@ export default function NotFoundPage() {
   }
 
   return (
-    <MainLayout>
-      {/* 404 Hero Section */}
-      <section className="section-minimal-large bg-white relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23112ef4' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
+    <MainLayout forceSolidNavBar>
+      {/* 404 Hero Section with Glass Morphism */}
+      <section className="mt-[80px] min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 relative overflow-hidden flex items-center justify-center">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* Floating Glass Orbs */}
+          {/* <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 backdrop-blur-sm rounded-full animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/20 backdrop-blur-sm rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-white/5 backdrop-blur-sm rounded-full animate-pulse delay-2000"></div>
+          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-blue-100/15 backdrop-blur-sm rounded-full animate-pulse delay-500"></div> */}
+
+          {/* Subtle Grid Pattern */}
+          <div className="absolute inset-0 opacity-[0.02]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23112ef4' fill-opacity='0.4'%3E%3Cpath d='M20 20h20v20H20V20zm-20 0h20v20H0V20z'/%3E%3C/g%3E%3C/svg%3E")`,
+            }} />
+          </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            {/* 404 Visual with construction theme */}
-            <div className="mb-12">
-              <div className="heading-construction text-8xl sm:text-9xl lg:text-[12rem] font-black mb-6 relative text-[var(--primary-blue)]">
-                404
-                <div className="absolute inset-0 heading-construction opacity-20 blur-sm">404</div>
-              </div>
-              <div className="w-32 h-2 bg-gradient-to-r from-[var(--primary-blue)] to-[var(--primary-blue-light)] mx-auto mb-8"></div>
-            </div>
-
-            {/* Error Message with construction theme */}
-            <div className="mb-16">
-              <h1 className="heading-construction text-4xl sm:text-5xl lg:text-6xl font-black mb-8 leading-tight">
-                {isThaiLocale ? 'ไม่พบหน้าที่ต้องการ' : 'PAGE NOT FOUND'}
-              </h1>
-              <div className="max-w-4xl mx-auto space-y-6">
-                <p className="text-xl text-gray-700 font-medium leading-relaxed">
-                  {isThaiLocale
-                    ? 'หน้าที่คุณกำลังมองหาอาจถูกลบ เปลี่ยนชื่อ หรือไม่สามารถใช้งานได้ชั่วคราว'
-                    : 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.'
-                  }
-                </p>
-                <p className="text-lg text-gray-600">
-                  {isThaiLocale
-                    ? 'กรุณาตรวจสอบ URL หรือกลับไปที่หน้าแรกเพื่อค้นหาสิ่งที่คุณต้องการ'
-                    : 'Please check the URL or return to our homepage to find what you need.'
-                  }
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons with construction theme */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
-              <ButtonWrapper
-                as={Link}
-                href={`/${locale}`}
-                className="btn-minimal-primary min-w-64 h-14 text-lg font-bold"
-                startContent={<Home className="w-6 h-6" />}>
-                {isThaiLocale ? 'กลับหน้าแรก' : 'Go to Homepage'}
-              </ButtonWrapper>
-
-              <ButtonWrapper
-                as={Link}
-                href={`/${locale}/products-services`}
-                className="btn-minimal-secondary min-w-64 h-14 text-lg font-bold"
-                startContent={<Building2 className="w-6 h-6" />}>
-                {isThaiLocale ? 'ดูบริการ' : 'View Services'}
-              </ButtonWrapper>
-
-              <ButtonWrapper
-                onPress={handleGoBack}
-                className="btn-minimal-outline min-w-64 h-14 text-lg font-bold"
-                startContent={<ArrowLeft className="w-6 h-6" />}>
-                {isThaiLocale ? 'ย้อนกลับ' : 'Go Back'}
-              </ButtonWrapper>
-            </div>
-
-            {/* Helpful Links with construction theme */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-              {/* Popular Pages */}
-              <div className="card-minimal p-8">
-                <h3 className="heading-construction text-xl font-bold mb-6">
-                  {isThaiLocale ? 'หน้ายอดนิยม' : 'Popular Pages'}
-                </h3>
-                <ul className="space-y-4">
-                  <li>
-                    <Link
-                      href={`/${locale}/pds-group`}
-                      className="text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] font-medium transition-colors duration-200 flex items-center gap-2"
-                    >
-                      <div className="w-2 h-2 bg-[var(--primary-blue)] rounded-full"></div>
-                      {isThaiLocale ? 'เกี่ยวกับเรา' : 'About Us'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={`/${locale}/products-services`}
-                      className="text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] font-medium transition-colors duration-200 flex items-center gap-2"
-                    >
-                      <div className="w-2 h-2 bg-[var(--primary-blue)] rounded-full"></div>
-                      {isThaiLocale ? 'ผลิตภัณฑ์และบริการ' : 'Products & Services'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={`/${locale}/reference`}
-                      className="text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] font-medium transition-colors duration-200 flex items-center gap-2"
-                    >
-                      <div className="w-2 h-2 bg-[var(--primary-blue)] rounded-full"></div>
-                      {isThaiLocale ? 'ผลงาน' : 'References'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={`/${locale}/contact`}
-                      className="text-[var(--primary-blue)] hover:text-[var(--primary-blue-dark)] font-medium transition-colors duration-200 flex items-center gap-2"
-                    >
-                      <div className="w-2 h-2 bg-[var(--primary-blue)] rounded-full"></div>
-                      {isThaiLocale ? 'ติดต่อเรา' : 'Contact Us'}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Contact Information */}
-              <div className="card-minimal p-8">
-                <h3 className="heading-construction text-xl font-bold mb-6">
-                  {isThaiLocale ? 'ต้องการความช่วยเหลือ?' : 'Need Help?'}
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[var(--primary-blue)] bg-opacity-10 rounded-full flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-[var(--primary-blue)]" />
-                    </div>
-                    <span className="text-gray-700 font-medium">+66 2-xxx-xxxx</span>
+            {/* Glass Morphism Container */}
+            <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl shadow-black/5">
+              {/* 404 Number with Glass Effect */}
+              <div className="mb-8">
+                <div className="text-7xl sm:text-8xl lg:text-9xl font-black mb-4 relative">
+                  <span className="bg-gradient-to-br from-[var(--primary-blue)] to-blue-600 bg-clip-text text-transparent">
+                    404
+                  </span>
+                  <div className="absolute inset-0 text-7xl sm:text-8xl lg:text-9xl font-black opacity-10 blur-sm text-[var(--primary-blue)]">
+                    404
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[var(--primary-blue)] bg-opacity-10 rounded-full flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-[var(--primary-blue)]" />
-                    </div>
-                    <span className="text-gray-700 font-medium">info@padungsilpa.com</span>
-                  </div>
-                  <ButtonWrapper
-                    as={Link}
-                    href={`/${locale}/contact`}
-                    className="btn-minimal-secondary w-full mt-4">
-                    {isThaiLocale ? 'ติดต่อเรา' : 'Contact Us'}
-                  </ButtonWrapper>
+                </div>
+                <div className="w-24 h-1 bg-gradient-to-r from-[var(--primary-blue)] to-blue-400 mx-auto rounded-full"></div>
+              </div>
+
+              {/* Error Message with Glass Theme */}
+              <div className="mb-12">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-slate-800">
+                  {isThaiLocale ? 'ไม่พบหน้าที่ต้องการ' : 'Page Not Found'}
+                </h1>
+                <div className="max-w-2xl mx-auto space-y-4">
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    {isThaiLocale
+                      ? 'หน้าที่คุณกำลังมองหาอาจถูกลบ เปลี่ยนชื่อ หรือไม่สามารถใช้งานได้ชั่วคราว'
+                      : 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.'
+                    }
+                  </p>
+                  <p className="text-base text-slate-500">
+                    {isThaiLocale
+                      ? 'กรุณาตรวจสอบ URL หรือใช้ลิงก์ด้านล่างเพื่อค้นหาสิ่งที่คุณต้องการ'
+                      : 'Please check the URL or use the links below to find what you need.'
+                    }
+                  </p>
                 </div>
               </div>
-            </div>
 
-            {/* Language Switch */}
-            <div className="mb-12">
-              <p className="text-gray-600 mb-4">
-                {isThaiLocale ? 'เปลี่ยนภาษา:' : 'Switch Language:'}
-              </p>
-              <div className="flex gap-4 justify-center">
+              {/* Glass Morphism Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
                 <ButtonWrapper
                   as={Link}
-                  href="/th"
-                  className={`btn-minimal-${locale === 'th' ? 'primary' : 'outline'} px-6`}>
-                  ไทย
+                  href={`/${locale}`}
+                  className="bg-[var(--primary-blue)]/90 hover:bg-[var(--primary-blue)] backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[var(--primary-blue)]/25 min-w-48 flex items-center justify-center gap-3"
+                  startContent={<Home className="w-5 h-5" />}>
+                  {isThaiLocale ? 'กลับหน้าแรก' : 'Go Home'}
                 </ButtonWrapper>
+
                 <ButtonWrapper
-                  as={Link}
-                  href="/en"
-                  className={`btn-minimal-${locale === 'en' ? 'primary' : 'outline'} px-6`}>
-                  English
+                  onPress={handleGoBack}
+                  className="bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-48 flex items-center justify-center gap-3"
+                  startContent={<ArrowLeft className="w-5 h-5" />}>
+                  {isThaiLocale ? 'ย้อนกลับ' : 'Go Back'}
                 </ButtonWrapper>
+              </div>
+
+              {/* Glass Morphism Quick Links */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <Link
+                  href={`/${locale}/pds-group`}
+                  className="group bg-white/30 hover:bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
+                      <Building2 className="w-6 h-6 text-[var(--primary-blue)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-800 mb-1">
+                        {isThaiLocale ? 'เกี่ยวกับเรา' : 'About Us'}
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        {isThaiLocale ? 'ประวัติและวิสัยทัศน์' : 'Our story & vision'}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${locale}/products-services`}
+                  className="group bg-white/30 hover:bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
+                      <FileText className="w-6 h-6 text-[var(--primary-blue)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-800 mb-1">
+                        {isThaiLocale ? 'ผลิตภัณฑ์และบริการ' : 'Products & Services'}
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        {isThaiLocale ? 'สินค้าและบริการของเรา' : 'What we offer'}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${locale}/reference`}
+                  className="group bg-white/30 hover:bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
+                      <Search className="w-6 h-6 text-[var(--primary-blue)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-800 mb-1">
+                        {isThaiLocale ? 'ผลงาน' : 'References'}
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        {isThaiLocale ? 'โครงการที่ผ่านมา' : 'Our past projects'}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/${locale}/contact-us`}
+                  className="group bg-white/30 hover:bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
+                      <Mail className="w-6 h-6 text-[var(--primary-blue)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-800 mb-1">
+                        {isThaiLocale ? 'ติดต่อเรา' : 'Contact Us'}
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        {isThaiLocale ? 'ช่องทางติดต่อ' : 'Get in touch'}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Language Switch with Glass Effect */}
+              <div className="text-center">
+                <p className="text-slate-600 mb-4 text-sm">
+                  {isThaiLocale ? 'เปลี่ยนภาษา:' : 'Switch Language:'}
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <ButtonWrapper
+                    as={Link}
+                    href="/th"
+                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${locale === 'th'
+                      ? 'bg-[var(--primary-blue)]/90 text-white shadow-lg'
+                      : 'bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700'
+                      }`}>
+                    ไทย
+                  </ButtonWrapper>
+                  <ButtonWrapper
+                    as={Link}
+                    href="/en"
+                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${locale === 'en'
+                      ? 'bg-[var(--primary-blue)]/90 text-white shadow-lg'
+                      : 'bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700'
+                      }`}>
+                    English
+                  </ButtonWrapper>
+                </div>
               </div>
             </div>
           </div>
