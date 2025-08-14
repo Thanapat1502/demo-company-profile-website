@@ -1,49 +1,228 @@
-"use client";
-
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import MainLayout from "@/components/layout/MainLayout";
 import QuillDisplay from "@/components/share/QuillDisplay";
 import PrimaryButton from "@/components/ui/PrimaryButton";
-import { News, useNewsStore } from "@/store/zustand/newsStore";
-import { getBilingualExcerpt, getBilingualTitle } from "@/utils/bilingual";
-import { Badge, Card, CardBody } from "@heroui/react";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
-import { useLocale } from "next-intl";
+import ServerBadge from "@/components/ui/ServerBadge";
+import { ServerCard, ServerCardBody } from "@/components/ui/ServerCard";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import ClientShareButton from "@/components/news/ClientShareButton";
 
-export default function NewsDetailPage() {
-  const locale = useLocale();
-  const params = useParams();
-  const slug = params.slug as string;
-  const { fetchNewsBySlug, newsDetail, loading, error } = useNewsStore();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+interface Props {
+  params: Promise<{
+    locale: string;
+    slug: string;
+  }>;
+}
 
-  // Fetch news detail on component mount
-  useEffect(() => {
-    const loadNewsDetail = async () => {
-      setIsInitialLoading(true);
-      console.log("Loading news detail by slug...>>>");
-      try {
-        console.log("Effect I - fetching by slug:", slug, "locale:", locale);
-        await fetchNewsBySlug(slug, locale);
-      } catch (error) {
-        console.log("Effect xI");
-        console.error("Error loading news detail:", error);
-      } finally {
-        setIsInitialLoading(false);
-      }
+interface Category {
+  id: string;
+  cat_th: string;
+  cat_en: string;
+}
+
+interface NewsDetail {
+  id: string;
+  title_th: string;
+  title_en: string;
+  slug_th: string;
+  slug_en: string;
+  excerpt_th: string;
+  excerpt_en: string;
+  body_th: any;
+  body_en: any;
+  thumbnail: string;
+  created_at: string;
+  updated_at: string;
+  published_at: string;
+  categories: Category;
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params;
+
+  try {
+    // Decode the slug to handle Thai characters properly
+    const decodedSlug = decodeURIComponent(slug);
+
+    // Determine which slug column to search based on locale
+    const slugColumn = locale === "en" ? "slug_en" : "slug_th";
+
+    const { data: news } = await supabase
+      .from("news")
+      .select(`
+        title_th,
+        title_en,
+        excerpt_th,
+        excerpt_en,
+        thumbnail,
+        slug_th,
+        slug_en,
+        created_at,
+        updated_at,
+        published_at
+      `)
+      .eq(slugColumn, decodedSlug)
+      .eq("status", "published")
+      .single();
+
+    if (!news) {
+      return {
+        title: "News Article Not Found | Padungsilpa Group",
+        description: "The requested news article could not be found.",
+      };
+    }
+
+    const title = (locale === "en" ? news.title_en : news.title_th) as string;
+    const description = (locale === "en" ? news.excerpt_en : news.excerpt_th) as string;
+    const publishedTime = (news.published_at || news.created_at) as string;
+    const modifiedTime = news.updated_at as string;
+
+    // Generate alternate URLs for different locales
+    const alternateUrls = {
+      th: news.slug_th ? `/th/news-events/${news.slug_th}` : null,
+      en: news.slug_en ? `/en/news-events/${news.slug_en}` : null,
     };
 
-    if (slug) {
-      loadNewsDetail();
+    return {
+      title: `${title} | Padungsilpa Group`,
+      description: description || `Read more about ${title}`,
+      keywords: [
+        title,
+        "Padungsilpa Group",
+        "Construction",
+        "Engineering",
+        "News",
+        locale === "th" ? "ข่าวสาร" : "News",
+        locale === "th" ? "ก่อสร้าง" : "Construction",
+      ].filter(Boolean).join(", "),
+      authors: [{ name: "Padungsilpa Group" }],
+      publisher: "Padungsilpa Group",
+      openGraph: {
+        title,
+        description: description || `Read more about ${title}`,
+        images: news.thumbnail ? [
+          {
+            url: news.thumbnail as string,
+            width: 1200,
+            height: 630,
+            alt: title,
+          }
+        ] : [],
+        type: "article",
+        publishedTime,
+        modifiedTime,
+        authors: ["Padungsilpa Group"],
+        section: "News",
+        locale: locale,
+        alternateLocale: locale === "th" ? "en" : "th",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description: description || `Read more about ${title}`,
+        images: news.thumbnail ? [news.thumbnail as string] : [],
+        creator: "@PadungsilpaGroup",
+        site: "@PadungsilpaGroup",
+      },
+      alternates: {
+        canonical: `https://padungsilpa.com/${locale}/news-events/${slug}`,
+        languages: {
+          ...(alternateUrls.th && { "th-TH": `https://padungsilpa.com${alternateUrls.th}` }),
+          ...(alternateUrls.en && { "en-US": `https://padungsilpa.com${alternateUrls.en}` }),
+          "x-default": `https://padungsilpa.com/${locale}/news-events/${slug}`,
+        },
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "News Article | Padungsilpa Group",
+      description: "Read the latest news and updates from Padungsilpa Group",
+    };
+  }
+}
+
+// Generate static params for static generation
+export async function generateStaticParams() {
+  try {
+    const { data: news } = await supabase
+      .from("news")
+      .select("slug_th, slug_en")
+      .eq("status", "published");
+
+    if (!news) return [];
+
+    const params = [];
+
+    // Generate params for both Thai and English slugs
+    for (const article of news) {
+      if (article.slug_th) {
+        // Don't pre-encode - Next.js will handle URL encoding automatically
+        params.push({ locale: "th", slug: article.slug_th });
+      }
+      if (article.slug_en) {
+        params.push({ locale: "en", slug: article.slug_en });
+      }
     }
-  }, [slug, locale, fetchNewsBySlug]);
+
+    return params;
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
+
+export default async function NewsDetailPage({ params }: Props) {
+  const { locale, slug } = await params;
+
+  // Decode the slug to handle Thai characters properly
+  const decodedSlug = decodeURIComponent(slug);
+
+  // Fetch news data server-side
+  const slugColumn = locale === "en" ? "slug_en" : "slug_th";
+
+  const { data: newsDetail, error } = await supabase
+    .from("news")
+    .select("*")
+    .eq(slugColumn, decodedSlug)
+    .eq("status", "published")
+    .single();
+
+  // Fetch category separately if needed
+  let category = null;
+  if (newsDetail && newsDetail.cat_id) {
+    const { data: categoryData } = await supabase
+      .from("news_categories")
+      .select("id, cat_th, cat_en")
+      .eq("id", newsDetail.cat_id)
+      .single();
+    category = categoryData;
+  }
+
+  if (error || !newsDetail) {
+    console.error("News article not found:", { slug, locale, error });
+    notFound();
+  }
 
   // Helper functions for bilingual content
-  const getTitle = (news: News) => getBilingualTitle(news, locale);
-  const getExcerpt = (news: News) => getBilingualExcerpt(news, locale);
+  const getTitle = () => locale === "en" ? newsDetail.title_en : newsDetail.title_th;
+  const getExcerpt = () => locale === "en" ? newsDetail.excerpt_en : newsDetail.excerpt_th;
+  const getBody = () => locale === "en" ? newsDetail.body_en : newsDetail.body_th;
 
   // Calculate read time
   const calculateReadTime = (content: string | object | null | undefined) => {
@@ -66,90 +245,81 @@ export default function NewsDetailPage() {
     return locale === "th" ? `${minutes} นาที` : `${minutes} min`;
   };
 
-  // Share functionality
-  const handleShare = () => {
-    if (navigator.share && newsDetail) {
-      navigator.share({
-        title: getTitle(newsDetail),
-        text: getExcerpt(newsDetail),
-        url: window.location.href,
-      });
-    }
+  // Get content for display
+  const title = getTitle() as string;
+  const excerpt = getExcerpt() as string;
+  const body = getBody();
+  const readTime = calculateReadTime(body as string | object);
+  const publishDate = (newsDetail.published_at || newsDetail.created_at) as string;
+
+  // Generate JSON-LD structured data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": title,
+    "description": excerpt,
+    "image": newsDetail.thumbnail ? [newsDetail.thumbnail] : [],
+    "datePublished": publishDate,
+    "dateModified": newsDetail.updated_at,
+    "author": {
+      "@type": "Organization",
+      "name": "Padungsilpa Group",
+      "url": "https://padungsilpa.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Padungsilpa Group",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://padungsilpa.com/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://padungsilpa.com/${locale}/news-events/${slug}`
+    },
+    "articleSection": category ? (locale === "th" ? (category as Category).cat_th : (category as Category).cat_en) : "News",
+    "inLanguage": locale,
+    "url": `https://padungsilpa.com/${locale}/news-events/${slug}`
   };
 
-  // Loading state
-  if (isInitialLoading || loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">
-            {locale === "th" ? "กำลังโหลด..." : "Loading..."}
-          </h2>
-          <p className="text-slate-600">
-            {locale === "th"
-              ? "กำลังโหลดข้อมูลข่าวสาร..."
-              : "Loading news article..."}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">
-            {locale === "th" ? "เกิดข้อผิดพลาด" : "Error"}
-          </h2>
-          <p className="text-slate-600 mb-4">{error}</p>
-          <Link
-            href={`/${locale}/news-events`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
-            <ArrowLeft className="w-4 h-4" />
-            {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Not found state
-  if (!newsDetail) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="text-slate-400 text-6xl mb-4">📰</div>
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">
-            {locale === "th" ? "ไม่พบข่าวสาร" : "News Not Found"}
-          </h2>
-          <p className="text-slate-600 mb-4">
-            {locale === "th"
-              ? "ไม่พบข่าวสารที่คุณกำลังมองหา"
-              : "The news article you're looking for doesn't exist."}
-          </p>
-          <Link
-            href={`/${locale}/news-events`}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
-            <ArrowLeft className="w-4 h-4" />
-            {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const title = getTitle(newsDetail);
-  const excerpt = getExcerpt(newsDetail);
-  const body = locale === "th" ? newsDetail.body_th : newsDetail.body_en;
-  const readTime = calculateReadTime(body);
-  const publishDate = newsDetail.publish_at || newsDetail.created_at;
+  // Generate breadcrumb structured data
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `https://padungsilpa.com/${locale}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": locale === "th" ? "ข่าวสาร" : "News & Events",
+        "item": `https://padungsilpa.com/${locale}/news-events`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": title,
+        "item": `https://padungsilpa.com/${locale}/news-events/${slug}`
+      }
+    ]
+  };
 
   return (
     <MainLayout forceSolidNavBar>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Hero Section with Content Overlay */}
       <section className="relative bg-slate-50">
         {/* Background Image */}
@@ -163,16 +333,16 @@ export default function NewsDetailPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="">
                 {/* Category Badge */}
-                {(newsDetail as any).categories && (
+                {category && (
                   <div className="mb-6">
-                    <Badge
+                    <ServerBadge
                       color="primary"
                       variant="flat"
                       className="bg-white/20 backdrop-blur-sm text-white border-white/30 px-4 py-2">
                       {locale === "th"
-                        ? (newsDetail as any).categories.name_th
-                        : (newsDetail as any).categories.name_en}
-                    </Badge>
+                        ? (category as Category).cat_th
+                        : (category as Category).cat_en}
+                    </ServerBadge>
                   </div>
                 )}
 
@@ -219,23 +389,9 @@ export default function NewsDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="">
             {/* Article Content */}
-            <Card className="mb-16 shadow-lg">
-              <CardBody className="p-8 ">
-                {/* Tags */}
-                {(newsDetail as any).tags &&
-                  (newsDetail as any).tags.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mb-8">
-                      {(newsDetail as any).tags.map((tag: any) => (
-                        <Badge
-                          key={tag.id}
-                          color="secondary"
-                          variant="flat"
-                          className="text-sm px-3 py-1">
-                          {locale === "th" ? tag.name_th : tag.name_en}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+            <ServerCard className="mb-16" shadow="lg">
+              <ServerCardBody className="p-8">
+                {/* Tags section removed for now */}
 
                 {/* Article Body */}
                 <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed">
@@ -253,15 +409,14 @@ export default function NewsDetailPage() {
                   <span className="text-gray-600 font-medium">
                     {locale === "th" ? "แชร์บทความ:" : "Share article:"}
                   </span>
-                  <button
-                    onClick={handleShare}
-                    className="flex items-center gap-2 px-6 py-3 bg-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)]/20 transition-colors">
-                    <Share2 className="w-4 h-4" />
-                    {locale === "th" ? "แชร์" : "Share"}
-                  </button>
+                  <ClientShareButton
+                    title={title}
+                    excerpt={excerpt}
+                    locale={locale}
+                  />
                 </div>
-              </CardBody>
-            </Card>
+              </ServerCardBody>
+            </ServerCard>
 
             {/* Back to News Button */}
             <div className="text-center">

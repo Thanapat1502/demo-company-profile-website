@@ -204,7 +204,11 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     try {
       console.log("🔍 Fetching news detail for slug:", slug, "locale:", locale);
 
-      const response = await fetch(`/api/news/slug/${slug}?locale=${locale}`);
+      // Encode the slug for URL safety, especially for Thai characters
+      const encodedSlug = encodeURIComponent(slug);
+      console.log("🔍 Encoded slug:", encodedSlug);
+
+      const response = await fetch(`/api/news/slug/${encodedSlug}?locale=${locale}`);
       const result = await response.json();
 
       if (!response.ok) {
