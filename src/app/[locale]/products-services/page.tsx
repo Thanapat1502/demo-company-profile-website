@@ -5,15 +5,12 @@ import HeroButtons from "@/components/ui/HeroButtons";
 import { getHeroImageById } from "@/lib/hero-utils";
 import ClientProductsServicesPage from "@/components/pages/ClientProductsServicesPage";
 
-// Enable static generation with proper locale support and ISR
-export const dynamic = 'auto'; // Allow proper locale context while enabling static generation
-export const revalidate = 3600; // ISR: Revalidate every hour (1 hour = 3600 seconds)
-export const dynamicParams = false; // Only allow pre-generated params
-export const fetchCache = 'default-cache'; // Enable caching for fetch requests
+// Enable ISR for localized content
+export const revalidate = 3600;
+export const dynamic = 'auto';
 
 // Generate static params for all locales
 export async function generateStaticParams() {
-  console.log('🏗️ Generating static params for products-services page');
   return [
     { locale: 'th' },
     { locale: 'en' },

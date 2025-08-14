@@ -6,16 +6,13 @@ import { getHeroImageById } from "@/lib/hero-utils";
 import ClientContactUsPage from "@/components/pages/ClientContactUsPage";
 import { generateSEOMetadata, getPageSEOConfig } from "@/lib/seo/metadata";
 import StructuredData from "@/components/seo/StructuredData";
-import HeroButtons from "@/components/ui/HeroButtons";
 
-// Enable static generation with proper locale support
-export const dynamic = 'auto'; // Allow proper locale context while enabling static generation
-export const revalidate = 3600; // Revalidate every hour
-export const dynamicParams = false; // Only allow pre-generated params
+// Enable ISR for localized content
+export const revalidate = 3600;
+export const dynamic = 'auto';
 
 // Generate static params for all locales
 export async function generateStaticParams() {
-  console.log('🏗️ Generating static params for contact-us page');
   return [
     { locale: 'th' },
     { locale: 'en' },
@@ -69,9 +66,6 @@ export default async function ContactUsPage({ params }: Props) {
         description={t("contact.hero.description")}
         fallbackImages={["/images/hero-sections/hero-banner-1.jpg"]}
         autoSlideDelay={6000}>
-        <HeroButtons
-          primaryButtonText={locale === 'th' ? 'โทรด่วน' : 'Hot line'}
-          primaryButtonHref="/contact-us#contact-us-section" />
         {/* Hero buttons will be handled in client component */}
       </DynamicHeroSection>
 

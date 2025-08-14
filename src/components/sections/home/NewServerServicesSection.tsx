@@ -24,12 +24,10 @@ export default function NewServerServicesSection({
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setGridVisible(true)
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setTimeout(() => {
-            setGridVisible(true)
-          }, 100);
           if (entry.target === sectionRef.current && entry.isIntersecting) {
             setIsVisible(true);
           }

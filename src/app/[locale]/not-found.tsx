@@ -33,76 +33,84 @@ export default function NotFoundPage() {
   }
 
   return (
-    <MainLayout forceSolidNavBar>
-      {/* 404 Hero Section with Glass Morphism */}
-      <section className="mt-[80px] min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 relative overflow-hidden flex items-center justify-center">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          {/* Floating Glass Orbs */}
-          {/* <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 backdrop-blur-sm rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/20 backdrop-blur-sm rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-white/5 backdrop-blur-sm rounded-full animate-pulse delay-2000"></div>
-          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-blue-100/15 backdrop-blur-sm rounded-full animate-pulse delay-500"></div> */}
-
-          {/* Subtle Grid Pattern */}
-          <div className="absolute inset-0 opacity-[0.02]">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23112ef4' fill-opacity='0.4'%3E%3Cpath d='M20 20h20v20H20V20zm-20 0h20v20H0V20z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }} />
+    <MainLayout>
+      <div>
+        {/* 404 Hero Section with Background Image and Glass Morphism */}
+        <section className="pt-[80px] min-h-screen relative overflow-hidden flex items-center justify-center">
+          {/* Hero Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src="/images/hero-sections/hero-banner-1.jpg"
+              alt="404 Background"
+              className="w-full h-full object-cover"
+            />
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-black/40"></div>
+            {/* Gradient overlay for depth */}
+            {/* <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30"></div> */}
           </div>
-        </div>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
-            {/* Glass Morphism Container */}
-            <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl shadow-black/5">
-              {/* 404 Number with Glass Effect */}
-              <div className="mb-8">
-                <div className="text-7xl sm:text-8xl lg:text-9xl font-black mb-4 relative">
-                  <span className="bg-gradient-to-br from-[var(--primary-blue)] to-blue-600 bg-clip-text text-transparent">
-                    404
-                  </span>
-                  <div className="absolute inset-0 text-7xl sm:text-8xl lg:text-9xl font-black opacity-10 blur-sm text-[var(--primary-blue)]">
-                    404
+          {/* Floating Glass Elements */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-white/5 backdrop-blur-sm rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/10 backdrop-blur-sm rounded-full animate-pulse delay-1000"></div>
+            <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-white/3 backdrop-blur-sm rounded-full animate-pulse delay-2000"></div>
+            <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-blue-100/8 backdrop-blur-sm rounded-full animate-pulse delay-500"></div>
+          </div>
+
+          <div className="max-w-4xl py-8 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center gap-4 flex flex-col">
+              {/* Enhanced Glass Morphism Container */}
+              <div className="bg-white/10 backdrop-blur-xs border border-white/20 rounded-3xl p-8  shadow-2xl shadow-black/20 backdrop-saturate-150">
+                {/* 404 Number with Glass Effect */}
+                <div className="mb-8">
+                  <div className="text-7xl sm:text-8xl lg:text-9xl font-normal mb-4 relative">
+                    <span className="text-white bg-clip-text text-transparent">
+                      404
+                    </span>
+                    <div className="absolute inset-0 text-7xl sm:text-8xl lg:text-9xl font-normal opacity-10 blur-sm text-white">
+                      404
+                    </div>
+                  </div>
+                  {/* <div className="w-24 h-1 bg-gradient-to-r from-[var(--primary-blue)] to-blue-400 mx-auto rounded-full"></div> */}
+                </div>
+
+                {/* Error Message with Glass Theme */}
+                <div className="">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
+                    {isThaiLocale ? 'ไม่พบหน้าที่ต้องการ' : 'Page Not Found'}
+                  </h1>
+                  <div className="max-w-2xl mx-auto space-y-4">
+                    <p className="text-lg text-white/90 leading-relaxed drop-shadow-md">
+                      {isThaiLocale
+                        ? 'หน้าที่คุณกำลังมองหาอาจถูกลบ เปลี่ยนชื่อ หรือไม่สามารถใช้งานได้ชั่วคราว'
+                        : 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.'
+                      }
+                    </p>
+                    <p className="text-base text-white/80 drop-shadow-sm">
+                      {isThaiLocale
+                        ? 'กรุณาตรวจสอบ URL หรือใช้ลิงก์ด้านล่างเพื่อค้นหาสิ่งที่คุณต้องการ'
+                        : 'Please check the URL or use the links below to find what you need.'
+                      }
+                    </p>
                   </div>
                 </div>
-                <div className="w-24 h-1 bg-gradient-to-r from-[var(--primary-blue)] to-blue-400 mx-auto rounded-full"></div>
-              </div>
 
-              {/* Error Message with Glass Theme */}
-              <div className="mb-12">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-slate-800">
-                  {isThaiLocale ? 'ไม่พบหน้าที่ต้องการ' : 'Page Not Found'}
-                </h1>
-                <div className="max-w-2xl mx-auto space-y-4">
-                  <p className="text-lg text-slate-600 leading-relaxed">
-                    {isThaiLocale
-                      ? 'หน้าที่คุณกำลังมองหาอาจถูกลบ เปลี่ยนชื่อ หรือไม่สามารถใช้งานได้ชั่วคราว'
-                      : 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.'
-                    }
-                  </p>
-                  <p className="text-base text-slate-500">
-                    {isThaiLocale
-                      ? 'กรุณาตรวจสอบ URL หรือใช้ลิงก์ด้านล่างเพื่อค้นหาสิ่งที่คุณต้องการ'
-                      : 'Please check the URL or use the links below to find what you need.'
-                    }
-                  </p>
-                </div>
-              </div>
 
-              {/* Glass Morphism Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              </div>
+              {/* Enhanced Glass Morphism Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <ButtonWrapper
                   as={Link}
                   href={`/${locale}`}
-                  className="bg-[var(--primary-blue)]/90 hover:bg-[var(--primary-blue)] backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[var(--primary-blue)]/25 min-w-48 flex items-center justify-center gap-3"
+                  className="bg-[var(--primary-blue)]/80 hover:bg-[var(--primary-blue)]/90 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[var(--primary-blue)]/30 min-w-48 flex items-center justify-center gap-3 backdrop-saturate-150"
                   startContent={<Home className="w-5 h-5" />}>
                   {isThaiLocale ? 'กลับหน้าแรก' : 'Go Home'}
                 </ButtonWrapper>
 
                 <ButtonWrapper
                   onPress={handleGoBack}
-                  className="bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-48 flex items-center justify-center gap-3"
+                  className="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-48 flex items-center justify-center gap-3 backdrop-saturate-150"
                   startContent={<ArrowLeft className="w-5 h-5" />}>
                   {isThaiLocale ? 'ย้อนกลับ' : 'Go Back'}
                 </ButtonWrapper>
@@ -116,13 +124,13 @@ export default function NotFoundPage() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
-                      <Building2 className="w-6 h-6 text-[var(--primary-blue)]" />
+                      <Building2 className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 mb-1">
+                      <h3 className="font-semibold text-white mb-1">
                         {isThaiLocale ? 'เกี่ยวกับเรา' : 'About Us'}
                       </h3>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-white">
                         {isThaiLocale ? 'ประวัติและวิสัยทัศน์' : 'Our story & vision'}
                       </p>
                     </div>
@@ -135,13 +143,13 @@ export default function NotFoundPage() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
-                      <FileText className="w-6 h-6 text-[var(--primary-blue)]" />
+                      <FileText className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 mb-1">
+                      <h3 className="font-semibold text-white mb-1">
                         {isThaiLocale ? 'ผลิตภัณฑ์และบริการ' : 'Products & Services'}
                       </h3>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-white">
                         {isThaiLocale ? 'สินค้าและบริการของเรา' : 'What we offer'}
                       </p>
                     </div>
@@ -154,13 +162,13 @@ export default function NotFoundPage() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
-                      <Search className="w-6 h-6 text-[var(--primary-blue)]" />
+                      <Search className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 mb-1">
+                      <h3 className="font-semibold text-white mb-1">
                         {isThaiLocale ? 'ผลงาน' : 'References'}
                       </h3>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-white">
                         {isThaiLocale ? 'โครงการที่ผ่านมา' : 'Our past projects'}
                       </p>
                     </div>
@@ -173,13 +181,13 @@ export default function NotFoundPage() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-[var(--primary-blue)]/20 rounded-xl flex items-center justify-center group-hover:bg-[var(--primary-blue)]/30 transition-colors">
-                      <Mail className="w-6 h-6 text-[var(--primary-blue)]" />
+                      <Mail className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 mb-1">
+                      <h3 className="font-semibold text-white mb-1">
                         {isThaiLocale ? 'ติดต่อเรา' : 'Contact Us'}
                       </h3>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-white">
                         {isThaiLocale ? 'ช่องทางติดต่อ' : 'Get in touch'}
                       </p>
                     </div>
@@ -187,27 +195,27 @@ export default function NotFoundPage() {
                 </Link>
               </div>
 
-              {/* Language Switch with Glass Effect */}
+              {/* Enhanced Language Switch with Glass Effect */}
               <div className="text-center">
-                <p className="text-slate-600 mb-4 text-sm">
+                <p className="text-white/80 mb-4 text-sm drop-shadow-sm">
                   {isThaiLocale ? 'เปลี่ยนภาษา:' : 'Switch Language:'}
                 </p>
                 <div className="flex gap-3 justify-center">
                   <ButtonWrapper
                     as={Link}
                     href="/th"
-                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${locale === 'th'
-                      ? 'bg-[var(--primary-blue)]/90 text-white shadow-lg'
-                      : 'bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700'
+                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 backdrop-blur-md backdrop-saturate-150 ${locale === 'th'
+                      ? 'bg-[var(--primary-blue)]/80 text-white shadow-lg border border-white/30'
+                      : 'bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white hover:text-white'
                       }`}>
                     ไทย
                   </ButtonWrapper>
                   <ButtonWrapper
                     as={Link}
                     href="/en"
-                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${locale === 'en'
-                      ? 'bg-[var(--primary-blue)]/90 text-white shadow-lg'
-                      : 'bg-white/40 hover:bg-white/60 backdrop-blur-sm border border-white/30 text-slate-700'
+                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 backdrop-blur-md backdrop-saturate-150 ${locale === 'en'
+                      ? 'bg-[var(--primary-blue)]/80 text-white shadow-lg border border-white/30'
+                      : 'bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white hover:text-white'
                       }`}>
                     English
                   </ButtonWrapper>
@@ -215,8 +223,8 @@ export default function NotFoundPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </MainLayout>
   );
 }

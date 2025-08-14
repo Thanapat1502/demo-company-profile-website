@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
   // Optimize caching for locale-specific pages with ISR
   experimental: {
     staleTimes: {
-      dynamic: 30, // Allow some dynamic caching for locale context
+      dynamic: 30, // Allow some caching for dynamic pages with localized content
       static: 3600, // 1 hour for static pages
     },
   },
@@ -38,11 +38,6 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // Force proper static generation for locale routes
   trailingSlash: false,
-  // Generate static pages for all locales
-  generateBuildId: async () => {
-    // Use a consistent build ID for better caching
-    return `build-${Date.now()}`;
-  },
   // Ensure proper route matching
   async rewrites() {
     return [];

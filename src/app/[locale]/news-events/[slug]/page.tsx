@@ -324,7 +324,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
 
           {/* Content Overlay - Positioned Absolutely */}
-          <div className="mt-[80px] pt-0 inset-0 z-20 flex flex-col justify-between">
+          <div className="mt-[80px] pt-12 inset-0 z-20 flex flex-col justify-between">
 
             {/* Bottom Section - Main Content */}
             <div className="pb-12 ">
