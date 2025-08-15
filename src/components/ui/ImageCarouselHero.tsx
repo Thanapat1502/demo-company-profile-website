@@ -131,7 +131,7 @@ export default function ImageCarouselHero({
 
                 {/* Slogan */}
                 {description && (
-                  <h2 className="text-xl md:text-xl text-white/90 max-w-4xl mx-auto leading-relaxed font-normal text-center">
+                  <h2 className="text-xl md:text-xl text-white/90 max-w-4xl mx-auto leading-relaxed font-normal text-center whitespace-pre-wrap">
                     {description}
                   </h2>
                 )}
