@@ -85,5 +85,4 @@ This project demonstrates how I can build **production-level applications** that
 
 ---
 
-👉 [Check out the live demo](#) *(add Vercel link here if available)*  
-👉 [Contact me on LinkedIn](#) *(optional: insert your LinkedIn/GitHub profile)*  
+👉 [Check out the live demo](#https://www.padungsilpa.group/th/)   
