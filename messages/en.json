@@ -1,8 +1,19 @@
 {
   "navigation": {
     "home": "Home",
-    "company": "Company Profile",
-    "services": "Products & Services",
+    "company": {
+      "_value": "Company Profile",
+      "executiveMessage": "Message from Management"
+    },
+    "services": {
+      "main": "Products & Services",
+      "gas-station": "Gas Station Construction",
+      "permatank": "PERMATANK® Tanks",
+      "pipeInstallation": "Underground Piping",
+      "atgSystem": "ATG System",
+      "fuelServices": "Fuel Services",
+      "ourProducts": "Our Products"
+    },
     "references": "References",
     "news": "News & Events",
     "contact": "Contact Us"

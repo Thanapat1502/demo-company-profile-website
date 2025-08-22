@@ -84,18 +84,20 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
   fetchHighlightedNews: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      const { data, error } = await supabase
-        .from("news")
-        .select("*")
-        .eq("is_highlighted", true)
-        .eq("status", "published")
-        .order("updated_at", { ascending: false });
+      // Use static data for demo purposes
+      const { fetchStaticNews } = await import("@/lib/static-data/fetchers");
+      const allNews = await fetchStaticNews();
 
-      if (error) {
-        set({ error: error.message, loading: false });
-      } else {
-        set({ highlightedNews: data || [], loading: false, error: null });
-      }
+      // Filter highlighted news
+      const highlightedNews = allNews.filter(
+        (news) => news.is_highlighted && news.status === "published"
+      );
+
+      set({
+        highlightedNews: highlightedNews || [],
+        loading: false,
+        error: null,
+      });
     } catch (err) {
       set({
         error: `Failed to fetch highlighted news: ${err}`,
@@ -107,13 +109,12 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
   fetchCategories: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await fetch("/api/categories");
-      const result = await response.json();
-      if (result.error) {
-        set({ error: result.error, loading: false });
-      } else {
-        set({ categories: result.data || [], loading: false });
-      }
+      // Use static data for demo purposes
+      const { fetchStaticNewsCategories } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticNewsCategories();
+      set({ categories: data || [], loading: false });
     } catch (error) {
       set({ error: `Failed to fetch categories: ${error}`, loading: false });
     }
@@ -121,23 +122,20 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
   fetchNews: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      console.log("🔍 Fetching news articles...");
+      console.log("🔍 Fetching news articles from static data...");
 
-      const response = await fetch("/api/news");
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to fetch news");
-      }
+      // Use static data for demo purposes
+      const { fetchStaticNews } = await import("@/lib/static-data/fetchers");
+      const data = await fetchStaticNews();
 
       console.log(
         "✅ News articles fetched successfully:",
-        result.data?.length || 0,
+        data?.length || 0,
         "articles"
       );
 
       // Sort news by created_at descending (newest first) as backup
-      const sortedNews = (result.data || []).sort((a: News, b: News) => {
+      const sortedNews = (data || []).sort((a: News, b: News) => {
         const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
         const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
         return dateB - dateA;
@@ -204,39 +202,36 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
     try {
       console.log("🔍 Fetching news detail for slug:", slug, "locale:", locale);
 
-      // Encode the slug for URL safety, especially for Thai characters
-      const encodedSlug = encodeURIComponent(slug);
-      console.log("🔍 Encoded slug:", encodedSlug);
+      // Use static data for demo purposes
+      const { fetchStaticNewsBySlug } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticNewsBySlug(slug, locale as "th" | "en");
 
-      const response = await fetch(`/api/news/slug/${encodedSlug}?locale=${locale}`);
-      const result = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          set({
-            newsDetail: null,
-            loading: false,
-            error: "News article not found",
-            success: false,
-          });
-          return null;
-        }
-        throw new Error(result.error || "Failed to fetch news detail");
+      if (!data) {
+        set({
+          newsDetail: null,
+          loading: false,
+          error: "News article not found",
+          success: false,
+        });
+        return null;
       }
 
-      console.log("✅ News detail fetched successfully:", result.data?.title_th);
+      console.log("✅ News detail fetched successfully:", data?.title_th);
 
       set({
-        newsDetail: result.data,
+        newsDetail: data,
         loading: false,
         error: null,
         success: true,
       });
 
-      return result.data;
+      return data;
     } catch (err) {
       console.error("❌ Error fetching news by slug:", err);
-      const errorMessage = err instanceof Error ? err.message : "Failed to fetch news detail";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch news detail";
       set({
         error: errorMessage,
         loading: false,
@@ -305,13 +300,12 @@ export const useNewsStore = create<NewsStoreState>((set, get) => ({
   fetchTags: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      const response = await fetch("/api/news-tag");
-      const result = await response.json();
-      if (result.error) {
-        set({ error: result.error, loading: false });
-      } else {
-        set({ tags: result.data || [], loading: false });
-      }
+      // Use static data for demo purposes
+      const { fetchStaticNewsTags } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticNewsTags();
+      set({ tags: data || [], loading: false });
     } catch {
       set({ error: "Failed to fetch tags", loading: false });
     }

@@ -4,20 +4,21 @@ import HeroSection from "@/components/sections/home/HeroSection";
 import ServerHomePage from "@/components/pages/ServerHomePage";
 import { getHeroImageById } from "@/lib/hero-utils";
 import StructuredData from "@/components/seo/StructuredData";
-import { getSEOData, generateMetadata as generateSEOMetadataNew, SEO_DEFAULTS } from "@/lib/seo-utils";
+import {
+  getSEOData,
+  generateMetadata as generateSEOMetadataNew,
+  SEO_DEFAULTS,
+} from "@/lib/seo-utils";
 import PageSEO from "@/components/seo/PageSEO";
 import { fetchHomePageDataSSR } from "@/lib/server/dataFetchers";
 
 // Enable ISR (Incremental Static Regeneration) for localized content
 export const revalidate = 3600; // Revalidate every hour
-export const dynamic = 'auto'; // Allow dynamic rendering for localized content
+export const dynamic = "auto"; // Allow dynamic rendering for localized content
 
 // Generate static params for all locales at build time
 export async function generateStaticParams() {
-  return [
-    { locale: 'th' },
-    { locale: 'en' },
-  ];
+  return [{ locale: "th" }, { locale: "en" }];
 }
 
 type Props = {
@@ -28,14 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
   // Get SEO data from database
-  const seoData = await getSEOData('/', locale);
+  const seoData = await getSEOData("/", locale);
 
   // Generate metadata using new SEO system
   return generateSEOMetadataNew(seoData, {
-    title: SEO_DEFAULTS[locale as 'th' | 'en'].default_title,
-    description: SEO_DEFAULTS[locale as 'th' | 'en'].default_description,
-    locale: locale as 'th' | 'en',
-    pagePath: '/',
+    title: SEO_DEFAULTS[locale as "th" | "en"].default_title,
+    description: SEO_DEFAULTS[locale as "th" | "en"].default_description,
+    locale: locale as "th" | "en",
+    pagePath: "/",
   });
 }
 
@@ -54,8 +55,12 @@ export default async function Home({ params }: Props) {
         pagePath="/"
         locale={locale}
         fallback={{
-          title: SEO_DEFAULTS[locale as 'th' | 'en'].default_title,
-          description: SEO_DEFAULTS[locale as 'th' | 'en'].default_description,
+          title:
+            SEO_DEFAULTS?.[locale as "th" | "en"]?.default_title ||
+            "Padungsilpa Group",
+          description:
+            SEO_DEFAULTS?.[locale as "th" | "en"]?.default_description ||
+            "Leading construction and engineering company",
         }}
       />
       <StructuredData

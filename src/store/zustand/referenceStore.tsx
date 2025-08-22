@@ -63,9 +63,11 @@ export const useReferenceStore = create<State>((set) => ({
   fetchReference: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      const res = await fetch("/api/references");
-      const { data, error } = await res.json();
-      if (error) throw new Error(error.message || "Failed to fetch references");
+      // Use static data for demo purposes
+      const { fetchStaticReferences } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticReferences();
       set({ references: data || [], loading: false, success: true });
     } catch (err) {
       set({
@@ -80,12 +82,11 @@ export const useReferenceStore = create<State>((set) => ({
   fetchReferenceDetail: async (id: string) => {
     set({ detailLoading: true, error: null });
     try {
-      const res = await fetch(`/api/references/${id}`);
-      const { data, error } = await res.json();
-
-      if (error) {
-        throw new Error(error.message || "Failed to fetch reference detail");
-      }
+      // Use static data for demo purposes
+      const { fetchStaticReferenceById } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticReferenceById(id);
 
       if (!data) {
         throw new Error("Reference not found");
@@ -246,10 +247,11 @@ export const useReferenceStore = create<State>((set) => ({
   fetchOverseaProjects: async () => {
     set({ loading: true, error: null, success: false });
     try {
-      const res = await fetch("/api/references_oversea");
-      const { data, error } = await res.json();
-      if (error)
-        throw new Error(error.message || "Failed to fetch oversea projects");
+      // Use static data for demo purposes
+      const { fetchStaticOverseaProjects } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticOverseaProjects();
       set({ overseaProjects: data || [], loading: false, success: true });
     } catch (err) {
       set({

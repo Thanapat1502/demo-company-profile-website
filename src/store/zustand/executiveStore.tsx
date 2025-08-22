@@ -44,10 +44,19 @@ export const useExecutiveStore = create<State>((set, get) => ({
 
   fetchExecutiveMembers: async () => {
     set({ loading: true, error: null, success: false });
-    const res = await fetch("/api/executive");
-    const { data, error } = await res.json();
-    if (error) set({ error: error.message, loading: false });
-    else set({ executiveMembers: data || [], loading: false, success: true });
+    try {
+      // Use static data for demo purposes
+      const { fetchStaticExecutiveMembers } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticExecutiveMembers();
+      set({ executiveMembers: data || [], loading: false, success: true });
+    } catch (error: any) {
+      set({
+        error: error.message || "Failed to fetch executive members",
+        loading: false,
+      });
+    }
   },
 
   addExecutiveMember: async ({

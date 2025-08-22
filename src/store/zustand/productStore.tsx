@@ -30,16 +30,12 @@ export const useProductStore = create<State>((set, get) => ({
     set({ loading: true });
     try {
       set({ error: null });
-      const res = await fetch("/api/products", {
-        credentials: "include", // Include cookies for authentication
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        set({ error: data.error || "Failed to fetch products", products: [] });
-        return;
-      }
-      const data = await res.json();
-      set({ products: data.products, error: null, loading: false });
+      // Use static data for demo purposes
+      const { fetchStaticProducts } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticProducts();
+      set({ products: data || [], error: null, loading: false });
     } catch (err: any) {
       set({
         products: [],

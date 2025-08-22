@@ -34,14 +34,10 @@ export default function ExecutiveGrid({
       <div className={`text-center p-12 ${className}`}>
         <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          {locale === "th"
-            ? "ไม่มีข้อมูลผู้บริหาร"
-            : "No Executive Information"}
+          {t("common.noExecutiveInfo")}
         </h3>
         <p className="text-gray-500">
-          {locale === "th"
-            ? "ยังไม่มีข้อมูลผู้บริหารในระบบ"
-            : "No executive information available in the system"}
+          {t("common.noExecutiveInfoDescription")}
         </p>
       </div>
     );
@@ -68,9 +64,9 @@ export default function ExecutiveGrid({
     return (
       <div>
         {/* Header Section */}
-        <div className="text-center mb-8" >
+        <div className="text-center mb-8">
           <h2 className="text-4xl lg:text-5xl font-semibold text-gray-900 mb-6 tracking-tight">
-            {t('company.navigation.team')}
+            {t("company.navigation.team")}
           </h2>
 
           <div className="relative flex items-center justify-center mb-8">
@@ -177,8 +173,9 @@ export function ExecutiveGridSkeleton({
             {/* Image skeleton */}
             <div className="relative mb-6">
               <div
-                className={`${variant === "detailed" ? "w-32 h-32" : "w-24 h-24"
-                  } mx-auto bg-gray-200 rounded-full`}></div>
+                className={`${
+                  variant === "detailed" ? "w-32 h-32" : "w-24 h-24"
+                } mx-auto bg-gray-200 rounded-full`}></div>
             </div>
 
             {/* Content skeleton */}

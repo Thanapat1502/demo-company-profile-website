@@ -51,23 +51,15 @@ export const useContentStore = create<State>((set) => ({
   fetchContent: async (page: string, type?: "gallery" | "video") => {
     set({ loading: true, error: null });
     try {
-      let url = `/api/contents?page=${page}`;
-      if (type) {
-        url += `&type=${type}`;
-      }
+      // Use static data for demo purposes
+      const { fetchStaticContent } = await import("@/lib/static-data/fetchers");
+      const data = await fetchStaticContent(page);
 
-      const response = await fetch(url);
-      const result = await response.json();
+      // Convert single content to array format for compatibility
+      const contentArray = data ? [data] : [];
 
-      if (response.ok) {
-        console.log("Fetch content:", result.data);
-        set({ content: result.data || [], loading: false, success: true });
-      } else {
-        set({
-          error: result.error || "Failed to fetch content",
-          loading: false,
-        });
-      }
+      console.log("Fetch content from static data:", contentArray);
+      set({ content: contentArray, loading: false, success: true });
     } catch (error) {
       set({
         error:
@@ -79,24 +71,18 @@ export const useContentStore = create<State>((set) => ({
   fetchContentById: async (id: string) => {
     set({ loading: true, error: null });
     try {
-      const url = `/api/content-detail?id=${id}`;
+      // Use static data for demo purposes
+      const { fetchStaticContentById } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticContentById(id);
 
-      const response = await fetch(url);
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log("Fetch content detail>>>>>>>:", result.data);
-        set({
-          contentDetail: result.data || null,
-          loading: false,
-          success: true,
-        });
-      } else {
-        set({
-          error: result.error || "Failed to fetch content",
-          loading: false,
-        });
-      }
+      console.log("Fetch content detail from static data:", data);
+      set({
+        contentDetail: data || null,
+        loading: false,
+        success: true,
+      });
     } catch (error) {
       set({
         error:

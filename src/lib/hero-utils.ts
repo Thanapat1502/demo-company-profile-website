@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { staticHeroImages } from "@/lib/static-data";
 
 // Hero section IDs type
 export type HeroSectionId =
@@ -21,6 +21,7 @@ export interface HeroImageData {
 /**
  * Server-side function to fetch hero images by ID
  * This function can be used in getServerSideProps, getStaticProps, or Server Components
+ * Now uses static data instead of Supabase for demo purposes
  */
 export async function getHeroImageById(id: HeroSectionId): Promise<string[]> {
   try {
@@ -44,27 +45,11 @@ export async function getHeroImageById(id: HeroSectionId): Promise<string[]> {
       return [];
     }
 
-    const { data, error } = await supabase
-      .from("hero_section")
-      .select("hero_images")
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      if (error.code === "PGRST116") {
-        // No data found, return empty array
-        console.log(`[SSR] No hero images found for ID: ${id}`);
-        return [];
-      }
-      console.error(`[SSR] Error fetching hero images for ${id}:`, error);
-      return [];
-    }
-
-    // Return the hero_images array or empty array if null/undefined
-    const heroImages = Array.isArray(data?.hero_images) ? data.hero_images : [];
-    // console.log(
-    //   `[SSR] Successfully fetched ${heroImages.length} hero images for ${id}`
-    // );
+    // Return static hero images
+    const heroImages = staticHeroImages[id] || [];
+    console.log(
+      `[SSR] Successfully fetched ${heroImages.length} hero images for ${id}`
+    );
     return heroImages;
   } catch (err) {
     console.error(`Failed to fetch hero images for ${id}:`, err);
@@ -75,6 +60,7 @@ export async function getHeroImageById(id: HeroSectionId): Promise<string[]> {
 /**
  * Server-side function to fetch multiple hero images by IDs
  * Useful for preloading multiple hero sections at once
+ * Now uses static data instead of Supabase for demo purposes
  */
 export async function getMultipleHeroImages(
   ids: HeroSectionId[]
@@ -99,29 +85,12 @@ export async function getMultipleHeroImages(
       return {};
     }
 
-    const { data, error } = await supabase
-      .from("hero_section")
-      .select("id, hero_images")
-      .in("id", filteredIds);
-
-    if (error) {
-      console.error("Error fetching multiple hero images:", error);
-      return {};
-    }
-
-    // Convert array to record format
+    // Convert array to record format using static data
     const result: Partial<Record<HeroSectionId, string[]>> = {};
 
-    // Initialize all requested IDs with empty arrays
+    // Fill in the static data
     filteredIds.forEach((id) => {
-      result[id] = [];
-    });
-
-    // Fill in the actual data
-    data?.forEach((item) => {
-      if (item.id && Array.isArray(item.hero_images)) {
-        result[item.id as HeroSectionId] = item.hero_images;
-      }
+      result[id] = staticHeroImages[id] || [];
     });
 
     return result;

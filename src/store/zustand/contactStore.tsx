@@ -55,21 +55,15 @@ export const useContactStore = create<State>((set) => ({
   fetchContactInfo: async () => {
     set({ loading: true, error: null, success: null });
     try {
-      const res = await fetch("/api/contact", {
-        credentials: "include",
+      // Use static data for demo purposes
+      const { fetchStaticContactInfo } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticContactInfo();
+      set({
+        contactInfo: data,
+        loading: false,
       });
-      const { data, error } = await res.json();
-      if (!error && data && data.length > 0) {
-        set({
-          contactInfo: data[0],
-          loading: false,
-        });
-      } else {
-        set({
-          loading: false,
-          error: error || "No contact information found",
-        });
-      }
     } catch (err) {
       set({
         loading: false,
@@ -80,21 +74,15 @@ export const useContactStore = create<State>((set) => ({
   fetchCompanies: async () => {
     set({ loading: true, error: null, success: null });
     try {
-      const res = await fetch("/api/companies", {
-        credentials: "include",
+      // Use static data for demo purposes
+      const { fetchStaticCompanies } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticCompanies();
+      set({
+        companies: data,
+        loading: false,
       });
-      const { data, error } = await res.json();
-      if (!error) {
-        set({
-          companies: data,
-          loading: false,
-        });
-      } else {
-        set({
-          loading: false,
-          error: error || "Failed to load companies",
-        });
-      }
     } catch (err) {
       set({
         loading: false,

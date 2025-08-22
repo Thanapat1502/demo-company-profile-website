@@ -1,0 +1,153 @@
+import { Reference, OverseaProject } from "@/store/zustand/referenceStore";
+
+export const staticReferences: Reference[] = [
+  {
+    id: "ref-1",
+    name_th: "สถานีบริการน้ำมัน PTT สาขาลาดพร้าว",
+    name_en: "PTT Gas Station Ladprao Branch",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    location_th: "ลาดพร้าว กรุงเทพมหานคร",
+    location_en: "Ladprao, Bangkok",
+    open_at: "2023-06-15T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop&crop=center",
+  },
+  {
+    id: "ref-2",
+    name_th: "สถานีบริการน้ำมัน Shell สาขาสุขุมวิท",
+    name_en: "Shell Gas Station Sukhumvit Branch",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    location_th: "สุขุมวิท กรุงเทพมหานคร",
+    location_en: "Sukhumvit, Bangkok",
+    open_at: "2023-08-20T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop&crop=center",
+  },
+  {
+    id: "ref-3",
+    name_th: "สถานีบริการน้ำมัน Bangchak สาขาเชียงใหม่",
+    name_en: "Bangchak Gas Station Chiang Mai Branch",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    location_th: "เชียงใหม่",
+    location_en: "Chiang Mai",
+    open_at: "2023-04-10T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop&crop=center",
+  },
+  {
+    id: "ref-4",
+    name_th: "โรงงานผลิตถัง PERMATANK® สมุทรปราการ",
+    name_en: "PERMATANK® Production Plant Samut Prakan",
+    type_th: "โรงงานผลิต",
+    type_en: "Production Plant",
+    location_th: "สมุทรปราการ",
+    location_en: "Samut Prakan",
+    open_at: "2023-02-28T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop&crop=center",
+  },
+  {
+    id: "ref-5",
+    name_th: "สถานีบริการน้ำมัน Esso สาขาพัทยา",
+    name_en: "Esso Gas Station Pattaya Branch",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    location_th: "พัทยา ชลบุรี",
+    location_en: "Pattaya, Chonburi",
+    open_at: "2023-09-05T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop&crop=center",
+  },
+  {
+    id: "ref-6",
+    name_th: "สถานีบริการน้ำมัน Chevron สาขาภูเก็ต",
+    name_en: "Chevron Gas Station Phuket Branch",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    location_th: "ภูเก็ต",
+    location_en: "Phuket",
+    open_at: "2023-07-12T00:00:00.000Z",
+    galleries: [
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&crop=center",
+    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop&crop=center",
+  },
+];
+
+export const staticOverseaProjects: OverseaProject[] = [
+  {
+    id: "oversea-1",
+    brand: "Shell",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    project_name_th: "โครงการสถานีบริการน้ำมัน Shell กัวลาลัมเปอร์",
+    project_name_en: "Shell Gas Station Project Kuala Lumpur",
+    country_th: "มาเลเซีย",
+    country_en: "Malaysia",
+  },
+  {
+    id: "oversea-2",
+    brand: "PTT",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    project_name_th: "โครงการสถานีบริการน้ำมัน PTT เวียงจันทน์",
+    project_name_en: "PTT Gas Station Project Vientiane",
+    country_th: "ลาว",
+    country_en: "Laos",
+  },
+  {
+    id: "oversea-3",
+    brand: "Chevron",
+    type_th: "โรงงานผลิต",
+    type_en: "Production Plant",
+    project_name_th: "โครงการโรงงานผลิตถัง PERMATANK® มะนิลา",
+    project_name_en: "PERMATANK® Production Plant Project Manila",
+    country_th: "ฟิลิปปินส์",
+    country_en: "Philippines",
+  },
+  {
+    id: "oversea-4",
+    brand: "Total",
+    type_th: "สถานีบริการน้ำมัน",
+    type_en: "Gas Station",
+    project_name_th: "โครงการสถานีบริการน้ำมัน Total โฮจิมินห์",
+    project_name_en: "Total Gas Station Project Ho Chi Minh",
+    country_th: "เวียดนาม",
+    country_en: "Vietnam",
+  },
+];

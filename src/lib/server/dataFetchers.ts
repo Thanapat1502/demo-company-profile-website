@@ -4,40 +4,30 @@ import { ProductType } from "@/store/zustand/productStore";
 import { Content } from "@/store/zustand/contentStore";
 import { PartnerType } from "@/store/zustand/partnerStore";
 
-// Import the API route handlers directly for SSR
-import { GET as getServices } from "@/app/api/services/route";
-import { GET as getProducts } from "@/app/api/products/route";
-import { GET as getContents } from "@/app/api/contents/route";
-import { GET as getPartners } from "@/app/api/partners/route";
+// Import static data for demo purposes
+import {
+  staticServices,
+  staticProducts,
+  staticContent,
+  staticPartners,
+} from "@/lib/static-data";
+
+// Import the API route handlers directly for SSR (commented out for demo)
+// import { GET as getServices } from "@/app/api/services/route";
+// import { GET as getProducts } from "@/app/api/products/route";
+// import { GET as getContents } from "@/app/api/contents/route";
+// import { GET as getPartners } from "@/app/api/partners/route";
 
 /**
  * Server-side function to fetch all services
+ * Now returns static data for demo purposes
  * @returns Promise<ServiceType[]>
  */
 export async function fetchServicesSSR(): Promise<ServiceType[]> {
   try {
-    // Create a mock NextRequest object for the API handler
-    const request = new NextRequest("http://localhost:3002/api/services", {
-      method: "GET",
-    });
-
-    // Call the API route handler directly during SSR
-    const response = await getServices(request);
-
-    if (!response.ok) {
-      console.error(`Error fetching services: ${response.status}`);
-      return [];
-    }
-
-    const result = await response.json();
-
-    // Handle the actual API response structure
-    if (Array.isArray(result.data)) {
-      return result.data;
-    } else {
-      console.error("Invalid services API response:", result);
-      return [];
-    }
+    console.log("Fetching services from static data for demo");
+    // Return static services data
+    return staticServices;
   } catch (error) {
     console.error("Server error fetching services:", error);
     return [];
@@ -46,34 +36,14 @@ export async function fetchServicesSSR(): Promise<ServiceType[]> {
 
 /**
  * Server-side function to fetch all products
+ * Now returns static data for demo purposes
  * @returns Promise<ProductType[]>
  */
 export async function fetchProductsSSR(): Promise<ProductType[]> {
   try {
-    // Create a mock NextRequest object for the API handler
-    const request = new NextRequest("http://localhost:3002/api/products", {
-      method: "GET",
-    });
-
-    // Call the API route handler directly during SSR
-    const response = await getProducts(request);
-
-    if (!response.ok) {
-      console.error(`Error fetching products: ${response.status}`);
-      return [];
-    }
-
-    const result = await response.json();
-
-    // Handle the actual API response structure (products API returns { products: [...] })
-    if (Array.isArray(result.products)) {
-      return result.products;
-    } else if (Array.isArray(result.data)) {
-      return result.data;
-    } else {
-      console.error("Invalid products API response:", result);
-      return [];
-    }
+    console.log("Fetching products from static data for demo");
+    // Return static products data
+    return staticProducts;
   } catch (error) {
     console.error("Server error fetching products:", error);
     return [];
@@ -82,37 +52,15 @@ export async function fetchProductsSSR(): Promise<ProductType[]> {
 
 /**
  * Server-side function to fetch content data
+ * Now returns static data for demo purposes
  * @param page - The page identifier (e.g., "HOME")
  * @returns Promise<Content | null>
  */
 export async function fetchContentSSR(page: string): Promise<Content | null> {
   try {
-    // Create a mock NextRequest object for the API handler
-    const request = new NextRequest(
-      `http://localhost:3002/api/contents?page=${encodeURIComponent(page)}`,
-      {
-        method: "GET",
-      }
-    );
-
-    // Call the API route handler directly during SSR
-    const response = await getContents(request);
-
-    if (!response.ok) {
-      console.error(`Error fetching content: ${response.status}`);
-      return null;
-    }
-
-    const result = await response.json();
-
-    // Handle the actual API response structure
-    if (result.data) {
-      // Return the first item if it's an array, or the data directly
-      return result.data; // Array.isArray(result.data) ? result.data[0] : result.data;
-    } else {
-      console.error("Invalid content API response:", result);
-      return null;
-    }
+    console.log(`Fetching content for page ${page} from static data for demo`);
+    // Return static content data for the specified page
+    return staticContent[page] || null;
   } catch (error) {
     console.error("Server error fetching content:", error);
     return null;
@@ -121,27 +69,14 @@ export async function fetchContentSSR(page: string): Promise<Content | null> {
 
 /**
  * Server-side function to fetch partners data
+ * Now returns static data for demo purposes
  * @returns Promise<PartnerType[]>
  */
 export async function fetchPartnersSSR(): Promise<PartnerType[]> {
   try {
-    // Call the API route handler directly during SSR (no parameters needed)
-    const response = await getPartners();
-
-    if (!response.ok) {
-      console.error(`Error fetching partners: ${response.status}`);
-      return [];
-    }
-
-    const result = await response.json();
-
-    // Handle the actual API response structure
-    if (Array.isArray(result.data)) {
-      return result.data;
-    } else {
-      console.error("Invalid partners API response:", result);
-      return [];
-    }
+    console.log("Fetching partners from static data for demo");
+    // Return static partners data
+    return staticPartners;
   } catch (error) {
     console.error("Server error fetching partners:", error);
     return [];
@@ -150,6 +85,7 @@ export async function fetchPartnersSSR(): Promise<PartnerType[]> {
 
 /**
  * Server-side function to fetch all homepage data
+ * Now returns static data for demo purposes
  * @returns Promise<{ services: ServiceType[], products: ProductType[], content: any, partners: any[] }>
  */
 export async function fetchHomePageDataSSR(): Promise<{
@@ -159,6 +95,7 @@ export async function fetchHomePageDataSSR(): Promise<{
   partners: PartnerType[];
 }> {
   try {
+    console.log("Fetching homepage data from static data for demo");
     const [services, products, content, partners] = await Promise.all([
       fetchServicesSSR(),
       fetchProductsSSR(),

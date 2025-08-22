@@ -46,10 +46,19 @@ export const useServiceStore = create<State>((set, get) => ({
 
   fetchServices: async () => {
     set({ loading: true, error: null, success: false });
-    const res = await fetch("/api/services");
-    const { data, error } = await res.json();
-    if (error) set({ error: error.message, loading: false });
-    else set({ services: data || [], loading: false, success: true });
+    try {
+      // Use static data for demo purposes
+      const { fetchStaticServices } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticServices();
+      set({ services: data || [], loading: false, success: true });
+    } catch (error: any) {
+      set({
+        error: error.message || "Failed to fetch services",
+        loading: false,
+      });
+    }
   },
 
   addService: async ({

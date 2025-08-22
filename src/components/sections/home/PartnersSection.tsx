@@ -1,6 +1,16 @@
 "use client";
 
-import { Star } from "lucide-react";
+import {
+  Star,
+  Building2,
+  Factory,
+  Fuel,
+  Zap,
+  Truck,
+  Building,
+  Wrench,
+  Gauge,
+} from "lucide-react";
 import { PartnerType } from "@/store/zustand/partnerStore";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -10,6 +20,22 @@ interface PartnersSectionProps {
   loading?: boolean;
   locale?: string;
 }
+
+// Function to get icon for each partner
+const getPartnerIcon = (partnerName: string) => {
+  const name = partnerName.toLowerCase();
+  if (name.includes("ptt")) return Fuel;
+  if (name.includes("bangchak")) return Factory;
+  if (name.includes("shell")) return Building2;
+  if (name.includes("esso")) return Zap;
+  if (name.includes("chevron")) return Truck;
+  if (name.includes("irpc")) return Factory;
+  if (name.includes("susco")) return Building;
+  if (name.includes("pure")) return Fuel;
+  if (name.includes("or")) return Gauge;
+  if (name.includes("thaioil")) return Wrench;
+  return Building2; // Default icon
+};
 
 export default function PartnersSection({
   partners,
@@ -66,9 +92,17 @@ export default function PartnersSection({
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
                       />
                     ) : (
-                      <span className="text-lg font-bold text-gray-700 text-center">
-                        {partner.name}
-                      </span>
+                      <div className="flex flex-col items-center justify-center h-full">
+                        {(() => {
+                          const IconComponent = getPartnerIcon(partner.name);
+                          return (
+                            <IconComponent className="w-8 h-8 text-blue-600 mb-2 transition-transform duration-300 group-hover:scale-110" />
+                          );
+                        })()}
+                        <span className="text-xs font-bold text-gray-700 text-center leading-tight">
+                          {partner.name}
+                        </span>
+                      </div>
                     )}
                   </div>
                 </div>

@@ -29,10 +29,19 @@ export const usePartnerStore = create<State>((set, get) => ({
 
   fetchPartners: async () => {
     set({ loading: true, error: null, success: false });
-    const res = await fetch("/api/partners");
-    const { data, error } = await res.json();
-    if (error) set({ error: error.message, loading: false });
-    else set({ partners: data || [], loading: false, success: true });
+    try {
+      // Use static data for demo purposes
+      const { fetchStaticPartners } = await import(
+        "@/lib/static-data/fetchers"
+      );
+      const data = await fetchStaticPartners();
+      set({ partners: data || [], loading: false, success: true });
+    } catch (error: any) {
+      set({
+        error: error.message || "Failed to fetch partners",
+        loading: false,
+      });
+    }
   },
 
   addPartner: async ({ name, logo }) => {
