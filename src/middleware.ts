@@ -24,6 +24,11 @@ export default function middleware(request: NextRequest) {
     return response;
   }
 
+  // Bypass auth protection for admin routes in demo mode
+  if (pathname.startsWith("/admin") || pathname.includes("/admin")) {
+    return NextResponse.next();
+  }
+
   // Get the response from next-intl middleware
   const response = intlMiddleware(request);
 
@@ -99,11 +104,13 @@ export const config = {
     // Match all pathnames except for
     // - _next (Next.js internals)
     // - _static (inside /public)
-    // - admin routes (except API routes)
+    // - admin routes (bypass auth protection for demo)
     // - all files inside /public (e.g. /favicon.ico)
     // - files with extensions (except API routes)
-    "/((?!_next|_static|admin(?!/api)|.*\\.[^/]*$).*)",
+    "/((?!_next|_static|admin|.*\\.[^/]*$).*)",
     // Explicitly include API routes for cache control
     "/api/:path*",
+    // Include admin routes for demo (no auth protection)
+    "/admin/:path*",
   ],
 };

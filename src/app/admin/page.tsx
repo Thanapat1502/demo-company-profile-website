@@ -12,7 +12,7 @@ import {
   X,
   Globe,
   FileText,
-  Search
+  Search,
 } from "lucide-react";
 import { NewsManager } from "./(component)/newsManager";
 import { ProductManager } from "./(component)/productManager";
@@ -23,8 +23,7 @@ import { LanguageToggle } from "./(component)/languageToggle";
 import { PartnerManager } from "./(component)/partner";
 import { ExecutiveManager } from "./(component)/executive";
 import { ContactManager } from "./(component)/contact";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { useAuth } from "@/contexts/AuthContext";
+// Removed auth dependencies for demo mode
 import { ToastProvider } from "@/components/ui/ToastContainer";
 import { ReferenceManager } from "./(component)/referenceManager";
 import { SettingsMenu } from "./(component)/SettingsMenu";
@@ -35,19 +34,19 @@ const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState("th");
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-  const { user } = useAuth();
+  // Removed user auth for demo mode
 
   const menuItems = [
-    { id: "content", label: "จัดการเนื้อหา", icon: Image },
-    { id: "services", label: "จัดการบริการ", icon: Settings },
-    { id: "products", label: "จัดการผลิตภัณฑ์", icon: Package },
-    { id: "reference", label: "จัดการผลงาน", icon: FileText },
-    { id: "executives", label: "จัดการผู้บริหาร", icon: Users },
-    { id: "partners", label: "จัดการพันธมิตร", icon: Globe },
-    { id: "news", label: "จัดการข่าวสาร", icon: Newspaper },
-    { id: "contact", label: "จัดการติดต่อ", icon: Phone },
-    { id: "text", label: "จัดการข้อความ", icon: Type },
-    { id: "seo", label: "จัดการ SEO", icon: Search },
+    { id: "content", label: "Content Management", icon: Image },
+    { id: "services", label: "Services Management", icon: Settings },
+    { id: "products", label: "Products Management", icon: Package },
+    { id: "reference", label: "References Management", icon: FileText },
+    { id: "executives", label: "Executives Management", icon: Users },
+    { id: "partners", label: "Partners Management", icon: Globe },
+    { id: "news", label: "News Management", icon: Newspaper },
+    { id: "contact", label: "Contact Management", icon: Phone },
+    { id: "text", label: "Text Management", icon: Type },
+    { id: "seo", label: "SEO Management", icon: Search },
   ];
 
   const renderSection = () => {
@@ -81,8 +80,9 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div
-        className={`${sidebarOpen ? "w-64" : "w-16"
-          } bg-white shadow-lg transition-all duration-300 flex flex-col`}>
+        className={`${
+          sidebarOpen ? "w-64" : "w-16"
+        } bg-white shadow-lg transition-all duration-300 flex flex-col`}>
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
@@ -104,10 +104,11 @@ const AdminDashboard = () => {
                 <li key={item.id}>
                   <button
                     onClick={() => setActiveSection(item.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${activeSection === item.id
-                      ? "bg-blue-100 text-blue-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                      }`}>
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                      activeSection === item.id
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`}>
                     <Icon size={20} />
                     {sidebarOpen && <span>{item.label}</span>}
                   </button>
@@ -138,14 +139,12 @@ const AdminDashboard = () => {
         <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img
-                src="/images/pds-logo.png"
-                alt="Padungsilpa Logo"
-                className="w-6 h-6 object-contain"
-              />
+              <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-blue-800 rounded flex items-center justify-center">
+                <span className="text-white font-bold text-xs">OIL</span>
+              </div>
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
-                  Padungsilpa Admin panel
+                  OIL DEVELOPMENT Admin Panel
                 </h2>
                 <p className="text-sm text-gray-500">
                   จัดการเนื้อหาเว็บไซต์และการตั้งค่า
@@ -165,16 +164,18 @@ const AdminDashboard = () => {
               <button
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
                 onClick={() => window.open("/", "_blank")}>
-                ดูเว็บไซต์
+                View Website
               </button>
               <div className="w-px h-6 bg-gray-300" />
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{user?.email}</span>
+                <span className="text-sm text-gray-600">
+                  admin@oildevelopment.com
+                </span>
                 <button
                   onClick={() => setShowSettingsMenu(true)}
                   className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 text-sm transition-colors">
                   <Settings size={16} />
-                  ตั้งค่า
+                  Settings
                 </button>
               </div>
             </div>
@@ -189,18 +190,16 @@ const AdminDashboard = () => {
       <SettingsMenu
         isOpen={showSettingsMenu}
         onClose={() => setShowSettingsMenu(false)}
-        userEmail={user?.email}
+        userEmail="admin@oildevelopment.com"
       />
     </div>
   );
 };
 
-export default function ProtectedAdminDashboard() {
+export default function AdminDashboardPage() {
   return (
-    <ProtectedRoute>
-      <ToastProvider position="top-right" maxToasts={5}>
-        <AdminDashboard />
-      </ToastProvider>
-    </ProtectedRoute>
+    <ToastProvider position="top-right" maxToasts={5}>
+      <AdminDashboard />
+    </ToastProvider>
   );
 }

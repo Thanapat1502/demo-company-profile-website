@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, LogIn, AlertCircle } from "lucide-react";
-import { authService } from "@/service/apiRequest/auth";
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,40 +13,23 @@ export default function AdminLoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is already logged in
-    checkExistingAuth();
+    // No auth check needed in demo mode
+    setIsLoading(false);
   }, []);
-
-  const checkExistingAuth = async () => {
-    try {
-      const { user } = await authService.getUser();
-      if (user) {
-        router.push("/admin");
-      }
-    } catch (error) {
-      // User not logged in, stay on login page
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    try {
-      const { user, error: authError } = await authService.signIn({
-        email,
-        password,
-      });
+    // Simulate loading for demo purposes
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-      if (authError) {
-        setError(authError.message);
-      } else if (user) {
-        router.push("/admin");
-      }
-    } catch (error) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
+    // Simple validation for demo
+    if (username === "admin" && password === "admin") {
+      router.push("/admin");
+    } else {
+      setError("Invalid credentials. Use username: admin, password: admin");
       setIsLoading(false);
     }
   };
@@ -80,22 +62,24 @@ export default function AdminLoginPage() {
               </div>
             )}
 
-            {/* Email Input */}
+            {/* Username Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 mb-2">
+                Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Mail size={18} className="text-gray-400" />
                 </div>
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter your email"
+                  placeholder="Enter your username"
                   required
                   disabled={isLoading}
                 />
@@ -104,7 +88,9 @@ export default function AdminLoginPage() {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -125,12 +111,17 @@ export default function AdminLoginPage() {
                   type="button"
                   onClick={toggleVisibility}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  disabled={isLoading}
-                >
+                  disabled={isLoading}>
                   {isVisible ? (
-                    <EyeOff size={18} className="text-gray-400 hover:text-gray-600" />
+                    <EyeOff
+                      size={18}
+                      className="text-gray-400 hover:text-gray-600"
+                    />
                   ) : (
-                    <Eye size={18} className="text-gray-400 hover:text-gray-600" />
+                    <Eye
+                      size={18}
+                      className="text-gray-400 hover:text-gray-600"
+                    />
                   )}
                 </button>
               </div>
@@ -140,8 +131,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-            >
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2">
               {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
