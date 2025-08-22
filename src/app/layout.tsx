@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { brandName } from "@/lib/static-data/company-info";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,8 +22,8 @@ const notoSansThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
-    template: "%s | PADUNGSILPA GROUP",
+    default: `${brandName.th} - ผู้นำด้านการพัฒนาและจำหน่ายอุปกรณ์สถานีบริการน้ำมัน`,
+    template: `%s | ${brandName.en}`,
   },
   description:
     "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
@@ -47,15 +48,15 @@ export const metadata: Metadata = {
     "บริการก่อสร้าง",
     "วิศวกรรมอุตสาหกรรม",
   ],
-  authors: [{ name: "PADUNGSILPA GROUP" }],
-  creator: "PADUNGSILPA GROUP",
-  publisher: "PADUNGSILPA GROUP",
-  metadataBase: new URL("https://www.padungsilpa.group"),
+  authors: [{ name: brandName.en }],
+  creator: brandName.en,
+  publisher: brandName.en,
+  metadataBase: new URL("https://www.oildevelopment.com"),
   alternates: {
-    canonical: "https://www.padungsilpa.group",
+    canonical: "https://www.oildevelopment.com",
     languages: {
-      "th": "https://www.padungsilpa.group/th",
-      "en": "https://www.padungsilpa.group/en",
+      th: "https://www.oildevelopment.com/th",
+      en: "https://www.oildevelopment.com/en",
     },
   },
   openGraph: {
@@ -63,7 +64,8 @@ export const metadata: Metadata = {
     locale: "th_TH",
     alternateLocale: ["en_US"],
     url: "https://www.padungsilpa.group",
-    title: "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
+    title:
+      "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
     description:
       "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี Leading comprehensive gas station business services with over 50 years of experience in construction and engineering.",
     siteName: "Padungsilpa Group",

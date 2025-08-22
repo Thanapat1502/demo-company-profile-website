@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import ContactInfo from "@/components/contact/ContactInfo";
+import { brandName, logo } from "@/lib/static-data/company-info";
 
 interface FooterLink {
   label: string;
@@ -95,8 +96,8 @@ export default function Footer() {
             <div className="flex items-center space-x-3 mb-6 group hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/pds-logo.png"
-                  alt="PDS Logo"
+                  src={logo.white}
+                  alt="Oil Development Logo"
                   width={48}
                   height={48}
                   className="object-contain w-full h-full"
@@ -104,10 +105,10 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-md text-white transition-all duration-500 ease-in-out">
-                  กลุ่มบริษัท ผดุงศิลป์ ฯ
+                  {brandName.th}
                 </span>
                 <span className="font-medium text-md text-white/80 transition-all duration-500 ease-in-out">
-                  PADUNGSILPA GROUP
+                  {brandName.en}
                 </span>
               </div>
             </div>
@@ -230,7 +231,7 @@ export default function Footer() {
       <div className="relative z-10 mx-auto lg:mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-white/70 text-md font-medium">
-            © {new Date().getFullYear()} Padungsilpa Group. {t("footer.rights")}
+            © {new Date().getFullYear()} {brandName.en}. {t("footer.rights")}
           </div>
 
           <div className="flex items-center space-x-6 text-md">

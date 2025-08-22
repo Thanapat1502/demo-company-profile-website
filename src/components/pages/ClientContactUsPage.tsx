@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useContactStore } from "@/store/zustand/contactStore";
 import PrimaryButton from "../ui/PrimaryButton";
+import { contact } from "@/lib/static-data/company-info";
 
 interface ClientContactUsPageProps {
   locale: string;
@@ -49,15 +50,15 @@ export default function ClientContactUsPage({
       icon: Phone,
       title: t("contact.methods.phone.title"),
       description: t("contact.methods.phone.description"),
-      value: contactInfo?.tel || "+66 2 123 4567",
-      action: `tel:${contactInfo?.tel || "+6621234567"}`,
+      value: contactInfo?.tel || contact.phone,
+      action: `tel:${contactInfo?.tel || contact.phone}`,
     },
     {
       icon: Mail,
       title: t("contact.methods.email.title"),
       description: t("contact.methods.email.description"),
-      value: contactInfo?.email || "info@padungsilpa.group",
-      action: `mailto:${contactInfo?.email}`,
+      value: contactInfo?.email || contact.email,
+      action: `mailto:${contactInfo?.email || contact.email}`,
     },
     {
       icon: MessageCircle,
@@ -111,7 +112,7 @@ export default function ClientContactUsPage({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Buttons Section */}
-      <section id='contact-us-section' className="py-8 bg-white">
+      <section id="contact-us-section" className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="luxury-hero-btn-container">
             <PrimaryButton
@@ -388,8 +389,7 @@ export default function ClientContactUsPage({
                   />
                 </div>
 
-                <PrimaryButton
-                  type="submit">
+                <PrimaryButton type="submit">
                   <Send
                     size={20}
                     className="mr-3 group-hover:translate-x-1 transition-transform"

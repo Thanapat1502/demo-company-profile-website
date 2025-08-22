@@ -21,8 +21,10 @@ export interface SEOConfig {
   tags?: string[];
 }
 
-const baseUrl = "https://www.padungsilpa.group";
-const defaultImage = "https://padungsilpa.group/images/seo.jpg";
+import { brandName } from "@/lib/static-data/company-info";
+
+const baseUrl = "https://www.oildevelopment.com";
+const defaultImage = "https://oildevelopment.com/images/seo.jpg";
 
 export function generateSEOMetadata(config: SEOConfig): Metadata {
   const {
@@ -68,14 +70,14 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     "Petroleum Engineering",
     "Fuel Station Design",
     "Thailand Construction",
-    "PADUNGSILPA GROUP",
+    brandName.en,
     "Oil Station Services",
     "Industrial Construction",
     "Engineering Consulting",
     "สถานีบริการน้ำมัน",
     "ก่อสร้างสถานีน้ำมัน",
     "วิศวกรรมปิโตรเลียม",
-    "ผดุงศิลป์กรุ๊ป",
+    brandName.th,
     "บริการก่อสร้าง",
     "วิศวกรรมอุตสาหกรรม",
   ];
@@ -84,9 +86,9 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     title,
     description,
     keywords: allKeywords,
-    authors: [{ name: author || "PADUNGSILPA GROUP" }],
-    creator: "PADUNGSILPA GROUP",
-    publisher: "PADUNGSILPA GROUP",
+    authors: [{ name: author || brandName.en }],
+    creator: brandName.en,
+    publisher: brandName.en,
     robots: {
       index: true,
       follow: true,
@@ -109,7 +111,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
       url: canonical || `${baseUrl}/${locale}`,
       title,
       description,
-      siteName: "PADUNGSILPA GROUP",
+      siteName: brandName.en,
       images: seoImages.map((img) => ({
         url: img.url,
         width: img.width || 1200,
@@ -125,8 +127,8 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      site: "@padungsilpagroup",
-      creator: "@padungsilpagroup",
+      site: "@oildevelopment",
+      creator: "@oildevelopment",
       title,
       description,
       images: seoImages.map((img) => img.url),
@@ -142,30 +144,29 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 export const seoConfigs = {
   home: {
     th: {
-      title:
-        "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร",
+      title: `${brandName.th} - ผู้นำด้านการพัฒนาและจำหน่ายอุปกรณ์สถานีบริการน้ำมัน`,
       description:
-        "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร, PERMATANK® ด้วยประสบการณ์กว่า 50 ปี ในงานก่อสร้างและวิศวกรรม บริการครบวงจรตั้งแต่ออกแบบ ก่อสร้าง จนถึงบำรุงรักษา",
+        "ผู้นำด้านการพัฒนาและจำหน่ายอุปกรณ์สถานีบริการน้ำมัน ด้วยประสบการณ์และความเชี่ยวชาญในงานก่อสร้างและวิศวกรรม บริการครบวงจรตั้งแต่ออกแบบ ก่อสร้าง จนถึงบำรุงรักษา",
       keywords: [
         "หน้าแรก",
-        "บริษัทผดุงศิลป์",
+        brandName.th,
         "สถานีบริการน้ำมัน",
         "ก่อสร้าง",
         "ถังน้ำมัน",
-        "permatank",
+        "อุปกรณ์น้ำมัน",
         "ปั้มน้ำมัน",
       ],
     },
     en: {
-      title: "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
+      title: `${brandName.en} - Leading Gas Station Equipment Developer`,
       description:
-        "Leading comprehensive gas station business services and PERMATANK® with over 50 years of experience in construction and engineering.",
+        "Leading developer and supplier of gas station equipment with expertise in construction and engineering.",
       keywords: [
         "home",
-        "PADUNGSILPA GROUP",
+        brandName.en,
         "gas station",
         "construction",
-        "permatank",
+        "equipment",
         "oil",
         "gas",
       ],
@@ -174,33 +175,31 @@ export const seoConfigs = {
 
   products: {
     th: {
-      title: "ผลิตภัณฑ์และบริการ | กลุ่มบริษัท ผดุงศิลป์",
+      title: `ผลิตภัณฑ์และบริการ | ${brandName.th}`,
       description:
-        "ผลิตภัณฑ์และบริการครบวงจรสำหรับสถานีบริการน้ำมัน รวมถึง PERMATANK® และบริการวิศวกรรม",
-      keywords: ["ผลิตภัณฑ์", "บริการ", "PERMATANK", "วิศวกรรม"],
+        "ผลิตภัณฑ์และบริการครบวงจรสำหรับสถานีบริการน้ำมัน รวมถึงอุปกรณ์และบริการวิศวกรรม",
+      keywords: ["ผลิตภัณฑ์", "บริการ", "อุปกรณ์น้ำมัน", "วิศวกรรม"],
       section: "Products & Services",
     },
     en: {
-      title: "Products & Services | PADUNGSILPA GROUP",
+      title: `Products & Services | ${brandName.en}`,
       description:
-        "Comprehensive products and services for gas stations including PERMATANK® and engineering services",
-      keywords: ["products", "services", "PERMATANK", "engineering"],
+        "Comprehensive products and services for gas stations including equipment and engineering services",
+      keywords: ["products", "services", "equipment", "engineering"],
       section: "Products & Services",
     },
   },
 
   contact: {
     th: {
-      title: "ติดต่อเรา | กลุ่มบริษัท ผดุงศิลป์",
-      description:
-        "ติดต่อกลุ่มบริษัท ผดุงศิลป์ สำหรับข้อมูลเพิ่มเติมเกี่ยวกับบริการก่อสร้างสถานีบริการน้ำมัน",
+      title: `ติดต่อเรา | ${brandName.th}`,
+      description: `ติดต่อ${brandName.th} สำหรับข้อมูลเพิ่มเติมเกี่ยวกับบริการก่อสร้างสถานีบริการน้ำมัน`,
       keywords: ["ติดต่อ", "ที่อยู่", "เบอร์โทร", "อีเมล"],
       section: "Contact",
     },
     en: {
-      title: "Contact Us | PADUNGSILPA GROUP",
-      description:
-        "Contact PADUNGSILPA GROUP for more information about gas station construction services",
+      title: `Contact Us | ${brandName.en}`,
+      description: `Contact ${brandName.en} for more information about gas station construction services`,
       keywords: ["contact", "address", "phone", "email"],
       section: "Contact",
     },
@@ -208,16 +207,14 @@ export const seoConfigs = {
 
   company: {
     th: {
-      title: "เกี่ยวกับเรา | กลุ่มบริษัท ผดุงศิลป์",
-      description:
-        "เรียนรู้เกี่ยวกับประวัติและวิสัยทัศน์ของกลุ่มบริษัท ผดุงศิลป์ ผู้นำด้านก่อสร้างสถานีบริการน้ำมัน",
+      title: `เกี่ยวกับเรา | ${brandName.th}`,
+      description: `เรียนรู้เกี่ยวกับประวัติและวิสัยทัศน์ของ${brandName.th} ผู้นำด้านการพัฒนาและจำหน่ายอุปกรณ์สถานีบริการน้ำมัน`,
       keywords: ["เกี่ยวกับ", "ประวัติ", "วิสัยทัศน์", "บริษัท"],
       section: "About",
     },
     en: {
-      title: "About Us | PADUNGSILPA GROUP",
-      description:
-        "Learn about the history and vision of PADUNGSILPA GROUP, leader in gas station construction",
+      title: `About Us | ${brandName.en}`,
+      description: `Learn about the history and vision of ${brandName.en}, leader in gas station equipment development`,
       keywords: ["about", "history", "vision", "company"],
       section: "About",
     },
@@ -225,15 +222,14 @@ export const seoConfigs = {
 
   news: {
     th: {
-      title: "ข่าวสารและกิจกรรม | กลุ่มบริษัท ผดุงศิลป์",
-      description: "ติดตามข่าวสารและกิจกรรมล่าสุดจากกลุ่มบริษัท ผดุงศิลป์",
+      title: `ข่าวสารและกิจกรรม | ${brandName.th}`,
+      description: `ติดตามข่าวสารและกิจกรรมล่าสุดจาก${brandName.th}`,
       keywords: ["ข่าวสาร", "กิจกรรม", "อัพเดท"],
       section: "News & Events",
     },
     en: {
-      title: "News & Events | PADUNGSILPA GROUP",
-      description:
-        "Stay updated with the latest news and events from PADUNGSILPA GROUP",
+      title: `News & Events | ${brandName.en}`,
+      description: `Stay updated with the latest news and events from ${brandName.en}`,
       keywords: ["news", "events", "updates"],
       section: "News & Events",
     },
@@ -241,16 +237,14 @@ export const seoConfigs = {
 
   reference: {
     th: {
-      title: "ผลงาน | กลุ่มบริษัท ผดุงศิลป์",
-      description:
-        "ชมผลงานการก่อสร้างสถานีบริการน้ำมันและโครงการต่างๆ ของกลุ่มบริษัท ผดุงศิลป์",
+      title: `ผลงาน | ${brandName.th}`,
+      description: `ชมผลงานการก่อสร้างสถานีบริการน้ำมันและโครงการต่างๆ ของ${brandName.th}`,
       keywords: ["ผลงาน", "โครงการ", "สถานีน้ำมัน", "ก่อสร้าง"],
       section: "References",
     },
     en: {
-      title: "References | PADUNGSILPA GROUP",
-      description:
-        "View our gas station construction projects and various works by PADUNGSILPA GROUP",
+      title: `References | ${brandName.en}`,
+      description: `View our gas station construction projects and various works by ${brandName.en}`,
       keywords: ["references", "projects", "gas station", "construction"],
       section: "References",
     },

@@ -10,25 +10,27 @@ export interface StructuredDataConfig {
   breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
-const baseUrl = "https://www.padungsilpa.group";
+import { brandName, logo } from "@/lib/static-data/company-info";
+
+const baseUrl = "https://www.oildevelopment.com";
 
 export function generateOrganizationSchema(locale: "th" | "en") {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${baseUrl}/#organization`,
-    name: locale === "th" ? "กลุ่มบริษัท ผดุงศิลป์" : "Padungsilpa Group",
-    alternateName: ["PDS Group", "Padungsilpa", "ผดุงศิลป์"],
+    name: locale === "th" ? brandName.th : brandName.en,
+    alternateName: ["OIL DEVELOPMENT", "Oil Development"],
     url: baseUrl,
     logo: {
       "@type": "ImageObject",
-      url: `${baseUrl}/images/pds-logo.png`,
+      url: `${baseUrl}${logo.main}`,
       width: 200,
-      height: 200,
+      height: 60,
     },
     image: {
       "@type": "ImageObject",
-      url: "https://padungsilpa.group/images/seo.jpg",
+      url: "https://oildevelopment.com/images/seo.jpg",
       width: 1200,
       height: 630,
     },

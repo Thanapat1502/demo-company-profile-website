@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { ButtonWrapper } from "../ui";
 import PrimaryButton from "../ui/PrimaryButton";
+import { brandName, contact, logo } from "@/lib/static-data/company-info";
 
 interface NavItem {
   labelKey: string;
@@ -32,41 +33,72 @@ const navigationItems: NavItem[] = [
     submenu: [
       { labelKey: "navigation.company.about", href: "/pds-group" },
       { labelKey: "navigation.company.history", href: "/pds-group/history" },
-      { labelKey: "navigation.company.executive", href: "/pds-group/executive-team" },
-      { labelKey: "navigation.company.executiveMessage", href: "/pds-group/executive-team#executive-message" },
-      { labelKey: "navigation.company.mission", href: "/pds-group/mission-commitment" },
-    ]
+      {
+        labelKey: "navigation.company.executive",
+        href: "/pds-group/executive-team",
+      },
+      {
+        labelKey: "navigation.company.executiveMessage",
+        href: "/pds-group/executive-team#executive-message",
+      },
+      {
+        labelKey: "navigation.company.mission",
+        href: "/pds-group/mission-commitment",
+      },
+    ],
   },
   {
-    labelKey: "navigation.services.main", href: "/products-services",
+    labelKey: "navigation.services.main",
+    href: "/products-services",
     submenu: [
-      { labelKey: "navigation.services.gas-station", href: "/products-services#gas-station" },
-      { labelKey: "navigation.services.permatank", href: "/products-services#permatank" },
-      { labelKey: "navigation.services.pipeInstallation", href: "/products-services#pipe-installation" },
-      { labelKey: "navigation.services.atgSystem", href: "/products-services#atg-system" },
-      { labelKey: "navigation.services.fuelServices", href: "/products-services#fuel-services" },
-      { labelKey: "navigation.services.ourProducts", href: "/products-services#our-products" },
-    ]
+      {
+        labelKey: "navigation.services.gas-station",
+        href: "/products-services#gas-station",
+      },
+      {
+        labelKey: "navigation.services.permatank",
+        href: "/products-services#permatank",
+      },
+      {
+        labelKey: "navigation.services.pipeInstallation",
+        href: "/products-services#pipe-installation",
+      },
+      {
+        labelKey: "navigation.services.atgSystem",
+        href: "/products-services#atg-system",
+      },
+      {
+        labelKey: "navigation.services.fuelServices",
+        href: "/products-services#fuel-services",
+      },
+      {
+        labelKey: "navigation.services.ourProducts",
+        href: "/products-services#our-products",
+      },
+    ],
   },
   {
-    labelKey: "navigation.references", href: "/reference",
+    labelKey: "navigation.references",
+    href: "/reference",
     submenu: [
       { labelKey: "navigation.references", href: "/reference" },
       { labelKey: "navigation.news", href: "/news-events" },
-    ]
+    ],
   },
   // { labelKey: "navigation.contact", href: "/contact-us" },
 ];
 
 type Props = {
-  forceSolid?: boolean
-}
+  forceSolid?: boolean;
+};
 
 export default function MainNavbar({ forceSolid = false }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(!forceSolid);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(null);
+  const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(
+    null
+  );
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
@@ -77,22 +109,22 @@ export default function MainNavbar({ forceSolid = false }: Props) {
   const getTranslation = (key: string) => {
     // Fallback translations for submenu items
     const fallbackTranslations: Record<string, Record<string, string>> = {
-      'navigation.company.about': {
-        'en': 'About Padungsilpa Company',
-        'th': 'เกี่ยวกับบริษัทผดุงศิลป์'
+      "navigation.company.about": {
+        en: "About Padungsilpa Company",
+        th: "เกี่ยวกับบริษัทผดุงศิลป์",
       },
-      'navigation.company.history': {
-        'en': 'Company History',
-        'th': 'ประวัติความเป็นมา'
+      "navigation.company.history": {
+        en: "Company History",
+        th: "ประวัติความเป็นมา",
       },
-      'navigation.company.executive': {
-        'en': 'Executive Team',
-        'th': 'ผู้บริหาร'
+      "navigation.company.executive": {
+        en: "Executive Team",
+        th: "ผู้บริหาร",
       },
-      'navigation.company.mission': {
-        'en': 'Mission & Vision',
-        'th': 'วิสัยทัศน์และพันธกิจ'
-      }
+      "navigation.company.mission": {
+        en: "Mission & Vision",
+        th: "วิสัยทัศน์และพันธกิจ",
+      },
     };
 
     // Check if we have a fallback translation
@@ -103,12 +135,12 @@ export default function MainNavbar({ forceSolid = false }: Props) {
     try {
       // For keys that might have conflicts (like navigation.company),
       // try the _value approach first
-      if (key === 'navigation.company') {
+      if (key === "navigation.company") {
         try {
-          return t('navigation.company._value');
+          return t("navigation.company._value");
         } catch {
           // If _value doesn't exist, use fallback
-          return locale === 'th' ? 'เกี่ยวกับเรา' : 'Company Profile';
+          return locale === "th" ? "เกี่ยวกับเรา" : "Company Profile";
         }
       }
 
@@ -146,15 +178,15 @@ export default function MainNavbar({ forceSolid = false }: Props) {
       className="fixed top-0 left-0 right-0 z-50 w-full"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
+      transition={{ duration: 0.6, ease: "easeOut" }}>
       <Navbar
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-        className={`transition-all duration-500 ease-in-out ${isAtTop
-          ? "bg-transparent backdrop-blur-sm border-transparent"
-          : "bg-white-glass backdrop-blur-sm border-b border-white/20 shadow-glass-strong"
-          }`}
+        className={`transition-all duration-500 ease-in-out ${
+          isAtTop
+            ? "bg-transparent backdrop-blur-sm border-transparent"
+            : "bg-white-glass backdrop-blur-sm border-b border-white/20 shadow-glass-strong"
+        }`}
         maxWidth="full"
         height="75px"
         isBlurred={false}
@@ -168,23 +200,27 @@ export default function MainNavbar({ forceSolid = false }: Props) {
             isIconOnly
             variant="light"
             onPress={() => setIsMenuOpen(!isMenuOpen)}
-            className={`transition-all duration-700 ease-out hover:scale-110 ${isAtTop
-              ? "text-white hover:bg-white/10 hover:backdrop-blur-sm"
-              : "text-gray-700 hover:bg-gray-100"
-              }`}
+            className={`transition-all duration-700 ease-out hover:scale-110 ${
+              isAtTop
+                ? "text-white hover:bg-white/10 hover:backdrop-blur-sm"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
             aria-label={
               isMenuOpen ? "Close navigation menu" : "Open navigation menu"
             }>
             <div className="relative w-6 h-6">
               <span
-                className={`absolute top-1 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${isMenuOpen ? "rotate-45 translate-y-2" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+                className={`absolute top-1 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "rotate-45 translate-y-2" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
               <span
-                className={`absolute top-2.5 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${isMenuOpen ? "opacity-0" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+                className={`absolute top-2.5 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "opacity-0" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
               <span
-                className={`absolute top-4 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-                  } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
+                className={`absolute top-4 left-0 w-6 h-0.5 transition-all duration-500 ease-out ${
+                  isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                } ${isAtTop ? "bg-white" : "bg-gray-700"}`}></span>
             </div>
           </Button>
 
@@ -193,17 +229,17 @@ export default function MainNavbar({ forceSolid = false }: Props) {
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-300">
+              transition={{ duration: 0.6, delay: 0.1 }}>
+              <Link
+                href="/"
+                className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-300">
                 <motion.div
                   className="w-12 h-12 rounded-lg overflow-hidden  border-white/20"
                   whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                >
+                  transition={{ duration: 0.2 }}>
                   <Image
-                    src="/images/pds-logo.png"
-                    alt="PDS Logo"
+                    src={logo.main}
+                    alt="Oil Development Logo"
                     width={48}
                     height={48}
                     className="object-contain w-full h-full"
@@ -211,14 +247,16 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                 </motion.div>
                 <div className="flex flex-col">
                   <span
-                    className={`font-semibold text-md transition-all duration-500 ease-in-out ${isAtTop ? "text-white" : "text-gray-900"
-                      }`}>
-                    กลุ่มบริษัท ผดุงศิลป์ ฯ
+                    className={`font-semibold text-md transition-all duration-500 ease-in-out ${
+                      isAtTop ? "text-white" : "text-gray-900"
+                    }`}>
+                    {brandName.th}
                   </span>
                   <span
-                    className={`font-medium text-xs transition-all duration-500 ease-in-out ${isAtTop ? "text-white/80" : "text-gray-600"
-                      }`}>
-                    PADUNGSILPA GROUP
+                    className={`font-medium text-xs transition-all duration-500 ease-in-out ${
+                      isAtTop ? "text-white/80" : "text-gray-600"
+                    }`}>
+                    {brandName.en}
                   </span>
                 </div>
               </Link>
@@ -232,17 +270,17 @@ export default function MainNavbar({ forceSolid = false }: Props) {
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Link href="/" className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-300">
+              transition={{ duration: 0.6, delay: 0.1 }}>
+              <Link
+                href="/"
+                className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-300">
                 <motion.div
                   className="w-12 h-12 rounded-lg overflow-hidden"
                   whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                >
+                  transition={{ duration: 0.2 }}>
                   <Image
-                    src="/images/pds-logo.png"
-                    alt="PDS Logo"
+                    src={logo.main}
+                    alt="Oil Development Logo"
                     width={48}
                     height={48}
                     className="object-contain w-full h-full"
@@ -250,14 +288,16 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                 </motion.div>
                 <div className="flex flex-col">
                   <span
-                    className={`font-semibold text-md transition-all duration-500 ease-in-out ${isAtTop ? "text-white" : "text-gray-900"
-                      }`}>
-                    กลุ่มบริษัท ผดุงศิลป์ ฯ
+                    className={`font-semibold text-md transition-all duration-500 ease-in-out ${
+                      isAtTop ? "text-white" : "text-gray-900"
+                    }`}>
+                    {brandName.th}
                   </span>
                   <span
-                    className={`font-medium text-md transition-all duration-500 ease-in-out ${isAtTop ? "text-white/80" : "text-gray-600"
-                      }`}>
-                    PADUNGSILPA GROUP
+                    className={`font-medium text-md transition-all duration-500 ease-in-out ${
+                      isAtTop ? "text-white/80" : "text-gray-600"
+                    }`}>
+                    {brandName.en}
                   </span>
                 </div>
               </Link>
@@ -274,8 +314,7 @@ export default function MainNavbar({ forceSolid = false }: Props) {
               key={item.href}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
+              transition={{ duration: 0.5, delay: index * 0.1 }}>
               <NavbarItem className="relative">
                 {item.submenu ? (
                   <div
@@ -283,52 +322,65 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                     onMouseEnter={() => setActiveSubmenu(item.labelKey)}
                     onMouseLeave={() => setActiveSubmenu(null)}>
                     <motion.div
-                      className={`relative font-medium text-md cursor-pointer flex items-center gap-1 px-4 py-2 rounded-full transition-all duration-300 group hover:scale-105 ${isAtTop
-                        ? "text-white/90 hover:text-white hover:bg-white/10"
-                        : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
-                        }`}
+                      className={`relative font-medium text-md cursor-pointer flex items-center gap-1 px-4 py-2 rounded-full transition-all duration-300 group hover:scale-105 ${
+                        isAtTop
+                          ? "text-white/90 hover:text-white hover:bg-white/10"
+                          : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
+                      }`}
                       whileHover={{ y: -2 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <span className="relative z-10">{getTranslation(item.labelKey)}</span>
+                      transition={{ duration: 0.2 }}>
+                      <span className="relative z-10">
+                        {getTranslation(item.labelKey)}
+                      </span>
                       <ChevronDown
                         size={16}
-                        className={`transition-transform duration-300 ${activeSubmenu === item.labelKey ? 'rotate-180' : ''
-                          }`}
+                        className={`transition-transform duration-300 ${
+                          activeSubmenu === item.labelKey ? "rotate-180" : ""
+                        }`}
                       />
 
                       {/* Elegant underline animation */}
                       <span
-                        className={`absolute bottom-1 left-1/2 h-0.5 transition-all duration-500 ease-out transform -translate-x-1/2 group-hover:w-3/4 w-0 ${isAtTop ? "bg-white" : "bg-primary-300"
-                          }`}></span>
+                        className={`absolute bottom-1 left-1/2 h-0.5 transition-all duration-500 ease-out transform -translate-x-1/2 group-hover:w-3/4 w-0 ${
+                          isAtTop ? "bg-white" : "bg-primary-300"
+                        }`}></span>
 
                       {/* Subtle glow effect */}
                       <div
-                        className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ${isAtTop
-                          ? "bg-gradient-to-r from-white/5 to-white/10 shadow-lg shadow-white/20"
-                          : "bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg shadow-blue-200/50"
-                          }`}></div>
+                        className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+                          isAtTop
+                            ? "bg-gradient-to-r from-white/5 to-white/10 shadow-lg shadow-white/20"
+                            : "bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg shadow-blue-200/50"
+                        }`}></div>
                     </motion.div>
 
                     {/* Submenu Dropdown */}
                     <div
-                      className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 submenu-backdrop rounded-lg overflow-hidden transition-all duration-300 ease-out ${activeSubmenu === item.labelKey
-                        ? 'opacity-100 visible translate-y-0'
-                        : 'opacity-0 invisible -translate-y-2'
-                        }`}
+                      className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 submenu-backdrop rounded-lg overflow-hidden transition-all duration-300 ease-out ${
+                        activeSubmenu === item.labelKey
+                          ? "opacity-100 visible translate-y-0"
+                          : "opacity-0 invisible -translate-y-2"
+                      }`}
                       style={{ zIndex: 9999 }}>
                       {item.submenu.map((subItem, subIndex) => (
                         <button
                           key={subItem.href}
-                          onClick={() => navigateToSection(`/${locale}${subItem.href}`)}
+                          onClick={() =>
+                            navigateToSection(`/${locale}${subItem.href}`)
+                          }
                           className="submenu-item-hover block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-all duration-200 border-b border-gray-100 last:border-b-0"
                           style={{
                             animationDelay: `${subIndex * 50}ms`,
-                            animation: activeSubmenu === item.labelKey
-                              ? `submenuItemSlideIn 0.3s ease-out ${subIndex * 50}ms both`
-                              : 'none'
+                            animation:
+                              activeSubmenu === item.labelKey
+                                ? `submenuItemSlideIn 0.3s ease-out ${
+                                    subIndex * 50
+                                  }ms both`
+                                : "none",
                           }}>
-                          <span className="text-md font-medium">{getTranslation(subItem.labelKey)}</span>
+                          <span className="text-md font-medium">
+                            {getTranslation(subItem.labelKey)}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -336,26 +388,30 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                 ) : (
                   <motion.button
                     onClick={() => navigateToSection(`/${locale}${item.href}`)}
-                    className={`relative font-medium text-md px-4 py-2 rounded-full transition-all duration-300 group hover:scale-105 ${isAtTop
-                      ? "text-white/90 hover:text-white hover:bg-white/10"
-                      : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
-                      }`}
+                    className={`relative font-medium text-md px-4 py-2 rounded-full transition-all duration-300 group hover:scale-105 ${
+                      isAtTop
+                        ? "text-white/90 hover:text-white hover:bg-white/10"
+                        : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
+                    }`}
                     whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <span className="relative z-10">{getTranslation(item.labelKey)}</span>
+                    transition={{ duration: 0.2 }}>
+                    <span className="relative z-10">
+                      {getTranslation(item.labelKey)}
+                    </span>
 
                     {/* Elegant underline animation */}
                     <span
-                      className={`absolute bottom-1 left-1/2 h-0.5 transition-all duration-500 ease-out transform -translate-x-1/2 group-hover:w-3/4 w-0 ${isAtTop ? "bg-white" : "bg-primary-300"
-                        }`}></span>
+                      className={`absolute bottom-1 left-1/2 h-0.5 transition-all duration-500 ease-out transform -translate-x-1/2 group-hover:w-3/4 w-0 ${
+                        isAtTop ? "bg-white" : "bg-primary-300"
+                      }`}></span>
 
                     {/* Subtle glow effect */}
                     <div
-                      className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ${isAtTop
-                        ? "bg-gradient-to-r from-white/5 to-white/10 shadow-lg shadow-white/20"
-                        : "bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg shadow-blue-200/50"
-                        }`}></div>
+                      className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+                        isAtTop
+                          ? "bg-gradient-to-r from-white/5 to-white/10 shadow-lg shadow-white/20"
+                          : "bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg shadow-blue-200/50"
+                      }`}></div>
                   </motion.button>
                 )}
               </NavbarItem>
@@ -371,16 +427,21 @@ export default function MainNavbar({ forceSolid = false }: Props) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col items-end"
-            >
-              <span className={`text-md font-medium transition-all duration-300 ${isAtTop ? "text-white/70" : "text-gray-500"}`}>
-                {locale === 'th' ? 'ติดต่อเรา' : 'Contact Us'}
+              className="flex flex-col items-end">
+              <span
+                className={`text-md font-medium transition-all duration-300 ${
+                  isAtTop ? "text-white/70" : "text-gray-500"
+                }`}>
+                {locale === "th" ? "ติดต่อเรา" : "Contact Us"}
               </span>
               <a
-                href="tel:083-999-5544"
-                className={`text-md font-semibold transition-all duration-300 hover:scale-105 ${isAtTop ? "text-white hover:text-white/90" : "text-primary-300 hover:text-primary-400"}`}
-              >
-                {locale === 'th' ? '083-999-5544' : '(+66) 83-999-5544'}
+                href={`tel:${contact.phone}`}
+                className={`text-md font-semibold transition-all duration-300 hover:scale-105 ${
+                  isAtTop
+                    ? "text-white hover:text-white/90"
+                    : "text-primary-300 hover:text-primary-400"
+                }`}>
+                {contact.phone}
               </a>
             </motion.div>
           </NavbarItem>
@@ -391,10 +452,11 @@ export default function MainNavbar({ forceSolid = false }: Props) {
               isIconOnly
               variant="light"
               onPress={toggleLanguage}
-              className={`transition-all duration-300 hover:scale-110 relative group ${isAtTop
-                ? "text-white/80 hover:text-white hover:bg-white/10"
-                : "text-gray-600 hover:text-primary-300 hover:bg-gray-100"
-                }`}>
+              className={`transition-all duration-300 hover:scale-110 relative group ${
+                isAtTop
+                  ? "text-white/80 hover:text-white hover:bg-white/10"
+                  : "text-gray-600 hover:text-primary-300 hover:bg-gray-100"
+              }`}>
               <Globe
                 size={18}
                 className="transition-transform duration-300 group-hover:scale-110"
@@ -407,23 +469,21 @@ export default function MainNavbar({ forceSolid = false }: Props) {
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
+              transition={{ duration: 0.6, delay: 0.4 }}>
               <PrimaryButton
                 as={Link}
                 href={`/${locale}/contact-us`}
                 size="md"
-                className={`font-medium px-6 py-3 transition-all duration-300 relative group overflow-hidden ${isAtTop
-                  ? "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
-                  : "bg-primary-gradient text-white shadow-glass hover:shadow-primary-glow"
-                  }`}
-                onPress={() => { }}
-              >
+                className={`font-medium px-6 py-3 transition-all duration-300 relative group overflow-hidden ${
+                  isAtTop
+                    ? "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:shadow-primary-glow"
+                    : "bg-primary-gradient text-white shadow-glass hover:shadow-primary-glow"
+                }`}
+                onPress={() => {}}>
                 <motion.span
                   className="relative z-10"
                   whileHover={{ x: 2 }}
-                  transition={{ duration: 0.2 }}
-                >
+                  transition={{ duration: 0.2 }}>
                   {t("common.contactUs")}
                 </motion.span>
               </PrimaryButton>
@@ -447,42 +507,47 @@ export default function MainNavbar({ forceSolid = false }: Props) {
 
               {/* Menu Panel */}
               <motion.div
-                className={`fixed top-0 left-0 right-0 bottom-0 z-50 w-full shadow-2xl ${isAtTop
-                  ? "bg-white-glass backdrop-blur-xl"
-                  : "bg-white-glass backdrop-blur-xl"
-                  }`}
+                className={`fixed top-0 left-0 right-0 bottom-0 z-50 w-full shadow-2xl ${
+                  isAtTop
+                    ? "bg-white-glass backdrop-blur-xl"
+                    : "bg-white-glass backdrop-blur-xl"
+                }`}
                 initial={{ y: "-100%" }}
                 animate={{ y: 0 }}
                 exit={{ y: "-100%" }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
+                transition={{ duration: 0.5, ease: "easeInOut" }}>
                 {/* Menu Header */}
-                <div className={`flex items-center justify-between p-6 border-b bg-white ${"border-gray-100 x-bg-white-glass"
-                  }`}>
+                <div
+                  className={`flex items-center justify-between p-6 border-b bg-white ${"border-gray-100 x-bg-white-glass"}`}>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
                       <Image
-                        src="/images/pds-logo.png"
-                        alt="PDS Logo"
+                        src={logo.main}
+                        alt="Oil Development Logo"
                         width={48}
                         height={48}
                         className="object-contain h-full w-full"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <span className={`text-md font-semibold ${isAtTop ? "text-gray-900" : "text-gray-900"}`}>
-                        กลุ่มบริษัท ผดุงศิลป์ ฯ
+                      <span
+                        className={`text-md font-semibold ${
+                          isAtTop ? "text-gray-900" : "text-gray-900"
+                        }`}>
+                        {brandName.th}
                       </span>
-                      <span className={`text-xs font-medium ${isAtTop ? "text-gray-600" : "text-gray-600"}`}>
-                        PADUNGSILPA GROUP
+                      <span
+                        className={`text-xs font-medium ${
+                          isAtTop ? "text-gray-600" : "text-gray-600"
+                        }`}>
+                        {brandName.en}
                       </span>
                     </div>
                   </div>
 
                   <button
                     onClick={handleCloseMenu}
-                    className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${"text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-                      }`}>
+                    className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${"text-gray-400 hover:text-gray-600 hover:bg-gray-100"}`}>
                     <div className="relative w-5 h-5">
                       <span className="absolute top-2 left-0 w-5 h-0.5 bg-current rotate-45 transition-all duration-300"></span>
                       <span className="absolute top-2 left-0 w-5 h-0.5 bg-current -rotate-45 transition-all duration-300"></span>
@@ -501,17 +566,19 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                         key={`${item.href}-${index}`}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                      >
+                        transition={{ duration: 0.5, delay: index * 0.1 }}>
                         {item.submenu ? (
                           <div>
                             {/* Main menu item with submenu */}
                             <button
-                              className={`group w-full flex items-center justify-between px-6 py-4 transition-all duration-300 relative ${"text-gray-700 hover:text-primary-300 hover:bg-gray-50"
-                                }`}
-                              onClick={() => setActiveMobileSubmenu(
-                                activeMobileSubmenu === item.labelKey ? null : item.labelKey
-                              )}>
+                              className={`group w-full flex items-center justify-between px-6 py-4 transition-all duration-300 relative ${"text-gray-700 hover:text-primary-300 hover:bg-gray-50"}`}
+                              onClick={() =>
+                                setActiveMobileSubmenu(
+                                  activeMobileSubmenu === item.labelKey
+                                    ? null
+                                    : item.labelKey
+                                )
+                              }>
                               <span className="text-lg font-medium">
                                 {getTranslation(item.labelKey)}
                               </span>
@@ -519,32 +586,41 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                               {/* Chevron indicator */}
                               <ChevronDown
                                 size={16}
-                                className={`transition-transform duration-300 ${activeMobileSubmenu === item.labelKey ? 'rotate-180' : ''
-                                  }`}
+                                className={`transition-transform duration-300 ${
+                                  activeMobileSubmenu === item.labelKey
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
                               />
 
                               {/* Active indicator */}
-                              <div className={`absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ${"bg-primary-300"
-                                }`}></div>
+                              <div
+                                className={`absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ${"bg-primary-300"}`}></div>
                             </button>
 
                             {/* Submenu items */}
-                            <div className={`overflow-hidden transition-all duration-300 ease-out ${activeMobileSubmenu === item.labelKey
-                              ? 'max-h-96 opacity-100'
-                              : 'max-h-0 opacity-0'
+                            <div
+                              className={`overflow-hidden transition-all duration-300 ease-out ${
+                                activeMobileSubmenu === item.labelKey
+                                  ? "max-h-96 opacity-100"
+                                  : "max-h-0 opacity-0"
                               }`}>
                               {item.submenu.map((subItem, subIndex) => (
                                 <button
                                   key={subItem.href}
                                   onClick={() => {
-                                    navigateToSection(`/${locale}${subItem.href}`);
+                                    navigateToSection(
+                                      `/${locale}${subItem.href}`
+                                    );
                                     handleCloseMenu();
                                   }}
                                   className="block w-full text-left pl-12 pr-6 py-3 text-gray-600 hover:text-[var(--primary-blue)] hover:bg-gray-50 transition-all duration-200 relative"
                                   style={{
                                     animationDelay: `${subIndex * 50}ms`,
                                   }}>
-                                  <span className="text-base font-medium">{getTranslation(subItem.labelKey)}</span>
+                                  <span className="text-base font-medium">
+                                    {getTranslation(subItem.labelKey)}
+                                  </span>
 
                                   {/* Submenu active indicator */}
                                   <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[var(--primary-blue)] opacity-0 hover:opacity-100 transition-all duration-300"></div>
@@ -558,22 +634,27 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                               navigateToSection(`/${locale}${item.href}`);
                               handleCloseMenu();
                             }}
-                            className={`group flex items-center justify-between w-full px-6 py-4 transition-all duration-300 relative ${isAtTop
-                              ? "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
-                              : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
-                              }`}>
+                            className={`group flex items-center justify-between w-full px-6 py-4 transition-all duration-300 relative ${
+                              isAtTop
+                                ? "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
+                                : "text-gray-700 hover:text-primary-300 hover:bg-gray-50"
+                            }`}>
                             <span className="text-lg font-medium">
                               {getTranslation(item.labelKey)}
                             </span>
 
                             {/* Arrow indicator */}
                             <div className="w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                              <div className={`w-1.5 h-1.5 border-r-2 border-b-2 rotate-[-45deg] ${isAtTop ? "border-current" : "border-current"
+                              <div
+                                className={`w-1.5 h-1.5 border-r-2 border-b-2 rotate-[-45deg] ${
+                                  isAtTop ? "border-current" : "border-current"
                                 }`}></div>
                             </div>
 
                             {/* Active indicator */}
-                            <div className={`absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ${isAtTop ? "bg-primary-300" : "bg-primary-300"
+                            <div
+                              className={`absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+                                isAtTop ? "bg-primary-300" : "bg-primary-300"
                               }`}></div>
                           </button>
                         )}
@@ -582,7 +663,10 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                   </div>
 
                   {/* Divider */}
-                  <div className={`mx-6 h-px ${isAtTop ? "bg-gray-200" : "bg-gray-200"}`}></div>
+                  <div
+                    className={`mx-6 h-px ${
+                      isAtTop ? "bg-gray-200" : "bg-gray-200"
+                    }`}></div>
 
                   {/* Action Items */}
                   <div className="py-4 space-y-2">
@@ -590,20 +674,20 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: navigationItems.length * 0.1 + 0.2 }}
-                    >
+                      transition={{
+                        duration: 0.5,
+                        delay: navigationItems.length * 0.1 + 0.2,
+                      }}>
                       <PrimaryButton
-                        as='a'
-                        size='lg'
+                        as="a"
+                        size="lg"
                         href={`/${locale}/contact-us`}
                         onClick={handleCloseMenu}
-                        className={`group mx-6 flex items-center justify-center py-4 px-6 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] relative overflow-hidden ${"bg-primary-gradient text-white shadow-glass hover:shadow-primary-glow"
-                          }`}>
+                        className={`group mx-6 flex items-center justify-center py-4 px-6 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] relative overflow-hidden ${"bg-primary-gradient text-white shadow-glass hover:shadow-primary-glow"}`}>
                         <motion.span
                           className="relative z-10"
                           whileHover={{ x: 2 }}
-                          transition={{ duration: 0.2 }}
-                        >
+                          transition={{ duration: 0.2 }}>
                           {t("common.contactUs")}
                         </motion.span>
                       </PrimaryButton>
@@ -613,17 +697,19 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: navigationItems.length * 0.1 + 0.3 }}
-                      className="mx-6 py-3 text-center"
-                    >
-                      <div className={`text-md font-medium mb-1 ${"text-gray-500"}`}>
+                      transition={{
+                        duration: 0.5,
+                        delay: navigationItems.length * 0.1 + 0.3,
+                      }}
+                      className="mx-6 py-3 text-center">
+                      <div
+                        className={`text-md font-medium mb-1 ${"text-gray-500"}`}>
                         Hotline
                       </div>
                       <a
-                        href="tel:083-999-5544"
-                        className={`text-lg font-semibold transition-all duration-300 hover:scale-105 ${"text-primary-300 hover:text-primary-400"}`}
-                      >
-                        083-999-5544
+                        href={`tel:${contact.phone}`}
+                        className={`text-lg font-semibold transition-all duration-300 hover:scale-105 ${"text-primary-300 hover:text-primary-400"}`}>
+                        {contact.phone}
                       </a>
                     </motion.div>
 
@@ -631,7 +717,9 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                     <div
                       className="px-6 pt-4"
                       style={{
-                        animationDelay: `${(navigationItems.length + 2) * 80}ms`,
+                        animationDelay: `${
+                          (navigationItems.length + 2) * 80
+                        }ms`,
                         animation: isMenuOpen
                           ? "slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards"
                           : "none",
