@@ -53,22 +53,24 @@ export default function TankServicesSection({
   const galleryImages = galleryContent?.images_url || [];
 
   const localizedInstruction: { [key: string]: string[] } = {
-    'th': [
-      'งานตรวจสอบการติดตั้งถัง PERMATANK',
-      'งานติดตั้งระบบท่อ NUPI - UPP - KPS',
-      'งานติดตั้ง TANK SUMP',
-      'งานติดตั้ง NANO ATG & ProGauge',
-      'งาน 3D SCAN'],
-    'en': [
-      'PERMATANK installation inspection work.',
-      'Installation of NUPI-UPP-KPS pipe system.',
-      'TANK SUMP installation.',
-      'NANO ATG & ProGauge installation.',
-      '3D SCAN']
-  }
+    th: [
+      "งานตรวจสอบการติดตั้งถัง PERMATANK",
+      "งานติดตั้งระบบท่อ NUPI - UPP - KPS",
+      "งานติดตั้ง TANK SUMP",
+      "งานติดตั้ง NANO ATG & ProGauge",
+      "งาน 3D SCAN",
+    ],
+    en: [
+      "PERMATANK installation inspection work.",
+      "Installation of NUPI-UPP-KPS pipe system.",
+      "TANK SUMP installation.",
+      "NANO ATG & ProGauge installation.",
+      "3D SCAN",
+    ],
+  };
 
   return (
-    <section id='fuel-services' className="py-8 sm:py-12 bg-white">
+    <section id="fuel-services" className="py-8 sm:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           {/* Content Display - Gallery */}
@@ -130,19 +132,22 @@ export default function TankServicesSection({
                   {t("services.tankServices.companyName")}
                 </p>
                 <ol className="space-y-2 text-gray-700 text-md sm:text-base">
-                  {localizedInstruction[locale].map((x, index) => <li key={index}>{`${index + 1}. ${x}`}</li>)}
+                  {localizedInstruction[locale].map((x, index) => (
+                    <li key={index}>{`${index + 1}. ${x}`}</li>
+                  ))}
                 </ol>
               </div>
 
               <p>
-                {locale === 'th' ? 'กลุ่มบริษัท ผดุงศิลป์ จะรักษาไว้ซึ่งพนักงานชั้นเยี่ยมในระดับปฏิบัติการ และบริหาร โดยที่ทุกคนมีเป้าหมายเดียวกันในการนำเสนอลูกค้าด้วยผลงานก่อสร้าง, สินค้า และบริการ ซึ่งไม่เพียงแต่ดีที่สุดเท่านั้น ยังรวมไปถึงบุคลากรที่มีความรู้ ความสามารถเป็นเยี่ยม' :
-                  'Padungsilpa Group will maintain excellent employees at operational and management levels. All of whom share the same goal of presenting to customers not only the best construction work, products, and services, but also personnel with excellent knowledge and ability.'}
+                {locale === "th"
+                  ? "กลุ่มบริษัท OIL DEVELOPMENT จะรักษาไว้ซึ่งพนักงานชั้นเยี่ยมในระดับปฏิบัติการ และบริหาร โดยที่ทุกคนมีเป้าหมายเดียวกันในการนำเสนอลูกค้าด้วยผลงานก่อสร้าง, สินค้า และบริการ ซึ่งไม่เพียงแต่ดีที่สุดเท่านั้น ยังรวมไปถึงบุคลากรที่มีความรู้ ความสามารถเป็นเยี่ยม"
+                  : "OIL DEVELOPMENT will maintain excellent employees at operational and management levels. All of whom share the same goal of presenting to customers not only the best construction work, products, and services, but also personnel with excellent knowledge and ability."}
               </p>
             </div>
 
             {/* Action Button - Using luxury hero button style */}
             <div className="pt-4">
-              <div >
+              <div>
                 <PrimaryButton
                   onClick={() =>
                     (window.location.href = `/${locale}/contact-us`)

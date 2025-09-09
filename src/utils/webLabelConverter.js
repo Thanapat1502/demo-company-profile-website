@@ -46,7 +46,7 @@ const thLabel = {
   },
   home: {
     hero: {
-      title: "กลุ่มบริษัท\nผดุงศิลป์",
+      title: "กลุ่มบริษัท\nOIL DEVELOPMENT",
       subtitle: "ก่อตั้งเมื่อปี 2003",
       description:
         "ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน\nด้วยประสบการณ์กว่า 50 ปี",
@@ -62,7 +62,7 @@ const thLabel = {
     services: {
       title: "สินค้าและบริการ",
       description:
-        "ตลอดระยะเวลากว่า 50 ปี กลุ่มบริษัทผดุงศิลป์ คือผู้เชี่ยวชาญในธุรกิจสถานีบริการน้ำมันครบวงจร ปัจจุบันเรามีสินค้าและบริการที่ตอบสนองความต้องการของกลุ่มลูกค้า ดังต่อไปนี้",
+        "ตลอดระยะเวลากว่า 50 ปี กลุ่มบริษัทOIL DEVELOPMENT คือผู้เชี่ยวชาญในธุรกิจสถานีบริการน้ำมันครบวงจร ปัจจุบันเรามีสินค้าและบริการที่ตอบสนองความต้องการของกลุ่มลูกค้า ดังต่อไปนี้",
       viewAll: "สินค้าและบริการ",
       cta: {
         title: "สนใจสินค้าและบริการของเรา?",
@@ -84,9 +84,9 @@ const thLabel = {
       },
     },
     about: {
-      title: "เกี่ยวกับกลุ่มบริษัท ผดุงศิลป์",
+      title: "เกี่ยวกับกลุ่มบริษัท OIL DEVELOPMENT",
       description:
-        "ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่จะเป็นบริษัทชั้นนำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันในประเทศไทย กลุ่มบริษัท ผดุงศิลป์ ได้ให้บริการลูกค้าด้วยความเป็นเลิศมากว่าสองทศวรรษ",
+        "ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่จะเป็นบริษัทชั้นนำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันในประเทศไทย กลุ่มบริษัท OIL DEVELOPMENT ได้ให้บริการลูกค้าด้วยความเป็นเลิศมากว่าสองทศวรรษ",
       features: {
         team: "ทีมวิศวกรมืออาชีพ",
         quality: "มาตรฐานการก่อสร้างคุณภาพ",
@@ -119,7 +119,7 @@ const thLabel = {
   },
   company: {
     hero: {
-      title: "เกี่ยวกับกลุ่มบริษัท ผดุงศิลป์",
+      title: "เกี่ยวกับกลุ่มบริษัท OIL DEVELOPMENT",
       subtitle: "ความเป็นเลิศด้านการก่อสร้างและวิศวกรรม",
       description:
         "ค้นพบเส้นทางการเดินทางของเรากว่าสองทศวรรษในการส่งมอบโซลูชันการก่อสร้างและวิศวกรรมสถานีบริการน้ำมันที่ยอดเยี่ยมทั่วประเทศไทย",
@@ -195,14 +195,14 @@ const thLabel = {
       mission: "วิสัยทัศน์และพันธกิจ",
     },
     overview: {
-      title: "กลุ่มบริษัท ผดุงศิลป์",
+      title: "กลุ่มบริษัท OIL DEVELOPMENT",
       subtitle: "ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน",
       description:
         "ด้วยประสบการณ์กว่า 50 ปี เราให้บริการก่อสร้าง วิศวกรรม และบำรุงรักษาสถานีบริการน้ำมันครบวงจรทั่วประเทศไทย",
       aboutUs: "เกี่ยวกับเรา",
       content: {
         paragraph1:
-          "กลุ่มบริษัท ผดุงศิลป์ ก่อตั้งขึ้นเมื่อปี พ.ศ. 2543 โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้าง วิศวกรรม และบำรุงรักษาสถานีบริการน้ำมันอย่างครบวงจร",
+          "กลุ่มบริษัท OIL DEVELOPMENT ก่อตั้งขึ้นเมื่อปี พ.ศ. 2543 โดยมีจุดประสงค์เพื่อให้บริการด้านการก่อสร้าง วิศวกรรม และบำรุงรักษาสถานีบริการน้ำมันอย่างครบวงจร",
         paragraph2:
           "ด้วยประสบการณ์กว่า 50 ปี เราได้พัฒนาความเชี่ยวชาญในการผลิตถังน้ำมันใต้ดินผนัง 2 ชั้น PERMATANK® ระบบท่อน้ำมันใต้ดิน และระบบวัดน้ำมันอัตโนมัติ (ATG) ที่ได้มาตรฐานสากล",
         paragraph3:
@@ -375,17 +375,17 @@ const thLabel = {
       title: "ข่าวสารและกิจกรรม",
       subtitle: "ติดตามความพัฒนาล่าสุดของเรา",
       description:
-        "ค้นพบข่าวสารล่าสุด การอัพเดตโครงการ ข้อมูลเชิงลึกของอุตสาหกรรม และประกาศของบริษัทจากกลุ่มบริษัท ผดุงศิลป์",
+        "ค้นพบข่าวสารล่าสุด การอัพเดตโครงการ ข้อมูลเชิงลึกของอุตสาหกรรม และประกาศของบริษัทจากกลุ่มบริษัท OIL DEVELOPMENT",
       subscribe: "สมัครรับข้อมูลอัพเดต",
     },
     featured: {
       sectionTitle: "ข่าวเด่น",
       label: "ข่าวเด่น",
-      title: "กลุ่มบริษัท ผดุงศิลป์ ชนะโครงการสถานีบริการน้ำมันใหญ่",
+      title: "กลุ่มบริษัท OIL DEVELOPMENT ชนะโครงการสถานีบริการน้ำมันใหญ่",
       excerpt:
-        "เรามีความภาคภูมิใจที่จะประกาศว่า กลุ่มบริษัท ผดุงศิลป์ ได้รับรางวัลโครงการก่อสร้างสถานีบริการน้ำมันใหญ่มูลค่า 50 ล้านบาท แสดงให้เห็นถึงความเป็นผู้นำอย่างต่อเนื่องในอุตสาหกรรม",
+        "เรามีความภาคภูมิใจที่จะประกาศว่า กลุ่มบริษัท OIL DEVELOPMENT ได้รับรางวัลโครงการก่อสร้างสถานีบริการน้ำมันใหญ่มูลค่า 50 ล้านบาท แสดงให้เห็นถึงความเป็นผู้นำอย่างต่อเนื่องในอุตสาหกรรม",
       content:
-        "เรารู้สึกตื่นเต้นที่จะแบ่งปันว่า กลุ่มบริษัท ผดุงศิลป์ ได้รับเลือกให้เป็นผู้รับเหมาหลักสำหรับโครงการก่อสร้างสถานีบริการน้ำมันใหญ่ โครงการนี้แสดงถึงความมุ่งมั่นของเราต่อความเป็นเลิศและนวัตกรรมในอุตสาหกรรม",
+        "เรารู้สึกตื่นเต้นที่จะแบ่งปันว่า กลุ่มบริษัท OIL DEVELOPMENT ได้รับเลือกให้เป็นผู้รับเหมาหลักสำหรับโครงการก่อสร้างสถานีบริการน้ำมันใหญ่ โครงการนี้แสดงถึงความมุ่งมั่นของเราต่อความเป็นเลิศและนวัตกรรมในอุตสาหกรรม",
     },
     categories: {
       all: "ข่าวทั้งหมด",
@@ -409,7 +409,7 @@ const thLabel = {
       safety: {
         title: "การนำมาตรฐานความปลอดภัยใหม่มาใช้",
         excerpt:
-          "กลุ่มบริษัท ผดุงศิลป์ นำมาตรฐานความปลอดภัยระหว่างประเทศใหม่มาใช้ในโครงการก่อสร้างทั้งหมด เพื่อความปลอดภัยของคนงานและประชาชน",
+          "กลุ่มบริษัท OIL DEVELOPMENT นำมาตรฐานความปลอดภัยระหว่างประเทศใหม่มาใช้ในโครงการก่อสร้างทั้งหมด เพื่อความปลอดภัยของคนงานและประชาชน",
       },
       green: {
         title: "โครงการเทคโนโลยีสีเขียว",
@@ -419,7 +419,7 @@ const thLabel = {
       expansion: {
         title: "ประกาศการขยายตัวในภูมิภาค",
         excerpt:
-          "กลุ่มบริษัท ผดุงศิลป์ ประกาศการขยายตัวสู่ภูมิภาคใหม่เพื่อให้บริการลูกค้าทั่วเอเชียตะวันออกเฉียงใต้ได้ดีขึ้น",
+          "กลุ่มบริษัท OIL DEVELOPMENT ประกาศการขยายตัวสู่ภูมิภาคใหม่เพื่อให้บริการลูกค้าทั่วเอเชียตะวันออกเฉียงใต้ได้ดีขึ้น",
       },
       technology: {
         title: "การรวมเทคโนโลยีสถานีอัจฉริยะ",
@@ -599,7 +599,7 @@ const enLabel = {
     services: {
       title: "Products & Services",
       description:
-        "For over 50 years, Padungsilpa Group has been the expert in comprehensive gas station business.",
+        "For over 50 years, OIL DEVELOPMENT has been the expert in comprehensive gas station business.",
       viewAll: "Services",
       cta: {
         title: "Interested in Our Products & Services?",
@@ -623,9 +623,9 @@ const enLabel = {
       },
     },
     about: {
-      title: "About Padungsilpa Group",
+      title: "About OIL DEVELOPMENT",
       description:
-        "Established with a vision to become the leading gas station construction and engineering company in Thailand, Padungsilpa Group has been serving clients with excellence for over two decades.",
+        "Established with a vision to become the leading gas station construction and engineering company in Thailand, OIL DEVELOPMENT has been serving clients with excellence for over two decades.",
       features: {
         team: "Professional Engineering Team",
         quality: "Quality Construction Standards",
@@ -658,7 +658,7 @@ const enLabel = {
   },
   company: {
     hero: {
-      title: "About Padungsilpa Group",
+      title: "About OIL DEVELOPMENT",
       subtitle: "Excellence in Construction & Engineering",
       description:
         "Discover our journey of over two decades in delivering exceptional gas station construction and engineering solutions across Thailand.",
@@ -737,14 +737,14 @@ const enLabel = {
       mission: "Vision & Mission",
     },
     overview: {
-      title: "Padungsilpa Group",
+      title: "OIL DEVELOPMENT",
       subtitle: "Leader in Gas Station Construction & Engineering",
       description:
         "With over 50 years of experience, we provide comprehensive construction, engineering, and maintenance services for gas stations throughout Thailand",
       aboutUs: "About Us",
       content: {
         paragraph1:
-          "Padungsilpa Group was established in 2000 with the purpose of providing comprehensive construction, engineering, and maintenance services for gas stations.",
+          "OIL DEVELOPMENT was established in 2000 with the purpose of providing comprehensive construction, engineering, and maintenance services for gas stations.",
         paragraph2:
           "With over 50 years of experience, we have developed expertise in manufacturing double-wall underground fuel tanks PERMATANK®, underground fuel piping systems, and automatic tank gauging (ATG) systems that meet international standards.",
         paragraph3:
@@ -917,17 +917,17 @@ const enLabel = {
       title: "News & Events",
       subtitle: "Stay Updated with Our Latest Developments",
       description:
-        "Discover the latest news, project updates, industry insights, and company announcements from Padungsilpa Group.",
+        "Discover the latest news, project updates, industry insights, and company announcements from OIL DEVELOPMENT.",
       subscribe: "Subscribe to Updates",
     },
     featured: {
       sectionTitle: "Featured News",
       label: "Featured",
-      title: "Padungsilpa Group Wins Major Gas Station Project",
+      title: "OIL DEVELOPMENT Wins Major Gas Station Project",
       excerpt:
-        "We are proud to announce that Padungsilpa Group has been awarded a major gas station construction project worth 50 million baht, demonstrating our continued leadership in the industry.",
+        "We are proud to announce that OIL DEVELOPMENT has been awarded a major gas station construction project worth 50 million baht, demonstrating our continued leadership in the industry.",
       content:
-        "We are excited to share that Padungsilpa Group has been selected as the primary contractor for a major gas station construction project. This project represents our commitment to excellence and innovation in the industry.",
+        "We are excited to share that OIL DEVELOPMENT has been selected as the primary contractor for a major gas station construction project. This project represents our commitment to excellence and innovation in the industry.",
     },
     categories: {
       all: "All News",
@@ -951,7 +951,7 @@ const enLabel = {
       safety: {
         title: "New Safety Standards Implementation",
         excerpt:
-          "Padungsilpa Group implements new international safety standards across all construction projects to ensure worker and public safety.",
+          "OIL DEVELOPMENT implements new international safety standards across all construction projects to ensure worker and public safety.",
       },
       green: {
         title: "Green Technology Initiative",
@@ -961,7 +961,7 @@ const enLabel = {
       expansion: {
         title: "Regional Expansion Announcement",
         excerpt:
-          "Padungsilpa Group announces expansion into new regions to better serve clients across Southeast Asia.",
+          "OIL DEVELOPMENT announces expansion into new regions to better serve clients across Southeast Asia.",
       },
       technology: {
         title: "Smart Station Technology Integration",

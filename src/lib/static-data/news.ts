@@ -51,15 +51,15 @@ export const staticNews: News[] = [
     slug_th: "permatank-new-model-launch",
     slug_en: "permatank-new-model-launch",
     excerpt_th:
-      "กลุ่มบริษัทผดุงศิลป์เปิดตัวถัง PERMATANK® รุ่นใหม่ที่มีเทคโนโลยีล้ำสมัย เพิ่มความปลอดภัยและประสิทธิภาพ",
+      "กลุ่มบริษัทOIL DEVELOPMENTเปิดตัวถัง PERMATANK® รุ่นใหม่ที่มีเทคโนโลยีล้ำสมัย เพิ่มความปลอดภัยและประสิทธิภาพ",
     excerpt_en:
-      "Padungsilpa Group launches the new PERMATANK® model with advanced technology for enhanced safety and efficiency",
+      "OIL DEVELOPMENT launches the new PERMATANK® model with advanced technology for enhanced safety and efficiency",
     tag_id: [1, 4, 6],
     body_th: {
       ops: [
         {
           insert:
-            "กลุ่มบริษัทผดุงศิลป์ภูมิใจเสนอถัง PERMATANK® รุ่นใหม่ล่าสุด ที่ได้รับการพัฒนาด้วยเทคโนโลยีล้ำสมัย เพื่อตอบสนองความต้องการของอุตสาหกรรมน้ำมันและพลังงานในยุคใหม่\n\n",
+            "กลุ่มบริษัทOIL DEVELOPMENTภูมิใจเสนอถัง PERMATANK® รุ่นใหม่ล่าสุด ที่ได้รับการพัฒนาด้วยเทคโนโลยีล้ำสมัย เพื่อตอบสนองความต้องการของอุตสาหกรรมน้ำมันและพลังงานในยุคใหม่\n\n",
         },
         {
           insert:
@@ -75,7 +75,7 @@ export const staticNews: News[] = [
       ops: [
         {
           insert:
-            "Padungsilpa Group proudly presents the latest PERMATANK® model, developed with cutting-edge technology to meet the demands of the modern oil and energy industry.\n\n",
+            "OIL DEVELOPMENT proudly presents the latest PERMATANK® model, developed with cutting-edge technology to meet the demands of the modern oil and energy industry.\n\n",
         },
         {
           insert:

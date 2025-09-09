@@ -23,9 +23,9 @@ export default function Overview({
       description: t("home.overview.features.safety.description"),
       schema: {
         "@type": "Service",
-        "name": t("home.overview.features.safety.title"),
-        "description": t("home.overview.features.safety.description")
-      }
+        name: t("home.overview.features.safety.title"),
+        description: t("home.overview.features.safety.description"),
+      },
     },
     {
       icon: Award,
@@ -33,9 +33,9 @@ export default function Overview({
       description: t("home.overview.features.expertise.description"),
       schema: {
         "@type": "Service",
-        "name": t("home.overview.features.expertise.title"),
-        "description": t("home.overview.features.expertise.description")
-      }
+        name: t("home.overview.features.expertise.title"),
+        description: t("home.overview.features.expertise.description"),
+      },
     },
     {
       icon: Users,
@@ -43,9 +43,9 @@ export default function Overview({
       description: t("home.overview.features.support.description"),
       schema: {
         "@type": "Service",
-        "name": t("home.overview.features.support.title"),
-        "description": t("home.overview.features.support.description")
-      }
+        name: t("home.overview.features.support.title"),
+        description: t("home.overview.features.support.description"),
+      },
     },
     {
       icon: Wrench,
@@ -53,38 +53,39 @@ export default function Overview({
       description: t("home.overview.features.technology.description"),
       schema: {
         "@type": "Service",
-        "name": t("home.overview.features.technology.title"),
-        "description": t("home.overview.features.technology.description")
-      }
+        name: t("home.overview.features.technology.title"),
+        description: t("home.overview.features.technology.description"),
+      },
     },
   ];
 
   // Extract images from gallery content
-  const companyImages = gallery && gallery.length > 0 ? gallery[0]?.images_url || [] : [];
+  const companyImages =
+    gallery && gallery.length > 0 ? gallery[0]?.images_url || [] : [];
 
   // Generate structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Padungsilpa Group",
-    "description": t("home.overview.description"),
-    "url": `https://padungsilpa.group/${locale}`,
-    "logo": "https://padungsilpa.group/logo.png",
-    "image": companyImages.length > 0 ? companyImages : undefined,
-    "hasOfferCatalog": {
+    name: "OIL DEVELOPMENT",
+    description: t("home.overview.description"),
+    url: `https://padungsilpa.group/${locale}`,
+    logo: "https://padungsilpa.group/logo.png",
+    image: companyImages.length > 0 ? companyImages : undefined,
+    hasOfferCatalog: {
       "@type": "OfferCatalog",
-      "name": "Construction Services",
-      "itemListElement": features.map((feature, index) => ({
+      name: "Construction Services",
+      itemListElement: features.map((feature, index) => ({
         "@type": "Offer",
-        "itemOffered": feature.schema,
-        "position": index + 1
-      }))
+        itemOffered: feature.schema,
+        position: index + 1,
+      })),
     },
-    "knowsAbout": features.map(feature => feature.title),
-    "areaServed": {
+    knowsAbout: features.map((feature) => feature.title),
+    areaServed: {
       "@type": "Country",
-      "name": "Thailand"
-    }
+      name: "Thailand",
+    },
   };
 
   // const companyImages = [
@@ -102,7 +103,10 @@ export default function Overview({
         aria-label="Loading company overview">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" role="status" aria-label="Loading"></div>
+            <div
+              className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
+              role="status"
+              aria-label="Loading"></div>
             <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
@@ -125,21 +129,19 @@ export default function Overview({
         itemScope
         itemType="https://schema.org/Organization"
         aria-labelledby="overview-heading">
-
         {/* Luxury Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-primary-100/15 rounded-full blur-3xl opacity-60 animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-blue-100/10 rounded-full blur-2xl opacity-40 animate-pulse"
-            style={{ animationDelay: '2s' }} />
+          <div
+            className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-blue-100/10 rounded-full blur-2xl opacity-40 animate-pulse"
+            style={{ animationDelay: "2s" }}
+          />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
             {/* Left Content - Professional Header */}
             <div className="space-y-8">
-
-
               {/* Condensed Professional Title */}
               <div className="relative">
                 <h2
@@ -154,7 +156,8 @@ export default function Overview({
                 </h2>
 
                 {/* Luxury Underline Animation */}
-                <div className="absolute -bottom-1 left-0 w-0 h-0.5
+                <div
+                  className="absolute -bottom-1 left-0 w-0 h-0.5
                               bg-gradient-to-r from-primary-500 to-primary-300
                               hover:w-24 transition-all duration-700 ease-out"></div>
               </div>
@@ -170,8 +173,11 @@ export default function Overview({
               </div>
 
               {/* Luxury Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8"
-                itemProp="hasOfferCatalog" itemScope itemType="https://schema.org/OfferCatalog">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8"
+                itemProp="hasOfferCatalog"
+                itemScope
+                itemType="https://schema.org/OfferCatalog">
                 <meta itemProp="name" content="Construction Services" />
                 {features.map((feature, index) => (
                   <article
@@ -183,10 +189,15 @@ export default function Overview({
                     itemScope
                     itemType="https://schema.org/Offer">
                     <meta itemProp="position" content={String(index + 1)} />
-                    <div className="flex items-start space-x-4" itemProp="itemOffered" itemScope itemType="https://schema.org/Service">
+                    <div
+                      className="flex items-start space-x-4"
+                      itemProp="itemOffered"
+                      itemScope
+                      itemType="https://schema.org/Service">
                       {/* Luxury Icon */}
                       <div className="flex-shrink-0 mt-1" aria-hidden="true">
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg
+                        <div
+                          className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg
                                       flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ease-out">
                           <feature.icon className="w-5 h-5 text-primary-600" />
                         </div>

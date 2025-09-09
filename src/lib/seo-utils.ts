@@ -80,8 +80,8 @@ export function generateMetadata(
       url: currentUrl,
       siteName:
         fallback.locale === "th"
-          ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
-          : "Padungsilpa Group",
+          ? "กลุ่มบริษัท OIL DEVELOPMENT ฯ"
+          : "OIL DEVELOPMENT",
       images: seoData?.og_image
         ? [
             {
@@ -166,8 +166,8 @@ export function generateStructuredData(
         "@type": "Organization",
         name:
           fallback.locale === "th"
-            ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
-            : "Padungsilpa Group",
+            ? "กลุ่มบริษัท OIL DEVELOPMENT ฯ"
+            : "OIL DEVELOPMENT",
         description: seoData?.description || fallback.description,
         url: currentUrl,
         logo: `${baseUrl}/images/logo.png`,
@@ -199,8 +199,8 @@ export function generateStructuredData(
           "@type": "WebSite",
           name:
             fallback.locale === "th"
-              ? "กลุ่มบริษัท ผดุงศิลป์ ฯ"
-              : "Padungsilpa Group",
+              ? "กลุ่มบริษัท OIL DEVELOPMENT ฯ"
+              : "OIL DEVELOPMENT",
           url: baseUrl,
         },
       };
@@ -271,18 +271,19 @@ export async function getSitemapData(): Promise<
  */
 export const SEO_DEFAULTS = {
   th: {
-    site_name: "กลุ่มบริษัท ผดุงศิลป์ ฯ",
-    default_title: "กลุ่มบริษัท ผดุงศิลป์ ฯ - ผู้นำด้านการก่อสร้างและวิศวกรรม",
+    site_name: "กลุ่มบริษัท OIL DEVELOPMENT ฯ",
+    default_title:
+      "กลุ่มบริษัท OIL DEVELOPMENT ฯ - ผู้นำด้านการก่อสร้างและวิศวกรรม",
     default_description:
-      "กลุ่มบริษัท ผดุงศิลป์ ฯ ผู้เชี่ยวชาญด้านการก่อสร้าง วิศวกรรม และบริการครบวงจร มีประสบการณ์กว่า 30 ปี",
-    author: "กลุ่มบริษัท ผดุงศิลป์ ฯ",
+      "กลุ่มบริษัท OIL DEVELOPMENT ฯ ผู้เชี่ยวชาญด้านการก่อสร้าง วิศวกรรม และบริการครบวงจร มีประสบการณ์กว่า 30 ปี",
+    author: "กลุ่มบริษัท OIL DEVELOPMENT ฯ",
   },
   en: {
-    site_name: "Padungsilpa Group",
+    site_name: "OIL DEVELOPMENT",
     default_title:
-      "Padungsilpa Group - Leading Construction and Engineering Company",
+      "OIL DEVELOPMENT - Leading Construction and Engineering Company",
     default_description:
-      "Padungsilpa Group is a leading construction and engineering company with over 30 years of experience in comprehensive services",
-    author: "Padungsilpa Group",
+      "OIL DEVELOPMENT is a leading construction and engineering company with over 30 years of experience in comprehensive services",
+    author: "OIL DEVELOPMENT",
   },
 } as const;

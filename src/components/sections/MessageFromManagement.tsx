@@ -43,7 +43,9 @@ export default function MessageFromManagement({
   const currentMessages = locale === "th" ? messages.th : messages.en;
 
   return (
-    <section id='executive-message' className={`py-8 lg:py-12 bg-gray-50 ${className}`}>
+    <section
+      id="executive-message"
+      className={`py-8 lg:py-12 bg-gray-50 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-8">
@@ -65,7 +67,9 @@ export default function MessageFromManagement({
                 <div className="relative bg-gray-100 overflow-hidden flex-1">
                   <Image
                     src="/images/managements/ceo.jpeg"
-                    alt={locale === "th" ? "กรรมการผู้จัดการ" : "Managing Director"}
+                    alt={
+                      locale === "th" ? "กรรมการผู้จัดการ" : "Managing Director"
+                    }
                     // fill
                     width={1024}
                     height={1024}
@@ -110,18 +114,16 @@ export default function MessageFromManagement({
                       <h4 className="font-bold text-gray-900 text-xl mb-0">
                         {locale === "th"
                           ? "คุณสุภรา สินสมุทรผดุง"
-                          : "SUPARA SINSAMUTPHADUNG"
-                        }
+                          : "SUPARA SINSAMUTPHADUNG"}
                       </h4>
                       <h4 className="font-normal text-gray-900 text-xl mb-0">
                         {locale === "th"
                           ? "กรรมการผู้จัดการ"
-                          : "Managing Director"
-                        }
+                          : "Managing Director"}
                       </h4>
                       {/* <p className="text-gray-600 text-base font-medium">
                         {locale === "th"
-                          ? "บริษัท ผดุงศิลป์โยธาการ จำกัด"
+                          ? "บริษัท OIL DEVELOPMENTโยธาการ จำกัด"
                           : "Padungsilpa Engineering Co., Ltd."
                         }
                       </p> */}
@@ -144,13 +146,13 @@ export default function MessageFromManagement({
 // Default message content for Padungsilpa
 export const defaultManagementMessage = {
   th: [
-    "ในนามของกลุ่มบริษัท ผดุงศิลป์ฯ ข้าพเจ้าขอแสดงความขอบคุณทุกท่านที่ได้ให้ความไว้วางใจและสนับสนุนบริษัทของเราเสมอมา พวกเรามุ่งมั่นรักษาพนักงานระดับปฏิบัติการและบริหารที่มีความเป็นเลิศ โดยทุกคนมีเป้าหมายเดียวกันในการนำเสนองานก่อสร้าง สินค้า และบริการที่ดีที่สุด รวมถึงบุคลากรที่มีความรู้ความสามารถเป็นเยี่ยม ช่างเทคนิคและผู้จัดการโครงการของเราได้รับการฝึกฝนและรับรองอย่างดี และมีประสบการณ์ในอุตสาหกรรมน้ำมันและพลังงานอื่นๆ เป็นอย่างมาก ซึ่งเป็นการรับรองว่าผลงานและบริการของเราจะมีคุณภาพและตอบสนองต่อความต้องการของอุตสาหกรรมได้อย่างฉับไว",
-    "กลุ่มบริษัทในเครือ ผดุงศิลป์ฯ พร้อมเผชิญกับอุปสรรคต่างๆ ในอนาคต ด้วยความมุ่งมั่นที่จะนำเสนอผลงานและบริการที่มีคุณภาพดีและโดดเด่น สมกับที่ทุกท่านได้ให้ความไว้วางใจเรา ขอขอบพระคุณอีกครั้งสำหรับการสนับสนุนและความไว้วางใจที่มีให้กับกลุ่มบริษัท ผดุงศิลป์ฯ พวกเราจะยังคงมุ่งมั่นพัฒนาต่อไปเพื่อสร้างสรรค์คุณค่าและตอบสนองต่อความต้องการของทุกท่านอย่างดีที่สุด",
+    "ในนามของกลุ่มบริษัท OIL DEVELOPMENTฯ ข้าพเจ้าขอแสดงความขอบคุณทุกท่านที่ได้ให้ความไว้วางใจและสนับสนุนบริษัทของเราเสมอมา พวกเรามุ่งมั่นรักษาพนักงานระดับปฏิบัติการและบริหารที่มีความเป็นเลิศ โดยทุกคนมีเป้าหมายเดียวกันในการนำเสนองานก่อสร้าง สินค้า และบริการที่ดีที่สุด รวมถึงบุคลากรที่มีความรู้ความสามารถเป็นเยี่ยม ช่างเทคนิคและผู้จัดการโครงการของเราได้รับการฝึกฝนและรับรองอย่างดี และมีประสบการณ์ในอุตสาหกรรมน้ำมันและพลังงานอื่นๆ เป็นอย่างมาก ซึ่งเป็นการรับรองว่าผลงานและบริการของเราจะมีคุณภาพและตอบสนองต่อความต้องการของอุตสาหกรรมได้อย่างฉับไว",
+    "กลุ่มบริษัทในเครือ OIL DEVELOPMENTฯ พร้อมเผชิญกับอุปสรรคต่างๆ ในอนาคต ด้วยความมุ่งมั่นที่จะนำเสนอผลงานและบริการที่มีคุณภาพดีและโดดเด่น สมกับที่ทุกท่านได้ให้ความไว้วางใจเรา ขอขอบพระคุณอีกครั้งสำหรับการสนับสนุนและความไว้วางใจที่มีให้กับกลุ่มบริษัท OIL DEVELOPMENTฯ พวกเราจะยังคงมุ่งมั่นพัฒนาต่อไปเพื่อสร้างสรรค์คุณค่าและตอบสนองต่อความต้องการของทุกท่านอย่างดีที่สุด",
   ],
   en: [
-    "On behalf of PADUNGSILPA GROUP, I would like to extend our heartfelt gratitude for your continued trust and support. We are committed to maintaining excellence among our operational and managerial staffs, all of whom share the common goal of delivering the best construction works, products, and services, supported by highly knowledgeable and capable personnel.",
+    "On behalf of OIL DEVELOPMENT, I would like to extend our heartfelt gratitude for your continued trust and support. We are committed to maintaining excellence among our operational and managerial staffs, all of whom share the common goal of delivering the best construction works, products, and services, supported by highly knowledgeable and capable personnel.",
     "Our technicians and project managers are well-trained and certified, with extensive experience in the oil and other energy industries. This ensures that our work and services are of the highest quality and can promptly meet the industry's demands.",
-    "PADUNGSILPA GROUP is ready to face future challenges with determination, striving to provide exceptional quality and standout services, worthy of the trust you have placed in us.",
-    "Thank you once again for your support and trust in PADUNGSILPA GROUP. We will continue to strive for excellence, creating value and meeting your needs to the best of our abilities."
+    "OIL DEVELOPMENT is ready to face future challenges with determination, striving to provide exceptional quality and standout services, worthy of the trust you have placed in us.",
+    "Thank you once again for your support and trust in OIL DEVELOPMENT. We will continue to strive for excellence, creating value and meeting your needs to the best of our abilities.",
   ],
 };

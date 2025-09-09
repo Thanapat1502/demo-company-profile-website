@@ -111,7 +111,7 @@ export default function MainNavbar({ forceSolid = false }: Props) {
     const fallbackTranslations: Record<string, Record<string, string>> = {
       "navigation.company.about": {
         en: "About Padungsilpa Company",
-        th: "เกี่ยวกับบริษัทผดุงศิลป์",
+        th: "เกี่ยวกับบริษัทOIL DEVELOPMENT",
       },
       "navigation.company.history": {
         en: "Company History",
@@ -763,7 +763,7 @@ export default function MainNavbar({ forceSolid = false }: Props) {
                     }}>
                     <div className="text-center">
                       <div className="text-md text-gray-500">
-                        © 2025 Padungsilpa Group
+                        © 2025 OIL DEVELOPMENT
                       </div>
                     </div>
                   </div>

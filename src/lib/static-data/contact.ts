@@ -29,7 +29,7 @@ export const staticCompanies: Company[] = [
   },
   {
     id: "company-2",
-    name_th: "บริษัท ผดุงศิลป์ เอ็นจิเนียริ่ง จำกัด",
+    name_th: "บริษัท OIL DEVELOPMENT เอ็นจิเนียริ่ง จำกัด",
     name_en: "Padungsilpa Engineering Co., Ltd.",
     address_th: "456 ถนนรามคำแหง แขวงหัวหมาก เขตบางกะปิ กรุงเทพมหานคร 10240",
     address_en: "456 Ramkhamhaeng Road, Hua Mak, Bang Kapi, Bangkok 10240",
@@ -40,7 +40,7 @@ export const staticCompanies: Company[] = [
   },
   {
     id: "company-3",
-    name_th: "บริษัท ผดุงศิลป์ คอนสตรัคชั่น จำกัด",
+    name_th: "บริษัท OIL DEVELOPMENT คอนสตรัคชั่น จำกัด",
     name_en: "Padungsilpa Construction Co., Ltd.",
     address_th: "789 ถนนลาดพร้าว แขวงจอมพล เขตจตุจักร กรุงเทพมหานคร 10900",
     address_en: "789 Ladprao Road, Chom Phon, Chatuchak, Bangkok 10900",

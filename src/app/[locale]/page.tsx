@@ -57,7 +57,7 @@ export default async function Home({ params }: Props) {
         fallback={{
           title:
             SEO_DEFAULTS?.[locale as "th" | "en"]?.default_title ||
-            "Padungsilpa Group",
+            "OIL DEVELOPMENT",
           description:
             SEO_DEFAULTS?.[locale as "th" | "en"]?.default_description ||
             "Leading construction and engineering company",
@@ -70,8 +70,8 @@ export default async function Home({ params }: Props) {
           locale: locale as "th" | "en",
           title:
             locale === "th"
-              ? "กลุ่มบริษัท ผดุงศิลป์ - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร"
-              : "PADUNGSILPA GROUP - PERMATANK® and Gas Station construction",
+              ? "กลุ่มบริษัท OIL DEVELOPMENT - ผู้เชี่ยวชาญด้าน PERMATANK® และสถานีบริการน้ำมันครบวงจร"
+              : "OIL DEVELOPMENT - PERMATANK® and Gas Station construction",
           description:
             locale === "th"
               ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี"

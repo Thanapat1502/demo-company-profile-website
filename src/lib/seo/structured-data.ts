@@ -124,7 +124,7 @@ export function generateWebsiteSchema(locale: "th" | "en") {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${baseUrl}/#website`,
-    name: locale === "th" ? "กลุ่มบริษัท ผดุงศิลป์" : "Padungsilpa Group",
+    name: locale === "th" ? "กลุ่มบริษัท OIL DEVELOPMENT" : "OIL DEVELOPMENT",
     url: baseUrl,
     description:
       locale === "th"
@@ -313,7 +313,7 @@ export function generateArticleSchema(
     image: images,
     author: {
       "@type": "Person",
-      name: author || "Padungsilpa Group",
+      name: author || "OIL DEVELOPMENT",
     },
     publisher: {
       "@id": `${baseUrl}/#organization`,

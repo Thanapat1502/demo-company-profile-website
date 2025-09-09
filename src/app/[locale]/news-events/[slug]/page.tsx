@@ -50,14 +50,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     // Call server-side API instead of direct Supabase call
     const encodedSlug = encodeURIComponent(decodedSlug);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/news/slug/${encodedSlug}?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 } // Cache for 1 hour
-    });
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+      }/api/news/slug/${encodedSlug}?locale=${locale}`,
+      {
+        cache: "force-cache",
+        next: { revalidate: 3600 }, // Cache for 1 hour
+      }
+    );
 
     if (!response.ok) {
       return {
-        title: "News Article Not Found | Padungsilpa Group",
+        title: "News Article Not Found | OIL DEVELOPMENT",
         description: "The requested news article could not be found.",
       };
     }
@@ -66,13 +71,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     if (!news) {
       return {
-        title: "News Article Not Found | Padungsilpa Group",
+        title: "News Article Not Found | OIL DEVELOPMENT",
         description: "The requested news article could not be found.",
       };
     }
 
     const title = (locale === "en" ? news.title_en : news.title_th) as string;
-    const description = (locale === "en" ? news.excerpt_en : news.excerpt_th) as string;
+    const description = (
+      locale === "en" ? news.excerpt_en : news.excerpt_th
+    ) as string;
     const publishedTime = (news.published_at || news.created_at) as string;
     const modifiedTime = news.updated_at as string;
 
@@ -83,34 +90,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 
     return {
-      title: `${title} | Padungsilpa Group`,
+      title: `${title} | OIL DEVELOPMENT`,
       description: description || `Read more about ${title}`,
       keywords: [
         title,
-        "Padungsilpa Group",
+        "OIL DEVELOPMENT",
         "Construction",
         "Engineering",
         "News",
         locale === "th" ? "ข่าวสาร" : "News",
         locale === "th" ? "ก่อสร้าง" : "Construction",
-      ].filter(Boolean).join(", "),
-      authors: [{ name: "Padungsilpa Group" }],
-      publisher: "Padungsilpa Group",
+      ]
+        .filter(Boolean)
+        .join(", "),
+      authors: [{ name: "OIL DEVELOPMENT" }],
+      publisher: "OIL DEVELOPMENT",
       openGraph: {
         title,
         description: description || `Read more about ${title}`,
-        images: news.thumbnail ? [
-          {
-            url: news.thumbnail as string,
-            width: 1200,
-            height: 630,
-            alt: title,
-          }
-        ] : [],
+        images: news.thumbnail
+          ? [
+              {
+                url: news.thumbnail as string,
+                width: 1200,
+                height: 630,
+                alt: title,
+              },
+            ]
+          : [],
         type: "article",
         publishedTime,
         modifiedTime,
-        authors: ["Padungsilpa Group"],
+        authors: ["OIL DEVELOPMENT"],
         section: "News",
         locale: locale,
         alternateLocale: locale === "th" ? "en" : "th",
@@ -126,8 +137,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       alternates: {
         canonical: `https://padungsilpa.group/${locale}/news-events/${slug}`,
         languages: {
-          ...(alternateUrls.th && { "th-TH": `https://padungsilpa.group${alternateUrls.th}` }),
-          ...(alternateUrls.en && { "en-US": `https://padungsilpa.group${alternateUrls.en}` }),
+          ...(alternateUrls.th && {
+            "th-TH": `https://padungsilpa.group${alternateUrls.th}`,
+          }),
+          ...(alternateUrls.en && {
+            "en-US": `https://padungsilpa.group${alternateUrls.en}`,
+          }),
           "x-default": `https://padungsilpa.group/${locale}/news-events/${slug}`,
         },
       },
@@ -146,8 +161,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } catch (error) {
     console.error("Error generating metadata:", error);
     return {
-      title: "News Article | Padungsilpa Group",
-      description: "Read the latest news and updates from Padungsilpa Group",
+      title: "News Article | OIL DEVELOPMENT",
+      description: "Read the latest news and updates from OIL DEVELOPMENT",
     };
   }
 }
@@ -156,10 +171,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   try {
     // Call server-side API instead of direct Supabase call
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/news`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 } // Cache for 1 hour
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/news`,
+      {
+        cache: "force-cache",
+        next: { revalidate: 3600 }, // Cache for 1 hour
+      }
+    );
 
     if (!response.ok) {
       console.error("Error fetching news for static params:", response.status);
@@ -200,13 +218,22 @@ export default async function NewsDetailPage({ params }: Props) {
   const encodedSlug = encodeURIComponent(decodedSlug);
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/news/slug/${encodedSlug}?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 } // Cache for 1 hour
-    });
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+      }/api/news/slug/${encodedSlug}?locale=${locale}`,
+      {
+        cache: "force-cache",
+        next: { revalidate: 3600 }, // Cache for 1 hour
+      }
+    );
 
     if (!response.ok) {
-      console.error("News article API error:", { slug, locale, status: response.status });
+      console.error("News article API error:", {
+        slug,
+        locale,
+        status: response.status,
+      });
       notFound();
     }
 
@@ -218,9 +245,12 @@ export default async function NewsDetailPage({ params }: Props) {
     }
 
     // Helper functions for bilingual content
-    const getTitle = () => locale === "en" ? newsDetail.title_en : newsDetail.title_th;
-    const getExcerpt = () => locale === "en" ? newsDetail.excerpt_en : newsDetail.excerpt_th;
-    const getBody = () => locale === "en" ? newsDetail.body_en : newsDetail.body_th;
+    const getTitle = () =>
+      locale === "en" ? newsDetail.title_en : newsDetail.title_th;
+    const getExcerpt = () =>
+      locale === "en" ? newsDetail.excerpt_en : newsDetail.excerpt_th;
+    const getBody = () =>
+      locale === "en" ? newsDetail.body_en : newsDetail.body_th;
 
     // Calculate read time
     const calculateReadTime = (content: string | object | null | undefined) => {
@@ -248,63 +278,68 @@ export default async function NewsDetailPage({ params }: Props) {
     const excerpt = getExcerpt() as string;
     const body = getBody();
     const readTime = calculateReadTime(body as string | object);
-    const publishDate = (newsDetail.published_at || newsDetail.created_at) as string;
+    const publishDate = (newsDetail.published_at ||
+      newsDetail.created_at) as string;
 
     // Generate JSON-LD structured data for SEO
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
-      "headline": title,
-      "description": excerpt,
-      "image": newsDetail.thumbnail ? [newsDetail.thumbnail] : [],
-      "datePublished": publishDate,
-      "dateModified": newsDetail.updated_at,
-      "author": {
+      headline: title,
+      description: excerpt,
+      image: newsDetail.thumbnail ? [newsDetail.thumbnail] : [],
+      datePublished: publishDate,
+      dateModified: newsDetail.updated_at,
+      author: {
         "@type": "Organization",
-        "name": "Padungsilpa Group",
-        "url": "https://padungsilpa.group"
+        name: "OIL DEVELOPMENT",
+        url: "https://padungsilpa.group",
       },
-      "publisher": {
+      publisher: {
         "@type": "Organization",
-        "name": "Padungsilpa Group",
-        "logo": {
+        name: "OIL DEVELOPMENT",
+        logo: {
           "@type": "ImageObject",
-          "url": "https://padungsilpa.group/logo.png"
-        }
+          url: "https://padungsilpa.group/logo.png",
+        },
       },
-      "mainEntityOfPage": {
+      mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://padungsilpa.group/${locale}/news-events/${slug}`
+        "@id": `https://padungsilpa.group/${locale}/news-events/${slug}`,
       },
-      "articleSection": category ? (locale === "th" ? (category as Category).cat_th : (category as Category).cat_en) : "News",
-      "inLanguage": locale,
-      "url": `https://padungsilpa.group/${locale}/news-events/${slug}`
+      articleSection: category
+        ? locale === "th"
+          ? (category as Category).cat_th
+          : (category as Category).cat_en
+        : "News",
+      inLanguage: locale,
+      url: `https://padungsilpa.group/${locale}/news-events/${slug}`,
     };
 
     // Generate breadcrumb structured data
     const breadcrumbJsonLd = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      "itemListElement": [
+      itemListElement: [
         {
           "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": `https://padungsilpa.group/${locale}`
+          position: 1,
+          name: "Home",
+          item: `https://padungsilpa.group/${locale}`,
         },
         {
           "@type": "ListItem",
-          "position": 2,
-          "name": locale === "th" ? "ข่าวสาร" : "News & Events",
-          "item": `https://padungsilpa.group/${locale}/news-events`
+          position: 2,
+          name: locale === "th" ? "ข่าวสาร" : "News & Events",
+          item: `https://padungsilpa.group/${locale}/news-events`,
         },
         {
           "@type": "ListItem",
-          "position": 3,
-          "name": title,
-          "item": `https://padungsilpa.group/${locale}/news-events/${slug}`
-        }
-      ]
+          position: 3,
+          name: title,
+          item: `https://padungsilpa.group/${locale}/news-events/${slug}`,
+        },
+      ],
     };
 
     return (
@@ -322,10 +357,8 @@ export default async function NewsDetailPage({ params }: Props) {
         <section className="relative bg-slate-50">
           {/* Background Image */}
 
-
           {/* Content Overlay - Positioned Absolutely */}
           <div className="mt-[80px] pt-12 inset-0 z-20 flex flex-col justify-between">
-
             {/* Bottom Section - Main Content */}
             <div className="pb-12 ">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -361,13 +394,13 @@ export default async function NewsDetailPage({ params }: Props) {
                       <span className="text-sm font-medium">
                         {publishDate
                           ? new Date(publishDate).toLocaleDateString(
-                            locale === "th" ? "th-TH" : "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )
+                              locale === "th" ? "th-TH" : "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )
                           : ""}
                       </span>
                     </div>
@@ -419,7 +452,7 @@ export default async function NewsDetailPage({ params }: Props) {
               {/* Back to News Button */}
               <div className="text-center">
                 <Link href={`/${locale}/news-events`}>
-                  <PrimaryButton >
+                  <PrimaryButton>
                     <ArrowLeft className="w-5 h-5 mr-3" />
                     {locale === "th" ? "กลับไปหน้าข่าวสาร" : "Back to News"}
                   </PrimaryButton>

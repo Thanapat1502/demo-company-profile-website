@@ -2,8 +2,8 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Padungsilpa Group - Leading Gas Station Construction & Engineering Services",
-    short_name: "Padungsilpa Group",
+    name: "OIL DEVELOPMENT - Leading Gas Station Construction & Engineering Services",
+    short_name: "OIL DEVELOPMENT",
     description:
       "Leading comprehensive gas station business services with over 50 years of experience in construction and engineering. ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร ด้วยประสบการณ์กว่า 50 ปี",
     start_url: "/",

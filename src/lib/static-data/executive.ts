@@ -3,7 +3,7 @@ import { ExecutiveType } from "@/store/zustand/executiveStore";
 export const staticExecutiveMembers: ExecutiveType[] = [
   {
     id: "exec-1",
-    name_th: "นายสมชาย ผดุงศิลป์",
+    name_th: "นายสมชาย OIL DEVELOPMENT",
     name_en: "Mr. Somchai Padungsilpa",
     position_th: "ประธานกรรมการบริหาร",
     position_en: "Chairman of the Board",
@@ -13,7 +13,7 @@ export const staticExecutiveMembers: ExecutiveType[] = [
   },
   {
     id: "exec-2",
-    name_th: "นางสาวสุดา ผดุงศิลป์",
+    name_th: "นางสาวสุดา OIL DEVELOPMENT",
     name_en: "Ms. Suda Padungsilpa",
     position_th: "กรรมการผู้จัดการ",
     position_en: "Managing Director",

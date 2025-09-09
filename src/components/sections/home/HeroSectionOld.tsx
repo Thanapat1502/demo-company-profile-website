@@ -13,23 +13,20 @@ export default function HeroSectionOld() {
         "/images/hero-sections/hero-banner-4.jpg",
         "/images/hero-sections/hero-banner-1.jpg",
       ]}
-      title={`กลุ่มบริษัท\nผดุงศิลป์`}
+      title={`กลุ่มบริษัท\nOIL DEVELOPMENT`}
       subtitle="ก่อตั้งเมื่อปี 2003"
       description={`ผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน\nด้วยประสบการณ์กว่า 50 ปี`}
-      autoSlideDelay={6000}
-    >
+      autoSlideDelay={6000}>
       <MinimalButton
         href="/#services"
         variant="white"
-        icon={<ArrowRight className="w-5 h-5" />}
-      >
+        icon={<ArrowRight className="w-5 h-5" />}>
         ดูบริการของเรา
       </MinimalButton>
       <MinimalButton
         href="/contact-us"
         variant="secondary"
-        className="border-white text-white hover:bg-white hover:text-gray-900"
-      >
+        className="border-white text-white hover:bg-white hover:text-gray-900">
         ติดต่อเรา
       </MinimalButton>
     </ImageCarouselHero>

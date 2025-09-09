@@ -32,7 +32,7 @@ const submenuTranslations = [
   },
   {
     key: "navigation.company.about",
-    value: "เกี่ยวกับบริษัทผดุงศิลป์",
+    value: "เกี่ยวกับบริษัทOIL DEVELOPMENT",
     locale: "th",
     description: "Company submenu - About company link",
   },

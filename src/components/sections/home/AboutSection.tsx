@@ -14,8 +14,14 @@ export default function AboutSection() {
         <div className="space-y-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-3">
-              <div className="w-12 h-px" style={{ backgroundColor: 'var(--primary-blue)' }}></div>
-              <span className="font-bold tracking-wider uppercase text-sm" style={{ color: 'var(--primary-blue)' }}>เกี่ยวกับเรา</span>
+              <div
+                className="w-12 h-px"
+                style={{ backgroundColor: "var(--primary-blue)" }}></div>
+              <span
+                className="font-bold tracking-wider uppercase text-sm"
+                style={{ color: "var(--primary-blue)" }}>
+                เกี่ยวกับเรา
+              </span>
             </div>
 
             <h2 className="text-4xl lg:text-5xl heading-construction leading-tight">
@@ -25,8 +31,10 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-lg text-construction leading-relaxed">
-              กลุ่มบริษัท ผดุงศิลป์ เป็นผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน
-              ด้วยประสบการณ์กว่า 50 ปี เราได้สร้างความเชื่อมั่นให้กับลูกค้าทั่วประเทศไทย
+              กลุ่มบริษัท OIL DEVELOPMENT
+              เป็นผู้นำด้านการก่อสร้างและวิศวกรรมสถานีบริการน้ำมัน
+              ด้วยประสบการณ์กว่า 50 ปี
+              เราได้สร้างความเชื่อมั่นให้กับลูกค้าทั่วประเทศไทย
             </p>
           </div>
 
@@ -54,8 +62,7 @@ export default function AboutSection() {
             <MinimalButton
               href="/pds-group"
               variant="secondary"
-              icon={<ArrowRight className="w-4 h-4" />}
-            >
+              icon={<ArrowRight className="w-4 h-4" />}>
               เรียนรู้เพิ่มเติมเกี่ยวกับเรา
             </MinimalButton>
           </div>
@@ -77,11 +84,20 @@ export default function AboutSection() {
           <div className="absolute -bottom-6 -left-6 bg-white p-8 shadow-xl border border-gray-200">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-blue-50 flex items-center justify-center">
-                <CheckCircle className="w-8 h-8" style={{ color: 'var(--primary-blue)' }} />
+                <CheckCircle
+                  className="w-8 h-8"
+                  style={{ color: "var(--primary-blue)" }}
+                />
               </div>
               <div>
-                <div className="text-2xl font-black" style={{ color: 'var(--primary-blue)' }}>ISO 9001</div>
-                <div className="text-sm text-gray-600 uppercase tracking-wider font-bold">Quality Management</div>
+                <div
+                  className="text-2xl font-black"
+                  style={{ color: "var(--primary-blue)" }}>
+                  ISO 9001
+                </div>
+                <div className="text-sm text-gray-600 uppercase tracking-wider font-bold">
+                  Quality Management
+                </div>
               </div>
             </div>
           </div>

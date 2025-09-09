@@ -216,7 +216,7 @@ async function loadJsonTranslations(
     return flattened;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(
+    console.log(
       `📄 Error loading JSON translations for locale ${locale}:`,
       errorMessage
     );

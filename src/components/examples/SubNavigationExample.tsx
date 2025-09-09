@@ -1,6 +1,13 @@
 "use client";
 
-import { Building, History, Users, Target, Settings, Award } from "lucide-react";
+import {
+  Building,
+  History,
+  Users,
+  Target,
+  Settings,
+  Award,
+} from "lucide-react";
 import SubNavigation from "@/components/ui/SubNavigation";
 
 // Example usage of the SubNavigation component
@@ -65,7 +72,7 @@ export default function SubNavigationExample() {
         activeId="overview"
         locale={locale}
         backgroundImage="/images/hero-sections/hero-banner-1.jpg"
-        title="About Padungsilpa Group"
+        title="About OIL DEVELOPMENT"
         description="Learn more about our company, history, team, and mission"
       />
 
