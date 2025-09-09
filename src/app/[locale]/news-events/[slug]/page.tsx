@@ -131,19 +131,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title,
         description: description || `Read more about ${title}`,
         images: news.thumbnail ? [news.thumbnail as string] : [],
-        creator: "@PadungsilpaGroup",
-        site: "@PadungsilpaGroup",
+        creator: "@localhost3000Group",
+        site: "@localhost3000Group",
       },
       alternates: {
-        canonical: `https://padungsilpa.group/${locale}/news-events/${slug}`,
+        canonical: `https://localhost3000.group/${locale}/news-events/${slug}`,
         languages: {
           ...(alternateUrls.th && {
-            "th-TH": `https://padungsilpa.group${alternateUrls.th}`,
+            "th-TH": `https://localhost3000.group${alternateUrls.th}`,
           }),
           ...(alternateUrls.en && {
-            "en-US": `https://padungsilpa.group${alternateUrls.en}`,
+            "en-US": `https://localhost3000.group${alternateUrls.en}`,
           }),
-          "x-default": `https://padungsilpa.group/${locale}/news-events/${slug}`,
+          "x-default": `https://localhost3000.group/${locale}/news-events/${slug}`,
         },
       },
       robots: {
@@ -293,19 +293,19 @@ export default async function NewsDetailPage({ params }: Props) {
       author: {
         "@type": "Organization",
         name: "OIL DEVELOPMENT",
-        url: "https://padungsilpa.group",
+        url: "https://localhost3000.group",
       },
       publisher: {
         "@type": "Organization",
         name: "OIL DEVELOPMENT",
         logo: {
           "@type": "ImageObject",
-          url: "https://padungsilpa.group/logo.png",
+          url: "https://localhost3000.group/logo.png",
         },
       },
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://padungsilpa.group/${locale}/news-events/${slug}`,
+        "@id": `https://localhost3000.group/${locale}/news-events/${slug}`,
       },
       articleSection: category
         ? locale === "th"
@@ -313,7 +313,7 @@ export default async function NewsDetailPage({ params }: Props) {
           : (category as Category).cat_en
         : "News",
       inLanguage: locale,
-      url: `https://padungsilpa.group/${locale}/news-events/${slug}`,
+      url: `https://localhost3000.group/${locale}/news-events/${slug}`,
     };
 
     // Generate breadcrumb structured data
@@ -325,19 +325,19 @@ export default async function NewsDetailPage({ params }: Props) {
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: `https://padungsilpa.group/${locale}`,
+          item: `https://localhost3000.group/${locale}`,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: locale === "th" ? "ข่าวสาร" : "News & Events",
-          item: `https://padungsilpa.group/${locale}/news-events`,
+          item: `https://localhost3000.group/${locale}/news-events`,
         },
         {
           "@type": "ListItem",
           position: 3,
           name: title,
-          item: `https://padungsilpa.group/${locale}/news-events/${slug}`,
+          item: `https://localhost3000.group/${locale}/news-events/${slug}`,
         },
       ],
     };

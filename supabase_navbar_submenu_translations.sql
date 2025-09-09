@@ -4,7 +4,7 @@
 -- Company submenu translations
 INSERT INTO web_labels (key, value, locale, description) VALUES
 -- About Company
-('navigation.company.about', 'About Padungsilpa Company', 'en', 'Company submenu - About company link'),
+('navigation.company.about', 'About OIL DEVELOPMENT Company', 'en', 'Company submenu - About company link'),
 ('navigation.company.about', 'เกี่ยวกับบริษัทOIL DEVELOPMENT', 'th', 'Company submenu - About company link'),
 
 -- Company History

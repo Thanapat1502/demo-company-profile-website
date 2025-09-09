@@ -16,8 +16,8 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : process.env.NODE_ENV === "development"
-      ? "http://localhost:3001"
-      : "https://padungsilpa.group";
+      ? "http://localhost:3000"
+      : "http://localhost:3000";
 
     // Critical pages to warm for both locales
     const criticalPages = [

@@ -57,14 +57,14 @@ export function generateOrganizationSchema(locale: "th" | "en") {
       },
       {
         "@type": "ContactPoint",
-        email: "info@padungsilpa.group",
+        email: "info@OIL DEVELOPMENT.group",
         contactType: "customer service",
         availableLanguage: ["Thai", "English"],
       },
     ],
     sameAs: [
-      "https://www.facebook.com/padungsilpagroup",
-      "https://www.linkedin.com/company/padungsilpa-group",
+      "https://www.facebook.com/OIL DEVELOPMENTgroup",
+      "https://www.linkedin.com/company/OIL DEVELOPMENT-group",
     ],
     industry: "Construction and Engineering",
     numberOfEmployees: {

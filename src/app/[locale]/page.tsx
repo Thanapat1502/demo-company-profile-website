@@ -76,7 +76,7 @@ export default async function Home({ params }: Props) {
             locale === "th"
               ? "ผู้นำด้านธุรกิจสถานีบริการน้ำมันครบวงจร และ PERMATANK® ด้วยประสบการณ์กว่า 50 ปี"
               : "Leading comprehensive gas station business services and PERMATANK® with over 50 years of experience in construction and engineering.",
-          images: ["https://padungsilpa.group/images/seo.jpg"],
+          images: ["https://localhost3000.group/images/seo.jpg"],
         }}
       />
       <HeroSection heroImages={heroImages} />

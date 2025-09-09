@@ -9,14 +9,11 @@ import StructuredData from "@/components/seo/StructuredData";
 
 // Enable ISR for localized content
 export const revalidate = 3600;
-export const dynamic = 'auto';
+export const dynamic = "auto";
 
 // Generate static params for all locales
 export async function generateStaticParams() {
-  return [
-    { locale: 'th' },
-    { locale: 'en' },
-  ];
+  return [{ locale: "th" }, { locale: "en" }];
 }
 
 interface Props {
@@ -30,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return generateSEOMetadata({
     ...seoConfig,
     locale: locale as "th" | "en",
-    canonical: `https://www.padungsilpa.group/${locale}/contact-us`,
+    canonical: `https://www.localhost3000.group/${locale}/contact-us`,
     alternateLocales: {
-      th: "https://www.padungsilpa.group/th/contact-us",
-      en: "https://www.padungsilpa.group/en/contact-us",
+      th: "https://www.localhost3000.group/th/contact-us",
+      en: "https://www.localhost3000.group/en/contact-us",
     },
     type: "website",
   });
@@ -56,7 +53,7 @@ export default async function ContactUsPage({ params }: Props) {
           page: "contact-us",
           title: t("contact.hero.title"),
           description: t("contact.hero.description"),
-          images: ["https://padungsilpa.group/images/seo.jpg"],
+          images: ["https://localhost3000.group/images/seo.jpg"],
         }}
       />
       <DynamicHeroSection

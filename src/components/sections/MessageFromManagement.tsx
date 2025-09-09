@@ -66,7 +66,7 @@ export default function MessageFromManagement({
               <div className="md:col-span-2 relative group flex items-start pt-0 lg:pt-12 xl:pt-16">
                 <div className="relative bg-gray-100 overflow-hidden flex-1">
                   <Image
-                    src="/images/managements/ceo.jpeg"
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
                     alt={
                       locale === "th" ? "กรรมการผู้จัดการ" : "Managing Director"
                     }
@@ -112,9 +112,7 @@ export default function MessageFromManagement({
                   <div className="flex items-center gap-6">
                     <div className="flex-1">
                       <h4 className="font-bold text-gray-900 text-xl mb-0">
-                        {locale === "th"
-                          ? "คุณสุภรา สินสมุทรผดุง"
-                          : "SUPARA SINSAMUTPHADUNG"}
+                        {locale === "th" ? "นางสาวสุดา" : "Ms. Suda"}
                       </h4>
                       <h4 className="font-normal text-gray-900 text-xl mb-0">
                         {locale === "th"
@@ -124,7 +122,7 @@ export default function MessageFromManagement({
                       {/* <p className="text-gray-600 text-base font-medium">
                         {locale === "th"
                           ? "บริษัท OIL DEVELOPMENTโยธาการ จำกัด"
-                          : "Padungsilpa Engineering Co., Ltd."
+                          : "OIL DEVELOPMENT Engineering Co., Ltd."
                         }
                       </p> */}
                     </div>
@@ -143,7 +141,7 @@ export default function MessageFromManagement({
   );
 }
 
-// Default message content for Padungsilpa
+// Default message content for OIL DEVELOPMENT
 export const defaultManagementMessage = {
   th: [
     "ในนามของกลุ่มบริษัท OIL DEVELOPMENTฯ ข้าพเจ้าขอแสดงความขอบคุณทุกท่านที่ได้ให้ความไว้วางใจและสนับสนุนบริษัทของเราเสมอมา พวกเรามุ่งมั่นรักษาพนักงานระดับปฏิบัติการและบริหารที่มีความเป็นเลิศ โดยทุกคนมีเป้าหมายเดียวกันในการนำเสนองานก่อสร้าง สินค้า และบริการที่ดีที่สุด รวมถึงบุคลากรที่มีความรู้ความสามารถเป็นเยี่ยม ช่างเทคนิคและผู้จัดการโครงการของเราได้รับการฝึกฝนและรับรองอย่างดี และมีประสบการณ์ในอุตสาหกรรมน้ำมันและพลังงานอื่นๆ เป็นอย่างมาก ซึ่งเป็นการรับรองว่าผลงานและบริการของเราจะมีคุณภาพและตอบสนองต่อความต้องการของอุตสาหกรรมได้อย่างฉับไว",

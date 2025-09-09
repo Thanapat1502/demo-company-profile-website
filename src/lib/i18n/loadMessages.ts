@@ -278,7 +278,7 @@ async function loadSupabaseTranslations(
     return flatTranslations;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(
+    console.log(
       `🗄️  Failed to load Supabase translations for locale ${locale}:`,
       errorMessage
     );

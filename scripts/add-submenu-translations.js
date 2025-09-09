@@ -26,7 +26,7 @@ const submenuTranslations = [
   // About Company
   {
     key: "navigation.company.about",
-    value: "About Padungsilpa Company",
+    value: "About OIL DEVELOPMENT Company",
     locale: "en",
     description: "Company submenu - About company link",
   },

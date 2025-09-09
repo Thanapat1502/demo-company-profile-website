@@ -60,7 +60,7 @@ export function generateMetadata(
   }
 ): Metadata {
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://padungsilpa.group";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://localhost3000.group";
   const currentUrl = `${baseUrl}/${fallback.locale}${
     fallback.pagePath === "/" ? "" : fallback.pagePath
   }`;
@@ -149,7 +149,7 @@ export function generateStructuredData(
   }
 ): string {
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://padungsilpa.group";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://localhost3000.group";
   const currentUrl = `${baseUrl}/${fallback.locale}${
     fallback.pagePath === "/" ? "" : fallback.pagePath
   }`;
@@ -183,8 +183,8 @@ export function generateStructuredData(
           addressLocality: "Bangkok",
         },
         sameAs: [
-          "https://www.facebook.com/padungsilpa",
-          "https://www.linkedin.com/company/padungsilpa",
+          "https://www.facebook.com/localhost3000",
+          "https://www.linkedin.com/company/localhost3000",
         ],
       };
     } else {
@@ -240,7 +240,7 @@ export async function getSitemapData(): Promise<
     }
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://padungsilpa.group";
+      process.env.NEXT_PUBLIC_SITE_URL || "https://localhost3000.group";
 
     return data.map((page) => ({
       url: `${baseUrl}/${page.locale}${

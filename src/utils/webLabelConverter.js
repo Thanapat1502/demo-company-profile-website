@@ -583,7 +583,7 @@ const enLabel = {
   },
   home: {
     hero: {
-      title: "PADUNGSILPA\nGROUP",
+      title: "OIL DEVELOPMENT\nGROUP",
       subtitle: "Established in 2003",
       description:
         "Leading Gas Station Construction & Engineering Services\nWith over 50 years of experience",

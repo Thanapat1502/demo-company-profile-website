@@ -4,7 +4,7 @@ export const staticExecutiveMembers: ExecutiveType[] = [
   {
     id: "exec-1",
     name_th: "นายสมชาย OIL DEVELOPMENT",
-    name_en: "Mr. Somchai Padungsilpa",
+    name_en: "Mr. Somchai OIL DEVELOPMENT",
     position_th: "ประธานกรรมการบริหาร",
     position_en: "Chairman of the Board",
     image_url:
@@ -14,7 +14,7 @@ export const staticExecutiveMembers: ExecutiveType[] = [
   {
     id: "exec-2",
     name_th: "นางสาวสุดา OIL DEVELOPMENT",
-    name_en: "Ms. Suda Padungsilpa",
+    name_en: "Ms. Suda OIL DEVELOPMENT",
     position_th: "กรรมการผู้จัดการ",
     position_en: "Managing Director",
     image_url:

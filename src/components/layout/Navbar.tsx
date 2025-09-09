@@ -110,7 +110,7 @@ export default function MainNavbar({ forceSolid = false }: Props) {
     // Fallback translations for submenu items
     const fallbackTranslations: Record<string, Record<string, string>> = {
       "navigation.company.about": {
-        en: "About Padungsilpa Company",
+        en: "About OIL DEVELOPMENT Company",
         th: "เกี่ยวกับบริษัทOIL DEVELOPMENT",
       },
       "navigation.company.history": {

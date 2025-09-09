@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/auth-middleware";
 import { supabase } from "@/lib/supabase";
+import { LocaleRouteNormalizer } from "next/dist/server/normalizers/locale-route-normalizer";
 
 // Hero section IDs enum
 export type HeroSectionId =

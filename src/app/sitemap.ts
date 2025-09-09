@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getSitemapData } from "@/lib/seo-utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.padungsilpa.group";
+  const baseUrl = "https://localhost3000";
   const lastModified = new Date();
 
   // Initialize Supabase client

@@ -50,7 +50,9 @@ export default function NewsCard({
 
   return (
     <Link
-      href={`/${locale}/news-events/${locale === 'th' ? news.slug_th : news.slug_en}`}
+      href={`/${locale}/news-events/${
+        locale === "th" ? news.slug_th : news.slug_en
+      }`}
       className="group block"
       style={{
         animationDelay: `${index * 100}ms`,
@@ -97,7 +99,7 @@ export default function NewsCard({
               <div className="flex items-center justify-between w-full text-xs text-gray-500 font-normal">
                 <div className="flex items-center">
                   <User size={12} className="mr-1.5" />
-                  {"PADUNGSILPA"}
+                  {"OIL DEVELOPMENT"}
                 </div>
                 <div className="w-px h-3 bg-gray-300"></div>
                 <div className="flex items-center">

@@ -119,7 +119,7 @@ INSERT INTO web_labels (key, value, locale, description) VALUES
 -- History beginning section
 ('company.history.beginning.title', 'The Beginning', 'en', ''),
 ('company.history.beginning.title', 'จุดเริ่มต้น', 'th', ''),
-('company.history.beginning.description1', 'OIL DEVELOPMENT started its fuel station business in 1964 under the name Padungsilpa Engineering Limited Partnership, founded by Mr. Amnuay Sinsamutphadung, who had extensive experience and expertise in construction work.', 'en', ''),
+('company.history.beginning.description1', 'OIL DEVELOPMENT started its fuel station business in 1964 under the name OIL DEVELOPMENT Engineering Limited Partnership, founded by Mr. Amnuay Sinsamutphadung, who had extensive experience and expertise in construction work.', 'en', ''),
 ('company.history.beginning.description1', 'กลุ่มบริษัทOIL DEVELOPMENTได้เริ่มต้นธุรกิจเกี่ยวกับสถานีบริการน้ำมันในปี 2507 ในชื่อ ห้างหุ้นส่วนจำกัด OIL DEVELOPMENTการช่าง ก่อตั้งโดยคุณอำนวย สินสมุทรผดุง ซึ่งเป็นผู้ที่มีประสบการณ์และความเชี่ยวชาญในงานก่อสร้าง', 'th', ''),
 ('company.history.beginning.description2', 'In the early days of business operations, the company focused on providing construction and installation services for various systems in fuel stations, particularly the installation of fuel tanks and fuel piping systems.', 'en', ''),
 ('company.history.beginning.description2', 'ในช่วงแรกของการดำเนินธุรกิจ บริษัทมุ่งเน้นการให้บริการด้านการก่อสร้างและติดตั้งระบบต่างๆ ในสถานีบริการน้ำมัน โดยเฉพาะการติดตั้งถังน้ำมันและระบบท่อส่งน้ำมัน', 'th', ''),
@@ -129,7 +129,7 @@ INSERT INTO web_labels (key, value, locale, description) VALUES
 ('company.history.expansion.title', 'การขยายธุรกิจ', 'th', ''),
 ('company.history.expansion.imageAlt', 'Business Expansion', 'en', ''),
 ('company.history.expansion.imageAlt', 'การขยายธุรกิจ', 'th', ''),
-('company.history.expansion.description1', 'In 1977, the company expanded its scope of operations and transformed into Padungsilpa Engineering Co., Ltd. to accommodate business growth and more diverse services.', 'en', ''),
+('company.history.expansion.description1', 'In 1977, the company expanded its scope of operations and transformed into OIL DEVELOPMENT Engineering Co., Ltd. to accommodate business growth and more diverse services.', 'en', ''),
 ('company.history.expansion.description1', 'ในปี 2520 บริษัทได้ขยายขอบเขตการดำเนินงานและเปลี่ยนแปลงเป็น บริษัท OIL DEVELOPMENTโยธาการ จำกัด เพื่อรองรับการเติบโตของธุรกิจและการให้บริการที่หลากหลายมากขึ้น', 'th', ''),
 ('company.history.expansion.description2', 'The business expansion during this period enabled the company to take on larger projects and began developing expertise in modern fuel storage technology.', 'en', ''),
 ('company.history.expansion.description2', 'การขยายธุรกิจในช่วงนี้ทำให้บริษัทสามารถรับงานโครงการขนาดใหญ่มากขึ้น และเริ่มพัฒนาความเชี่ยวชาญในด้านเทคโนโลยีการจัดเก็บน้ำมันที่ทันสมัย', 'th', ''),
@@ -203,7 +203,7 @@ INSERT INTO web_labels (key, value, locale, description) VALUES
 ('services.pipeInstallation.description', 'ระบบท่อน้ำมันใต้ดินที่ป้องกันการรั่วไหล มีระบบตรวจจับการรั่วไหลแบบเรียลไทม์', 'th', ''),
 ('services.pipeInstallation.sectionLabel', 'PIPE INSTALLATION', 'en', ''),
 ('services.pipeInstallation.sectionLabel', 'ติดตั้งท่อ', 'th', ''),
-('services.pipeInstallation.detailedDescription', 'With over 20 years of experience in double-wall fuel pipe installation, Padungsilpa Engineering Co., Ltd. is an authorized distributor and installer of NUPIGECO S.P.A. brand fuel pipes, Smartflex and Ecoflex models, manufactured in Italy. Made from Polyethylene (PE) and Polyamide (PA) materials with special properties to prevent fuel leaks and can detect leaks in real-time. This piping system is certified to European Standard EN 14125 and tested in various environments, ensuring maximum durability and safety. With installation teams trained directly by the product owner, with experience in over 300 projects.', 'en', ''),
+('services.pipeInstallation.detailedDescription', 'With over 20 years of experience in double-wall fuel pipe installation, OIL DEVELOPMENT Engineering Co., Ltd. is an authorized distributor and installer of NUPIGECO S.P.A. brand fuel pipes, Smartflex and Ecoflex models, manufactured in Italy. Made from Polyethylene (PE) and Polyamide (PA) materials with special properties to prevent fuel leaks and can detect leaks in real-time. This piping system is certified to European Standard EN 14125 and tested in various environments, ensuring maximum durability and safety. With installation teams trained directly by the product owner, with experience in over 300 projects.', 'en', ''),
 ('services.pipeInstallation.detailedDescription', 'ด้วยประสบการณ์การติดตั้งท่อน้ำมันแบบผนัง 2 ชั้นมากกว่า 20 ปี บริษัท OIL DEVELOPMENTวิศวการ จำกัด เป็นตัวแทนจำหน่ายและติดตั้งท่อน้ำมันยี่ห้อ NUPIGECO S.P.A. รุ่น Smartflex และ Ecoflex ซึ่งผลิตในประเทศอิตาลี ผลิตจากวัสดุ Polyethylene (PE) และ Polyamide (PA) ที่มีคุณสมบัติพิเศษในการป้องกันการรั่วไหลของน้ำมัน และสามารถตรวจจับการรั่วไหลได้แบบ Real-Time ระบบท่อนี้ได้รับการรับรองมาตรฐานจาก European Standard EN 14125 และผ่านการทดสอบในสภาพแวดล้อมที่หลากหลาย รับประกันความทนทานและความปลอดภัยสูงสุด โดยมีทีมงานติดตั้งที่ได้รับการฝึกอบรมจากเจ้าของผลิตภัณฑ์โดยตรง ด้วยประสบการณ์มากกว่า 300 โครงการ', 'th', ''),
 ('services.pipeInstallation.contactButton', 'Contact Us', 'en', ''),
 ('services.pipeInstallation.contactButton', 'ติดต่อสอบถาม', 'th', ''),
@@ -221,7 +221,7 @@ INSERT INTO web_labels (key, value, locale, description) VALUES
 ('services.tankServices.title', 'บริการถังน้ำมัน', 'th', ''),
 ('services.tankServices.description', 'Complete tank services from installation, maintenance to repair', 'en', ''),
 ('services.tankServices.description', 'บริการครบวงจรสำหรับถังน้ำมัน ตั้งแต่การติดตั้ง บำรุงรักษา จนถึงการซ่อมแซม', 'th', ''),
-('services.tankServices.companyName', 'Padungsilpa Engineering Co., Ltd.', 'en', ''),
+('services.tankServices.companyName', 'OIL DEVELOPMENT Engineering Co., Ltd.', 'en', ''),
 ('services.tankServices.companyName', 'บริษัท OIL DEVELOPMENTวิศวการ จำกัด', 'th', ''),
 
 -- Products services

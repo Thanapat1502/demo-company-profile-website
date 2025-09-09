@@ -3,61 +3,61 @@ import { PartnerType } from "@/store/zustand/partnerStore";
 export const staticPartners: PartnerType[] = [
   {
     id: "partner-1",
-    name: "PTT",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-2",
-    name: "Bangchak",
+    name: "Supabase",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-3",
-    name: "Shell",
+    name: "TailwindCSS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-4",
-    name: "Esso",
+    name: "ZustandStore",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-5",
-    name: "Chevron",
+    name: "i18n",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-6",
-    name: "IRPC",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-7",
-    name: "Susco",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-8",
-    name: "Pure",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-9",
-    name: "OR",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },
   {
     id: "partner-10",
-    name: "Thaioil",
+    name: "NextJS",
     logo_url: "", // Will use icon instead
     updated_at: "2024-01-01T00:00:00.000Z",
   },

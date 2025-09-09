@@ -69,8 +69,8 @@ export default function Overview({
     "@type": "Organization",
     name: "OIL DEVELOPMENT",
     description: t("home.overview.description"),
-    url: `https://padungsilpa.group/${locale}`,
-    logo: "https://padungsilpa.group/logo.png",
+    url: `https://localhost3000.group/${locale}`,
+    logo: "https://localhost3000.group/logo.png",
     image: companyImages.length > 0 ? companyImages : undefined,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
